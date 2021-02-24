@@ -1,7 +1,8 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<h1>Breaking Out</h1>
+<p>If there's no way... make one!</p>
 
-<script>
+<div class="gameScreen" id="waitingScreen">
+    <script>
   var config = {
       type: Phaser.AUTO,
       width: 800,
@@ -25,7 +26,7 @@
       this.load.setBaseURL('http://labs.phaser.io');
 
       this.load.image('sky', 'assets/skies/space3.png');
-      this.load.image('logo', 'assets/sprites/phaser3-logo.png');
+      this.load.image('logo', 'assets/sprites/arrow.png');
       this.load.image('red', 'assets/particles/red.png');
   }
 
@@ -49,4 +50,25 @@
 
       emitter.startFollow(logo);
   }
+      document.addEventListener("keyup",(e) => {
+          if (e.key == "Enter") { document.body.lastElementChild.remove(self); }
+      })
   </script>
+</div>
+
+<div class="gameScreen" id="login">
+</div>
+
+<div class="gameScreen" id="intro">
+</div>
+
+<div class="gameScreen" id="game">
+</div>
+
+<div class="gameScreen" id="result">
+  <%# render modal %>
+</div>
+
+<div class="gameScreen" id="options">
+  <%= render "pages/options" %>
+</div>

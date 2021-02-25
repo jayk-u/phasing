@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="27" height="13" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="19">
+ <editorsettings>
+  <export target="../japanese_house_debug.csv" format="csv"/>
+ </editorsettings>
+ <tileset firstgid="1" name="MainTileMap" tilewidth="32" tileheight="32" tilecount="1365" columns="65">
+  <image source="MainTileMap.png" width="2080" height="672"/>
+  <tile id="4">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="1.77636e-15" y="28.6173" width="31.8287" height="3.28278"/>
+    <object id="2" x="0.071377" y="0.142731" width="4.2105" height="28.4032"/>
+   </objectgroup>
+  </tile>
+  <tile id="5">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.071377" y="28.6173" width="31.8287" height="3.28278"/>
+   </objectgroup>
+  </tile>
+  <tile id="6">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.071377" y="28.5459" width="31.8287" height="3.28278"/>
+    <object id="2" x="28.2605" y="0.142731" width="3.56822" height="28.4032"/>
+   </objectgroup>
+  </tile>
+  <tile id="69">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="-0.0713527" y="28.4746" width="31.8287" height="3.28278"/>
+   </objectgroup>
+  </tile>
+  <tile id="199">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.071377" y="28.5459" width="31.8287" height="3.28278"/>
+    <object id="2" x="0.142742" y="0.142731" width="4.78142" height="28.2605"/>
+   </objectgroup>
+  </tile>
+  <tile id="200">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.071377" y="28.6173" width="31.8287" height="3.28278"/>
+    <object id="2" x="1.21766e-05" y="0.0713665" width="3.92504" height="28.4032"/>
+   </objectgroup>
+  </tile>
+  <tile id="201">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="-0.0713527" y="28.4746" width="31.8287" height="3.28278"/>
+    <object id="2" x="27.6182" y="0.0713665" width="4.2105" height="28.1891"/>
+   </objectgroup>
+  </tile>
+  <tile id="264">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="1.21766e-05" y="28.5459" width="31.8287" height="3.28278"/>
+    <object id="2" x="27.6896" y="0.0713665" width="4.13914" height="28.4032"/>
+   </objectgroup>
+  </tile>
+  <tile id="265">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.071377" y="28.6173" width="31.8287" height="3.28278"/>
+   </objectgroup>
+  </tile>
+  <tile id="332">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.071377" y="28.6887" width="31.8287" height="3.28278"/>
+   </objectgroup>
+  </tile>
+  <tile id="394">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.142742" y="28.6173" width="31.8287" height="3.28278"/>
+   </objectgroup>
+  </tile>
+  <tile id="395">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.142742" y="28.6173" width="31.8287" height="3.28278"/>
+   </objectgroup>
+  </tile>
+  <tile id="396">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="1.21766e-05" y="28.6173" width="31.8287" height="3.28278"/>
+   </objectgroup>
+  </tile>
+  <tile id="398">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="1.21766e-05" y="1.61463e-06" width="4.4246" height="31.9715"/>
+   </objectgroup>
+  </tile>
+  <tile id="399">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="28.1178" y="1.61463e-06" width="3.63958" height="31.9001"/>
+   </objectgroup>
+  </tile>
+  <tile id="400">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="1.21766e-05" y="1.61463e-06" width="4.2105" height="31.9001"/>
+   </objectgroup>
+  </tile>
+  <tile id="402">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="28.6887" y="1.61463e-06" width="3.28276" height="31.9001"/>
+   </objectgroup>
+  </tile>
+  <tile id="461">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.071377" y="28.6173" width="31.8287" height="3.28278"/>
+   </objectgroup>
+  </tile>
+  <tile id="489">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="-0.0713649" y="6.42284" width="32.0428" height="25.4773"/>
+   </objectgroup>
+  </tile>
+  <tile id="593">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="1.21766e-05" y="0.0713665" width="4.56733" height="31.9001"/>
+   </objectgroup>
+  </tile>
+  <tile id="595">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="27.2614" y="0.107042" width="4.56733" height="31.9001"/>
+   </objectgroup>
+  </tile>
+  <tile id="596">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="-0.214084" y="-0.0356878" width="4.56733" height="31.9001"/>
+   </objectgroup>
+  </tile>
+  <tile id="598">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="27.4041" y="0.107042" width="4.56733" height="31.9001"/>
+   </objectgroup>
+  </tile>
+  <tile id="649">
+   <objectgroup draworder="index" id="3">
+    <object id="3" x="0.0713649" y="-0.0713649" width="23.9786" height="31.9001"/>
+   </objectgroup>
+  </tile>
+  <tile id="718">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.071377" y="28.5459" width="31.8287" height="3.28278"/>
+   </objectgroup>
+  </tile>
+  <tile id="784">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.214107" y="28.6173" width="31.8287" height="3.28278"/>
+    <object id="2" x="0.142742" y="0.0713665" width="3.99641" height="28.4032"/>
+   </objectgroup>
+  </tile>
+  <tile id="786">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.071377" y="28.6173" width="31.8287" height="3.28278"/>
+    <object id="2" x="27.8323" y="1.61463e-06" width="4.06777" height="28.4746"/>
+   </objectgroup>
+  </tile>
+  <tile id="853">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="21.6236" y="0.0713649" width="10.2052" height="31.7574"/>
+   </objectgroup>
+  </tile>
+  <tile id="856">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.0713649" y="0" width="7.56467" height="31.9001"/>
+   </objectgroup>
+  </tile>
+  <tile id="857">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.0713649" y="1.07047" width="30.8296" height="30.7583"/>
+   </objectgroup>
+  </tile>
+  <tile id="859">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.999108" y="0.856378" width="30.8296" height="31.1151"/>
+   </objectgroup>
+  </tile>
+  <tile id="918">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="21.8376" y="10.0624"/>
+   </objectgroup>
+  </tile>
+  <tile id="920">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="-0.14273" y="0.0713649" width="32.0428" height="14.8439"/>
+   </objectgroup>
+  </tile>
+  <tile id="921">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="9.99108" y="9.91971"/>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <layer id="1" name="Main Map" width="27" height="13">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,789,532,532,467,467,532,532,792,0,0,0,0,0,0,0,0,0,0,0,0,0,
+789,77,77,77,77,77,78,200,266,201,201,266,202,857,0,789,602,605,605,604,792,0,0,0,0,0,0,
+854,5,70,6,6,70,7,851,852,852,852,852,853,857,0,854,5,6,6,333,857,789,342,472,472,344,792,
+854,1041,1042,1042,1042,1042,1043,916,917,917,917,917,918,857,0,854,66,197,199,66,857,854,395,396,462,397,857,
+854,1106,1107,1107,1107,1107,1108,916,917,917,917,917,918,857,0,854,131,197,199,131,399,400,782,782,782,782,857,
+854,1106,1107,1107,1107,1107,1108,981,982,982,982,317,918,857,0,854,196,197,199,196,201,265,782,782,782,782,857,
+854,1171,1172,1172,1172,1172,1173,860,921,921,858,981,983,857,0,854,911,197,198,199,782,782,912,782,782,782,857,
+919,921,921,921,921,921,921,922,0,0,854,979,979,597,598,599,976,860,921,921,921,921,921,921,921,921,922,
+0,0,0,0,0,0,0,0,0,0,854,980,980,785,719,787,980,857,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,854,980,980,67,68,69,980,857,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,919,921,921,921,921,921,921,922,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="Secret Door" width="27" height="13" visible="0">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,651,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <group id="6" name="Objects">
+  <layer id="2" name="bottom" width="27" height="13">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,362,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,229,0,0,0,0,545,0,0,0,0,0,0,0,0,0,747,31,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,610,0,0,169,488,169,0,0,0,0,812,96,0,39,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,352,0,0,104,0,0,33,0,0,0,0,
+0,0,880,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,880,0,30,0,0,357,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,624,625,0,0,0,1013,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,937,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,1002,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+  <layer id="4" name="top" width="27" height="13">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,297,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,558,0,555,556,0,557,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,36,35,0,482,623,0,620,621,0,622,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,101,100,0,0,0,0,0,293,0,0,0,0,0,0,169,354,0,0,0,814,819,0,816,0,
+0,0,0,127,0,0,0,0,0,0,0,0,677,0,0,0,0,0,0,0,0,0,879,0,0,881,0,
+0,388,389,192,0,0,486,885,943,885,947,0,742,0,0,0,0,0,0,0,0,0,98,0,0,0,0,
+0,0,0,257,0,0,551,0,0,0,0,0,0,0,0,0,0,0,430,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+ </group>
+ <objectgroup id="3" name="Extra Objects">
+  <object id="4" gid="169" x="806.424" y="224.081" width="32" height="32"/>
+  <object id="5" gid="2147484592" x="805.954" y="256.237" width="32" height="32"/>
+  <object id="6" gid="944" x="641.292" y="223.762" width="32" height="32"/>
+  <object id="7" gid="1011" x="641.264" y="255.629" width="32" height="32"/>
+  <object id="9" gid="1198" x="773.479" y="380.648" width="32" height="32"/>
+  <object id="10" gid="1198" x="778.053" y="366.926" width="32" height="32"/>
+  <object id="12" gid="616" x="49.3726" y="152.213" width="32" height="32"/>
+  <object id="13" gid="681" x="49.2874" y="184.027" width="32" height="32"/>
+  <object id="16" gid="1003" x="90.8374" y="119.802" width="32" height="32"/>
+  <object id="17" gid="1004" x="139.451" y="130.925" width="32" height="32"/>
+ </objectgroup>
+</map>

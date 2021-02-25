@@ -1,6 +1,28 @@
+<div id='video_box'>
 
-<h1>Breaking Out</h1>
-<p>If there's no way... make one!</p>
+
+  <%= video_tag "bo-overlay2.mp4", autoplay: :autoplay, loop: :loop, muted: :muted, id: "home_video" %>
+
+
+  <div id='container-firstpage'>
+    <div id="container-logo">
+      <%= image_tag('bo-logo.png') %>
+    </div>
+
+    <div id="container-session">
+      <%= image_tag('perso-demo.png') %>
+      <a href="">
+        <%= image_tag('btn-play.png')  %>
+      </a>
+    </div>
+
+    <div id="container-settings">
+      <a href="">
+        <%= image_tag('btn-settings')  %>
+      </a>
+    </div>
+  </div>
+</div>
 
 <div class="gameScreen" id="waitingScreen">
 </div>

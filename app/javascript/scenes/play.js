@@ -1,27 +1,17 @@
-const gameScreen = () => {
-  var config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    physics: {
-      default: "arcade",
-      // arcade: {
-      //   debug: false,
-      // },
-    },
-    scene: {
-      preload: preload,
-      create: create,
-      update: update,
-    },
-  };
+var egyptian;
+var platforms;
+var cursors;
 
-  var game = new Phaser.Game(config);
-  var platforms;
-  var egyptian;
-  var cursors;
+class Play extends Phaser.Scene {
 
-  function preload() {
+  constructor ()
+  {
+    super("Play");
+  }
+
+
+  preload() 
+  {
     const gameAssets = document.getElementById("game-assets").dataset;
 
     this.load.image("sky", gameAssets.skyImg);
@@ -34,7 +24,11 @@ const gameScreen = () => {
     });
   }
 
-  function create() {
+  create() 
+  {
+
+    console.log("here")
+
     this.add.image(400, 300, "sky");
 
     platforms = this.physics.add.staticGroup();
@@ -88,7 +82,8 @@ const gameScreen = () => {
     cursors = this.input.keyboard.createCursorKeys();
   }
 
-  function update() {
+  update()
+  {
 
     egyptian.body.setVelocity(0);
 
@@ -117,4 +112,4 @@ const gameScreen = () => {
   }
 };
 
-export { gameScreen };
+export { Play };

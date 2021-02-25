@@ -1,6 +1,8 @@
 import Phaser from "phaser"
 import { Waiting } from "../scenes/waiting"
 import { Login } from "../scenes/login"
+import { Play } from "../scenes/play"
+
 
 var config = {
   type: Phaser.AUTO,
@@ -10,10 +12,10 @@ var config = {
   physics: {
       default: 'arcade',
       arcade: {
-          gravity: { y: 200 }
+          gravity: { y: 0 }
       }
   },
-  scene: [Waiting, Login]
+  scene: [Waiting, Login, Play]
 };
 
 const game = new Phaser.Game(config);

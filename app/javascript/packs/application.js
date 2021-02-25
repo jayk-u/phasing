@@ -9,8 +9,7 @@ require("channels")
 
 import * as modals from '../channels/modals';
 import * as displayScreens from '../channels/gamescreens';
-import { waitingScreen } from '../scenes/waiting';
-
+import *as game from '../channels/game'
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
@@ -20,7 +19,7 @@ import { waitingScreen } from '../scenes/waiting';
 // const imagePath = (name) => images(name, true)
 
 document.addEventListener('turbolinks:load', () => {
-  waitingScreen();
+  game;
 });
 
 // import { preloadGame } from "../channels/game";

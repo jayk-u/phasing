@@ -1,25 +1,11 @@
-import { loginScreen } from "../scenes/login"
+class Waiting extends Phaser.Scene {
 
-const waitingScreen = () => {
-  var config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 200 }
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create
+    constructor ()
+    {
+        super('Waiting');
     }
-};
 
-  var game = new Phaser.Game(config);
-
-  function preload ()
+  preload ()
   {
       this.load.setBaseURL('http://labs.phaser.io');
 
@@ -28,7 +14,7 @@ const waitingScreen = () => {
       this.load.image('red', 'assets/particles/red.png');
   }
 
-  function create ()
+  create ()
   {
       this.add.image(400, 300, 'sky');
 
@@ -58,12 +44,13 @@ const waitingScreen = () => {
 
         if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
         {
-            document.body.lastElementChild.remove(self);
-            loginScreen();;
+            this.scene.stop();
+            console.log(event)
+            this.scene.start('Login');
         }
 
     });
   }
 }
 
-export { waitingScreen }
+export { Waiting }

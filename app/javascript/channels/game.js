@@ -1,9 +1,21 @@
 import Phaser from "phaser"
+import { Waiting } from "../scenes/waiting"
+import { Login } from "../scenes/login"
+import { Play } from "../scenes/play"
 
-const config = {
+
+var config = {
+  type: Phaser.AUTO,
   width: 800,
-  height: 500,
-  type: Phaser.AUTO
-}
+  height: 600,
+  parent: "phaser-example",
+  physics: {
+      default: 'arcade',
+      arcade: {
+          gravity: { y: 0 }
+      }
+  },
+  scene: [Waiting, Login, Play]
+};
 
-const game = new Phaser.game(config);
+const game = new Phaser.Game(config);

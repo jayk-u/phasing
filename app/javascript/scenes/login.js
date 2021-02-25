@@ -8,7 +8,7 @@ const loginScreen = () => {
     physics: {
       default: "arcade",
       arcade: {
-        gravity: { y: 200 },
+        gravity: { y: 1000 },
       },
     },
     scene: {
@@ -57,7 +57,7 @@ const loginScreen = () => {
           if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
           {
               document.body.lastElementChild.remove(self);
-              introScreen();;
+              gameScreen();
           }
   
       });

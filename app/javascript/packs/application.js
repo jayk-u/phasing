@@ -8,7 +8,9 @@ require("turbolinks").start()
 require("channels")
 
 import * as modals from '../channels/modals';
-import * as screens from '../channels/gamescreens';
+import * as displayScreens from '../channels/gamescreens';
+import { waitingScreen } from '../scenes/waiting';
+
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
@@ -18,6 +20,5 @@ import * as screens from '../channels/gamescreens';
 // const imagePath = (name) => images(name, true)
 
 document.addEventListener('turbolinks:load', () => {
-  modals;
-  screens;
+  waitingScreen();
 });

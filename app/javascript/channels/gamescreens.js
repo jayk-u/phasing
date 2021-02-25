@@ -8,14 +8,9 @@ const intro = document.querySelector("#intro");
 
 const game = document.querySelector("#game");
 
-console.log(screens)
-
-console.log(waitingscreen.style.display == "none")
-
 if (waitingscreen.style.display != "none") {
   document.addEventListener("keyup", (e) => {
     if (e.key == "Enter") {screenToDisplay(login)};
-    console.log(waitingscreen.style.display == "none")
   })
 }
 

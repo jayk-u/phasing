@@ -18,6 +18,8 @@ class Play extends Phaser.Scene {
     this.load.image("ground", gameAssets.groundImg);
     this.load.image("star", gameAssets.starImg);
     this.load.image("bomb", gameAssets.bombImg);
+    this.load.tilemapTiledJSON('map', gameAssets.mapJson);
+    this.load.image('tiles', gameAssets.mapPng)
     this.load.spritesheet("egyptian", gameAssets.egyptianSprite, {
       frameWidth: 32,
       frameHeight: 48,
@@ -29,17 +31,24 @@ class Play extends Phaser.Scene {
 
     console.log("here")
 
-    this.add.image(400, 300, "sky");
-
     platforms = this.physics.add.staticGroup();
 
-    platforms.create(400, 568, "ground").setScale(2).refreshBody();
+    // platforms.create(400, 568, "ground").setScale(2).refreshBody();
 
-    platforms.create(600, 400, "ground");
-    platforms.create(50, 250, "ground");
-    platforms.create(750, 220, "ground");
+    // platforms.create(600, 400, "ground");
+    // platforms.create(50, 250, "ground");
+    // platforms.create(750, 220, "ground");
 
-    egyptian = this.physics.add.sprite(100, 450, "egyptian");
+    this.map = this.make.tilemap({ key: 'map'});  // 
+    // this.layer = this.map.createLayer('ground');  // set layer name
+    // this.layer.resizeWorld();
+    this.tileset = this.map.addTilesetImage("MainTileMap", 'tiles');
+    this.layer = this.map.createLayer('Main Map', this.tileset, 0, 0);
+    this.objectBottom = this.map.createLayer("Objects/bottom", this.tileset, 0, 0);
+    this.objectTop = this.map.createLayer("Objects/top", this.tileset, 0, 0);
+
+
+    egyptian = this.physics.add.sprite(460, 323, "egyptian");
 
     // egyptian.setBounce(0.2);
     egyptian.setCollideWorldBounds(true);
@@ -80,6 +89,9 @@ class Play extends Phaser.Scene {
 
     this.physics.add.collider(egyptian, platforms);
     cursors = this.input.keyboard.createCursorKeys();
+    this.cameras.main.setBounds(0, 0, 1000, 1000);
+    this.cameras.main.zoom = 2.5;
+    this.cameras.main.startFollow(egyptian);
   }
 
   update()
@@ -88,26 +100,27 @@ class Play extends Phaser.Scene {
     egyptian.body.setVelocity(0);
 
     if (cursors.left.isDown) {
-      egyptian.setVelocityX(-160);
+      egyptian.setVelocityX(-100);
 
       egyptian.anims.play("left", true);
     } else if (cursors.right.isDown) {
-      egyptian.setVelocityX(160);
+      egyptian.setVelocityX(100);
 
       egyptian.anims.play("right", true);
     } else if (cursors.down.isDown) {
-      egyptian.setVelocityY(160);
+      egyptian.setVelocityY(100);
 
       egyptian.anims.play("down", true);
     } else if (cursors.up.isDown) // && egyptian.body.touching.down 
     {
-      egyptian.setVelocityY(-160);
+      egyptian.setVelocityY(-100);
 
       egyptian.anims.play("up", true);
     } else {
       egyptian.setVelocityX(0);
 
-      egyptian.anims.play("turn");
+      // egyptian.anims.play("turn");
+      egyptian.anims.stop();
     }
   }
 };

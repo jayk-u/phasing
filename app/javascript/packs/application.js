@@ -22,3 +22,9 @@ import { waitingScreen } from '../scenes/waiting';
 document.addEventListener('turbolinks:load', () => {
   waitingScreen();
 });
+
+// import { preloadGame } from "../channels/game";
+
+// window.preload = preloadGame;
+
+// preloadGame();

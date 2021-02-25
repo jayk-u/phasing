@@ -11,7 +11,12 @@
 <div class="gameScreen" id="intro">
 </div>
 
-<div class="gameScreen" id="game">
+<div class="gameScreen" id="game-assets"
+data-sky-img='<%= image_path('sky.png') %>'
+data-ground-img='<%= image_path('platform.png') %>'
+data-star-img='<%= image_path('star.png') %>'
+data-bomb-img='<%= image_path('bomb.png') %>'
+data-dude-sprite='<%= image_path('dude.png') %>'>
 </div>
 
 <div class="gameScreen" id="result">
@@ -21,4 +26,3 @@
 <div class="gameScreen" id="options">
   <%= render "pages/options" %>
 </div>
-

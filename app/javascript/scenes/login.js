@@ -25,7 +25,6 @@ class Login extends Phaser.Scene {
           speed: 100,
           scale: { start: 1, end: 0 },
           blendMode: 'ADD'
-
       });
 
       var logo = this.physics.add.image(400, 100, 'logo');
@@ -45,7 +44,9 @@ class Login extends Phaser.Scene {
 
         if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
         {
-            document.body.lastElementChild.remove(self);
+            this.scene.stop();
+//  Game isn't a class yet :/ we can't start it
+//             this.scene.start('Game');
         }
 
     });

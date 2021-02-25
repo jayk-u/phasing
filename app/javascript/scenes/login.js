@@ -50,10 +50,16 @@ const loginScreen = () => {
         // text.setCollideWorldBounds(true);
   
         emitter.startFollow(logo);
+        this.input.keyboard.on('keydown', (event)  => {
+
+          if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
+          {
+              document.body.lastElementChild.remove(self);
+              introScreen();;
+          }
+  
+      });
     }
-        document.addEventListener("keyup",(e) => {
-            if (e.key == "Enter") { document.body.lastElementChild.remove(self); introScreen(); }
-        })
 }
 
 export { loginScreen } ;

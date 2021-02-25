@@ -1,3 +1,5 @@
+import {game} from "../channels/game"
+
 var egyptian;
 var platforms;
 var cursors;
@@ -28,9 +30,8 @@ class Play extends Phaser.Scene {
 
   create() 
   {
-
-    console.log("here")
-
+    console.log(game)
+    console.log(this)
     platforms = this.physics.add.staticGroup();
 
     // platforms.create(400, 568, "ground").setScale(2).refreshBody();
@@ -39,7 +40,7 @@ class Play extends Phaser.Scene {
     // platforms.create(50, 250, "ground");
     // platforms.create(750, 220, "ground");
 
-    this.map = this.make.tilemap({ key: 'map'});  // 
+    this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });  // 
     // this.layer = this.map.createLayer('ground');  // set layer name
     // this.layer.resizeWorld();
     this.tileset = this.map.addTilesetImage("MainTileMap", 'tiles');
@@ -48,10 +49,21 @@ class Play extends Phaser.Scene {
     this.objectTop = this.map.createLayer("Objects/top", this.tileset, 0, 0);
 
 
+    this.layer.setCollisionBetween(0, 1100);
+    // this.physics.add.collider(egyptian, this.layer);
+    // this.layer.setCollisionFromCollisionGroup();
+    // this.shapeGraphics = this.add.graphics();
+    // drawCollisionShapes(this.shapeGraphics);
+    // this.matter.world.convertTilemapLayer(this.layer);
+    // this.matter.world.setBounds(this.map.widthInPixels, this.map.heightInPixels);
+    // this.map.setCollisionBetween(0, 1000);
+    // this.physics.arcade.collide(egyptian, this.layer);
+    // this.physics.enable([egyptian]);
+
     egyptian = this.physics.add.sprite(460, 323, "egyptian");
 
     // egyptian.setBounce(0.2);
-    egyptian.setCollideWorldBounds(true);
+    // egyptian.setCollideWorldBounds(true);
 
     this.anims.create({
       key: "left",
@@ -86,8 +98,13 @@ class Play extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
+    
+    // this.physics.world.collide(egyptian, this.layer)
+    // this.layer.setCollisionByExclusion([0, -1]);
+    this.physics.add.collider(egyptian, this.layer);
+    // this.physics.add.collider(egyptian, platforms);
+    // this.physics.world.collide(egyptian, this.layer, null, this);
 
-    this.physics.add.collider(egyptian, platforms);
     cursors = this.input.keyboard.createCursorKeys();
     this.cameras.main.setBounds(0, 0, 1000, 1000);
     this.cameras.main.zoom = 2.5;

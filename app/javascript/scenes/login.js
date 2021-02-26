@@ -1,6 +1,5 @@
 class Login extends Phaser.Scene {
 
-
   constructor ()
   {
       super('Login');
@@ -8,48 +7,49 @@ class Login extends Phaser.Scene {
 
   preload ()
   {
-      this.load.setBaseURL('http://labs.phaser.io');
+    const loginAssets = document.getElementById("login").dataset;
 
-      this.load.image('sky', 'assets/skies/space3.png');
-      this.load.image('logo', 'assets/sprites/arrows.png');
-      this.load.image('red', 'assets/particles/red.png');
-  }
+    this.load.image("logoo", loginAssets.logoImg);
+    this.load.image("perso", loginAssets.persoImg);
+    this.load.image("play", loginAssets.playBtn);
+    this.load.image("settings", loginAssets.settingsBtn);
+    // this.load.video("overlay", loginAssets.boOverlay2Mp4);
+  };
 
   create ()
   {
-      this.add.image(400, 300, 'sky');
+     function updateState() {
+    this.scene.stop();
+    this.scene.start('Play');
+  };
 
-      var particles = this.add.particles('red');
 
-      var emitter = particles.createEmitter({
-          speed: 100,
-          scale: { start: 1, end: 0 },
-          blendMode: 'ADD'
-      });
+    var lg = this.add.image(125, 75, "logoo");
+    lg.setDisplaySize(225, 125);
 
-      var logo = this.physics.add.image(400, 100, 'logo');
-      // var text = this.physics.add.image(400, 100, "Press Enter")
+    var sett = this.add.image(1550, 75, "settings");
+    sett.setDisplaySize(60,60);
 
-      logo.setVelocity(100, 200);
-      logo.setBounce(1, 1);
-      logo.setCollideWorldBounds(true);
+    var perso = this.add.image(860, 400, "perso");
+    perso.setDisplaySize(400,700);
 
-      // text.setVelocity(100, 200);
-      // text.setBounce(1, 1);
-      // text.setCollideWorldBounds(true);
+    var play = this.add.image(860, 700, "play").setInteractive();
+    play.setDisplaySize(300,100);
 
-      emitter.startFollow(logo);
+    var dist = Phaser.Math.Distance.Between(860, 700, 30, 30)
+    console.dir(dist)
 
-      this.input.keyboard.on('keydown', (event)  => {
+    //play btn bis
+    play.on("pointerup", (event) => {
+      this.scene.stop();
+      this.scene.start('Play');
+    } );
 
-        if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
-        {
-            this.scene.stop();
-            this.scene.start('Intro');
-        }
+    settings.on("pointerup", (event) => {
 
-    });
-  }
-}
+    } );
+  };
+
+};
 
 export { Login }

@@ -7,21 +7,24 @@ class Waiting extends Phaser.Scene {
 
   preload ()
   {
-      this.load.setBaseURL('http://labs.phaser.io');
 
+      const loginAssets = document.getElementById("login").dataset;
+      this.load.image('logo', loginAssets.logoImg);
+
+      this.load.setBaseURL('http://labs.phaser.io');
+      this.load.image('yellow', 'assets/particles/yellow.png');
       this.load.image('grid', 'assets/skies/grid.png');
-      this.load.image('logo', 'assets/sprites/arrow.png');
-      this.load.image('red', 'assets/particles/red.png');
   }
 
   create ()
   {
+      var particles = this.add.particles('yellow');
+      this.add.image(400, 300, 'sky').setDisplaySize(innerWidth, innerHeight);
       console.log(window)
     //   this.add.image(400, 300, 'grid')
       this.add.image(400, 300, 'grid').setScale(1.5,1.5)
 
       var particles = this.add.particles('red');
-
       var emitter = particles.createEmitter({
           speed: 100,
           scale: { start: 1, end: 0 },
@@ -30,6 +33,7 @@ class Waiting extends Phaser.Scene {
       });
 
       var logo = this.physics.add.image(400, 100, 'logo');
+      logo.setDisplaySize(225, 125);
       // var text = this.physics.add.image(400, 100, "Press Enter")
 
       logo.setVelocity(100, 200);

@@ -12,7 +12,7 @@ class Play extends Phaser.Scene {
   }
 
 
-  preload() 
+  preload()
   {
     const gameAssets = document.getElementById("game-assets").dataset;
 
@@ -28,7 +28,7 @@ class Play extends Phaser.Scene {
     });
   }
 
-  create() 
+  create()
   {
     console.log(game)
     console.log(this)
@@ -128,7 +128,7 @@ class Play extends Phaser.Scene {
       egyptian.setVelocityY(100);
 
       egyptian.anims.play("down", true);
-    } else if (cursors.up.isDown) // && egyptian.body.touching.down 
+    } else if (cursors.up.isDown) // && egyptian.body.touching.down
     {
       egyptian.setVelocityY(-100);
 

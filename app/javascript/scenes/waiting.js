@@ -10,6 +10,7 @@ class Waiting extends Phaser.Scene {
 
       const loginAssets = document.getElementById("login").dataset;
       this.load.image('logo', loginAssets.logoImg);
+      this.load.video("overlay", loginAssets.overlayVid, 'loadeddata', false, true);
 
       this.load.setBaseURL('http://labs.phaser.io');
       this.load.image('yellow', 'assets/particles/yellow.png');
@@ -17,6 +18,14 @@ class Waiting extends Phaser.Scene {
 
   create ()
   {
+
+    var video = this.add.video(100, 100, 'overlay');
+    video.play(true)
+    video.setDisplaySize(innerWidth, innerHeight);
+    //video.setDisplaySize(innerWidth, innerHeight);
+
+    //video.setBlendMode(Phaser.BlendModes.SCREEN);
+
       var particles = this.add.particles('yellow');
       var emitter = particles.createEmitter({
           speed: 100,

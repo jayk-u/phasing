@@ -13,11 +13,17 @@ class Login extends Phaser.Scene {
     this.load.image("perso", loginAssets.persoImg);
     this.load.image("play", loginAssets.playBtn);
     this.load.image("settings", loginAssets.settingsBtn);
-    // this.load.video("overlay", loginAssets.boOverlay2Mp4);
+    this.load.video("overlay", loginAssets.overlayVid);
   };
 
   create ()
   {
+
+    var video = this.add.video(10, 10, 'overlay');
+    video.setDisplaySize(innerWidth, innerHeight);
+
+    video.setBlendMode(Phaser.BlendModes.SCREEN);
+
     var lg = this.add.image(125, 80, "logoo");
     lg.setDisplaySize(225, 125);
 

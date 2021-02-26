@@ -27,7 +27,7 @@ class Login extends Phaser.Scene {
     var perso = this.add.image(innerWidth/2, innerHeight/2, "perso");
     perso.setDisplaySize(230,380);
 
-    var play = this.add.image(innerWidth/2, innerHeight/3 + 280, "play").setInteractive();
+    var play = this.add.image(innerWidth/2, innerHeight/3 + 300, "play").setInteractive();
     play.setDisplaySize(200,80);
 
     //play btn bis

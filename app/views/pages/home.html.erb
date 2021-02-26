@@ -1,9 +1,20 @@
+
+
+<div class="gameScreen" id="waitingScreen">
+</div>
+
+<div class="gameScreen" id="login"
+data-logo-img='<%= image_path('bo-logo.png') %>'
+data-perso-img='<%= image_path('perso-demo.png') %>'
+data-play-btn='<%= image_path('btn-play.png') %>'
+data-settings-btn='<%= image_path('btn-settings.png') %>'
+data-overlay-vid='<%= video_path('bo-overlay2.mp4') %>'
+></div>
+
 <div id='video_box'>
-
-
   <%= video_tag "bo-overlay2.mp4", autoplay: :autoplay, loop: :loop, muted: :muted, id: "home_video" %>
 
-
+<!--
   <div id='container-firstpage'>
     <div id="container-logo">
       <%= image_tag('bo-logo.png') %>
@@ -20,15 +31,10 @@
       <a href="">
         <%= image_tag('btn-settings')  %>
       </a>
-    </div>
-  </div>
+    </div> -->
+  <!-- </div> -->
 </div>
 
-<div class="gameScreen" id="waitingScreen">
-</div>
-
-<div class="gameScreen" id="login">
-</div>
 
 <div class="gameScreen" id="intro">
 </div>

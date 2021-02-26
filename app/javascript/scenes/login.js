@@ -18,26 +18,17 @@ class Login extends Phaser.Scene {
 
   create ()
   {
-     function updateState() {
-    this.scene.stop();
-    this.scene.start('Play');
-  };
-
-
-    var lg = this.add.image(125, 75, "logoo");
+    var lg = this.add.image(125, 80, "logoo");
     lg.setDisplaySize(225, 125);
 
-    var sett = this.add.image(1550, 75, "settings");
+    var sett = this.add.image(innerWidth - 100, 75, "settings");
     sett.setDisplaySize(60,60);
 
-    var perso = this.add.image(860, 400, "perso");
-    perso.setDisplaySize(400,700);
+    var perso = this.add.image(innerWidth/2, innerHeight/2, "perso");
+    perso.setDisplaySize(230,380);
 
-    var play = this.add.image(860, 700, "play").setInteractive();
-    play.setDisplaySize(300,100);
-
-    var dist = Phaser.Math.Distance.Between(860, 700, 30, 30)
-    console.dir(dist)
+    var play = this.add.image(innerWidth/2, innerHeight/3 + 280, "play").setInteractive();
+    play.setDisplaySize(200,80);
 
     //play btn bis
     play.on("pointerup", (event) => {
@@ -45,9 +36,9 @@ class Login extends Phaser.Scene {
       this.scene.start('Play');
     } );
 
-    settings.on("pointerup", (event) => {
+    // settings.on("pointerup", (event) => {
 
-    } );
+    // } );
   };
 
 };

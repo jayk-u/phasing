@@ -39,7 +39,6 @@ class Login extends Phaser.Scene {
     var dist = Phaser.Math.Distance.Between(860, 700, 30, 30)
     console.dir(dist)
 
-
     //play btn bis
     play.on("pointerup", (event) => {
       this.scene.stop();
@@ -51,25 +50,6 @@ class Login extends Phaser.Scene {
     } );
   };
 
-
-
-
-
-
-    //   //  Play btn
-    //   this.input.keyboard.on('keydown', (event)  => {
-
-    //     if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
-    //     {
-    //         this.scene.stop();
-    //         this.scene.start('Play');
-    //     }
-
-    // });
-
 };
 
 export { Login }
-
-
-1680

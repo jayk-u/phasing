@@ -18,7 +18,7 @@ class Waiting extends Phaser.Scene {
   create ()
   {
       var particles = this.add.particles('yellow');
-
+      this.add.image(400, 300, 'sky').setDisplaySize(innerWidth, innerHeight);
       var emitter = particles.createEmitter({
           speed: 100,
           scale: { start: 1, end: 0 },
@@ -45,7 +45,6 @@ class Waiting extends Phaser.Scene {
         if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
         {
             this.scene.stop();
-            console.log(event)
             this.scene.start('Login');
         }
 

@@ -6,8 +6,8 @@ import { Play } from "../scenes/play"
 
 var config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: 1600,
+  height: 950,
   parent: "phaser-example",
   physics: {
       default: 'arcade',

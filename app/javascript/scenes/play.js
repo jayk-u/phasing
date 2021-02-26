@@ -1,4 +1,5 @@
 import {game} from "../channels/game"
+import { minigameSaber } from "../channels/minigames";
 
 var egyptian;
 var platforms;
@@ -115,6 +116,25 @@ class Play extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 1000, 1000);
     this.cameras.main.zoom = 2.5;
     this.cameras.main.startFollow(egyptian);
+
+    function Range(a,b){
+      // if only one argument supplied then return random number between 1 and argument
+      if (b === undefined) {
+        b = a;
+        a = 1;
+      }
+      return [...Array(b-a+1).keys()].map(x => x+a);
+    }
+
+    console.log(window)
+    console.log(this)
+
+
+    this.input.keyboard.on("keydown-E", (event) => {
+      console.log(    this.cameras.main.startFollow(egyptian))
+      console.log(this.cameras)
+      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  minigameSaber(this) }
+    })
   }
 
   update()

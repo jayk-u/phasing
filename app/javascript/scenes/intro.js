@@ -32,8 +32,7 @@ create ()
       if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
       {
           this.scene.stop();
-          console.log(event)
-          // this.scene.start('Game');
+          this.scene.start('Play');
       }
 
     })

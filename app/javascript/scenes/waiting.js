@@ -9,14 +9,16 @@ class Waiting extends Phaser.Scene {
   {
       this.load.setBaseURL('http://labs.phaser.io');
 
-      this.load.image('sky', 'assets/skies/space3.png');
+      this.load.image('grid', 'assets/skies/grid.png');
       this.load.image('logo', 'assets/sprites/arrow.png');
       this.load.image('red', 'assets/particles/red.png');
   }
 
   create ()
   {
-      this.add.image(400, 300, 'sky').setDisplaySize(innerWidth, innerHeight);
+      console.log(window)
+    //   this.add.image(400, 300, 'grid')
+      this.add.image(400, 300, 'grid').setScale(1.5,1.5)
 
       var particles = this.add.particles('red');
 

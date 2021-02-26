@@ -2,6 +2,13 @@ import { game } from "../channels/game"
 import Typed from 'typed.js';
 
 var text
+var skip
+var then = 0
+var wordIndex = 0;
+var letterIndex = 0;
+var lineIndex = 0;
+var line = "";
+var run = true
 
 
 class Intro extends Phaser.Scene {
@@ -22,7 +29,8 @@ create ()
     "Darth Vader: I hate you!",
     "Obi-Wan: You were my brother, Anakin! I loved you."]
 
-    text = this.add.text(60, 300, content, {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120, height: 200 }})
+    text = this.add.text(60, 300, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120, height: 200 }})
+    skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
 
   
     // nextLine();
@@ -82,36 +90,34 @@ create ()
     
     // }
   };
-  // update ()
-  // {
-  //   var t = this
-  //   var line = [];
-
-  //   var wordIndex = 0;
-  //   var lineIndex = 0;
-    
-  //   var wordDelay = 120;
-  //   var lineDelay = 400;
-  //   var content = [ "Obi-Wan: You were the Chosen One! It was said that you would destroy the Sith, not join them. bring balance to the force, not leave it in darkness.",
-  //   "Darth Vader: I hate you!",
-  //   "Obi-Wan: You were my brother, Anakin! I loved you."]
-  //   var now = 0
-  //   var then = 0
-  //   now ++
-  //   console.log(now)
-  //   if (lineIndex < content.length) {
-  //     if ((now) > 1000) {
-  //         if (wordIndex == content[lineIndex].split(" ").length) {lineIndex++, wordIndex = 0, line = ""}
-  //         if (lineIndex == content.length) {return ;}
-  //         line = line.concat(content[lineIndex].split(" ")[wordIndex] + " ")
-  //         text.setText(line),
-  //         wordIndex++
-  //         console.log(now - then)
-  //         then = now
-  //         now = 0
-  //       }
-  //   }
-  //   }
+  update ()
+  {
+    if (run) {
+      var t = this
+      var content = [ "Obi-Wan: You were the Chosen One! It was said that you would destroy the Sith, not join them. bring balance to the force, not leave it in darkness.",
+      "Darth Vader: I hate you!",
+      "Obi-Wan: You were my brother, Anakin! I loved you."]
+      var word = content[lineIndex].split(" ")
+      var letter = content[lineIndex].split("")
+      var letterDelay = 30;
+      if (letter.length == letterIndex) { letterDelay = 2000 }
+      var now = t.time.now
+      console.log(now)
+      if (lineIndex < content.length) {
+        if ((now - then) > letterDelay) {
+            if (letterIndex == letter.length) {lineIndex++, letterIndex = 0, line = ""}
+            if (lineIndex == content.length) {run = false; return ;}
+            if (run) { letter = content[lineIndex].split("") }
+            line = line.concat(letter[letterIndex])
+            text.setText(line),
+            letterIndex++
+            then = now
+          }
+      }
+    } else {
+      skip.setText("Press Enter").setAlign('right')
+    }
+    }
 
 }
 

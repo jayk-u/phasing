@@ -16,7 +16,7 @@ class Waiting extends Phaser.Scene {
 
   create ()
   {
-      this.add.image(400, 300, 'sky');
+      this.add.image(400, 300, 'sky').setDisplaySize(innerWidth, innerHeight);
 
       var particles = this.add.particles('red');
 
@@ -45,7 +45,6 @@ class Waiting extends Phaser.Scene {
         if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
         {
             this.scene.stop();
-            console.log(event)
             this.scene.start('Login');
         }
 

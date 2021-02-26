@@ -45,7 +45,7 @@ class Login extends Phaser.Scene {
         if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
         {
             this.scene.stop();
-            this.scene.start('Play');
+            this.scene.start('Intro');
         }
 
     });

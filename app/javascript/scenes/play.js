@@ -1,10 +1,17 @@
 import {game} from "../channels/game"
-import { minigameSaber } from "../channels/minigames";
+import { minigameSaber } from "../channels/interactions";
 
-// For minigame boxes coordinates
-//this.cameras.main.scrollX + 624, this.cameras.main.scrollY + 377
+function Range(a,b){
+  // if only one argument supplied then return random number between 1 and argument
+  if (b === undefined) {
+    b = a;
+    a = 1;
+  }
+  return [...Array(b-a+1).keys()].map(x => x+a);
+}
 
 
+var minigame
 var egyptian;
 var platforms;
 var cursors;
@@ -159,68 +166,70 @@ class Play extends Phaser.Scene {
     //Timer
     var chrono = this.add.graphics();
     chrono.fillStyle(0x000000);
-    chrono.fillRect(900,500, 100, 50).setScrollFactor(0)
+    chrono.fillRect(innerWidth/1.75, innerHeight/1.57, 100, 50).setScrollFactor(0)
+
+    console.log(innerWidth, innerHeight)
   
-    timer = this.add.text(900, 500, "", { color: '#FFFFFF', font: "32px" }).setScrollFactor(0)
+    timer = this.add.text(innerWidth/1.75, innerHeight/1.57, "", { color: '#FFFFFF', font: "24px" }).setScrollFactor(0)
     //End Timer
 
-    function Range(a,b){
-      // if only one argument supplied then return random number between 1 and argument
-      if (b === undefined) {
-        b = a;
-        a = 1;
+    this.input.keyboard.on("keydown-E", () => {
+      egyptian.anims.stop();
+      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  
+        minigameSaber(this);
+        minigame = "active";
       }
-      return [...Array(b-a+1).keys()].map(x => x+a);
-    }
-
-
-    this.input.keyboard.on("keydown-E", (event) => {
-      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  minigameSaber(this) }
     })
   }
 
   update()
   {
+    // this.input.keyboard.on("keydown-E", () => {
+    //   if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  updateSaber(this, egyptian) }
+    // })
     egyptian.body.setVelocity(0);
+    if (minigame != "active") {
+      if (cursors.left.isDown) {
+        egyptian.setVelocityX(-100);
 
-    if (cursors.left.isDown) {
-      egyptian.setVelocityX(-100);
+        egyptian.anims.play("left", true);
+        this.x = 1;
+      } else if (cursors.right.isDown) {
+        egyptian.setVelocityX(100);
 
-      egyptian.anims.play("left", true);
-      this.x = 1;
-    } else if (cursors.right.isDown) {
-      egyptian.setVelocityX(100);
+        egyptian.anims.play("right", true);
+        this.x = 2;
+      } else if (cursors.down.isDown) {
+        egyptian.setVelocityY(100);
 
-      egyptian.anims.play("right", true);
-      this.x = 2;
-    } else if (cursors.down.isDown) {
-      egyptian.setVelocityY(100);
+        egyptian.anims.play("down", true);
+        this.x = 3;
+      } else if (cursors.up.isDown) // && egyptian.body.touching.down
+      {
+        egyptian.setVelocityY(-100);
 
-      egyptian.anims.play("down", true);
-      this.x = 3;
-    } else if (cursors.up.isDown) // && egyptian.body.touching.down
-    {
-      egyptian.setVelocityY(-100);
-
-      egyptian.anims.play("up", true);
-      this.x = 4;
-    } else {
-      egyptian.setVelocityX(0);
-      if (this.x === 1) {
-        egyptian.anims.play("leftend");
+        egyptian.anims.play("up", true);
+        this.x = 4;
+      } else {
+        egyptian.setVelocityX(0);
+        if (this.x === 1) {
+          egyptian.anims.play("leftend");
+        }
+        else if (this.x === 2) {
+          egyptian.anims.play("rightend");
+        }
+        else if (this.x === 3) {
+          egyptian.anims.play("downend");
+        }
+        else if (this.x === 4) {
+          egyptian.anims.play("upend");
+        }
+        //egyptian.anims.play("turn");
       }
-      else if (this.x === 2) {
-        egyptian.anims.play("rightend");
-      }
-      else if (this.x === 3) {
-        egyptian.anims.play("downend");
-      }
-      else if (this.x === 4) {
-        egyptian.anims.play("upend");
-      }
-      //egyptian.anims.play("turn");
+      this.input.keyboard.on("keydown-ENTER", () => {
+        minigame = "none"
+      })
     }
-
     const origin = this.layer.getTileAtWorldXY(egyptian.x, egyptian.y);
 
     this.layer.forEachTile(tile => {

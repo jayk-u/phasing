@@ -1,8 +1,22 @@
 import {game} from "../channels/game"
 
+// For minigame boxes coordinates
+//this.cameras.main.scrollX + 624, this.cameras.main.scrollY + 377
+
+
 var egyptian;
 var platforms;
 var cursors;
+//Timer
+var s = 0
+var m = 0
+var beginningMins = 3
+var beginningSecs = 30
+var then = 0
+var mins = ""
+var sec = ""
+var timer
+//EndTimer
 
 class Play extends Phaser.Scene {
 
@@ -115,11 +129,18 @@ class Play extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 1000, 1000);
     this.cameras.main.zoom = 2.5;
     this.cameras.main.startFollow(egyptian);
+
+    //Timer
+    var chrono = this.add.graphics();
+    chrono.fillStyle(0x000000);
+    chrono.fillRect(900,500, 100, 50).setScrollFactor(0)
+  
+    timer = this.add.text(900, 500, "", { color: '#FFFFFF', font: "32px" }).setScrollFactor(0)
+    //End Timer
   }
 
   update()
   {
-
     egyptian.body.setVelocity(0);
 
     if (cursors.left.isDown) {
@@ -252,6 +273,31 @@ class Play extends Phaser.Scene {
         else {
           tile.setAlpha(1 - 0.3 * dist);
         }
+
+        // Timer
+        var now = this.time.now
+        var ms = then - now
+        if (ms <= 0) {
+          then = now + 1000
+          s++
+        } else if ((beginningSecs - s) <= 0) {
+          beginningSecs = 59
+          s = 0
+          m++
+        }
+        if ((beginningMins - m) < 10) {
+          mins = "0" + (beginningMins - m)
+        } else {
+          mins = (beginningMins - m)
+        };
+        if ((beginningSecs - s) < 10) {
+          sec = "0" + (beginningSecs - s);
+        } else {
+          sec = (beginningSecs - s)
+        };
+        var time = mins + ":" + sec + ":" + Math.min(Math.trunc(ms/10),99)
+        timer.setText(time)
+        //End Timer
       });
   }
 };

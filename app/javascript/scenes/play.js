@@ -38,6 +38,8 @@ class Play extends Phaser.Scene {
   {
     const gameAssets = document.getElementById("game-assets").dataset;
 
+    this.load.image("keylock", gameAssets.keylockImg);
+    this.load.image("key", gameAssets.keyImg);
     this.load.image("sky", gameAssets.skyImg);
     this.load.image("ground", gameAssets.groundImg);
     this.load.image("star", gameAssets.starImg);
@@ -173,6 +175,22 @@ class Play extends Phaser.Scene {
     timer = this.add.text(innerWidth/1.75, innerHeight/1.57, "", { color: '#FFFFFF', font: "24px" }).setScrollFactor(0)
     //End Timer
 
+    //Inventory
+    var border = this.add.graphics().setScrollFactor(0);
+    border.fillStyle(0xFFFFFF);
+    border.fillRect(innerWidth/3.3 - 1, innerHeight/3.3 - 1, 52, 52)
+    var inventory = this.add.graphics().setScrollFactor(0);
+    inventory.fillStyle(0x000000)
+    inventory.fillRect(innerWidth/3.3, innerHeight/3.3, 50, 50);
+    //End Inventory
+
+    this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+
+      gameObject.x = dragX;
+      gameObject.y = dragY;
+
+  });
+
     this.input.keyboard.on("keydown-E", () => {
       egyptian.anims.stop();
       if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  
@@ -180,6 +198,7 @@ class Play extends Phaser.Scene {
         minigame = "active";
       }
     })
+  
   }
 
   update()
@@ -361,6 +380,9 @@ class Play extends Phaser.Scene {
         var time = mins + ":" + sec + ":" + Math.min(Math.trunc(ms/10),99)
         timer.setText(time)
         //End Timer
+
+        //Invetory
+
       });
   }
 };

@@ -1,6 +1,5 @@
 class Login extends Phaser.Scene {
 
-
   constructor ()
   {
       super('Login');
@@ -8,48 +7,40 @@ class Login extends Phaser.Scene {
 
   preload ()
   {
-      this.load.setBaseURL('http://labs.phaser.io');
+    const loginAssets = document.getElementById("login").dataset;
 
-      this.load.image('sky', 'assets/skies/space3.png');
-      this.load.image('logo', 'assets/sprites/arrows.png');
-      this.load.image('red', 'assets/particles/red.png');
-  }
+    this.load.image("logoo", loginAssets.logoImg);
+    this.load.image("perso", loginAssets.persoImg);
+    this.load.image("play", loginAssets.playBtn);
+    this.load.image("settings", loginAssets.settingsBtn);
+    // this.load.video("overlay", loginAssets.boOverlay2Mp4);
+  };
 
   create ()
   {
-      this.add.image(400, 300, 'sky');
+    var lg = this.add.image(125, 80, "logoo");
+    lg.setDisplaySize(225, 125);
 
-      var particles = this.add.particles('red');
+    var sett = this.add.image(innerWidth - 100, 75, "settings");
+    sett.setDisplaySize(60,60);
 
-      var emitter = particles.createEmitter({
-          speed: 100,
-          scale: { start: 1, end: 0 },
-          blendMode: 'ADD'
-      });
+    var perso = this.add.image(innerWidth/2, innerHeight/2, "perso");
+    perso.setDisplaySize(230,380);
 
-      var logo = this.physics.add.image(400, 100, 'logo');
-      // var text = this.physics.add.image(400, 100, "Press Enter")
+    var play = this.add.image(innerWidth/2, innerHeight/3 + 300, "play").setInteractive();
+    play.setDisplaySize(200,80);
 
-      logo.setVelocity(100, 200);
-      logo.setBounce(1, 1);
-      logo.setCollideWorldBounds(true);
+    //play btn bis
+    play.on("pointerup", (event) => {
+      this.scene.stop();
+      this.scene.start('Intro');
+    } );
 
-      // text.setVelocity(100, 200);
-      // text.setBounce(1, 1);
-      // text.setCollideWorldBounds(true);
+    // settings.on("pointerup", (event) => {
 
-      emitter.startFollow(logo);
+    // } );
+  };
 
-      this.input.keyboard.on('keydown', (event)  => {
-
-        if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
-        {
-            this.scene.stop();
-            this.scene.start('Intro');
-        }
-
-    });
-  }
-}
+};
 
 export { Login }

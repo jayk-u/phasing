@@ -1,4 +1,4 @@
-import {game} from "../channels/game"
+import { game } from "../channels/game"
 import { minigameSaber } from "../channels/minigames";
 
 // For minigame boxes coordinates
@@ -6,8 +6,10 @@ import { minigameSaber } from "../channels/minigames";
 
 
 var egyptian;
-var platforms;
 var cursors;
+
+var shapeGraphics;
+
 //Timer
 var s = 0
 var m = 0
@@ -18,6 +20,7 @@ var mins = ""
 var sec = ""
 var timer
 //EndTimer
+
 
 class Play extends Phaser.Scene {
 
@@ -31,10 +34,6 @@ class Play extends Phaser.Scene {
   {
     const gameAssets = document.getElementById("game-assets").dataset;
 
-    this.load.image("sky", gameAssets.skyImg);
-    this.load.image("ground", gameAssets.groundImg);
-    this.load.image("star", gameAssets.starImg);
-    this.load.image("bomb", gameAssets.bombImg);
     this.load.tilemapTiledJSON('map', gameAssets.mapJson);
     this.load.image('tiles', gameAssets.mapPng)
     this.load.spritesheet("egyptian", gameAssets.egyptianSprite, {
@@ -53,35 +52,96 @@ class Play extends Phaser.Scene {
     this.tileset = this.map.addTilesetImage("MainTileMap", 'tiles');
     this.walls = this.map.createLayer("Walls", this.tileset, 0, 0);
     this.layer = this.map.createLayer('Main Map', this.tileset, 0, 0);
-    this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0);
+    // this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0);
     this.objectBottom = this.map.createLayer("bottom", this.tileset, 0, 0);
-    this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
     this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
-    this.collision1 = this.map.createLayer('collision_1', this.tileset, 0, 0);
-    this.collision2 = this.map.createLayer('collision_2', this.tileset, 0, 0);
-    this.collision1.visible = false;
-    this.collision2.visible = false;
+    this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
+    egyptian = this.physics.add.sprite(460, 323, "egyptian").setSize(15, 2).setOffset(9, 43);
+    // this.collision1 = this.map.createLayer('collision_1', this.tileset, 0, 0);
+    // this.collision2 = this.map.createLayer('collision_2', this.tileset, 0, 0);
+    // this.collision3 = this.map.createLayer('collision_3', this.tileset, 0, 0);
+    // this.collision4 = this.map.createLayer('collision_4', this.tileset, 0, 0);
+    // this.collision5 = this.map.createLayer('collision_5', this.tileset, 0, 0);
+    // this.collision6 = this.map.createLayer('collision_6', this.tileset, 0, 0);
+    // this.collision1.visible = false;
+    // this.collision2.visible = false;
+    // this.collision3.visible = false;
+    // this.collision4.visible = false;
+    // this.collision5.visible = false;
+    // this.collision6.visible = false;
 
-    this.walls.setCollisionByExclusion([0, -1, 1]);
-    this.collision1.setCollisionByExclusion([0, -1, 1]);
-    this.collision2.setCollisionByExclusion([0, -1, 1]);
+    // this.walls.setCollisionByExclusion([0, -1, 1]);
+    // this.collision1.setCollisionByExclusion([0, -1, 1]);
+    // this.collision2.setCollisionByExclusion([0, -1, 1]);
+    // this.collision3.setCollisionByExclusion([0, -1, 1]);
+    // this.collision4.setCollisionByExclusion([0, -1, 1]);
+    // this.collision5.setCollisionByExclusion([0, -1, 1]);
+    // this.collision6.setCollisionByExclusion([0, -1, 1]);
     // this.objectBottom.setCollisionByExclusion([0, -1, 1]);
-    // this.objectTop.setCollisionByExclusion([0, -1, 1]);
-    // this.layer.setCollisionBetween(0, 2000);
-    // this.physics.add.collider(egyptian, this.layer);
-    // this.layer.setCollisionFromCollisionGroup();
-    // this.shapeGraphics = this.add.graphics();
-    // drawCollisionShapes(this.shapeGraphics);
-    // this.matter.world.convertTilemapLayer(this.layer);
-    // this.matter.world.setBounds(this.map.widthInPixels, this.map.heightInPixels);
-    // this.map.setCollisionBetween(0, 1000);
-    // this.physics.arcade.collide(egyptian, this.layer);
-    // this.physics.enable([egyptian]);
 
-    egyptian = this.physics.add.sprite(460, 323, "egyptian");
-    egyptian.body.setSize(5, 1, true);
+    // egyptian.body.setSize(15, 1);
     // egyptian.setBounce(0.2);
     // egyptian.setCollideWorldBounds(true);
+    this.walls.setCollisionFromCollisionGroup();
+    this.extraObj.setCollisionFromCollisionGroup();
+    this.objectBottom.setCollisionFromCollisionGroup();
+    this.objectTop.setCollisionFromCollisionGroup();
+    shapeGraphics = this.add.graphics();
+     const drawCollisionShapes = (graphics, object) => {
+      graphics.clear();
+
+      // Loop over each tile and visualize its collision shape (if it has one)
+      object.forEachTile(function (tile)
+      {
+        var tileWorldX = tile.getLeft();
+        var tileWorldY = tile.getTop();
+        var collisionGroup = tile.getCollisionGroup();
+
+          // console.log(collisionGroup);
+
+        if (!collisionGroup || collisionGroup.objects.length === 0) { return; }
+
+          // The group will have an array of objects - these are the individual collision shapes
+          var objects = collisionGroup.objects;
+          for (var i = 0; i < objects.length; i++)
+          {
+              var object = objects[i];
+              var objectX = tileWorldX + object.x;
+              var objectY = tileWorldY + object.y;
+
+              // When objects are parsed by Phaser, they will be guaranteed to have one of the
+              // following properties if they are a rectangle/ellipse/polygon/polyline.
+              if (object.rectangle) {
+                  graphics.strokeRect(objectX, objectY, object.width, object.height);
+              } else if (object.ellipse) {
+                  // Ellipses in Tiled have a top-left origin, while ellipses in Phaser have a center
+                  // origin
+                  graphics.strokeEllipse(
+                    objectX + object.width / 2, objectY + object.height / 2,
+                    object.width, object.height
+                  );
+              } else if (object.polygon || object.polyline) {
+                  var originalPoints = object.polygon ? object.polygon : object.polyline;
+                  var points = [];
+                  for (var j = 0; j < originalPoints.length; j++) {
+                    var point = originalPoints[j];
+                    points.push({
+                      x: objectX + point.x,
+                      y: objectY + point.y
+                    });
+                  }
+                  graphics.strokePoints(points);
+              }
+          }
+      });
+  }
+    drawCollisionShapes(shapeGraphics, this.walls);
+    drawCollisionShapes(shapeGraphics, this.extraObj);
+    drawCollisionShapes(shapeGraphics, this.objectBottom);
+    drawCollisionShapes(shapeGraphics, this.objectTop);
+    // console.log(shapeGraphics);
+    // console.log(this)
+    // console.log(this.matter)
 
     this.anims.create({
       key: "left",
@@ -144,13 +204,10 @@ class Play extends Phaser.Scene {
     
     // this.physics.world.collide(egyptian, this.layer)
     this.physics.add.collider(this.walls, egyptian);
-    this.physics.add.collider(this.collision2, egyptian);
-    this.physics.add.collider(this.collision1, egyptian);
-    // this.physics.add.collider(this.objectTop, egyptian);
-    // this.physics.add.collider(this.objectBottom, egyptian);
-    // this.physics.add.collider(egyptian, platforms);
-    // this.physics.world.collide(egyptian, this.layer, null, this);
-
+    this.physics.add.collider(this.extraObj, egyptian);
+    this.physics.add.collider(this.objectTop, egyptian);
+    this.physics.add.collider(this.objectBottom, egyptian);
+   
     cursors = this.input.keyboard.createCursorKeys();
     this.cameras.main.setBounds(0, 0, 1000, 1000);
     this.cameras.main.zoom = 2.5;
@@ -174,7 +231,17 @@ class Play extends Phaser.Scene {
     }
 
 
+    // console.log(window)
+    // console.log(this)
+
+
     this.input.keyboard.on("keydown-E", (event) => {
+      // console.log(this.cameras.main.startFollow(egyptian))
+      // console.log(this.cameras)
+
+
+    this.input.keyboard.on("keydown-E", (event) => {
+
       if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  minigameSaber(this) }
     })
   }
@@ -184,23 +251,23 @@ class Play extends Phaser.Scene {
     egyptian.body.setVelocity(0);
 
     if (cursors.left.isDown) {
-      egyptian.setVelocityX(-100);
+      egyptian.setVelocityX(-90);
 
       egyptian.anims.play("left", true);
       this.x = 1;
     } else if (cursors.right.isDown) {
-      egyptian.setVelocityX(100);
+      egyptian.setVelocityX(90);
 
       egyptian.anims.play("right", true);
       this.x = 2;
     } else if (cursors.down.isDown) {
-      egyptian.setVelocityY(100);
+      egyptian.setVelocityY(90);
 
       egyptian.anims.play("down", true);
       this.x = 3;
     } else if (cursors.up.isDown) // && egyptian.body.touching.down
     {
-      egyptian.setVelocityY(-100);
+      egyptian.setVelocityY(-90);
 
       egyptian.anims.play("up", true);
       this.x = 4;
@@ -220,111 +287,21 @@ class Play extends Phaser.Scene {
       }
       //egyptian.anims.play("turn");
     }
-
-    const origin = this.layer.getTileAtWorldXY(egyptian.x, egyptian.y);
-
-    this.layer.forEachTile(tile => {
+  
+    const camera = (layout) => {
+      console.log(layout);
+      this.origin = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.origin
+      layout.forEachTile(tile => { 
+        if (!this.origin) return
         var dist = Phaser.Math.Distance.Chebyshev(
-            origin.x,
-            origin.y,
+            this.origin.x,
+            this.origin.y,
             tile.x,
             tile.y
         );
-        if (dist === 1)
-        {
+        if (dist === 1) {
           tile.setAlpha(1);
-        }
-        else {
-          tile.setAlpha(1 - 0.3 * dist);
-        }
-    });
-    this.map.forEachTile(tile => {
-      var dist = Phaser.Math.Distance.Chebyshev(
-          origin.x,
-          origin.y,
-          tile.x,
-          tile.y
-      );
-      if (dist === 1)
-      {
-        tile.setAlpha(1);
-      }
-      else {
-        tile.setAlpha(1 - 0.3 * dist);
-      }
-  });
-    this.objectBottom.forEachTile(tile => {
-      var dist = Phaser.Math.Distance.Chebyshev(
-          origin.x,
-          origin.y,
-          tile.x,
-          tile.y
-      );
-      if (dist === 1)
-      {
-        tile.setAlpha(1);
-      }
-      else {
-        tile.setAlpha(1 - 0.3 * dist);
-      }
-      });
-      this.objectTop.forEachTile(tile => {
-        var dist = Phaser.Math.Distance.Chebyshev(
-            origin.x,
-            origin.y,
-            tile.x,
-            tile.y
-        );
-        if (dist === 1)
-        {
-          tile.setAlpha(1);
-        }
-        else {
-          tile.setAlpha(1 - 0.3 * dist);
-        }
-      });
-      this.extraObj.forEachTile(tile => {
-        var dist = Phaser.Math.Distance.Chebyshev(
-            origin.x,
-            origin.y,
-            tile.x,
-            tile.y
-        );
-        if (dist === 1)
-        {
-          tile.setAlpha(1);
-        }
-        else {
-          tile.setAlpha(1 - 0.3 * dist);
-        }
-      });
-      this.walls.forEachTile(tile => {
-        var dist = Phaser.Math.Distance.Chebyshev(
-            origin.x,
-            origin.y,
-            tile.x,
-            tile.y
-        );
-        if (dist === 1)
-        {
-          tile.setAlpha(1);
-        }
-        else {
-          tile.setAlpha(1 - 0.3 * dist);
-        }
-      });
-      this.secretDoor.forEachTile(tile => {
-        var dist = Phaser.Math.Distance.Chebyshev(
-            origin.x,
-            origin.y,
-            tile.x,
-            tile.y
-        );
-        if (dist === 1)
-        {
-          tile.setAlpha(1);
-        }
-        else {
+        } else {
           tile.setAlpha(1 - 0.3 * dist);
         }
 
@@ -353,7 +330,15 @@ class Play extends Phaser.Scene {
         timer.setText(time)
         //End Timer
       });
+    }
+    camera(this.walls);
+    camera(this.objectBottom);
+    camera(this.objectTop);
+    camera(this.extraObj);
+    // camera(this.secretDoor);
+    camera(this.layer);
   }
+
 };
 
 export { Play };

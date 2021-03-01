@@ -25,9 +25,7 @@ create ()
 
     graphics.fillStyle(0xFFFFFF);
     graphics.fillRect(50, 50, innerWidth - 100, 200);
-    var content = [ "Obi-Wan: You were the Chosen One! It was said that you would destroy the Sith, not join them. bring balance to the force, not leave it in darkness.",
-    "Darth Vader: I hate you!",
-    "Obi-Wan: You were my brother, Anakin! I loved you."]
+    var content = [ "You wake up.", "Alone, confused, naked", "You feel like something is wrong", "For some reason...", "Something tells you...", "You need to find the sabers."]
 
     text = this.add.text(60, 300, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120, height: 200 }})
     skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
@@ -94,9 +92,7 @@ create ()
   {
     if (run) {
       var t = this
-      var content = [ "Obi-Wan: You were the Chosen One! It was said that you would destroy the Sith, not join them. bring balance to the force, not leave it in darkness.",
-      "Darth Vader: I hate you!",
-      "Obi-Wan: You were my brother, Anakin! I loved you."]
+      var content = [ "You wake up.", "Alone, confused, naked...", "You feel like something is wrong.", "For some reason...", "Something tells you...", "You need to find the sabers."]
       var word = content[lineIndex].split(" ")
       var letter = content[lineIndex].split("")
       var letterDelay = 30;

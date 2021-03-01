@@ -1,4 +1,5 @@
 import {game} from "../channels/game"
+import { minigameSaber } from "../channels/minigames";
 
 // For minigame boxes coordinates
 //this.cameras.main.scrollX + 624, this.cameras.main.scrollY + 377
@@ -111,10 +112,35 @@ class Play extends Phaser.Scene {
 
     this.anims.create({
       key: 'up',
-      frames: this.anims.generateFrameNumbers('egyptian', { start: 13, end: 15 }),
+    frames: this.anims.generateFrameNumbers('egyptian', { start: 13, end: 15 }),
       frameRate: 10,
       repeat: -1
     });
+
+    this.anims.create({
+      key: 'upend',
+    frames: this.anims.generateFrameNumbers('egyptian', { start: 12 }),
+      frameRate: 20,
+    });
+
+    this.anims.create({
+      key: 'downend',
+    frames: this.anims.generateFrameNumbers('egyptian', { start: 0 }),
+      frameRate: 20,
+    });
+
+    this.anims.create({
+      key: 'leftend',
+    frames: this.anims.generateFrameNumbers('egyptian', { start: 4 }),
+      frameRate: 20,
+    });
+
+    this.anims.create({
+      key: 'rightend',
+    frames: this.anims.generateFrameNumbers('egyptian', { start: 8 }),
+      frameRate: 20,
+    });
+
     
     // this.physics.world.collide(egyptian, this.layer)
     this.physics.add.collider(this.walls, egyptian);
@@ -137,6 +163,20 @@ class Play extends Phaser.Scene {
   
     timer = this.add.text(900, 500, "", { color: '#FFFFFF', font: "32px" }).setScrollFactor(0)
     //End Timer
+
+    function Range(a,b){
+      // if only one argument supplied then return random number between 1 and argument
+      if (b === undefined) {
+        b = a;
+        a = 1;
+      }
+      return [...Array(b-a+1).keys()].map(x => x+a);
+    }
+
+
+    this.input.keyboard.on("keydown-E", (event) => {
+      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  minigameSaber(this) }
+    })
   }
 
   update()
@@ -147,24 +187,38 @@ class Play extends Phaser.Scene {
       egyptian.setVelocityX(-100);
 
       egyptian.anims.play("left", true);
+      this.x = 1;
     } else if (cursors.right.isDown) {
       egyptian.setVelocityX(100);
 
       egyptian.anims.play("right", true);
+      this.x = 2;
     } else if (cursors.down.isDown) {
       egyptian.setVelocityY(100);
 
       egyptian.anims.play("down", true);
+      this.x = 3;
     } else if (cursors.up.isDown) // && egyptian.body.touching.down
     {
       egyptian.setVelocityY(-100);
 
       egyptian.anims.play("up", true);
+      this.x = 4;
     } else {
       egyptian.setVelocityX(0);
-
-      // egyptian.anims.play("turn");
-      egyptian.anims.stop();
+      if (this.x === 1) {
+        egyptian.anims.play("leftend");
+      }
+      else if (this.x === 2) {
+        egyptian.anims.play("rightend");
+      }
+      else if (this.x === 3) {
+        egyptian.anims.play("downend");
+      }
+      else if (this.x === 4) {
+        egyptian.anims.play("upend");
+      }
+      //egyptian.anims.play("turn");
     }
 
     const origin = this.layer.getTileAtWorldXY(egyptian.x, egyptian.y);

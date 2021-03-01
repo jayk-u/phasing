@@ -98,7 +98,6 @@ create ()
       var letterDelay = 30;
       if (letter.length == letterIndex) { letterDelay = 2000 }
       var now = t.time.now
-      console.log(now)
       if (lineIndex < content.length) {
         if ((now - then) > letterDelay) {
             if (letterIndex == letter.length) {lineIndex++, letterIndex = 0, line = ""}

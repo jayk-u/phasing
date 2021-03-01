@@ -13,7 +13,6 @@ var config = {
       default: 'arcade',
       arcade: {
           gravity: { y: 0 },
-          debug: true,
       }
   },
   scene: [Waiting, Login, Intro, Play]

@@ -234,19 +234,13 @@ class Play extends Phaser.Scene {
     // console.log(window)
     // console.log(this)
 
-
-    this.input.keyboard.on("keydown-E", (event) => {
-      // console.log(this.cameras.main.startFollow(egyptian))
-      // console.log(this.cameras)
-
-
     this.input.keyboard.on("keydown-E", (event) => {
 
       if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  minigameSaber(this) }
     })
   }
 
-  update()
+  update ()
   {
     egyptian.body.setVelocity(0);
 
@@ -338,7 +332,6 @@ class Play extends Phaser.Scene {
     // camera(this.secretDoor);
     camera(this.layer);
   }
-
-};
+}
 
 export { Play };

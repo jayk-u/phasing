@@ -12,12 +12,15 @@ var config = {
   physics: {
       default: 'arcade',
       arcade: {
-          gravity: { y: 0 }
+          gravity: { y: 0 },
+          debug: true,
       }
   },
   scene: [Waiting, Login, Intro, Play]
 };
 
 const game = new Phaser.Game(config);
+
+
 
 export { game }

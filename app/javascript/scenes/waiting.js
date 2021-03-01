@@ -27,15 +27,10 @@ class Waiting extends Phaser.Scene {
 
       var logo = this.physics.add.image(400, 100, 'logo');
       logo.setDisplaySize(225, 125);
-      // var text = this.physics.add.image(400, 100, "Press Enter")
 
       logo.setVelocity(100, 200);
       logo.setBounce(1, 1);
       logo.setCollideWorldBounds(true);
-
-      // text.setVelocity(100, 200);
-      // text.setBounce(1, 1);
-      // text.setCollideWorldBounds(true);
 
       emitter.startFollow(logo);
 

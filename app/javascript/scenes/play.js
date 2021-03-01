@@ -41,15 +41,8 @@ class Play extends Phaser.Scene {
   {
     const gameAssets = document.getElementById("game-assets").dataset;
 
-<<<<<<< HEAD
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
-    this.load.image("sky", gameAssets.skyImg);
-    this.load.image("ground", gameAssets.groundImg);
-    this.load.image("star", gameAssets.starImg);
-    this.load.image("bomb", gameAssets.bombImg);
-=======
->>>>>>> 23952ab7a352c3a9fdd72c4811e4b8a79dcb8948
     this.load.tilemapTiledJSON('map', gameAssets.mapJson);
     this.load.image('tiles', gameAssets.mapPng)
     this.load.image('ground', gameAssets.platformPng)

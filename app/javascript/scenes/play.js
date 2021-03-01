@@ -1,9 +1,26 @@
 import { game } from "../channels/game"
 import { minigameSaber } from "../channels/minigames";
 
+// For minigame boxes coordinates
+//this.cameras.main.scrollX + 624, this.cameras.main.scrollY + 377
+
+
 var egyptian;
 var cursors;
+
 var shapeGraphics;
+
+//Timer
+var s = 0
+var m = 0
+var beginningMins = 3
+var beginningSecs = 30
+var then = 0
+var mins = ""
+var sec = ""
+var timer
+//EndTimer
+
 
 class Play extends Phaser.Scene {
 
@@ -196,6 +213,14 @@ class Play extends Phaser.Scene {
     this.cameras.main.zoom = 2.5;
     this.cameras.main.startFollow(egyptian);
 
+    //Timer
+    var chrono = this.add.graphics();
+    chrono.fillStyle(0x000000);
+    chrono.fillRect(900,500, 100, 50).setScrollFactor(0)
+  
+    timer = this.add.text(900, 500, "", { color: '#FFFFFF', font: "32px" }).setScrollFactor(0)
+    //End Timer
+
     function Range(a,b){
       // if only one argument supplied then return random number between 1 and argument
       if (b === undefined) {
@@ -205,6 +230,7 @@ class Play extends Phaser.Scene {
       return [...Array(b-a+1).keys()].map(x => x+a);
     }
 
+
     // console.log(window)
     // console.log(this)
 
@@ -212,6 +238,10 @@ class Play extends Phaser.Scene {
     this.input.keyboard.on("keydown-E", (event) => {
       // console.log(this.cameras.main.startFollow(egyptian))
       // console.log(this.cameras)
+
+
+    this.input.keyboard.on("keydown-E", (event) => {
+
       if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  minigameSaber(this) }
     })
   }
@@ -274,6 +304,31 @@ class Play extends Phaser.Scene {
         } else {
           tile.setAlpha(1 - 0.3 * dist);
         }
+
+        // Timer
+        var now = this.time.now
+        var ms = then - now
+        if (ms <= 0) {
+          then = now + 1000
+          s++
+        } else if ((beginningSecs - s) <= 0) {
+          beginningSecs = 59
+          s = 0
+          m++
+        }
+        if ((beginningMins - m) < 10) {
+          mins = "0" + (beginningMins - m)
+        } else {
+          mins = (beginningMins - m)
+        };
+        if ((beginningSecs - s) < 10) {
+          sec = "0" + (beginningSecs - s);
+        } else {
+          sec = (beginningSecs - s)
+        };
+        var time = mins + ":" + sec + ":" + Math.min(Math.trunc(ms/10),99)
+        timer.setText(time)
+        //End Timer
       });
     }
     camera(this.walls);

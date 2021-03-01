@@ -43,20 +43,22 @@ class Login extends Phaser.Scene {
     var play = this.add.image(innerWidth/2, innerHeight/3 + 400, "play").setInteractive();
     play.setDisplaySize(200,80);
 
-    var status = this.add.text(innerWidth-310, 145, "On", {
+    var status = this.add.text(innerWidth-310, 135, "On", {
       // fontFamily: 'Pixeled',
       fontSize: '48px',
       color:'#796356'
     }).setDepth(2);
     status.setVisible(false);
 
-    this.musique = this.sound.add('music');
+    let musique = this.sound.add('music');
+    musique.setVolume(0.1);
+    musique.play();
 
-    let clickSettings = this.add.image(innerWidth-250, 215, "containersett").setDepth(1);
-    clickSettings.setDisplaySize(300, 200);
+    let clickSettings = this.add.image(innerWidth-250, 155, "containersett").setDepth(1);
+    clickSettings.setDisplaySize(300, 90);
     clickSettings.setVisible(false);
 
-    let volume = this.add.image(innerWidth-355, 165, "volume").setInteractive().setDepth(2);
+    let volume = this.add.image(innerWidth-355, 155, "volume").setInteractive().setDepth(2);
     volume.setDisplaySize(50,50);
     volume.setVisible(false);
 
@@ -80,8 +82,10 @@ class Login extends Phaser.Scene {
     volume.on("pointerup", (event) => {
       if (status.text == 'On') {
         status.text = "Off";
+        musique.pause();
       } else {
         status.text = "On";
+        musique.resume();
       }
     });
 

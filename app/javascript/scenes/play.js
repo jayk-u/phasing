@@ -407,7 +407,6 @@ class Play extends Phaser.Scene {
     // debugInteraction(this.objectTop);
     // debugInteraction(this.objectBottom);
     // debugInteraction(this.extraObj);
-  }
   };
 
   update ()

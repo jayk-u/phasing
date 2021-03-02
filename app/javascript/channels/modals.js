@@ -40,7 +40,7 @@ modalToDisplay(controlsmodal, controlsbtn, span[1]);
 
 defineControls();
 
-//Without refacto
+// Without refacto
 // optionsbtn.onclick = function() {
 //   optionsmodal.style.display = "block";
 // }

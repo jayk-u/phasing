@@ -43,7 +43,9 @@ class Play extends Phaser.Scene {
 
 
     this.load.image("tv", gameAssets.tvImg);
+    this.load.image("redBtn", gameAssets.redBtnImg);
     this.load.image("computer", gameAssets.computerImg);
+    this.load.image("ring", gameAssets.ringImg);
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
 

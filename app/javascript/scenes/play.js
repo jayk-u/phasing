@@ -41,15 +41,12 @@ class Play extends Phaser.Scene {
   {
     const gameAssets = document.getElementById("game-assets").dataset;
 
-<<<<<<< HEAD
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
     this.load.image("sky", gameAssets.skyImg);
     this.load.image("ground", gameAssets.groundImg);
     this.load.image("star", gameAssets.starImg);
     this.load.image("bomb", gameAssets.bombImg);
-=======
->>>>>>> 23952ab7a352c3a9fdd72c4811e4b8a79dcb8948
     this.load.tilemapTiledJSON('map', gameAssets.mapJson);
     this.load.image('tiles', gameAssets.mapPng)
     this.load.spritesheet("egyptian", gameAssets.egyptianSprite, {
@@ -307,11 +304,25 @@ class Play extends Phaser.Scene {
           egyptian.anims.play("upend");
         }
         //egyptian.anims.play("turn");
+        }
+     } else {
+          egyptian.setVelocityX(0);
+          if (this.x === 1) {
+            egyptian.anims.play("leftend");
+          }
+          else if (this.x === 2) {
+            egyptian.anims.play("rightend");
+          }
+          else if (this.x === 3) {
+            egyptian.anims.play("downend");
+          }
+          else if (this.x === 4) {
+            egyptian.anims.play("upend");
+          }
+          this.input.keyboard.on("keydown-ENTER", () => {
+            minigame = "none"
+          })
       }
-      this.input.keyboard.on("keydown-ENTER", () => {
-        minigame = "none"
-      })
-    }
     const camera = (layout) => {
       this.origin = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.origin
       layout.forEachTile(tile => { 

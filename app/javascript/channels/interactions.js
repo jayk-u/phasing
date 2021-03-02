@@ -13,17 +13,16 @@ const minigameSaber = (game) => {
     // var key = game.add.image(game.cameras.main.scrollX + innerWidth/2.3, game.cameras.main.scrollY + innerHeight/2.7, "key")
     // key.setDisplaySize(50,50)
   
-    var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.3, game.cameras.main.scrollY + innerHeight/2.7, "keylock")
-    keylock.setDisplaySize(innerWidth/8, innerWidth/9)
+    var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock")
+    keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16)
     keylock.setInteractive();
   
     // box(game, keylock)
   
     keylock.on('pointerdown', (pointer, GameObject) => {
-      console.log(keylock)
-      keylock.x =innerWidth/3.05;
+      keylock.x = innerWidth/3.1;
       keylock.y = innerHeight/3;
-      keylock.setDisplaySize(50,50)
+      keylock.setDisplaySize(40,40)
       keylock.ignoreDestroy = true
       keylock.setScrollFactor(0)
       inventory = "Occupied"

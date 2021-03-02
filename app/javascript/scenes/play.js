@@ -307,11 +307,25 @@ class Play extends Phaser.Scene {
           egyptian.anims.play("upend");
         }
         //egyptian.anims.play("turn");
+        }
+     } else {
+          egyptian.setVelocityX(0);
+          if (this.x === 1) {
+            egyptian.anims.play("leftend");
+          }
+          else if (this.x === 2) {
+            egyptian.anims.play("rightend");
+          }
+          else if (this.x === 3) {
+            egyptian.anims.play("downend");
+          }
+          else if (this.x === 4) {
+            egyptian.anims.play("upend");
+          }
+          this.input.keyboard.on("keydown-ENTER", () => {
+            minigame = "none"
+          })
       }
-      this.input.keyboard.on("keydown-ENTER", () => {
-        minigame = "none"
-      })
-    }
     const camera = (layout) => {
       this.origin = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.origin
       layout.forEachTile(tile => { 

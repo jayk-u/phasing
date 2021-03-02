@@ -1,5 +1,5 @@
 import {game} from "../channels/game"
-import { minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
+import {minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
 function Range(a,b){
   // if only one argument supplied then return random number between 1 and argument
@@ -306,46 +306,29 @@ class Play extends Phaser.Scene {
 
     //END SETTINGS
 
-  const minigamekitchenTree = () => { console.log("kitchen-tree") };
-  const minigameStove = () => { console.log("stove") };
-  const minigameMicrowave = () => { console.log("microwave") };
-  const minigameSofa = () => { console.log("sofa") };
-  const minigameCattree = () => { console.log("cat-tree") };
-  const minigameTelevision = () => { console.log("television") };
-  const minigameLivingLibrary = () => { console.log("living Library") };
-  const minigameBonsai = () => { console.log("bonsai") };
-  const minigameFridge = () => { console.log("fridge") };
-  const minigameBathPlant = () => { console.log("BathPlant") };
-  const minigameWindBreak = () => { console.log("WindBreak") };
-  const minigameBaththub = () => { console.log("Baththub") };
-  const minigameComputer = () => { console.log("Computer") };
-  const minigameBookshelf = () => { console.log("BookShelf") };
-  const minigameHallway = () => { console.log("Hallway") };
-  const minigameAquarium = () => { console.log("Aquarium") };
-  const minigameKettle = () => { console.log("Kettle") };
   const items = [
-    {x: 400, y: 188, name: 'kitchen-tree', minigame: minigamekitchenTree},
-    {x: 400, y: 197, name: 'kitchen-tree', minigame: minigamekitchenTree},
-    {x: 304, y: 101, name: 'stove', minigame: minigameStove},
-    {x: 336, y: 101, name: 'stove', minigame: minigameStove},
+    {x: 400, y: 188, name: 'kitchen-tree', minigame: minigameKitchenTree},
+    {x: 400, y: 197, name: 'kitchen-tree', minigame: minigameKitchenTree},
+    {x: 304, y: 101, name: 'stove', minigame: minigameSink},
+    {x: 336, y: 101, name: 'stove', minigame: minigameSink},
     {x: 400, y: 101, name: 'microwave', minigame: minigameMicrowave},
     {x: 115, y: 183, name: 'sofa', minigame: minigameSofa},
     {x: 116, y: 207, name: 'sofa', minigame: minigameSofa},
     {x: 116, y: 227, name: 'sofa', minigame: minigameSofa},
     {x: 207, y: 217, name: 'cat-tree', minigame: minigameCattree},
     {x: 207, y: 229, name: 'cat-tree', minigame: minigameCattree},
-    {x: 40, y: 208, name: 'television', minigame: minigameTelevision},
+    {x: 40, y: 208, name: 'television', minigame: minigameTV},
     {x: 111, y: 133, name: 'living-library', minigame: minigameLivingLibrary},
     {x: 143, y: 132, name: 'living-library', minigame: minigameLivingLibrary},
     {x: 207, y: 133, name: 'bonsai', minigame: minigameBonsai},
-    {x: 239, y: 101, name: 'fridge', minigame: minigameFridge},
+    {x: 239, y: 101, name: 'fridge', minigame: minigameFreezer},
     {x: 641, y: 209, name: 'bath-plant', minigame: minigameBathPlant},
-    {x: 722, y: 204, name: 'windbreak', minigame: minigameWindBreak},
-    {x: 816, y: 175, name: 'baththub', minigame: minigameBaththub},
+    {x: 722, y: 204, name: 'windbreak', minigame: minigameWindbreak},
+    {x: 816, y: 175, name: 'baththub', minigame: minigameBathtub},
     {x: 559, y: 133, name: 'computer', minigame: minigameComputer},
-    {x: 527, y: 133, name: 'bookshelf', minigame: minigameBookshelf},
+    {x: 527, y: 133, name: 'bookshelf', minigame: minigameRoomLibrary},
     {x: 431, y: 325, name: 'hallway', minigame: minigameHallway},
-    {x: 591, y: 249, name: 'aquarium', minigame: minigameAquarium},
+    {x: 591, y: 249, name: 'aquarium', minigame: minigameFish},
     {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
     {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
   ];

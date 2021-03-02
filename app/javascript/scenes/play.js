@@ -42,7 +42,9 @@ class Play extends Phaser.Scene {
     const gameAssets = document.getElementById("game-assets").dataset;
 
     this.load.image("tv", gameAssets.tvImg);
+    this.load.image("redBtn", gameAssets.redBtnImg);
     this.load.image("computer", gameAssets.computerImg);
+    this.load.image("ring", gameAssets.ringImg);
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
     this.load.tilemapTiledJSON('map', gameAssets.mapJson);
@@ -257,7 +259,7 @@ class Play extends Phaser.Scene {
 
     this.input.keyboard.on("keydown-E", () => {
       if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y)) && minigame != "active") {  
-        minigameComputer(this);
+        minigameBonsai(this);
         minigame = "active";
       }
 

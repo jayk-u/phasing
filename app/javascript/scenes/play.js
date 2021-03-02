@@ -14,8 +14,8 @@ function Range(a,b){
 var minigame
 var egyptian;
 var cursors;
-
 var shapeGraphics;
+var coordinates = [];
 
 //Timer
 var s = 0
@@ -41,25 +41,42 @@ class Play extends Phaser.Scene {
   {
     const gameAssets = document.getElementById("game-assets").dataset;
 
+
     this.load.image("tv", gameAssets.tvImg);
     this.load.image("redBtn", gameAssets.redBtnImg);
     this.load.image("computer", gameAssets.computerImg);
     this.load.image("ring", gameAssets.ringImg);
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
+
     this.load.tilemapTiledJSON('map', gameAssets.mapJson);
-    this.load.image('tiles', gameAssets.mapPng)
-    this.load.image('ground', gameAssets.platformPng)
-    this.load.spritesheet("egyptian", gameAssets.egyptianSprite, {
+    this.load.image('tiles', gameAssets.mapPng);
+    this.load.image('ground', gameAssets.platformPng);
+    this.load.image('exit', gameAssets.exitImg);
+    this.load.spritesheet('egyptian', gameAssets.egyptianSprite, {
       frameWidth: 32,
       frameHeight: 48,
     });
-  }
+
+    const loginAssets = document.getElementById("login").dataset;
+
+    this.load.image("settings", loginAssets.settingsBtn);
+    this.load.image("containersett", loginAssets.containerImg);
+    this.load.image("volume", loginAssets.volumeImg);
+    this.load.audio("music", loginAssets.musicMp3);
+
+    const introAssets = document.getElementById("intro").dataset;
+
+    this.load.image("mute", introAssets.muteImg);
+  };
 
   create()
   {
+
+    localStorage.setItem('status', status.text)
+
     this.platforms = this.physics.add.staticGroup();
-    this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });  // 
+    this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });  //
     // this.layer = this.map.createLayer('ground');  // set layer name
     // this.layer.resizeWorld();
     this.tileset = this.map.addTilesetImage("MainTileMap", 'tiles');
@@ -104,7 +121,7 @@ class Play extends Phaser.Scene {
     this.objectTop.setCollisionFromCollisionGroup();
     this.transparent.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
-     const drawCollisionShapes = (graphics, object) => {
+    const drawCollisionShapes = (graphics, object) => {
       graphics.clear();
 
       // Loop over each tile and visualize its collision shape (if it has one)
@@ -129,6 +146,7 @@ class Play extends Phaser.Scene {
               // following properties if they are a rectangle/ellipse/polygon/polyline.
               if (object.rectangle) {
                   this.platforms.create(objectX, objectY, "ground").setSize(object.width, object.height).setOffset(16, 16).visible = false;
+                  coordinates.push({ x:objectX, y:objectY, w:object.width, h:object.height });
               } else if (object.ellipse) {
                   // Ellipses in Tiled have a top-left origin, while ellipses in Phaser have a center
                   // origin
@@ -150,7 +168,8 @@ class Play extends Phaser.Scene {
               }
           }
       });
-  }
+    }
+
     drawCollisionShapes(shapeGraphics, this.extraObj);
     drawCollisionShapes(shapeGraphics, this.objectBottom);
     drawCollisionShapes(shapeGraphics, this.objectTop);
@@ -160,6 +179,7 @@ class Play extends Phaser.Scene {
     // console.log(shapeGraphics);
     // console.log(this)
     // console.log(this.matter)
+    console.log(coordinates);
 
     this.anims.create({
       key: "left",
@@ -219,7 +239,7 @@ class Play extends Phaser.Scene {
       frameRate: 20,
     });
 
-    
+
     // this.physics.world.collide(egyptian, this.layer)
     this.physics.add.collider(this.walls, egyptian);
     this.physics.add.collider(this.extraObj, egyptian);
@@ -227,7 +247,7 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.transparent, egyptian);
     // this.physics.add.collider(egyptian, this.objectTop);
     // this.physics.add.collider(this.objectBottom, egyptian);
-   
+
     cursors = this.input.keyboard.createCursorKeys();
     this.cameras.main.setBounds(0, 0, 1000, 1000);
     this.cameras.main.zoom = 2.5;
@@ -237,7 +257,7 @@ class Play extends Phaser.Scene {
     var chrono = this.add.graphics();
     chrono.fillStyle(0x000000);
     chrono.fillRect(innerWidth/1.75, innerHeight/1.57, 100, 50).setScrollFactor(0)
-   
+
     timer = this.add.text(innerWidth/1.75, innerHeight/1.57, "", { color: '#FFFFFF', font: "24px" }).setScrollFactor(0)
     //End Timer
 
@@ -250,22 +270,147 @@ class Play extends Phaser.Scene {
     inventory.fillRect(innerWidth/3.3, innerHeight/3.3, 50, 50);
     //End Inventory
 
-    this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+    //SETTINGS
 
-      gameObject.x = dragX;
-      gameObject.y = dragY;
+    const unmute = this.add.image(innerWidth/1.65, innerHeight/3.05, "volume").setInteractive().setDepth(2).setScrollFactor(0);
+    unmute.setDisplaySize(35,35);
+    unmute.setVisible(true);
 
-  });
+    var mute = this.add.image(innerWidth/1.65, innerHeight/3.05, "mute").setInteractive().setDepth(2).setScrollFactor(0);
+    mute.setDisplaySize(35,35);
+    mute.setVisible(false);
 
-    this.input.keyboard.on("keydown-E", () => {
-      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y)) && minigame != "active") {  
-        minigameBonsai(this);
-        minigame = "active";
-      }
+    let musique = this.sound.add('music');
+    musique.setVolume(0.1);
+    musique.play();
 
-    })
-  
+    unmute.on("pointerup", (event) => {
+      musique.pause();
+      mute.setVisible(true);
+      unmute.setVisible(false);
+    });
+
+    mute.on("pointerup", (event) => {
+      unmute.setVisible(true);
+      mute.setVisible(false);
+      musique.resume();
+    });
+
+    const exit = this.add.image(innerWidth/1.5, innerHeight/3.05, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
+    exit.setDisplaySize(35,35);
+    
+    exit.on("pointerup", (event) => {
+     this.scene.stop();
+     this.scene.start('Login');
+   });
+
+    //END SETTINGS
+
+  const minigamekitchenTree = () => { console.log("kitchen-tree") };
+  const minigameStove = () => { console.log("stove") };
+  const minigameMicrowave = () => { console.log("microwave") };
+  const minigameSofa = () => { console.log("sofa") };
+  const minigameCattree = () => { console.log("cat-tree") };
+  const minigameTelevision = () => { console.log("television") };
+  const minigameLivingLibrary = () => { console.log("living Library") };
+  const minigameBonsai = () => { console.log("bonsai") };
+  const minigameFridge = () => { console.log("fridge") };
+  const minigameBathPlant = () => { console.log("BathPlant") };
+  const minigameWindBreak = () => { console.log("WindBreak") };
+  const minigameBaththub = () => { console.log("Baththub") };
+  const minigameComputer = () => { console.log("Computer") };
+  const minigameBookshelf = () => { console.log("BookShelf") };
+  const minigameHallway = () => { console.log("Hallway") };
+  const minigameAquarium = () => { console.log("Aquarium") };
+  const minigameKettle = () => { console.log("Kettle") };
+  const items = [
+    {x: 400, y: 188, name: 'kitchen-tree', minigame: minigamekitchenTree},
+    {x: 400, y: 197, name: 'kitchen-tree', minigame: minigamekitchenTree},
+    {x: 304, y: 101, name: 'stove', minigame: minigameStove},
+    {x: 336, y: 101, name: 'stove', minigame: minigameStove},
+    {x: 400, y: 101, name: 'microwave', minigame: minigameMicrowave},
+    {x: 115, y: 183, name: 'sofa', minigame: minigameSofa},
+    {x: 116, y: 207, name: 'sofa', minigame: minigameSofa},
+    {x: 116, y: 227, name: 'sofa', minigame: minigameSofa},
+    {x: 207, y: 217, name: 'cat-tree', minigame: minigameCattree},
+    {x: 207, y: 229, name: 'cat-tree', minigame: minigameCattree},
+    {x: 40, y: 208, name: 'television', minigame: minigameTelevision},
+    {x: 111, y: 133, name: 'living-library', minigame: minigameLivingLibrary},
+    {x: 143, y: 132, name: 'living-library', minigame: minigameLivingLibrary},
+    {x: 207, y: 133, name: 'bonsai', minigame: minigameBonsai},
+    {x: 239, y: 101, name: 'fridge', minigame: minigameFridge},
+    {x: 641, y: 209, name: 'bath-plant', minigame: minigameBathPlant},
+    {x: 722, y: 204, name: 'windbreak', minigame: minigameWindBreak},
+    {x: 816, y: 175, name: 'baththub', minigame: minigameBaththub},
+    {x: 559, y: 133, name: 'computer', minigame: minigameComputer},
+    {x: 527, y: 133, name: 'bookshelf', minigame: minigameBookshelf},
+    {x: 431, y: 325, name: 'hallway', minigame: minigameHallway},
+    {x: 591, y: 249, name: 'aquarium', minigame: minigameAquarium},
+    {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
+    {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
+  ];
+    // this.input.keyboard.on("keydown-E", () => {
+    //   egyptian.anims.stop();
+    //   if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  
+    //     minigameSaber(this);
+    //     minigame = "active";
+    //   }
+    // });
+    const debugInteraction = (layout) => {
+      this.input.keyboard.on("keyup-E", () => {
+        this.findCoordinates = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.findCoordinates
+        layout.forEachTile(tile => {
+          var tileWorldX = tile.getLeft();
+          var tileWorldY = tile.getTop();
+          if (!this.findCoordinates) return
+          var collisionGroup = tile.getCollisionGroup();
+          if (!collisionGroup || collisionGroup.objects.length === 0) { return; }
+          tile.getCollisionGroup().objects.forEach((object) => {
+            var objectCenterX = object.x + tileWorldX + object.width / 2;
+            var objectCenterY = object.y + tileWorldY + object.height / 2;
+            var distBetween = Phaser.Math.Distance.Between(
+              egyptian.x,
+              egyptian.y,
+              objectCenterX,
+              objectCenterY
+            );
+            if (distBetween < 30) {
+
+              console.log("Object Position",objectCenterX, objectCenterY);
+              console.log("Distance to Object", distBetween);
+              console.log("Egyptian position", egyptian.x, egyptian.y);
+              const testLine = this.add.graphics()
+              testLine.lineStyle(1, 0xFFFFFF, 1.0);
+              testLine.beginPath();
+              testLine.moveTo(egyptian.x, egyptian.y);
+              testLine.lineTo(objectCenterX, objectCenterY);
+              testLine.closePath();
+              testLine.strokePath();
+            }
+          })
+        });
+      });
+    }
+    this.input.keyboard.on("keyup-E", () => {
+      var counter = 0;
+      items.forEach ((item) => {
+        var distBetween = Phaser.Math.Distance.Between(
+          egyptian.x,
+          egyptian.y,
+          item.x,
+          item.y
+        );
+        if (distBetween < 30 && counter < 1) {
+          item.minigame(this);
+          counter++;
+        }
+      });
+    });
+    // debugInteraction(this.objectTop);
+    // debugInteraction(this.objectBottom);
+    // debugInteraction(this.extraObj);
   }
+  };
 
   update ()
   {
@@ -331,7 +476,7 @@ class Play extends Phaser.Scene {
       }
     const camera = (layout) => {
       this.origin = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.origin
-      layout.forEachTile(tile => { 
+      layout.forEachTile(tile => {
         if (!this.origin) return
         var dist = Phaser.Math.Distance.Chebyshev(
             this.origin.x,
@@ -370,7 +515,7 @@ class Play extends Phaser.Scene {
         timer.setText(time)
         //End Timer
 
-        //Invetory
+        //Inventory
 
       });
     }
@@ -381,7 +526,7 @@ class Play extends Phaser.Scene {
     // camera(this.secretDoor);
     camera(this.layer);
     camera(this.transparent);
-  }
-}
+  };
+};
 
 export { Play };

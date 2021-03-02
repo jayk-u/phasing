@@ -1,5 +1,4 @@
 import { game } from "../channels/game"
-import Typed from 'typed.js';
 
 var text
 var skip
@@ -40,10 +39,20 @@ create ()
     var graphics = this.add.graphics();
 
     graphics.fillStyle(0xFFFFFF);
-    graphics.fillRect(50, 150, innerWidth - 100, 200);
-    var content = [ "You wake up.", "Alone, confused, naked", "You feel like something is wrong", "For some reason...", "Something tells you...", "You need to find the sabers."]
 
-    text = this.add.text(60, 400, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120, height: 200 }})
+    graphics.fillRect(50, 50, innerWidth - 100, 200);
+    var content = [ "Kyoto - October 13th 1997", 
+                    "The city has been in the grip of terror for several months, as a killer chains the victims week after week.",
+                    "He didn’t follow any pattern, never stopping at anything, killing women, children, the elderly... The victims were all found sliced, cut by what seems to be a large blade, a sword or a saber.",
+                    "But I had something solid. On several TV reports, a man can be seen in the background, hidden in the crowd.",
+                    "After 3 weeks of investigation, I did not have further doubt: this is our man.",
+                    "I have shadowed him ever since, I knew by heart his daily schedule: when he sleeps, when he eats, when he moves.",
+                    "One night, as he went to pick some cigarettes, I took my chance and sneaked into his apartment.",
+                    "Suffice to say I might have underestimated the guy... and the door locked securely after my passage.",
+                    "I felt silly, I felt inadequate. I spent so much time preparing only to fail at the very first step.",
+                    "No more time to look for evidence, this guy is sick. I must get out of here at all costs before he comes back..."
+                  ]
+    text = this.add.text(60, 300, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120, height: 200 }})
     skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
 
 
@@ -158,7 +167,17 @@ create ()
   {
     if (run) {
       var t = this
-      var content = [ "You wake up.", "Alone, confused, naked...", "You feel like something is wrong.", "For some reason...", "Something tells you...", "You need to find the sabers."]
+      var content = [ "Kyoto - October 13th 1997", 
+      "The city has been in the grip of terror for several months, as a killer chains the victims week after week.",
+      "He didn’t follow any pattern, never stopping at anything, killing women, children, the elderly... The victims were all found sliced, cut by what seems to be a large blade, a sword or a saber.",
+      "But I had something solid. On several TV reports, a man can be seen in the background, hidden in the crowd.",
+      "After 3 weeks of investigation, I did not have further doubt: this is our man.",
+      "I have shadowed him ever since, I knew by heart his daily schedule: when he sleeps, when he eats, when he moves.",
+      "One night, as he went to pick some cigarettes, I took my chance and sneaked into his apartment.",
+      "Suffice to say I might have underestimated the guy... and the door locked securely after my passage.",
+      "I felt silly, I felt inadequate. I spent so much time preparing only to fail at the very first step.",
+      "No more time to look for evidence, this guy is sick. I must get out of here at all costs before he comes back..."
+    ]
       var word = content[lineIndex].split(" ")
       var letter = content[lineIndex].split("")
       var letterDelay = 30;

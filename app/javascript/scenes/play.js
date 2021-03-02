@@ -43,12 +43,9 @@ class Play extends Phaser.Scene {
 
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
-    this.load.image("sky", gameAssets.skyImg);
-    this.load.image("ground", gameAssets.groundImg);
-    this.load.image("star", gameAssets.starImg);
-    this.load.image("bomb", gameAssets.bombImg);
     this.load.tilemapTiledJSON('map', gameAssets.mapJson);
     this.load.image('tiles', gameAssets.mapPng)
+    this.load.image('ground', gameAssets.platformPng)
     this.load.spritesheet("egyptian", gameAssets.egyptianSprite, {
       frameWidth: 32,
       frameHeight: 48,
@@ -57,8 +54,7 @@ class Play extends Phaser.Scene {
 
   create()
   {
-    // platforms = this.physics.add.staticGroup();
-    // platforms.create(400, 568, "ground").setScale(2).refreshBody();
+    this.platforms = this.physics.add.staticGroup();
     this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });  // 
     // this.layer = this.map.createLayer('ground');  // set layer name
     // this.layer.resizeWorld();
@@ -69,7 +65,10 @@ class Play extends Phaser.Scene {
     this.objectBottom = this.map.createLayer("bottom", this.tileset, 0, 0);
     this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
     this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
+    // const testRect = this.add.rectangle(460, 323, 50, 100, 0xFFFFFF);
     egyptian = this.physics.add.sprite(460, 323, "egyptian").setSize(15, 2).setOffset(9, 43);
+    this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0);
+    // console.log(testRect);
     // this.collision1 = this.map.createLayer('collision_1', this.tileset, 0, 0);
     // this.collision2 = this.map.createLayer('collision_2', this.tileset, 0, 0);
     // this.collision3 = this.map.createLayer('collision_3', this.tileset, 0, 0);
@@ -99,13 +98,13 @@ class Play extends Phaser.Scene {
     this.extraObj.setCollisionFromCollisionGroup();
     this.objectBottom.setCollisionFromCollisionGroup();
     this.objectTop.setCollisionFromCollisionGroup();
+    this.transparent.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
      const drawCollisionShapes = (graphics, object) => {
       graphics.clear();
 
       // Loop over each tile and visualize its collision shape (if it has one)
-      object.forEachTile(function (tile)
-      {
+      object.forEachTile((tile) => {
         var tileWorldX = tile.getLeft();
         var tileWorldY = tile.getTop();
         var collisionGroup = tile.getCollisionGroup();
@@ -125,7 +124,7 @@ class Play extends Phaser.Scene {
               // When objects are parsed by Phaser, they will be guaranteed to have one of the
               // following properties if they are a rectangle/ellipse/polygon/polyline.
               if (object.rectangle) {
-                  graphics.strokeRect(objectX, objectY, object.width, object.height);
+                  this.platforms.create(objectX, objectY, "ground").setSize(object.width, object.height).setOffset(16, 16).visible = false;
               } else if (object.ellipse) {
                   // Ellipses in Tiled have a top-left origin, while ellipses in Phaser have a center
                   // origin
@@ -148,10 +147,12 @@ class Play extends Phaser.Scene {
           }
       });
   }
-    drawCollisionShapes(shapeGraphics, this.walls);
     drawCollisionShapes(shapeGraphics, this.extraObj);
     drawCollisionShapes(shapeGraphics, this.objectBottom);
     drawCollisionShapes(shapeGraphics, this.objectTop);
+    // drawCollisionShapes(shapeGraphics, phaserrect);
+    // drawCollisionShapes(shapeGraphics, this.objectBottom);
+    // drawCollisionShapes(shapeGraphics, this.objectTop);
     // console.log(shapeGraphics);
     // console.log(this)
     // console.log(this.matter)
@@ -218,8 +219,10 @@ class Play extends Phaser.Scene {
     // this.physics.world.collide(egyptian, this.layer)
     this.physics.add.collider(this.walls, egyptian);
     this.physics.add.collider(this.extraObj, egyptian);
-    this.physics.add.collider(this.objectTop, egyptian);
-    this.physics.add.collider(this.objectBottom, egyptian);
+    this.physics.add.collider(this.platforms, egyptian);
+    this.physics.add.collider(this.transparent, egyptian);
+    // this.physics.add.collider(egyptian, this.objectTop);
+    // this.physics.add.collider(this.objectBottom, egyptian);
    
     cursors = this.input.keyboard.createCursorKeys();
     this.cameras.main.setBounds(0, 0, 1000, 1000);
@@ -374,6 +377,7 @@ class Play extends Phaser.Scene {
     camera(this.extraObj);
     // camera(this.secretDoor);
     camera(this.layer);
+    camera(this.transparent);
   }
 }
 

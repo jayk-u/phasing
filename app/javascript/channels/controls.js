@@ -1,3 +1,4 @@
+
 function defineControls() {
   const controldefiners = document.querySelectorAll(".controlKeys")
   controldefiners.forEach(definer => {
@@ -10,7 +11,7 @@ function defineControls() {
           definer.innerHTML = e.key
           controls[definer.previousElementSibling.innerHTML] = e.key
         }
-      }, 
+      },
       {once: true});
     })
   })

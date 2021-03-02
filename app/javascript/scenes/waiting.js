@@ -49,7 +49,7 @@ class Waiting extends Phaser.Scene {
     //   emitter.startFollow(logo);
 
     var logo = this.add.image(innerWidth/2, innerHeight/2 - 100, "logo");
-    logo.setDisplaySize(675, 350);
+    logo.setDisplaySize(810, 420);
 
     this.input.keyboard.on('keydown', (event)  => {
 

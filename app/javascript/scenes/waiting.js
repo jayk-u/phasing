@@ -24,28 +24,24 @@ class Waiting extends Phaser.Scene {
     // video.setDisplaySize(innerWidth, innerHeight);
     // //video.setDisplaySize(innerWidth, innerHeight);
 
-<<<<<<< HEAD
+
     // //video.setBlendMode(Phaser.BlendModes.SCREEN);
-=======
-      var logo = this.physics.add.image(400, 100, 'logo');
-      logo.setDisplaySize(225, 125);
->>>>>>> master
+
+      // var logo = this.physics.add.image(400, 100, 'logo');
+      // logo.setDisplaySize(225, 125);
+
 
     //   var particles = this.add.particles('yellow');
     //   var emitter = particles.createEmitter({
     //       speed: 100,
     //       scale: { start: 1, end: 0 },
     //       blendMode: 'ADD'
-
-<<<<<<< HEAD
     //   });
 
     //   var logo = this.physics.add.image(400, 100, 'logo');
     //   logo.setDisplaySize(225, 125);
     //   // var text = this.physics.add.image(400, 100, "Press Enter")
-=======
-      emitter.startFollow(logo);
->>>>>>> master
+
 
     //   logo.setVelocity(100, 200);
     //   logo.setBounce(1, 1);

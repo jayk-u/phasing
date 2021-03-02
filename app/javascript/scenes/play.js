@@ -41,21 +41,36 @@ class Play extends Phaser.Scene {
   {
     const gameAssets = document.getElementById("game-assets").dataset;
 
-    this.load.image("keylock", gameAssets.keylockImg);
-    this.load.image("key", gameAssets.keyImg);
+    this.load.image('keylock', gameAssets.keylockImg);
+    this.load.image('key', gameAssets.keyImg);
     this.load.tilemapTiledJSON('map', gameAssets.mapJson);
-    this.load.image('tiles', gameAssets.mapPng)
-    this.load.image('ground', gameAssets.platformPng)
-    this.load.spritesheet("egyptian", gameAssets.egyptianSprite, {
+    this.load.image('tiles', gameAssets.mapPng);
+    this.load.image('ground', gameAssets.platformPng);
+    this.load.image('exit', gameAssets.exitImg);
+    this.load.spritesheet('egyptian', gameAssets.egyptianSprite, {
       frameWidth: 32,
       frameHeight: 48,
     });
-  }
+
+    const loginAssets = document.getElementById("login").dataset;
+
+    this.load.image("settings", loginAssets.settingsBtn);
+    this.load.image("containersett", loginAssets.containerImg);
+    this.load.image("volume", loginAssets.volumeImg);
+    this.load.audio("music", loginAssets.musicMp3);
+
+    const introAssets = document.getElementById("intro").dataset;
+
+    this.load.image("mute", introAssets.muteImg);
+  };
 
   create()
   {
+
+    localStorage.setItem('status', status.text)
+
     this.platforms = this.physics.add.staticGroup();
-    this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });  // 
+    this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });  //
     // this.layer = this.map.createLayer('ground');  // set layer name
     // this.layer.resizeWorld();
     this.tileset = this.map.addTilesetImage("MainTileMap", 'tiles');
@@ -100,7 +115,7 @@ class Play extends Phaser.Scene {
     this.objectTop.setCollisionFromCollisionGroup();
     this.transparent.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
-     const drawCollisionShapes = (graphics, object) => {
+    const drawCollisionShapes = (graphics, object) => {
       graphics.clear();
 
       // Loop over each tile and visualize its collision shape (if it has one)
@@ -146,7 +161,8 @@ class Play extends Phaser.Scene {
               }
           }
       });
-  }
+    }
+
     drawCollisionShapes(shapeGraphics, this.extraObj);
     drawCollisionShapes(shapeGraphics, this.objectBottom);
     drawCollisionShapes(shapeGraphics, this.objectTop);
@@ -215,7 +231,7 @@ class Play extends Phaser.Scene {
       frameRate: 20,
     });
 
-    
+
     // this.physics.world.collide(egyptian, this.layer)
     this.physics.add.collider(this.walls, egyptian);
     this.physics.add.collider(this.extraObj, egyptian);
@@ -223,7 +239,7 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.transparent, egyptian);
     // this.physics.add.collider(egyptian, this.objectTop);
     // this.physics.add.collider(this.objectBottom, egyptian);
-   
+
     cursors = this.input.keyboard.createCursorKeys();
     this.cameras.main.setBounds(0, 0, 1000, 1000);
     this.cameras.main.zoom = 2.5;
@@ -233,7 +249,7 @@ class Play extends Phaser.Scene {
     var chrono = this.add.graphics();
     chrono.fillStyle(0x000000);
     chrono.fillRect(innerWidth/1.75, innerHeight/1.57, 100, 50).setScrollFactor(0)
-   
+
     timer = this.add.text(innerWidth/1.75, innerHeight/1.57, "", { color: '#FFFFFF', font: "24px" }).setScrollFactor(0)
     //End Timer
 
@@ -246,23 +262,56 @@ class Play extends Phaser.Scene {
     inventory.fillRect(innerWidth/3.3, innerHeight/3.3, 50, 50);
     //End Inventory
 
+    //SETTINGS
+
+    const unmute = this.add.image(innerWidth/1.65, innerHeight/3.05, "volume").setInteractive().setDepth(2).setScrollFactor(0);
+    unmute.setDisplaySize(35,35);
+    unmute.setVisible(true);
+
+    var mute = this.add.image(innerWidth/1.65, innerHeight/3.05, "mute").setInteractive().setDepth(2).setScrollFactor(0);
+    mute.setDisplaySize(35,35);
+    mute.setVisible(false);
+
+    let musique = this.sound.add('music');
+    musique.setVolume(0.1);
+    musique.play();
+
+    unmute.on("pointerup", (event) => {
+      musique.pause();
+      mute.setVisible(true);
+      unmute.setVisible(false);
+    });
+
+    mute.on("pointerup", (event) => {
+      unmute.setVisible(true);
+      mute.setVisible(false);
+      musique.resume();
+    });
+
+    const exit = this.add.image(innerWidth/1.5, innerHeight/3.05, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
+    exit.setDisplaySize(35,35);
+
+    //END SETTINGS
+
     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
 
       gameObject.x = dragX;
       gameObject.y = dragY;
-
-  });
+    });
 
     this.input.keyboard.on("keydown-E", () => {
       egyptian.anims.stop();
-      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  
+      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {
         minigameSaber(this);
         minigame = "active";
-      }
+      };
+    });
 
-    })
-  
-  }
+   exit.on("pointerup", (event) => {
+     this.scene.stop();
+     this.scene.start('Login');
+   });
+  };
 
   update ()
   {
@@ -314,7 +363,7 @@ class Play extends Phaser.Scene {
     }
     const camera = (layout) => {
       this.origin = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.origin
-      layout.forEachTile(tile => { 
+      layout.forEachTile(tile => {
         if (!this.origin) return
         var dist = Phaser.Math.Distance.Chebyshev(
             this.origin.x,
@@ -353,7 +402,7 @@ class Play extends Phaser.Scene {
         timer.setText(time)
         //End Timer
 
-        //Invetory
+        //Inventory
 
       });
     }
@@ -364,7 +413,7 @@ class Play extends Phaser.Scene {
     // camera(this.secretDoor);
     camera(this.layer);
     camera(this.transparent);
-  }
-}
+  };
+};
 
 export { Play };

@@ -18,19 +18,35 @@ class Intro extends Phaser.Scene {
       super('Intro');
   }
 
+
+  preload ()
+  {
+    const loginAssets = document.getElementById("login").dataset;
+    this.load.image("settings", loginAssets.settingsBtn);
+    this.load.image("containersett", loginAssets.containerImg);
+    this.load.image("volume", loginAssets.volumeImg);
+    this.load.audio("music", loginAssets.musicMp3);
+
+    const introAssets = document.getElementById("intro").dataset;
+    this.load.image("mute", introAssets.muteImg);
+
+    const gameAssets = document.getElementById("game-assets").dataset;
+    this.load.image('exit', gameAssets.exitImg);
+  };
+
 create ()
 {
-    
+
     var graphics = this.add.graphics();
 
     graphics.fillStyle(0xFFFFFF);
-    graphics.fillRect(50, 50, innerWidth - 100, 200);
+    graphics.fillRect(50, 150, innerWidth - 100, 200);
     var content = [ "You wake up.", "Alone, confused, naked", "You feel like something is wrong", "For some reason...", "Something tells you...", "You need to find the sabers."]
 
-    text = this.add.text(60, 300, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120, height: 200 }})
+    text = this.add.text(60, 400, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120, height: 200 }})
     skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
 
-  
+
     // nextLine();
 
     this.input.keyboard.on('keydown', (event)  => {
@@ -43,39 +59,82 @@ create ()
 
     })
 
+    // START SETTINGS
+
+    var unmute = this.add.image(innerWidth/1.255, innerHeight/10.5, "volume").setInteractive();
+    unmute.setDisplaySize(80,80);
+    unmute.setVisible(true);
+
+    var mute = this.add.image(innerWidth/1.255, innerHeight/10.5, "mute").setInteractive();
+    mute.setDisplaySize(80,80);
+    mute.setVisible(false);
+
+    var status = this.add.text(innerWidth-310, 135, "Controls", {
+      fontSize: '48px',
+      color:'#796356'
+    }).setDepth(2);
+    status.setVisible(false);
+
+    let musique = this.sound.add('music');
+    musique.setVolume(0.1);
+    musique.play();
+
+    unmute.on("pointerup", (event) => {
+      musique.pause();
+      mute.setVisible(true);
+      unmute.setVisible(false);
+    });
+
+
+    mute.on("pointerup", (event) => {
+      musique.resume();
+      unmute.setVisible(true);
+      mute.setVisible(false);
+    });
+
+    const exit = this.add.image(innerWidth/1.087, innerHeight/10.5, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
+    exit.setDisplaySize(80,80);
+
+
+
+
+      localStorage.setItem('status', status.text)
+
+    // END SETTINGS
+
     // function nextLine() {
     //   if (lineIndex === content.length)
     //   {
     //       //  We're finished
     //       return;
     //   }
-    
+
     //   //  Split the current line on spaces, so one word per array element
     //   line = content[lineIndex].split(' ');
-    
+
     //   //  Reset the word index to zero (the first word in the line)
     //   wordIndex = 0;
-    
+
     //   //  Call the 'nextWord' function once for each word in the line (line.length)
     //   t.events.repeat(wordDelay, line.length, nextWord, this);
     //   // line.forEach((w)=>{
     //   //   // setTimeout(wordDelay/1000);
     //   //   nextWord();
     //   // })
-    
+
     //   //  Advance to the next line
     //   lineIndex++;
-    
+
     // }
 
     // function nextWord() {
 
     //   //  Add the next word onto the text string, followed by a space
     //   text.text = text.text.concat(line[wordIndex] + " ");
-    
+
     //   //  Advance the word index to the next word in the line
     //   wordIndex++;
-    
+
     //   //  Last word?
     //   if (wordIndex === line.length)
     //   {
@@ -85,8 +144,15 @@ create ()
     //       //  Get the next line after the lineDelay amount of ms has elapsed
     //       t.events.add(lineDelay, nextLine, this);
     //   }
-    
+
     // }
+
+
+    exit.on("pointerup", (event) => {
+      this.scene.stop();
+      this.scene.start('Login');
+    } );
+
   };
   update ()
   {

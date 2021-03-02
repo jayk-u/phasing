@@ -1,5 +1,5 @@
 import {game} from "../channels/game"
-import { minigameSaber } from "../channels/interactions";
+import { minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
 function Range(a,b){
   // if only one argument supplied then return random number between 1 and argument
@@ -41,6 +41,8 @@ class Play extends Phaser.Scene {
   {
     const gameAssets = document.getElementById("game-assets").dataset;
 
+    this.load.image("tv", gameAssets.tvImg);
+    this.load.image("computer", gameAssets.computerImg);
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
     this.load.tilemapTiledJSON('map', gameAssets.mapJson);
@@ -254,9 +256,8 @@ class Play extends Phaser.Scene {
   });
 
     this.input.keyboard.on("keydown-E", () => {
-      egyptian.anims.stop();
-      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  
-        minigameSaber(this);
+      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y)) && minigame != "active") {  
+        minigameComputer(this);
         minigame = "active";
       }
 
@@ -322,7 +323,7 @@ class Play extends Phaser.Scene {
           else if (this.x === 4) {
             egyptian.anims.play("upend");
           }
-          this.input.keyboard.on("keydown-ENTER", () => {
+          this.input.keyboard.on("keydown-ESC", () => {
             minigame = "none"
           })
       }

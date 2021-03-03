@@ -1,3 +1,5 @@
+var skip
+
 class Waiting extends Phaser.Scene {
 
     constructor ()
@@ -18,6 +20,7 @@ class Waiting extends Phaser.Scene {
 
   create ()
   {
+    skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to play...", {color: '#FFFFFF', font: "16px"})
 
     // var video = this.add.video(100, 100, 'overlay');
     // video.play(true)

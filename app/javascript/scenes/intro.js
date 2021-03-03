@@ -28,6 +28,10 @@ class Intro extends Phaser.Scene {
 
     const introAssets = document.getElementById("intro").dataset;
     this.load.image("mute", introAssets.muteImg);
+    this.load.image("picture1", introAssets.picture1Img);
+    this.load.image("picture2", introAssets.picture2Img);
+    this.load.image("picture3", introAssets.picture3Img);
+    this.load.image("picture4", introAssets.picture4Img);
 
     const gameAssets = document.getElementById("game-assets").dataset;
     this.load.image('exit', gameAssets.exitImg);
@@ -39,6 +43,10 @@ create ()
     var graphics = this.add.graphics();
 
     graphics.fillStyle(0xFFFFFF);
+    //var picture1 = this.add.image(50, 175, "picture1").setOrigin(0);
+    //picture1.setDisplaySize(1255, 441);
+    //picture1.setCrop(50, 175, innerWidth -100, innerHeight - 300);
+
 
     graphics.fillRect(50, 175, innerWidth - 100, 200);
     var content = [ "Kyoto - October 13th 1997",
@@ -52,7 +60,7 @@ create ()
                     "I felt silly, I felt inadequate. I spent so much time preparing only to fail at the very first step.",
                     "No more time to look for evidence, this guy is sick. I must get out of here at all costs before he comes back..."
                   ]
-    text = this.add.text(60, 400, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120, height: 200 }})
+    text = this.add.text(60, 400, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120 }})
     skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
 
 

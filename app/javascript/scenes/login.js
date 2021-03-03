@@ -1,13 +1,10 @@
 class Login extends Phaser.Scene {
-
-  constructor ()
-  {
-      super('Login');
-      // this.game.config.audio.disableWebAudio = true;
+  constructor() {
+    super("Login");
+    // this.game.config.audio.disableWebAudio = true;
   }
 
-  preload ()
-  {
+  preload() {
     const loginAssets = document.getElementById("login").dataset;
 
     this.load.image("logoo", loginAssets.logoImg);
@@ -18,14 +15,13 @@ class Login extends Phaser.Scene {
     this.load.image("containersett", loginAssets.containerImg);
     this.load.image("volume", loginAssets.volumeImg);
     this.load.audio("music", loginAssets.musicMp3);
-  };
+    this.load.image("controls", loginAssets.controlsImg);
+  }
 
-  create ()
-  {
-
+  create() {
     // var containersett = this.add.image(125, 80, "containersett");
 
-    var video = this.add.video(10, 10, 'overlay');
+    var video = this.add.video(10, 10, "overlay");
     video.setDisplaySize(innerWidth, innerHeight);
 
     video.setBlendMode(Phaser.BlendModes.SCREEN);
@@ -33,11 +29,16 @@ class Login extends Phaser.Scene {
     var lg = this.add.image(125, 80, "logoo");
     lg.setDisplaySize(225, 125);
 
-    var perso = this.add.image(innerWidth/2, innerHeight/2, "perso");
-    perso.setDisplaySize(230,380);
+    var controls = this.add.image(1100, 120, "controls");
+    controls.setDisplaySize(200, 168);
 
-    var play = this.add.image(innerWidth/2, innerHeight/3 + 400, "play").setInteractive();
-    play.setDisplaySize(200,80);
+    var perso = this.add.image(innerWidth / 2, innerHeight / 2, "perso");
+    perso.setDisplaySize(230, 380);
+
+    var play = this.add
+      .image(innerWidth / 2, innerHeight / 3 + 400, "play")
+      .setInteractive();
+    play.setDisplaySize(200, 80);
 
     // SETTINGS
 
@@ -78,7 +79,6 @@ class Login extends Phaser.Scene {
     //   };
     // });
 
-
     // volume.on("pointerup", (event) => {
     //   if (status.text == 'On') {
     //     status.text = "Off";
@@ -90,17 +90,20 @@ class Login extends Phaser.Scene {
     // });
     //END SETTINGS
 
+    localStorage.setItem("status", status.text);
 
-      localStorage.setItem('status', status.text)
-
+    this.input.keyboard.on("keydown", (event) => {
+      if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.SPACE) {
+        this.scene.stop();
+        this.scene.start("Intro");
+      }
+    });
 
     play.on("pointerup", (event) => {
       this.scene.stop();
-      this.scene.start('Intro');
-    } );
+      this.scene.start("Intro");
+    });
+  }
+}
 
-  };
-
-};
-
-export { Login }
+export { Login };

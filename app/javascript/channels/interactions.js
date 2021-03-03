@@ -1,12 +1,22 @@
 var inventory
+var content
 var ring
+// var redBtn
+var textBoxCounter
+var computerStatus
 const gameAssets = document.getElementById("game-assets").dataset;
-const minigameKey = (game) => {
+
+const minigameKey = (game, end) => {
+
+  const destroyMinigame = () => {
+    key.destroy();
+    end();
+  }
 
   if (inventory == "Key") {
-    textbox(game, ["I already got the key.", "Let's hurry!"])
+    textbox(game, ["I already got the key.", "Let's hurry!"], end)
   } else if (inventory && inventory != "") {
-    textbox(game, ["I can't carry anything else..."])
+    textbox(game, ["I can't carry anything else..."], destroyMinigame)
   } else {
     game.load.image("key", gameAssets.keyImg);
   
@@ -23,42 +33,47 @@ const minigameKey = (game) => {
       inventory = "Key"
   });
   
-    textbox(game, ["This looks like a key.", "Could it be...?"])
-  
-    game.input.keyboard.on("keydown-ESC", () => {
-      key.destroy();
-    })
+    textbox(game, ["This looks like a key.", "Could it be...?"], destroyMinigame)
   }
   }
 
-  const minigameDoor = (game) => {
-    // game.scene.pause();
-      game.load.image("keylock", gameAssets.keylockImg);
-      game.load.image("key", gameAssets.keyImg);
+  const minigameDoor = (game, end) => {
+
+    const destroyMinigame = () => {
+      keylock.destroy();
+      end();
+    }
+
+    game.load.image("keylock", gameAssets.keylockImg);
+    game.load.image("key", gameAssets.keyImg);
   
     if (inventory && inventory != "" && inventory != "none") {
-      textbox(game, ["A door.", "I need the right tools..."])
+      textbox(game, ["A door.", "I need the right tools..."], destroyMinigame)
       key.on('pointerdown', () => {
         key.destroy();
         keylock.destroy();
-        textbox(game, "Yes!")
+        textbox(game, "Yes!", end)
         inventory = "none"
     });
     } else {
-      textbox(game, ["The door is locked.", "I can't make it move."])
+      textbox(game, ["The door is locked.", "I can't make it move."], destroyMinigame)
     
       var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock")
       keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16)
       keylock.setInteractive();
-    
-      game.input.keyboard.on("keydown-ESC", () => {
-        keylock.destroy();
-      })
+
     }
     }
 
-const minigameTV = (game) => {
-  textbox(game, ["There's something displayed on the screen, looks like a message... to me?"])
+const minigameTV = (game, end) => {
+
+  const destroyMinigame = () => {
+    text.destroy();
+    mask.destroy();
+    graphics.destroy();
+    tv.destroy();
+    end();
+  }
 
   var content = [ "Good evening, officer. It took you more time than I thought to find me.",
   "You won't have enough time to figure this out so let me help you: there's absolutely nothing in this place you could use against me.",
@@ -89,47 +104,50 @@ const minigameTV = (game) => {
       text.y = Phaser.Math.Clamp(text.y, -400, 300)
     });
 
-    game.input.keyboard.on("keydown-ESC", () => {
-      text.destroy();
-      mask.destroy();
-      graphics.destroy();
-      tv.destroy();
-    })
+    textbox(game, ["There's something displayed on the screen...",
+    "Looks like a message... to me?"], destroyMinigame)
+
 }
 
-const minigameFreezer = (game) => {
-  textbox(game, ["Fridge full of packed meat. And nothing else."])
+const minigameFreezer = (game, end) => {
+  textbox(game, ["Fridge full of packed meat. And nothing else."], end)
 }
 
-const minigameRoomLibrary = (game) => {
+const minigameRoomLibrary = (game, end) => {
   textbox(game, [
     'French comics here. I think they call these "band dessin" or something like this.',
-    "Tintin... what a weird name... \nHey, that one with the two weirdos with a funny moustache and the small dog looks fun!",
-  ])
+    "Tintin... what a weird name... ", 
+    "Hey, that one with the two weirdos with a funny moustache and the small dog looks fun!",
+  ], end)
 
 }
 
-const minigameHallway = (game) => {
+const minigameHallway = (game, end) => {
   textbox(game, ["Many, many shoes. Even some for women. This makes no sense, he lives alone.",
-  "... maybe from his victims."])
+  "... maybe from his victims."], end)
 }
 
-const minigameKettle = (game) => {
+const minigameKettle = (game, end) => {
   textbox(game, [
     "The kettle is still hot, he was preparing some tea.",
     "But why two cups?",
-  ])
+  ], end)
 }
 
-const minigameMicrowave = (game) => {
-  textbox(game, ["Empty."])
+const minigameMicrowave = (game, end) => {
+  textbox(game, ["Empty."], end)
 }
 
-const minigameSink = (game) => {
+const minigameSink = (game, end) => {
   game.load.image("ring", gameAssets.ringImg);
 
+  const destroyMinigame = () => {
+    ring.destroy();
+    end();
+  }
+
   if (inventory == "Ring") {
-    textbox(game, ["My precious..."])
+    textbox(game, ["My precious..."], end)
   } else {
     ring = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "ring")
     ring.setDisplaySize((innerWidth+innerHeight)/18, (innerWidth+innerHeight)/18)
@@ -138,15 +156,16 @@ const minigameSink = (game) => {
     if (inventory && inventory != "" && inventory != "none") {
       textbox(game, [
         "The sink is full of clean plates.",
-        "Wait, is that... a ring? He must have dropped it while doing the dishes... \nMy hands are full right now, I'll come back later.",
-      ])
+        "Wait, is that... a ring? He must have dropped it while doing the dishes... ", 
+        "My hands are full right now, I'll come back later.",
+      ], destroyMinigame)
     } else if (inventory == "Ring") {
-      textbox(game, ["My precious..."])
+      textbox(game, ["My precious..."], end)
     } else {
       textbox(game, [
         "The sink is full of clean plates.",
         "Wait, is that... a ring? He must have dropped it while doing the dishes...",
-      ])
+      ], destroyMinigame)
       
       ring.on('pointerdown', () => {
         ring.x = innerWidth/3.1;
@@ -157,71 +176,95 @@ const minigameSink = (game) => {
         inventory = "Ring"
       });
     }
-    game.input.keyboard.on("keydown-ESC", () => {
-      ring.destroy();
-    })
   }
 
 }
 
-const minigameBonsai = (game) => {
-  game.load.image("redBtn", gameAssets.redBtnImg);
+const minigameBonsai = (game, end) => {
+  game.load.image("redBtn", gameAssets.redbtnImg);
+  var redBtnText
+  var redBtn
+  var btn
+  const destroyMinigame = () => {
+    redBtn.destroy();
+    redBtnText.destroy();
+    // tbox.destroy();
+    end();
+  }
 
-  textbox(game, ["This bonsai is in fantastic shape. He probably spent hours working on it.", "There's a hole at the bottom, it's ring shaped."])
-  ring.input.on("pointerdown", () => {
-    ring.ignoreDestroy = false
-    ring.destroy()
-    inventory = "none"
-    textbox(game, [
-      "The ring fits perfectly!",
-      "A small hidden door opened on the bottom of the altar, with a big red button in there."
-    ])
-    var redBtn = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "redBtn")
-    redBtn.input.on("pointerdown", () => {
-      computerStatus = "On"
-      textbox(game, [ "*click*",
-      "I can hear a small whir close to me.",
-      ])
+  if (computerStatus == "On") {
+    textbox(game, ["This sounded like something booting up!"], end)
+  } else {
+    textbox(game, ["This bonsai is in fantastic shape. He probably spent hours working on it.", "There's a hole at the bottom, it's ring shaped."])
+    ring.on("pointerdown", () => {
+      ring.ignoreDestroy = false
+      ring.destroy()
+      inventory = "none"
+      btn = "red"
+      redBtn = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "redBtn")
+      redBtnText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, "Don't press ENTER!", {color: '#000000', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }})
     })
-  })
-  
+    game.input.keyboard.once("keydown-SPACE", () => {
+      if (btn == "red") { game.input.keyboard.once("keydown-SPACE", () => {
+        textbox(game, [
+          "The ring fits perfectly!",
+          "A small hidden door opened on the bottom of the altar, with a big red button in there."
+        ])
+        game.input.keyboard.on("keydown-ENTER", () => {
+        computerStatus = "On"
+        textbox(game, [ "*click*",
+        "I can hear a small whir close to me.",
+        ], destroyMinigame)
+        })
+      })
+      } else {
+        end();
+      }
+    })
+  }
 }
 
-const minigameKitchenTree = (game) => {
-  textbox(game, ["This plant knew brighter days."] )
+const minigameKitchenTree = (game, end) => {
+  textbox(game, ["This plant has known brighter days."], end)
 }
 
-const minigameSofa = (game) => {
-  textbox(game, ["I don't think this is the right time for a break."])
+const minigameSofa = (game, end) => {
+  textbox(game, ["I don't think this is the right time for a break."], end)
 }
 
-const minigameBathPlant = (game) => {
-  textbox(game, ["That one too needs to be watered."])
+const minigameBathPlant = (game, end) => {
+  textbox(game, ["That one too needs to be watered."], end)
 }
 
-const minigameWindbreak = (game) => {
-  textbox(game, ["A weird way to get some privacy."])
+const minigameWindbreak = (game, end) => {
+  textbox(game, ["A weird way to get some privacy."], end)
 }
 
-const minigameCattree = (game) => {
+const minigameCattree = (game, end) => {
   textbox(game, [
     "A huge cat tree lies in the middle of the room. But I haven't seen any cat around or any sign of one living here.",
-  ])
+  ], end)
 }
 
-const minigameLivingLibrary = (game) => {
+const minigameLivingLibrary = (game, end) => {
   textbox(game, [
     "Only medical related books here.",
-    "But according to my investigation so far, this guy never worked in this field. \nHe's a very simple office worker.",
-  ])
+    "But according to my investigation so far, this guy never worked in this field. ", 
+    "He's a very simple office worker.",
+  ], end)
 }
 
-const minigameComputer = (game) => {
+const minigameComputer = (game, end) => {
   game.load.image("computer", gameAssets.computerImg);
-  var computer = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, 'computer').setDisplaySize((innerWidth+innerHeight)/10, (innerWidth+innerHeight)/10);
-  var computerStatus
 
-  if (computerStatus == "Unlocked") { textbox(game, ["The computer is unlocked.", "I need to hurry!"]) }
+  const destroyMinigame = () => {
+    if (inputText) {inputText.visible = false;}
+    computer.destroy();
+    end();
+  }
+  var computer = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, 'computer').setDisplaySize((innerWidth+innerHeight)/10, (innerWidth+innerHeight)/10);
+
+  if (computerStatus == "Unlocked") { textbox(game, ["The computer is unlocked.", "I need to hurry!"], destroyMinigame) }
   else if (computerStatus == "On") {
     textbox(game, [
       "Locked by a password.",
@@ -246,59 +289,59 @@ const minigameComputer = (game) => {
           textbox(game, [
             "Found it! There's only one icon on the desktop...",
             '"Main control lock", this must be the thing! Quick!',
-          ])
+          ], destroyMinigame)
         }
       }
     })
   } else {
-    textbox(game, ["It's off. Pressing the power button doesn't do anything."])
+    textbox(game, ["It's off. Pressing the power button doesn't do anything."], destroyMinigame)
   }
-  game.input.keyboard.on("keydown-ESC", () => {
-    inputText.visible = false;
-    computer.destroy();
-  })
 }
 
-const minigameAltar = (game) => {
+const minigameAltar = (game, end) => {
   if (inventory = "Ring") {
     textbox(game, [
-      "The ring fits perfectly! \nA small hidden door opened on the bottom of the altar, with a big red button in there.",
-      "*click*\nI can hear a small whir close to me.",
-    ])
+      "The ring fits perfectly!",
+      "A small hidden door opened on the bottom of the altar, with a big red button in there.",
+      "*click*",
+      "I can hear a small whir close to me.",
+    ], end)
   } else {
     (textbox(game, [
       "A small shrine to honor the ancients.",
       "There's a hole at the bottom, it's ring shaped.",
-    ]))
+    ], end))
   }
 }
 
-const minigameFish = (game) => {
+const minigameFish = (game, end) => {
   textbox(game, [
     "There's a small fish in there. He even has a castle to sleep in.",
     "Looks like he gets a better paycheck than me. I won't call my place a castle.",
-  ])
+  ], end)
 }
 
-const minigameBathsink = (game) => {
+const minigameBathsink = (game, end) => {
   textbox(game, [
     "This part of the appartment is really, really clean. Compared to the other rooms which are a bit dusty.",
     "This is unexpected.",
-  ])
+  ], end)
 }
 
-const minigameBathtub = (game) => {
+const minigameBathtub = (game, end) => {
   textbox(game, [
-    "The bathtub is absolutely huge, compared to the rest of the furniture. Two people could easily fit. \nIt's not as well-maintained as the rest of the bathroom, there are some marks on the sides...",
+    "The bathtub is absolutely huge, compared to the rest of the furniture. Two people could easily fit.",
+    "It's not as well-maintained as the rest of the bathroom, there are some marks on the sides...",
     "... oh GOD, THIS IS BLOOD!",
-  ])
+  ], end)
 }
 
-const minigameSaber = (game) => {
+const minigameSaber = (game, end) => {
   textbox(game, [
-    "Old japanese katanas, they look really expensive. \nThe table below has a locked drawer... There's something written on one of the blades.",
+    "Old japanese katanas, they look really expensive. ", 
+    "The table below has a locked drawer... There's something written on one of the blades.",
     '"Pay respect to the oldest."',
-  ])
+  ], end)
 }
 
 const box = (game, object) => {
@@ -310,7 +353,6 @@ const box = (game, object) => {
   
   container.setInteractive();
   game.input.setDraggable(container);
-  console.log(container);
 
   game.input.on('dragstart', function (pointer, gameObject) {
     console.log(gameObject)
@@ -326,13 +368,15 @@ const box = (game, object) => {
 
   });
 
-  game.input.keyboard.on("keydown-ESC", () => {
+  game.input.keyboard.on("keydown-SPACE", () => {
     container.destroy();
   })
 }
 
-const textbox = (game, string) => {
+const textbox = (game, string, destroy) => {
+  content = string
   var border = game.add.graphics();
+  textBoxCounter = 0
 
   border.fillStyle(0xFFFFFF);
   border.fillRect(game.cameras.main.scrollX + (innerWidth/3.27 - 3.0), game.cameras.main.scrollY + (innerHeight/1.67 - 3.0), innerWidth/2.68 + 6.0, innerHeight/15.08 + 6.0);
@@ -342,18 +386,20 @@ const textbox = (game, string) => {
   graphics.fillStyle(0x000000);
   graphics.fillRect(game.cameras.main.scrollX + innerWidth/3.27, game.cameras.main.scrollY + innerHeight/1.67, innerWidth/2.68, innerHeight/15.08);
   var text = game.add.text(game.cameras.main.scrollX + innerWidth/3.275 + 6, game.cameras.main.scrollY + innerHeight/1.675 + 6, string[0], {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.65, height: 40 }})
-
-  if (string.length > 1) {
-    game.input.keyboard.on("keydown-ENTER", () => {
-      text.setText(string[1])
-    })
+  const incrementCounter = () => {
+    textBoxCounter += 1
+    console.log(textBoxCounter)
+    if (string.length > textBoxCounter) {
+      text.setText(string[textBoxCounter])
+    } else {
+      graphics.destroy();
+      border.destroy();
+      text.destroy();
+      if (destroy) {destroy()};
+      game.input.keyboard.off("keydown-SPACE", incrementCounter)
+    }
   }
-
-  game.input.keyboard.on("keydown-ESC", () => {
-    graphics.destroy();
-    border.destroy();
-    text.destroy();
-  })
+  game.input.keyboard.on("keydown-SPACE", incrementCounter)
 }
 
 export {minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer }

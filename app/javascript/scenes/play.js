@@ -41,8 +41,8 @@ class Play extends Phaser.Scene {
   begin () {
     s = 0
     m = 0
-    beginningMins = 1
-    beginningSecs = 10
+    beginningMins = 2
+    beginningSecs = 0
     then = 0
     mins = ""
     sec = ""

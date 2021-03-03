@@ -198,7 +198,7 @@ const minigameBonsai = (game, end) => {
     ring.on("pointerdown", () => {
       ring.ignoreDestroy = false
       ring.destroy()
-      inventory = "none"
+      inventory = ""
       btn = "red"
       redBtn = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "redBtn")
       redBtnText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, "Don't press ENTER!", {color: '#000000', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }})
@@ -249,6 +249,8 @@ const minigameWindbreak = (game, end) => {
 
 const minigameCattree = (game, end) => {
 
+  game.load.image("key", gameAssets.keyImg);
+
   const destroyMinigame = () => {
     key.destroy();
     end();
@@ -257,14 +259,15 @@ const minigameCattree = (game, end) => {
   if (inventory == "Key") {
     textbox(game, ["I already got the key.", "Let's hurry!"], end)
   } else if (inventory && inventory != "") {
+    key = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "key")
+    key.setDisplaySize((innerWidth+innerHeight)/18, (innerWidth+innerHeight)/18)
     textbox(game, ["I can't carry anything else..."], destroyMinigame)
   } else {
     textbox(game, [
       "A huge cat tree lies in the middle of the room. But I haven't seen any cat around or any sign of one living here.", 
       "Wait... there's something in there. A small golden key!"
     ], destroyMinigame)
-    game.load.image("key", gameAssets.keyImg);
-  
+
     key = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "key")
     key.setDisplaySize((innerWidth+innerHeight)/18, (innerWidth+innerHeight)/18)
     key.setInteractive();

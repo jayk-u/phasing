@@ -58,7 +58,7 @@ class Play extends Phaser.Scene {
 
 
     this.load.image("tv", gameAssets.tvImg);
-    this.load.image("redBtn", gameAssets.redBtnImg);
+    this.load.image("redBtn", gameAssets.redbtnImg);
     this.load.image("computer", gameAssets.computerImg);
     this.load.image("ring", gameAssets.ringImg);
     this.load.image("keylock", gameAssets.keylockImg);
@@ -67,7 +67,7 @@ class Play extends Phaser.Scene {
     this.load.image('tiles', gameAssets.mapPng);
     this.load.image('ground', gameAssets.platformPng);
     this.load.image('exit', gameAssets.exitImg);
-    this.load.spritesheet('egyptian', gameAssets.egyptianSprite, {
+    this.load.spritesheet('egyptian', gameAssets.policemanSprite, {
       frameWidth: 32,
       frameHeight: 48,
     });
@@ -135,6 +135,7 @@ class Play extends Phaser.Scene {
     this.objectBottom.setCollisionFromCollisionGroup();
     this.objectTop.setCollisionFromCollisionGroup();
     this.transparent.setCollisionFromCollisionGroup();
+    // this.secretDoor.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
     const drawCollisionShapes = (graphics, object) => {
       graphics.clear();
@@ -185,16 +186,16 @@ class Play extends Phaser.Scene {
       });
     }
 
+    // drawCollisionShapes(shapeGraphics, this.secretDoor);
     drawCollisionShapes(shapeGraphics, this.extraObj);
     drawCollisionShapes(shapeGraphics, this.objectBottom);
     drawCollisionShapes(shapeGraphics, this.objectTop);
-    // drawCollisionShapes(shapeGraphics, phaserrect);
     // drawCollisionShapes(shapeGraphics, this.objectBottom);
     // drawCollisionShapes(shapeGraphics, this.objectTop);
     // console.log(shapeGraphics);
     // console.log(this)
     // console.log(this.matter)
-    console.log(coordinates);
+    // console.log(coordinates);
 
     this.anims.create({
       key: "left",
@@ -260,6 +261,7 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.extraObj, egyptian);
     this.physics.add.collider(this.platforms, egyptian);
     this.physics.add.collider(this.transparent, egyptian);
+    // this.physics.add.collider(this.secretDoor, egyptian);
     // this.physics.add.collider(egyptian, this.objectTop);
     // this.physics.add.collider(this.objectBottom, egyptian);
 
@@ -345,11 +347,12 @@ class Play extends Phaser.Scene {
     {x: 559, y: 133, name: 'computer', minigame: minigameComputer},
     {x: 527, y: 133, name: 'bookshelf', minigame: minigameRoomLibrary},
     {x: 431, y: 325, name: 'hallway', minigame: minigameHallway},
+    {x: 461, y: 295, name: 'door', minigame: minigameDoor},
     {x: 591, y: 249, name: 'aquarium', minigame: minigameFish},
     {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
     {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
   ];
-    // this.input.keyboard.on("keydown-E", () => {
+    // this.input.keyboard.on("keydown-SPACE", () => {
     //   egyptian.anims.stop();
     //   if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {
     //     minigameSaber(this);
@@ -357,7 +360,7 @@ class Play extends Phaser.Scene {
     //   }
     // });
     const debugInteraction = (layout) => {
-      this.input.keyboard.on("keyup-E", () => {
+      this.input.keyboard.on("keyup-SPACE", () => {
         this.findCoordinates = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.findCoordinates
         layout.forEachTile(tile => {
           var tileWorldX = tile.getLeft();
@@ -391,7 +394,7 @@ class Play extends Phaser.Scene {
         });
       });
     }
-    this.input.keyboard.on("keyup-E", () => {
+    this.input.keyboard.on("keydown-SPACE", () => {
       var counter = 0;
       items.forEach ((item) => {
         var distBetween = Phaser.Math.Distance.Between(
@@ -400,8 +403,12 @@ class Play extends Phaser.Scene {
           item.x,
           item.y
         );
-        if (distBetween < 30 && counter < 1) {
-          item.minigame(this);
+        if (distBetween < 30 && counter < 1 && minigame != "active") {
+          const end = () => {
+            minigame = "none"
+          }
+          minigame = "active"
+          item.minigame(this, end);
           counter++;
         }
       });
@@ -412,12 +419,12 @@ class Play extends Phaser.Scene {
 
     // debugInteraction(this.objectTop);
     // debugInteraction(this.objectBottom);
-    // debugInteraction(this.extraObj);
+    // debugInteraction(this.secretDoor);
   };
 
   update ()
   {
-    // this.input.keyboard.on("keydown-E", () => {
+    // this.input.keyboard.on("keydown-SPACE", () => {
     //   if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  updateSaber(this, egyptian) }
     // })
     egyptian.body.setVelocity(0);
@@ -473,9 +480,6 @@ class Play extends Phaser.Scene {
           else if (this.x === 4) {
             egyptian.anims.play("upend");
           }
-          this.input.keyboard.on("keydown-ESC", () => {
-            minigame = "none"
-          })
       }
     const camera = (layout) => {
       this.origin = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.origin

@@ -12,20 +12,20 @@ function Range(a,b){
 
 
 var minigame
-var counter = 0
+var counter
 var egyptian;
 var cursors;
 var shapeGraphics;
-var coordinates = [];
+var coordinates;
 
 //Timer
-var s = 0
-var m = 0
-var beginningMins = 0
-var beginningSecs = 10
-var then = 0
-var mins = ""
-var sec = ""
+var s
+var m
+var beginningMins
+var beginningSecs
+var then
+var mins
+var sec
 var timer
 //EndTimer
 
@@ -35,6 +35,20 @@ class Play extends Phaser.Scene {
   constructor ()
   {
     super("Play");
+    this.begin();
+  }
+
+  begin () {
+    s = 0
+    m = 0
+    beginningMins = 0
+    beginningSecs = 10
+    then = 0
+    mins = ""
+    sec = ""
+    minigame = "none";
+    counter = 0;
+    coordinates = [];
   }
 
 
@@ -509,8 +523,7 @@ class Play extends Phaser.Scene {
           var time = mins + ":" + sec + ":" + Math.min(Math.trunc(ms/10),99)
           timer.setText(time)
           if (mins == "00" && sec == "00" && counter != 1) {
-            minigame = "active"
-            var end = "true"
+            minigame = "active";
             counter = 1;
             var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#000000').setScrollFactor(0).setDepth(3);
             rect.alpha = 0.7;
@@ -520,6 +533,7 @@ class Play extends Phaser.Scene {
 
             again.on("pointerup", (event) => {
               this.scene.stop();
+              this.begin();
               this.scene.start('Play');
             });
             this.input.keyboard.on("keydown", (event) => {

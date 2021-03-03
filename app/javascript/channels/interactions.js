@@ -194,7 +194,7 @@ const minigameBonsai = (game, end) => {
 
   if (computerStatus == "On") {
     textbox(game, ["This sounded like something booting up!"], end)
-  } else {
+  } else if (inventory == "Ring") {
     textbox(game, ["This bonsai is in fantastic shape. He probably spent hours working on it.", "There's a hole at the bottom, it's ring shaped."])
     ring.on("pointerdown", () => {
       ring.ignoreDestroy = false
@@ -204,23 +204,29 @@ const minigameBonsai = (game, end) => {
       redBtn = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "redBtn")
       redBtnText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, "Don't press ENTER!", {color: '#000000', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }})
     })
-    game.input.keyboard.once("keydown-SPACE", () => {
-      if (btn == "red") { game.input.keyboard.once("keydown-SPACE", () => {
-        textbox(game, [
-          "The ring fits perfectly!",
-          "A small hidden door opened on the bottom of the altar, with a big red button in there."
-        ])
+    let increment = 0;
+    game.input.keyboard.on("keydown-SPACE", () => {
+      if (btn == "red") {
+        if (increment < 2) {
+          textbox(game, [
+            ["The ring fits perfectly!"],
+            ["A small hidden door opened on the bottom of the altar, with a big red button in there." ]
+          ][increment])
+        }
+        increment += 1;
         game.input.keyboard.on("keydown-ENTER", () => {
         computerStatus = "On"
         textbox(game, [ "*click*",
         "I can hear a small whir close to me.",
         ], destroyMinigame)
         })
-      })
-      } else {
-        end();
       }
+      // } else {
+      //   end();
+      // }
     })
+  } else {
+    textbox(game, ["This bonsai is in fantastic shape. He probably spent hours working on it.", "There's a hole at the bottom, it's ring shaped."], end)
   }
 }
 
@@ -386,9 +392,9 @@ const textbox = (game, string, destroy) => {
   graphics.fillStyle(0x000000);
   graphics.fillRect(game.cameras.main.scrollX + innerWidth/3.27, game.cameras.main.scrollY + innerHeight/1.67, innerWidth/2.68, innerHeight/15.08);
   var text = game.add.text(game.cameras.main.scrollX + innerWidth/3.275 + 6, game.cameras.main.scrollY + innerHeight/1.675 + 6, string[0], {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.65, height: 40 }})
+
   const incrementCounter = () => {
     textBoxCounter += 1
-    console.log(textBoxCounter)
     if (string.length > textBoxCounter) {
       text.setText(string[textBoxCounter])
     } else {
@@ -402,4 +408,4 @@ const textbox = (game, string, destroy) => {
   game.input.keyboard.on("keydown-SPACE", incrementCounter)
 }
 
-export {minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer }
+export {computerStatus, minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer }

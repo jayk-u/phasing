@@ -500,8 +500,14 @@ class Play extends Phaser.Scene {
         timer.setText(time)
         //End Timer
         //LastScreen
-        if (time == "00:00:0") {
+
+        var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, 0x6666ff).setScrollFactor(0).setVisible(false);
+
+        if (mins == 0 && sec == 0) {
           this.scene.pause();
+          rect.setVisible(true);
+          console.log('tiiime');
+
 
         }
         //EndLastScreen

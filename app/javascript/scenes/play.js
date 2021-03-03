@@ -120,6 +120,7 @@ class Play extends Phaser.Scene {
     this.objectBottom.setCollisionFromCollisionGroup();
     this.objectTop.setCollisionFromCollisionGroup();
     this.transparent.setCollisionFromCollisionGroup();
+    // this.secretDoor.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
     const drawCollisionShapes = (graphics, object) => {
       graphics.clear();
@@ -170,16 +171,16 @@ class Play extends Phaser.Scene {
       });
     }
 
+    // drawCollisionShapes(shapeGraphics, this.secretDoor);
     drawCollisionShapes(shapeGraphics, this.extraObj);
     drawCollisionShapes(shapeGraphics, this.objectBottom);
     drawCollisionShapes(shapeGraphics, this.objectTop);
-    // drawCollisionShapes(shapeGraphics, phaserrect);
     // drawCollisionShapes(shapeGraphics, this.objectBottom);
     // drawCollisionShapes(shapeGraphics, this.objectTop);
     // console.log(shapeGraphics);
     // console.log(this)
     // console.log(this.matter)
-    console.log(coordinates);
+    // console.log(coordinates);
 
     this.anims.create({
       key: "left",
@@ -245,6 +246,7 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.extraObj, egyptian);
     this.physics.add.collider(this.platforms, egyptian);
     this.physics.add.collider(this.transparent, egyptian);
+    // this.physics.add.collider(this.secretDoor, egyptian);
     // this.physics.add.collider(egyptian, this.objectTop);
     // this.physics.add.collider(this.objectBottom, egyptian);
 
@@ -328,6 +330,7 @@ class Play extends Phaser.Scene {
     {x: 559, y: 133, name: 'computer', minigame: minigameComputer},
     {x: 527, y: 133, name: 'bookshelf', minigame: minigameRoomLibrary},
     {x: 431, y: 325, name: 'hallway', minigame: minigameHallway},
+    {x: 431, y: 325, name: 'hallway', minigame: minigameDoor},
     {x: 591, y: 249, name: 'aquarium', minigame: minigameFish},
     {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
     {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
@@ -387,11 +390,15 @@ class Play extends Phaser.Scene {
           item.minigame(this);
           counter++;
         }
+        else if (distBetween > 30 && distBetween < 60 && item.name === 'hallway') {
+          item.minigame(this);
+          counter++;
+        }
       });
     });
     // debugInteraction(this.objectTop);
     // debugInteraction(this.objectBottom);
-    // debugInteraction(this.extraObj);
+    // debugInteraction(this.secretDoor);
   };
 
   update ()

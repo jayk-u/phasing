@@ -318,6 +318,7 @@ class Play extends Phaser.Scene {
 
     exit.on("pointerup", (event) => {
      this.scene.stop();
+     this.begin();
      this.scene.start('Login');
    });
 

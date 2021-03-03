@@ -43,7 +43,7 @@ class Play extends Phaser.Scene {
 
 
     this.load.image("tv", gameAssets.tvImg);
-    this.load.image("redBtn", gameAssets.redBtnImg);
+    this.load.image("redBtn", gameAssets.redbtnImg);
     this.load.image("computer", gameAssets.computerImg);
     this.load.image("ring", gameAssets.ringImg);
     this.load.image("keylock", gameAssets.keylockImg);
@@ -332,7 +332,7 @@ class Play extends Phaser.Scene {
     {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
     {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
   ];
-    // this.input.keyboard.on("keydown-E", () => {
+    // this.input.keyboard.on("keydown-SPACE", () => {
     //   egyptian.anims.stop();
     //   if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  
     //     minigameSaber(this);
@@ -340,7 +340,7 @@ class Play extends Phaser.Scene {
     //   }
     // });
     const debugInteraction = (layout) => {
-      this.input.keyboard.on("keyup-E", () => {
+      this.input.keyboard.on("keyup-SPACE", () => {
         this.findCoordinates = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.findCoordinates
         layout.forEachTile(tile => {
           var tileWorldX = tile.getLeft();
@@ -374,7 +374,7 @@ class Play extends Phaser.Scene {
         });
       });
     }
-    this.input.keyboard.on("keyup-E", () => {
+    this.input.keyboard.on("keydown-SPACE", () => {
       var counter = 0;
       items.forEach ((item) => {
         var distBetween = Phaser.Math.Distance.Between(
@@ -383,8 +383,12 @@ class Play extends Phaser.Scene {
           item.x,
           item.y
         );
-        if (distBetween < 30 && counter < 1) {
-          item.minigame(this);
+        if (distBetween < 30 && counter < 1 && minigame != "active") {
+          const end = () => {
+            minigame = "none"
+          }
+          minigame = "active"
+          item.minigame(this, end);
           counter++;
         }
       });
@@ -396,7 +400,7 @@ class Play extends Phaser.Scene {
 
   update ()
   {
-    // this.input.keyboard.on("keydown-E", () => {
+    // this.input.keyboard.on("keydown-SPACE", () => {
     //   if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  updateSaber(this, egyptian) }
     // })
     egyptian.body.setVelocity(0);
@@ -452,9 +456,6 @@ class Play extends Phaser.Scene {
           else if (this.x === 4) {
             egyptian.anims.play("upend");
           }
-          this.input.keyboard.on("keydown-ESC", () => {
-            minigame = "none"
-          })
       }
     const camera = (layout) => {
       this.origin = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.origin

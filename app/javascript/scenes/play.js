@@ -12,6 +12,7 @@ function Range(a,b){
 
 
 var minigame
+var counter = 0
 var egyptian;
 var cursors;
 var shapeGraphics;
@@ -48,7 +49,6 @@ class Play extends Phaser.Scene {
     this.load.image("ring", gameAssets.ringImg);
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
-
     this.load.tilemapTiledJSON('map', gameAssets.mapJson);
     this.load.image('tiles', gameAssets.mapPng);
     this.load.image('ground', gameAssets.platformPng);
@@ -57,6 +57,7 @@ class Play extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 48,
     });
+    this.load.image('playAgain', gameAssets.playagainPng);
 
     const loginAssets = document.getElementById("login").dataset;
 
@@ -392,6 +393,9 @@ class Play extends Phaser.Scene {
       });
 
     });
+
+
+
     // debugInteraction(this.objectTop);
     // debugInteraction(this.objectBottom);
     // debugInteraction(this.extraObj);
@@ -474,48 +478,62 @@ class Play extends Phaser.Scene {
         } else {
           tile.setAlpha(1 - 0.3 * dist);
         }
+      })
+    }
 
         // Timer
         var now = this.time.now
-        var ms = then - now
-        if (ms < 0) {
-          then = now + 1000
-          s++
-        } else if ((beginningSecs - s) < 0) {
-          beginningSecs = 59
-          s = 0
-          m++
+        if (counter != 1) {
+          var ms = then - now
+        } else {
+          var ms = 0
         }
-        if ((beginningMins - m) < 10) {
-          mins = "0" + (beginningMins - m)
-        } else {
-          mins = (beginningMins - m)
-        };
-        if ((beginningSecs - s) < 10) {
-          sec = "0" + (beginningSecs - s);
-        } else {
-          sec = (beginningSecs - s)
-        };
-        var time = mins + ":" + sec + ":" + Math.min(Math.trunc(ms/10),99)
-        timer.setText(time)
+          if (ms < 0) {
+            then = now + 1000
+            s++
+          } else if ((beginningSecs - s) < 0) {
+            beginningSecs = 59
+            s = 0
+            m++
+          }
+          if ((beginningMins - m) < 10) {
+            mins = "0" + Math.max(0,(beginningMins - m))
+          } else {
+            mins = (beginningMins - m)
+          };
+          if ((beginningSecs - s) < 10) {
+            sec = "0" + Math.max(0,(beginningSecs - s));
+          } else {
+            sec = (beginningSecs - s)
+          };
+          var time = mins + ":" + sec + ":" + Math.min(Math.trunc(ms/10),99)
+          timer.setText(time)
+          if (mins == "00" && sec == "00" && counter != 1) {
+            minigame = "active"
+            var end = "true"
+            counter = 1;
+            var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#000000').setScrollFactor(0).setDepth(3);
+            rect.alpha = 0.7;
+
+            var again = this.add.image(innerWidth/2, innerHeight/3+200, 'playAgain').setScrollFactor(0).setDepth(4).setInteractive();
+            again.setDisplaySize(250,200);
+
+            again.on("pointerup", (event) => {
+              this.scene.stop();
+              this.scene.start('Play');
+            });
+            this.input.keyboard.on("keydown", (event) => {
+              console.log(event)
+            })
+          }
         //End Timer
         //LastScreen
 
-        var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, 0x6666ff).setScrollFactor(0).setVisible(false);
 
-        if (mins == 0 && sec == 0) {
-          this.scene.pause();
-          rect.setVisible(true);
-          console.log('tiiime');
-
-
-        }
         //EndLastScreen
 
 
         //Inventory
-      });
-    }
     camera(this.walls);
     camera(this.objectBottom);
     camera(this.objectTop);

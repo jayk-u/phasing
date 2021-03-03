@@ -304,7 +304,6 @@ class Play extends Phaser.Scene {
       musique.pause();
       mute.setVisible(true);
       unmute.setVisible(false);
-      console.log('euh');
     });
 
 
@@ -312,7 +311,6 @@ class Play extends Phaser.Scene {
       unmute.setVisible(true);
       mute.setVisible(false);
       musique.resume();
-      console.log('ok')
     });
 
     const exit = this.add.image(innerWidth/1.5, innerHeight/3.05, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
@@ -540,9 +538,6 @@ class Play extends Phaser.Scene {
               this.begin();
               this.scene.start('Play');
             });
-            this.input.keyboard.on("keydown", (event) => {
-              console.log(event)
-            })
           }
         //End Timer
         //LastScreen

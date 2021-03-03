@@ -53,7 +53,7 @@ class Play extends Phaser.Scene {
     this.load.image('tiles', gameAssets.mapPng);
     this.load.image('ground', gameAssets.platformPng);
     this.load.image('exit', gameAssets.exitImg);
-    this.load.spritesheet('egyptian', gameAssets.egyptianSprite, {
+    this.load.spritesheet('egyptian', gameAssets.policemanSprite, {
       frameWidth: 32,
       frameHeight: 48,
     });

@@ -1,5 +1,5 @@
 import {game} from "../channels/game"
-import { minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
+import {minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
 function Range(a,b){
   // if only one argument supplied then return random number between 1 and argument
@@ -14,8 +14,8 @@ function Range(a,b){
 var minigame
 var egyptian;
 var cursors;
-
 var shapeGraphics;
+var coordinates = [];
 
 //Timer
 var s = 0
@@ -43,7 +43,9 @@ class Play extends Phaser.Scene {
 
 
     this.load.image("tv", gameAssets.tvImg);
+    this.load.image("redBtn", gameAssets.redBtnImg);
     this.load.image("computer", gameAssets.computerImg);
+    this.load.image("ring", gameAssets.ringImg);
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
 
@@ -144,6 +146,7 @@ class Play extends Phaser.Scene {
               // following properties if they are a rectangle/ellipse/polygon/polyline.
               if (object.rectangle) {
                   this.platforms.create(objectX, objectY, "ground").setSize(object.width, object.height).setOffset(16, 16).visible = false;
+                  coordinates.push({ x:objectX, y:objectY, w:object.width, h:object.height });
               } else if (object.ellipse) {
                   // Ellipses in Tiled have a top-left origin, while ellipses in Phaser have a center
                   // origin
@@ -176,6 +179,7 @@ class Play extends Phaser.Scene {
     // console.log(shapeGraphics);
     // console.log(this)
     // console.log(this.matter)
+    console.log(coordinates);
 
     this.anims.create({
       key: "left",
@@ -296,26 +300,101 @@ class Play extends Phaser.Scene {
 
     const exit = this.add.image(innerWidth/1.5, innerHeight/3.05, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
     exit.setDisplaySize(35,35);
-    //END SETTINGS
 
-    this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-
-      gameObject.x = dragX;
-      gameObject.y = dragY;
-    });
-
-    this.input.keyboard.on("keydown-E", () => {
-
-      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y)) && minigame != "active") {
-        minigameComputer(this);
-        minigame = "active";
-      };
-    });
-
-   exit.on("pointerup", (event) => {
+    exit.on("pointerup", (event) => {
      this.scene.stop();
      this.scene.start('Login');
    });
+
+    //END SETTINGS
+
+  const items = [
+    {x: 400, y: 188, name: 'kitchen-tree', minigame: minigameKitchenTree},
+    {x: 400, y: 197, name: 'kitchen-tree', minigame: minigameKitchenTree},
+    {x: 304, y: 101, name: 'stove', minigame: minigameSink},
+    {x: 336, y: 101, name: 'stove', minigame: minigameSink},
+    {x: 400, y: 101, name: 'microwave', minigame: minigameMicrowave},
+    {x: 115, y: 183, name: 'sofa', minigame: minigameSofa},
+    {x: 116, y: 207, name: 'sofa', minigame: minigameSofa},
+    {x: 116, y: 227, name: 'sofa', minigame: minigameSofa},
+    {x: 207, y: 217, name: 'cat-tree', minigame: minigameCattree},
+    {x: 207, y: 229, name: 'cat-tree', minigame: minigameCattree},
+    {x: 40, y: 208, name: 'television', minigame: minigameTV},
+    {x: 111, y: 133, name: 'living-library', minigame: minigameLivingLibrary},
+    {x: 143, y: 132, name: 'living-library', minigame: minigameLivingLibrary},
+    {x: 207, y: 133, name: 'bonsai', minigame: minigameBonsai},
+    {x: 239, y: 101, name: 'fridge', minigame: minigameFreezer},
+    {x: 641, y: 209, name: 'bath-plant', minigame: minigameBathPlant},
+    {x: 722, y: 204, name: 'windbreak', minigame: minigameWindbreak},
+    {x: 816, y: 175, name: 'baththub', minigame: minigameBathtub},
+    {x: 559, y: 133, name: 'computer', minigame: minigameComputer},
+    {x: 527, y: 133, name: 'bookshelf', minigame: minigameRoomLibrary},
+    {x: 431, y: 325, name: 'hallway', minigame: minigameHallway},
+    {x: 591, y: 249, name: 'aquarium', minigame: minigameFish},
+    {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
+    {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
+  ];
+    // this.input.keyboard.on("keydown-E", () => {
+    //   egyptian.anims.stop();
+    //   if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {
+    //     minigameSaber(this);
+    //     minigame = "active";
+    //   }
+    // });
+    const debugInteraction = (layout) => {
+      this.input.keyboard.on("keyup-E", () => {
+        this.findCoordinates = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.findCoordinates
+        layout.forEachTile(tile => {
+          var tileWorldX = tile.getLeft();
+          var tileWorldY = tile.getTop();
+          if (!this.findCoordinates) return
+          var collisionGroup = tile.getCollisionGroup();
+          if (!collisionGroup || collisionGroup.objects.length === 0) { return; }
+          tile.getCollisionGroup().objects.forEach((object) => {
+            var objectCenterX = object.x + tileWorldX + object.width / 2;
+            var objectCenterY = object.y + tileWorldY + object.height / 2;
+            var distBetween = Phaser.Math.Distance.Between(
+              egyptian.x,
+              egyptian.y,
+              objectCenterX,
+              objectCenterY
+            );
+            if (distBetween < 30) {
+
+              console.log("Object Position",objectCenterX, objectCenterY);
+              console.log("Distance to Object", distBetween);
+              console.log("Egyptian position", egyptian.x, egyptian.y);
+              const testLine = this.add.graphics()
+              testLine.lineStyle(1, 0xFFFFFF, 1.0);
+              testLine.beginPath();
+              testLine.moveTo(egyptian.x, egyptian.y);
+              testLine.lineTo(objectCenterX, objectCenterY);
+              testLine.closePath();
+              testLine.strokePath();
+            }
+          })
+        });
+      });
+    }
+    this.input.keyboard.on("keyup-E", () => {
+      var counter = 0;
+      items.forEach ((item) => {
+        var distBetween = Phaser.Math.Distance.Between(
+          egyptian.x,
+          egyptian.y,
+          item.x,
+          item.y
+        );
+        if (distBetween < 30 && counter < 1) {
+          item.minigame(this);
+          counter++;
+        }
+      });
+
+    });
+    // debugInteraction(this.objectTop);
+    // debugInteraction(this.objectBottom);
+    // debugInteraction(this.extraObj);
   };
 
   update ()

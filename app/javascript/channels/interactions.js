@@ -55,11 +55,11 @@ const minigameTV = (game, end) => {
 
     var graphics = game.make.graphics();
 
-    graphics.fillRect(game.cameras.main.scrollX + innerWidth/2.45, game.cameras.main.scrollY + innerHeight/2.5, (innerWidth+innerHeight)/13, (innerWidth+innerHeight)/26);
+    graphics.fillRect(game.cameras.main.scrollX + innerWidth/2.4, game.cameras.main.scrollY + innerHeight/2.6, (innerWidth+innerHeight)/13, (innerWidth+innerHeight)/26);
 
     var mask = new Phaser.Display.Masks.GeometryMask(game, graphics);
 
-    var text = game.add.text(game.cameras.main.scrollX + innerWidth/2.45, game.cameras.main.scrollY + innerHeight/2.5, content, { fontFamily: 'Arial', color: '#FFFFFF', font: "12px", wordWrap: { width: 100 } }).setOrigin(0);
+    var text = game.add.text(game.cameras.main.scrollX + innerWidth/2.4, game.cameras.main.scrollY + innerHeight/2.6, content, { fontFamily: 'Arial', color: '#FFFFFF', font: "12px", wordWrap: { width: 100 } }).setOrigin(0);
 
     text.setMask(mask);
 

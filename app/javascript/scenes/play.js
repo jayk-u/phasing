@@ -330,7 +330,7 @@ class Play extends Phaser.Scene {
     {x: 559, y: 133, name: 'computer', minigame: minigameComputer},
     {x: 527, y: 133, name: 'bookshelf', minigame: minigameRoomLibrary},
     {x: 431, y: 325, name: 'hallway', minigame: minigameHallway},
-    {x: 431, y: 325, name: 'hallway', minigame: minigameDoor},
+    {x: 461, y: 295, name: 'door', minigame: minigameDoor},
     {x: 591, y: 249, name: 'aquarium', minigame: minigameFish},
     {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
     {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
@@ -387,10 +387,6 @@ class Play extends Phaser.Scene {
           item.y
         );
         if (distBetween < 30 && counter < 1) {
-          item.minigame(this);
-          counter++;
-        }
-        else if (distBetween > 30 && distBetween < 60 && item.name === 'hallway') {
           item.minigame(this);
           counter++;
         }

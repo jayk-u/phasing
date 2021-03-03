@@ -1,41 +1,12 @@
 var inventory
+var library
 var content
+var key
 var ring
 // var redBtn
 var textBoxCounter
 var computerStatus
 const gameAssets = document.getElementById("game-assets").dataset;
-
-const minigameKey = (game, end) => {
-
-  const destroyMinigame = () => {
-    key.destroy();
-    end();
-  }
-
-  if (inventory == "Key") {
-    textbox(game, ["I already got the key.", "Let's hurry!"], end)
-  } else if (inventory && inventory != "") {
-    textbox(game, ["I can't carry anything else..."], destroyMinigame)
-  } else {
-    game.load.image("key", gameAssets.keyImg);
-  
-    var key = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "key")
-    key.setDisplaySize((innerWidth+innerHeight)/18, (innerWidth+innerHeight)/18)
-    key.setInteractive();
-  
-    key.on('pointerdown', () => {
-      key.x = innerWidth/3.1;
-      key.y = innerHeight/3;
-      key.setDisplaySize(40,40)
-      key.ignoreDestroy = true
-      key.setScrollFactor(0)
-      inventory = "Key"
-  });
-  
-    textbox(game, ["This looks like a key.", "Could it be...?"], destroyMinigame)
-  }
-  }
 
   const minigameDoor = (game, end) => {
 
@@ -45,7 +16,10 @@ const minigameKey = (game, end) => {
     }
 
     game.load.image("keylock", gameAssets.keylockImg);
-    game.load.image("key", gameAssets.keyImg);
+
+    var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock")
+    keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16)
+    keylock.setInteractive();
   
     if (inventory && inventory != "" && inventory != "none") {
       textbox(game, ["A door.", "I need the right tools..."], destroyMinigame)
@@ -57,11 +31,6 @@ const minigameKey = (game, end) => {
     });
     } else {
       textbox(game, ["The door is locked.", "I can't make it move."], destroyMinigame)
-    
-      var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock")
-      keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16)
-      keylock.setInteractive();
-
     }
     }
 
@@ -114,12 +83,42 @@ const minigameFreezer = (game, end) => {
 }
 
 const minigameRoomLibrary = (game, end) => {
-  textbox(game, [
-    'French comics here. I think they call these "band dessin" or something like this.',
-    "Tintin... what a weird name... ", 
-    "Hey, that one with the two weirdos with a funny moustache and the small dog looks fun!",
-  ], end)
+  if (library != "Unlocked") {
+    const destroyMinigame = () => {
+      keylock.destroy();
+      end();
+    }
+  
+    game.load.image("keylock", gameAssets.keylockImg);
 
+    var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock")
+    keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16)
+    keylock.setInteractive();
+  
+    if (inventory && inventory != "" && inventory != "none") {
+      textbox(game, ["I need the right tools..."], destroyMinigame)
+      key.on('pointerdown', () => {
+        key.ignoreDestroy = false;
+        key.destroy();
+        keylock.destroy();
+        textbox(game, ["Yes!"], destroyMinigame)
+        inventory = "none"
+        library = "Unlocked"
+    });
+    } else {
+      textbox(game, 
+        ["This bookshelf has smoked glassdoors, I can't see the books behind.",
+        "There's a small lock there, I need a key to open it."
+      ], destroyMinigame)
+  
+    }
+  } else {
+    textbox(game, [
+      'French comics here. I think they call these "band dessin" or something like this.',
+      "Tintin... what a weird name... ", 
+      "Hey, that one with the two weirdos with a funny moustache and the small dog looks fun!",
+    ], end)
+  }
 }
 
 const minigameHallway = (game, end) => {
@@ -247,9 +246,36 @@ const minigameWindbreak = (game, end) => {
 }
 
 const minigameCattree = (game, end) => {
-  textbox(game, [
-    "A huge cat tree lies in the middle of the room. But I haven't seen any cat around or any sign of one living here.",
-  ], end)
+
+  const destroyMinigame = () => {
+    key.destroy();
+    end();
+  }
+
+  if (inventory == "Key") {
+    textbox(game, ["I already got the key.", "Let's hurry!"], end)
+  } else if (inventory && inventory != "") {
+    textbox(game, ["I can't carry anything else..."], destroyMinigame)
+  } else {
+    textbox(game, [
+      "A huge cat tree lies in the middle of the room. But I haven't seen any cat around or any sign of one living here.", 
+      "Wait... there's something in there. A small golden key!"
+    ], destroyMinigame)
+    game.load.image("key", gameAssets.keyImg);
+  
+    key = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "key")
+    key.setDisplaySize((innerWidth+innerHeight)/18, (innerWidth+innerHeight)/18)
+    key.setInteractive();
+  
+    key.on('pointerdown', () => {
+      key.x = innerWidth/3.1;
+      key.y = innerHeight/3;
+      key.setDisplaySize(40,40)
+      key.ignoreDestroy = true
+      key.setScrollFactor(0)
+      inventory = "Key"
+  });
+  }
 }
 
 const minigameLivingLibrary = (game, end) => {
@@ -408,4 +434,4 @@ const textbox = (game, string, destroy) => {
   game.input.keyboard.on("keydown-SPACE", incrementCounter)
 }
 
-export {computerStatus, minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer }
+export {computerStatus, minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer }

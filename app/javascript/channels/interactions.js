@@ -214,10 +214,12 @@ const minigameBonsai = (game, end) => {
         }
         increment += 1;
         game.input.keyboard.on("keydown-ENTER", () => {
-        computerStatus = "On"
-        textbox(game, [ "*click*",
-        "I can hear a small whir close to me.",
-        ], destroyMinigame)
+          if (computerStatus != "On" && computerStatus != "Unlocked") {
+            computerStatus = "On"
+            textbox(game, [ "*click*",
+            "I can hear a small whir close to me.",
+            ], destroyMinigame)
+          }
         })
       }
       // } else {
@@ -311,6 +313,9 @@ const minigameComputer = (game, end) => {
         } else if (input.length > 23) {
           input = "Enter password: ERROR"
           inputText.setTint(0xFF6666, 0xFF4019, 0xB30000, 0xE60000)
+          game.input.keyboard.once("keydown-SPACE", () => {
+            destroyMinigame();
+          })
         } else {
           input = input.concat(event.key.toUpperCase())
         }

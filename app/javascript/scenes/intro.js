@@ -40,8 +40,8 @@ create ()
 
     graphics.fillStyle(0xFFFFFF);
 
-    graphics.fillRect(50, 50, innerWidth - 100, 200);
-    var content = [ "Kyoto - October 13th 1997", 
+    graphics.fillRect(50, 175, innerWidth - 100, 200);
+    var content = [ "Kyoto - October 13th 1997",
                     "The city has been in the grip of terror for several months, as a killer chains the victims week after week.",
                     "He didn’t follow any pattern, never stopping at anything, killing women, children, the elderly... The victims were all found sliced, cut by what seems to be a large blade, a sword or a saber.",
                     "But I had something solid. On several TV reports, a man can be seen in the background, hidden in the crowd.",
@@ -52,7 +52,7 @@ create ()
                     "I felt silly, I felt inadequate. I spent so much time preparing only to fail at the very first step.",
                     "No more time to look for evidence, this guy is sick. I must get out of here at all costs before he comes back..."
                   ]
-    text = this.add.text(60, 300, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120, height: 200 }})
+    text = this.add.text(60, 400, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120, height: 200 }})
     skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
 
 
@@ -86,14 +86,13 @@ create ()
 
     let musique = this.sound.add('music');
     musique.setVolume(0.1);
-    musique.play();
+    // musique.play();
 
     unmute.on("pointerup", (event) => {
       musique.pause();
       mute.setVisible(true);
       unmute.setVisible(false);
     });
-
 
     mute.on("pointerup", (event) => {
       musique.resume();
@@ -167,7 +166,7 @@ create ()
   {
     if (run) {
       var t = this
-      var content = [ "Kyoto - October 13th 1997", 
+      var content = [ "Kyoto - October 13th 1997",
       "The city has been in the grip of terror for several months, as a killer chains the victims week after week.",
       "He didn’t follow any pattern, never stopping at anything, killing women, children, the elderly... The victims were all found sliced, cut by what seems to be a large blade, a sword or a saber.",
       "But I had something solid. On several TV reports, a man can be seen in the background, hidden in the crowd.",

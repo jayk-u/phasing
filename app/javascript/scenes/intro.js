@@ -86,14 +86,13 @@ create ()
 
     let musique = this.sound.add('music');
     musique.setVolume(0.1);
-    musique.play();
+    // musique.play();
 
     unmute.on("pointerup", (event) => {
       musique.pause();
       mute.setVisible(true);
       unmute.setVisible(false);
     });
-
 
     mute.on("pointerup", (event) => {
       musique.resume();

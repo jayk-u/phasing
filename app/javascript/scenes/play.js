@@ -20,8 +20,8 @@ var shapeGraphics;
 //Timer
 var s = 0
 var m = 0
-var beginningMins = 3
-var beginningSecs = 30
+var beginningMins = 0
+var beginningSecs = 10
 var then = 0
 var mins = ""
 var sec = ""
@@ -267,7 +267,6 @@ class Play extends Phaser.Scene {
     //End Inventory
 
     //SETTINGS
-
     const unmute = this.add.image(innerWidth/1.65, innerHeight/3.05, "volume").setInteractive().setDepth(2).setScrollFactor(0);
     unmute.setDisplaySize(35,35);
     unmute.setVisible(true);
@@ -284,17 +283,19 @@ class Play extends Phaser.Scene {
       musique.pause();
       mute.setVisible(true);
       unmute.setVisible(false);
+      console.log('euh');
     });
+
 
     mute.on("pointerup", (event) => {
       unmute.setVisible(true);
       mute.setVisible(false);
       musique.resume();
+      console.log('ok')
     });
 
     const exit = this.add.image(innerWidth/1.5, innerHeight/3.05, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
     exit.setDisplaySize(35,35);
-
     //END SETTINGS
 
     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
@@ -305,7 +306,7 @@ class Play extends Phaser.Scene {
 
     this.input.keyboard.on("keydown-E", () => {
 
-      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y)) && minigame != "active") {  
+      if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y)) && minigame != "active") {
         minigameComputer(this);
         minigame = "active";
       };
@@ -398,10 +399,10 @@ class Play extends Phaser.Scene {
         // Timer
         var now = this.time.now
         var ms = then - now
-        if (ms <= 0) {
+        if (ms < 0) {
           then = now + 1000
           s++
-        } else if ((beginningSecs - s) <= 0) {
+        } else if ((beginningSecs - s) < 0) {
           beginningSecs = 59
           s = 0
           m++
@@ -419,9 +420,15 @@ class Play extends Phaser.Scene {
         var time = mins + ":" + sec + ":" + Math.min(Math.trunc(ms/10),99)
         timer.setText(time)
         //End Timer
+        //LastScreen
+        if (time == "00:00:0") {
+          this.scene.pause();
+
+        }
+        //EndLastScreen
+
 
         //Inventory
-
       });
     }
     camera(this.walls);

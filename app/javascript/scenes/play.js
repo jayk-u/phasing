@@ -61,8 +61,8 @@ class Play extends Phaser.Scene {
     status.timer = ""
     s = 0;
     m = 0;
-    beginningMins = 2;
-    beginningSecs = 0;
+    beginningMins = 0;
+    beginningSecs = 15;
     then = 0;
     mins = "";
     sec = "";
@@ -94,6 +94,7 @@ class Play extends Phaser.Scene {
     this.load.image('playAgain', gameAssets.playagainPng);
     this.load.image('winscreen', gameAssets.winscreenPng);
     this.load.image('lostscreen', gameAssets.lostscreenPng);
+    this.load.audio('door', gameAssets.doorMp3);
 
     const loginAssets = document.getElementById("login").dataset;
 
@@ -348,6 +349,7 @@ class Play extends Phaser.Scene {
      this.scene.stop();
      this.scene.start('Login');
      this.begin();
+     musique.stop();
    });
 
     //END SETTINGS
@@ -562,6 +564,9 @@ class Play extends Phaser.Scene {
           timer.setText(time);
 
           if (endStatus === "true") {
+            let doorsound = this.sound.add('door');
+            doorsound.setVolume(0.5);
+            doorsound.play();
             start = this.time.now;
             startStatus = "true";
           }
@@ -572,6 +577,7 @@ class Play extends Phaser.Scene {
 
 
           if (endTimer > 2400) {
+
             endBorder.destroy();
             endGraphics.destroy();
             endText.destroy();
@@ -581,7 +587,7 @@ class Play extends Phaser.Scene {
             })
             // comment again
             // again = this.add.image(innerWidth/2, innerHeight/3+200, 'playAgain').setScrollFactor(0).setDepth(4).setInteractive();
-            
+
             //new lost screen
             var lostscreen = this.add.image(this.cameras.main.scrollX + innerWidth/2.33, this.cameras.main.scrollY + innerHeight/3,'lostscreen').setOrigin(0,0);
             lostscreen.setDisplaySize((innerWidth+innerHeight)/12, (innerWidth+innerHeight)/10.5);
@@ -595,6 +601,7 @@ class Play extends Phaser.Scene {
               this.scene.stop();
               this.scene.start('Play');
               this.begin();
+              musique.restart();
             });
           }
           var endTime = startTime + (beginningSecs + beginningMins * 60)  * 1000;

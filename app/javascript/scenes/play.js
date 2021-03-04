@@ -17,6 +17,7 @@ var beginningSecs;
 var then;
 var mins;
 var sec;
+var milli;
 var timer;
 //EndTimer
 
@@ -39,6 +40,7 @@ class Play extends Phaser.Scene {
     status.computerStatus = "";
     status.inventory = "";
     status.library = "";
+    status.timer = ""
     s = 0;
     m = 0;
     beginningMins = 0;
@@ -46,6 +48,7 @@ class Play extends Phaser.Scene {
     then = 0;
     mins = "";
     sec = "";
+    milli = "";
     minigame = "none";
     counter = 0;
     coordinates = [];
@@ -71,6 +74,7 @@ class Play extends Phaser.Scene {
       frameHeight: 48,
     });
     this.load.image('playAgain', gameAssets.playagainPng);
+    this.load.image('winscreen', gameAssets.winscreenPng);
 
     const loginAssets = document.getElementById("login").dataset;
 
@@ -291,11 +295,11 @@ class Play extends Phaser.Scene {
     //End Inventory
 
     //SETTINGS
-    const unmute = this.add.image(innerWidth/1.65, innerHeight/3.05, "volume").setInteractive().setDepth(2).setScrollFactor(0);
+    const unmute = this.add.image(innerWidth - 610, innerHeight/3.05, "volume").setInteractive().setDepth(2).setScrollFactor(0);
     unmute.setDisplaySize(35,35);
     unmute.setVisible(true);
 
-    var mute = this.add.image(innerWidth/1.65, innerHeight/3.05, "mute").setInteractive().setDepth(2).setScrollFactor(0);
+    var mute = this.add.image(innerWidth - 610, innerHeight/3.05, "mute").setInteractive().setDepth(2).setScrollFactor(0);
     mute.setDisplaySize(35,35);
     mute.setVisible(false);
 
@@ -499,31 +503,38 @@ class Play extends Phaser.Scene {
     }
 
         // Timer
-        var now = this.time.now
-        if (counter != 1) {
-          var ms = then - now
-        } else {
-          var ms = 0
-        }
-          if (ms < 0) {
-            then = now + 1000
-            s++
-          } else if ((beginningSecs - s) < 0) {
-            beginningSecs = 59
-            s = 0
-            m++
+        if (status.timer != "stop") {
+          var now = this.time.now
+          if (counter != 1) {
+            var ms = then - now
+          } else {
+            var ms = 0
           }
-          if ((beginningMins - m) < 10) {
-            mins = "0" + Math.max(0,(beginningMins - m))
+            if (ms < 0) {
+              then = now + 1000
+              s++
+            } else if ((beginningSecs - s) < 0) {
+              beginningSecs = 59
+              s = 0
+              m++
+            }
+            if ((beginningMins - m) < 10) {
+              mins = "0" + Math.max(0,(beginningMins - m))
+            } else {
+              mins = (beginningMins - m)
+            };
+            if ((beginningSecs - s) < 10) {
+              sec = "0" + Math.max(0,(beginningSecs - s));
+            } else {
+              sec = (beginningSecs - s)
+            };
+          if (Math.min(Math.trunc(ms/10),99) < 10) {
+            milli = "0" + Math.max(Math.min(Math.trunc(ms/10),99),0)
           } else {
-            mins = (beginningMins - m)
-          };
-          if ((beginningSecs - s) < 10) {
-            sec = "0" + Math.max(0,(beginningSecs - s));
-          } else {
-            sec = (beginningSecs - s)
-          };
-          var time = mins + ":" + sec + ":" + Math.min(Math.trunc(ms/10),99)
+            milli = Math.min(Math.trunc(ms/10),99)
+          }
+        }
+          var time = mins + ":" + sec + ":" + milli
           timer.setText(time)
           if (mins == "00" && sec == "00" && counter != 1) {
             minigame = "active";

@@ -119,6 +119,7 @@ const minigameRoomLibrary = (game, end) => {
       'French comics here. I think they call these "band dessin" or something like this.',
       "Tintin... what a weird name... ",
       "Hey, that one with the two weirdos with a funny moustache and the small dog looks fun!",
+      "And there’s even one with a cowboy."
     ], end)
   }
 }
@@ -303,7 +304,8 @@ const minigameComputer = (game, end) => {
   else if (status.computerStatus == "On") {
     textbox(game, [
       "Locked by a password.",
-      "But I can still see the wallpaper: it looks like an old drunk sailor and a small white dog.",
+      "But I can still see the wallpaper: it looks like a big guy holding a huge rock.",
+      "Maybe I should try something out?"
       ])
     var input = "Enter password: "
     var inputText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, input, {color: '#FFFFFF', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }}).setDepth(4);
@@ -322,7 +324,7 @@ const minigameComputer = (game, end) => {
             input = input.concat(event.key.toUpperCase())
           }
           inputText.setText(input)
-          if (input == "Enter password: TINTIN") {
+          if (input == "Enter password: ASTERIX") {
             status.computerStatus = "Unlocked"
             inputText.setTint(0x88CC00, 0x00FF2A, 0x66FF19, 0x80FF66)
             textbox(game, [

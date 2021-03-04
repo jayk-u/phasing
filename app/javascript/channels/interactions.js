@@ -1,9 +1,6 @@
 import { status } from "../scenes/play"
 // var redBtn
-var ring;
-var key;
 var next;
-var computerStatus;
 
 const gameAssets = document.getElementById("game-assets").dataset;
 
@@ -15,7 +12,7 @@ const minigameDoor = (game, end) => {
   }
 
   game.load.image("keylock", gameAssets.keylockImg);
-  if (computerStatus == "Unlocked") {
+  if (status.computerStatus == "Unlocked") {
     textbox(game, ["It's open!", "Let's go!"]);
     game.cameras.main.fadeOut(4000, 255, 255, 255);
     game.cameras.main.once("camerafadeoutcomplete", (camera) => {
@@ -26,7 +23,7 @@ const minigameDoor = (game, end) => {
       var winscreen = game.add.image(game.cameras.main.scrollX + innerWidth/2.35, game.cameras.main.scrollY + innerHeight/2.6, 'winscreen').setOrigin(0,0);
       winscreen.setDisplaySize((innerWidth+innerHeight)/12, (innerWidth+innerHeight)/10.5);
     })
-  } else if (inventory == "Key") {
+  } else if (status.inventory == "Key") {
     var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock").setDepth(4);
     keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16);
     textbox(game, ["The key doesn't seem to fit..."], destroyMinigame);

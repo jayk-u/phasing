@@ -3,6 +3,7 @@ import { status } from "../scenes/play"
 var ring;
 var key;
 var next;
+var computerStatus;
 
 const gameAssets = document.getElementById("game-assets").dataset;
 

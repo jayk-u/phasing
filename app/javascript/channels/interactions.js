@@ -38,8 +38,6 @@ const minigameDoor = (game, end) => {
 
 const minigameTV = (game, end) => {
 
-  if (endStatus === "true") {destroyMinigame()}
-
   const destroyMinigame = () => {
     text.destroy();
     mask.destroy();

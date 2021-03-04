@@ -12,7 +12,6 @@ const minigameDoor = (game, end) => {
     keylock.destroy();
     end();
   }
-  var computerStatus = "Unlocked";
 
   game.load.image("keylock", gameAssets.keylockImg);
   if (computerStatus == "Unlocked") {

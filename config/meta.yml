@@ -1,0 +1,6 @@
+# config/meta.yml
+
+meta_product_name: "Breaking Out"
+meta_title: "Breaking Out - 2D Escape Game"
+meta_description: "You're a detective, locked in the appartment of a serial killer you're investigating on for months. He'll be back in a few seconds, you need to get out of here... quickly."
+meta_image: "cover.png" # should exist in `app/assets/images/`

@@ -1,7 +1,17 @@
+import { Time } from "phaser";
 import { game } from "../channels/game"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
 var minigame;
+var startTime;
+var endTimer;
+var endContent;
+var endGraphics;
+var endText;
+var endBorder;
+var start;
+var startStatus;
+var endStatus;
 var counter;
 var egyptian;
 var cursors;
@@ -27,6 +37,9 @@ var status = {};
 //Inventory
 var borderBox;
 var inventoryBox;
+var again;
+
+var t = 0;
 
 class Play extends Phaser.Scene {
 
@@ -37,14 +50,19 @@ class Play extends Phaser.Scene {
   }
 
   begin () {
+    startTime = null;
+    again = "";
+    endTimer = 0;
+    start = 0;
+    startStatus = "false";
     status.computerStatus = "";
     status.inventory = "";
     status.library = "";
     status.timer = ""
     s = 0;
     m = 0;
-    beginningMins = 0;
-    beginningSecs = 50;
+    beginningMins = 1;
+    beginningSecs = 0;
     then = 0;
     mins = "";
     sec = "";
@@ -75,6 +93,7 @@ class Play extends Phaser.Scene {
     });
     this.load.image('playAgain', gameAssets.playagainPng);
     this.load.image('winscreen', gameAssets.winscreenPng);
+    this.load.image('lostscreen', gameAssets.lostscreenPng);
 
     const loginAssets = document.getElementById("login").dataset;
 
@@ -304,13 +323,14 @@ class Play extends Phaser.Scene {
     mute.setVisible(false);
 
     let musique = this.sound.add('music');
-    musique.setVolume(0.1);
+    musique.setVolume(0.3);
     musique.play();
 
     unmute.on("pointerup", (event) => {
       musique.pause();
       mute.setVisible(true);
       unmute.setVisible(false);
+      console.log("euh");
     });
 
 
@@ -318,6 +338,7 @@ class Play extends Phaser.Scene {
       unmute.setVisible(true);
       mute.setVisible(false);
       musique.resume();
+      console.log("ok");
     });
 
     const exit = this.add.image(innerWidth/1.5, innerHeight/3.05, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
@@ -504,19 +525,22 @@ class Play extends Phaser.Scene {
 
         // Timer
         if (status.timer != "stop") {
-          var now = this.time.now
+          var now = this.time.now;
+          if (!startTime) {
+            startTime = now;
+          }
           if (counter != 1) {
-            var ms = then - now
+            var ms = then - now;
           } else {
-            var ms = 0
+            var ms = 0;
           }
             if (ms < 0) {
-              then = now + 1000
-              s++
+              then = now + 1000;
+              s++;
             } else if ((beginningSecs - s) < 0) {
-              beginningSecs = 59
-              s = 0
-              m++
+              beginningSecs = 59;
+              s = 0;
+              m++;
             }
             if ((beginningMins - m) < 10) {
               mins = "0" + Math.max(0,(beginningMins - m))
@@ -535,30 +559,72 @@ class Play extends Phaser.Scene {
           }
         }
           var time = mins + ":" + sec + ":" + milli
-          timer.setText(time)
-          if (mins == "00" && sec == "00" && counter != 1) {
-            minigame = "active";
-            counter = 1;
-            var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(3);
-            rect.alpha = 0.7;
+          timer.setText(time);
 
-            //var losetext = this.add.text(innerWidth/2, innerHeight/2, "Too late...", { color: '#FFFFFF', font: "24px" }).setScrollFactor(0).setDepth(4);
+          if (endStatus === "true") {
+            start = this.time.now;
+            startStatus = "true";
+          }
+          endStatus = "false";
+          if (startStatus === "true") {
+            endTimer = this.time.now - start;
+          }
 
-            var again = this.add.image(innerWidth/2, innerHeight/3+200, 'playAgain').setScrollFactor(0).setDepth(4).setInteractive();
+
+          if (endTimer > 2400) {
+            endBorder.destroy();
+            endGraphics.destroy();
+            endText.destroy();
+            this.cameras.main.once("camerafadeoutcomplete", () => {
+              var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
+              this.cameras.main.fadeIn(10);
+            })
+            // comment again
+            // again = this.add.image(innerWidth/2, innerHeight/3+200, 'playAgain').setScrollFactor(0).setDepth(4).setInteractive();
+            
+            //new lost screen
+            var lostscreen = this.add.image(this.cameras.main.scrollX + innerWidth/2.33, this.cameras.main.scrollY + innerHeight/3,'lostscreen').setOrigin(0,0);
+            lostscreen.setDisplaySize((innerWidth+innerHeight)/12, (innerWidth+innerHeight)/10.5);
+            lostscreen.setDepth(5);
+
+            again = this.add.image(innerWidth/2, innerHeight/1.6, 'playAgain').setScrollFactor(0).setDepth(5).setInteractive();
             again.setDisplaySize(250,200);
 
             again.on("pointerup", (event) => {
               this.scene.stop();
-              this.begin();
               this.scene.start('Play');
+              this.begin();
             });
           }
+          var endTime = startTime + (beginningSecs + beginningMins * 60)  * 1000;
+          if (now >= endTime && counter != 1) {
+            this.cameras.main.fadeOut(2500);
+            endStatus = "true";
+
+            // Textbox
+            // def t = 0 hors de update
+            endContent = "Here you are officer!";
+            endBorder = this.add.graphics();
+
+            endBorder.fillStyle(0xFFFFFF);
+            endBorder.fillRect(this.cameras.main.scrollX + (innerWidth/3.27 - 3.0), this.cameras.main.scrollY + (innerHeight/1.67 - 3.0), innerWidth/2.68 + 6.0, innerHeight/15.08 + 6.0);
+
+            endGraphics = this.add.graphics();
+
+            endGraphics.fillStyle(0x000000);
+            endGraphics.fillRect(this.cameras.main.scrollX + innerWidth/3.27, this.cameras.main.scrollY + innerHeight/1.67, innerWidth/2.68, innerHeight/15.08);
+            endText = this.add.text(this.cameras.main.scrollX + innerWidth/3.275 + 6, this.cameras.main.scrollY + innerHeight/1.675 + 6, endContent, {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.69, height: 40 }})
+            // End Textbox
+
+            minigame = "active";
+            counter = 1;
+            // var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(3);
+            // rect.alpha = 0.7;
+
+            //var losetext = this.add.text(innerWidth/2, innerHeight/2, "Too late...", { color: '#FFFFFF', font: "24px" }).setScrollFactor(0).setDepth(4);
+
+          }
         //End Timer
-        //LastScreen
-
-
-        //EndLastScreen
-
 
         //Inventory
     if (status.computerStatus === 'Unlocked' && countDoor < 1) {

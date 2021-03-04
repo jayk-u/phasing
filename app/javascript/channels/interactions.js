@@ -2,6 +2,8 @@ import { status } from "../scenes/play"
 // var redBtn
 var ring;
 var key;
+var next;
+
 const gameAssets = document.getElementById("game-assets").dataset;
 
 const minigameDoor = (game, end) => {
@@ -36,6 +38,8 @@ const minigameDoor = (game, end) => {
 }
 
 const minigameTV = (game, end) => {
+
+  if (endStatus === "true") {destroyMinigame()}
 
   const destroyMinigame = () => {
     text.destroy();
@@ -290,6 +294,7 @@ const minigameLivingLibrary = (game, end) => {
 
 const minigameComputer = (game, end) => {
   game.load.image("computer", gameAssets.computerImg);
+  
   const destroyMinigame = () => {
     if (inputText) {inputText.visible = false;}
     computer.destroy();
@@ -306,26 +311,28 @@ const minigameComputer = (game, end) => {
     var input = "Enter password: "
     var inputText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, input, {color: '#FFFFFF', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }}).setDepth(4);
     game.input.keyboard.on("keyup", (event) => {
-      if ((input != "Enter password: " || event.key != "e") && (event.keyCode <= 90 && event.keyCode >= 65)  || event.key == "Backspace" ) {
-        if (event.key == "Backspace") {
-          input = "Enter password: "
-        } else if (input.length > 23) {
-          input = "Enter password: ERROR"
-          inputText.setTint(0xFF6666, 0xFF4019, 0xB30000, 0xE60000)
-          game.input.keyboard.once("keydown-SPACE", () => {
-            destroyMinigame();
-          })
-        } else {
-          input = input.concat(event.key.toUpperCase())
-        }
-        inputText.setText(input)
-        if (input == "Enter password: TINTIN") {
-          status.computerStatus = "Unlocked"
-          inputText.setTint(0x88CC00, 0x00FF2A, 0x66FF19, 0x80FF66)
-          textbox(game, [
-            "Found it! There's only one icon on the desktop...",
-            '"Main control lock", this must be the thing! Quick!',
-          ], destroyMinigame)
+      if (next.scene != game.scene.scene) {
+        if ((input != "Enter password: " || event.key != "e") && (event.keyCode <= 90 && event.keyCode >= 65)  || event.key == "Backspace" ) {
+          if (event.key == "Backspace") {
+            input = "Enter password: "
+          } else if (input.length > 23) {
+            input = "Enter password: ERROR"
+            inputText.setTint(0xFF6666, 0xFF4019, 0xB30000, 0xE60000)
+            game.input.keyboard.once("keydown-SPACE", () => {
+              destroyMinigame();
+            })
+          } else {
+            input = input.concat(event.key.toUpperCase())
+          }
+          inputText.setText(input)
+          if (input == "Enter password: TINTIN") {
+            status.computerStatus = "Unlocked"
+            inputText.setTint(0x88CC00, 0x00FF2A, 0x66FF19, 0x80FF66)
+            textbox(game, [
+              "Found it! There's only one icon on the desktop...",
+              '"Main control lock", this must be the thing! Quick!',
+            ], destroyMinigame)
+          }
         }
       }
     })
@@ -393,16 +400,21 @@ const textbox = (game, string, destroy) => {
 
   graphics.fillStyle(0x000000);
   graphics.fillRect(game.cameras.main.scrollX + innerWidth/3.27, game.cameras.main.scrollY + innerHeight/1.67, innerWidth/2.68, innerHeight/15.08);
-  var text = game.add.text(game.cameras.main.scrollX + innerWidth/3.275 + 6, game.cameras.main.scrollY + innerHeight/1.675 + 6, string[0], {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.69, height: 40 }});
+  var text = game.add.text(game.cameras.main.scrollX + innerWidth/3.275 + 6, game.cameras.main.scrollY + innerHeight/1.675 + 6, string[0], {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.69, height: 40 }})
+  if (string.length != 1) {next = game.add.text(game.cameras.main.scrollX + innerWidth/1.505, game.cameras.main.scrollY + innerHeight/1.54, "...", {color: '#FFFFFF', font: "6px"} )}
 
   const incrementCounter = () => {
     textBoxCounter += 1
+    if (textBoxCounter == string.length - 1) {
+      next.destroy();
+    }
     if (string.length > textBoxCounter) {
       text.setText(string[textBoxCounter])
     } else {
       graphics.destroy();
       border.destroy();
       text.destroy();
+      if (next) {next.destroy()}
       if (destroy) {destroy()};
       game.input.keyboard.off("keydown-SPACE", incrementCounter)
     }

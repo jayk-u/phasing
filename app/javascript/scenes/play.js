@@ -10,13 +10,13 @@ function Range(a,b){
   return [...Array(b-a+1).keys()].map(x => x+a);
 }
 
-
-var minigame
-var counter
+var minigame;
+var counter;
 var egyptian;
 var cursors;
 var shapeGraphics;
 var coordinates;
+var countDoor = 0;
 
 //Timer
 var s
@@ -46,7 +46,7 @@ class Play extends Phaser.Scene {
     then = 0
     mins = ""
     sec = ""
-    minigame = "none";
+    minigame = "";
     counter = 0;
     coordinates = [];
   }
@@ -413,9 +413,6 @@ class Play extends Phaser.Scene {
       });
 
     });
-
-
-
     // debugInteraction(this.objectTop);
     // debugInteraction(this.objectBottom);
     // debugInteraction(this.secretDoor);
@@ -548,11 +545,18 @@ class Play extends Phaser.Scene {
 
 
         //Inventory
+    if (computerStatus === 'Unlocked' && countDoor < 1) {
+      this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
+      countDoor = 1;
+    } else if (countDoor === 1) {
+      camera(this.secretDoor);
+    } else {
+      console.log(computerStatus);
+    }
     camera(this.walls);
     camera(this.objectBottom);
     camera(this.objectTop);
     camera(this.extraObj);
-    // camera(this.secretDoor);
     camera(this.layer);
     camera(this.transparent);
   };

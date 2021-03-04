@@ -44,7 +44,7 @@ class Play extends Phaser.Scene {
     s = 0;
     m = 0;
     beginningMins = 0;
-    beginningSecs = 50;
+    beginningSecs = 5;
     then = 0;
     mins = "";
     sec = "";
@@ -75,6 +75,7 @@ class Play extends Phaser.Scene {
     });
     this.load.image('playAgain', gameAssets.playagainPng);
     this.load.image('winscreen', gameAssets.winscreenPng);
+    this.load.image('lostscreen', gameAssets.lostscreenPng);
 
     const loginAssets = document.getElementById("login").dataset;
 
@@ -311,6 +312,7 @@ class Play extends Phaser.Scene {
       musique.pause();
       mute.setVisible(true);
       unmute.setVisible(false);
+      console.log("euh");
     });
 
 
@@ -318,6 +320,7 @@ class Play extends Phaser.Scene {
       unmute.setVisible(true);
       mute.setVisible(false);
       musique.resume();
+      console.log("ok");
     });
 
     const exit = this.add.image(innerWidth/1.5, innerHeight/3.05, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
@@ -544,22 +547,20 @@ class Play extends Phaser.Scene {
 
             //var losetext = this.add.text(innerWidth/2, innerHeight/2, "Too late...", { color: '#FFFFFF', font: "24px" }).setScrollFactor(0).setDepth(4);
 
-            var again = this.add.image(innerWidth/2, innerHeight/3+200, 'playAgain').setScrollFactor(0).setDepth(4).setInteractive();
+            var lostscreen = this.add.image(this.cameras.main.scrollX + innerWidth/2.33, this.cameras.main.scrollY + innerHeight/3,'lostscreen').setOrigin(0,0);
+            lostscreen.setDisplaySize((innerWidth+innerHeight)/12, (innerWidth+innerHeight)/10.5);
+            lostscreen.setDepth(4);
+
+            var again = this.add.image(innerWidth/2, innerHeight/1.6, 'playAgain').setScrollFactor(0).setDepth(4).setInteractive();
             again.setDisplaySize(250,200);
 
             again.on("pointerup", (event) => {
               this.scene.stop();
               this.begin();
               this.scene.start('Play');
-              musique.restart();
             });
           }
         //End Timer
-        //LastScreen
-
-
-        //EndLastScreen
-
 
         //Inventory
     if (status.computerStatus === 'Unlocked' && countDoor < 1) {

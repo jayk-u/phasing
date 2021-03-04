@@ -101,8 +101,8 @@ class Play extends Phaser.Scene {
     this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
     this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
     // const testRect = this.add.rectangle(460, 323, 50, 100, 0xFFFFFF);
-    egyptian = this.physics.add.sprite(460, 323, "egyptian").setSize(15, 2).setOffset(9, 43);
-    this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0);
+    egyptian = this.physics.add.sprite(460, 323, "egyptian").setSize(15, 2).setOffset(9, 43).setDepth(1);
+    this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
     // console.log(testRect);
     // this.collision1 = this.map.createLayer('collision_1', this.tileset, 0, 0);
     // this.collision2 = this.map.createLayer('collision_2', this.tileset, 0, 0);

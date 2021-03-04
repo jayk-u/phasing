@@ -61,8 +61,8 @@ class Play extends Phaser.Scene {
     status.timer = ""
     s = 0;
     m = 0;
-    beginningMins = 1;
-    beginningSecs = 0;
+    beginningMins = 0;
+    beginningSecs = 10;
     then = 0;
     mins = "";
     sec = "";
@@ -598,6 +598,7 @@ class Play extends Phaser.Scene {
           }
           var endTime = startTime + (beginningSecs + beginningMins * 60)  * 1000;
           if (now >= endTime && counter != 1) {
+            status.timer = "stop"
             this.cameras.main.fadeOut(2500);
             endStatus = "true";
 

@@ -494,30 +494,32 @@ class Play extends Phaser.Scene {
     }
 
         // Timer
-        var now = this.time.now
-        if (counter != 1) {
-          var ms = then - now
-        } else {
-          var ms = 0
-        }
-          if (ms < 0) {
-            then = now + 1000
-            s++
-          } else if ((beginningSecs - s) < 0) {
-            beginningSecs = 59
-            s = 0
-            m++
+        if (status.timer != "stop") {
+          var now = this.time.now
+          if (counter != 1) {
+            var ms = then - now
+          } else {
+            var ms = 0
           }
-          if ((beginningMins - m) < 10) {
-            mins = "0" + Math.max(0,(beginningMins - m))
-          } else {
-            mins = (beginningMins - m)
-          };
-          if ((beginningSecs - s) < 10) {
-            sec = "0" + Math.max(0,(beginningSecs - s));
-          } else {
-            sec = (beginningSecs - s)
-          };
+            if (ms < 0) {
+              then = now + 1000
+              s++
+            } else if ((beginningSecs - s) < 0) {
+              beginningSecs = 59
+              s = 0
+              m++
+            }
+            if ((beginningMins - m) < 10) {
+              mins = "0" + Math.max(0,(beginningMins - m))
+            } else {
+              mins = (beginningMins - m)
+            };
+            if ((beginningSecs - s) < 10) {
+              sec = "0" + Math.max(0,(beginningSecs - s));
+            } else {
+              sec = (beginningSecs - s)
+            };
+        }
           var time = mins + ":" + sec + ":" + Math.min(Math.trunc(ms/10),99)
           timer.setText(time)
           if (mins == "00" && sec == "00" && counter != 1) {

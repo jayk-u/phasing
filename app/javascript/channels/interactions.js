@@ -18,6 +18,7 @@ const minigameDoor = (game, end) => {
 
   game.load.image("keylock", gameAssets.keylockImg);
   if (computerStatus == "Unlocked") {
+    game.scene.pause();
     textbox(game, ["It's open!", "Let's go!"]);
     game.cameras.main.fadeOut(4000, 255, 255, 255)
     game.cameras.main.once("camerafadeoutcomplete", (camera) => {
@@ -27,6 +28,7 @@ const minigameDoor = (game, end) => {
       graph.fillRect(0,0, 10000, 10000)
       game.add.text(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "You won!", {color:"#FFFFFF", font:"34px"})
       game.cameras.main.fadeIn(4000, 255, 255, 255)
+      game.add.rectangle(0,0,600, 600, '#FFFFFF').setOrigin(0,0).alpha(0.3);
     })
   } else if (inventory == "Key") {
     var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock");
@@ -93,13 +95,13 @@ const minigameRoomLibrary = (game, end) => {
       keylock.destroy();
       end();
     }
-  
+
     game.load.image("keylock", gameAssets.keylockImg);
 
     var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock")
     keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16)
     keylock.setInteractive();
-  
+
     if (inventory && inventory != "" && inventory != "none") {
       textbox(game, ["I need the right tools..."], destroyMinigame)
       key.on('pointerdown', () => {
@@ -111,16 +113,16 @@ const minigameRoomLibrary = (game, end) => {
         library = "Unlocked"
     });
     } else {
-      textbox(game, 
+      textbox(game,
         ["This bookshelf has smoked glassdoors, I can't see the books behind.",
         "There's a small lock there, I need a key to open it."
       ], destroyMinigame)
-  
+
     }
   } else {
     textbox(game, [
       'French comics here. I think they call these "band dessin" or something like this.',
-      "Tintin... what a weird name... ", 
+      "Tintin... what a weird name... ",
       "Hey, that one with the two weirdos with a funny moustache and the small dog looks fun!",
     ], end)
   }
@@ -156,11 +158,11 @@ const minigameSink = (game, end) => {
     ring = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "ring")
     ring.setDisplaySize((innerWidth+innerHeight)/18, (innerWidth+innerHeight)/18)
     ring.setInteractive();
-  
+
     if (inventory && inventory != "" && inventory != "none") {
       textbox(game, [
         "The sink is full of clean plates.",
-        "Wait, is that... a ring? He must have dropped it while doing the dishes... ", 
+        "Wait, is that... a ring? He must have dropped it while doing the dishes... ",
         "My hands are full right now, I'll come back later.",
       ], destroyMinigame)
     } else if (inventory == "Ring") {
@@ -170,7 +172,7 @@ const minigameSink = (game, end) => {
         "The sink is full of clean plates.",
         "Wait, is that... a ring? He must have dropped it while doing the dishes...",
       ], destroyMinigame)
-      
+
       ring.on('pointerdown', () => {
         ring.x = innerWidth/3.1;
         ring.y = innerHeight/3;
@@ -266,14 +268,14 @@ const minigameCattree = (game, end) => {
     textbox(game, ["I can't carry anything else..."], destroyMinigame)
   } else {
     textbox(game, [
-      "A huge cat tree lies in the middle of the room. But I haven't seen any cat around or any sign of one living here.", 
+      "A huge cat tree lies in the middle of the room. But I haven't seen any cat around or any sign of one living here.",
       "Wait... there's something in there. A small golden key!"
     ], destroyMinigame)
 
     key = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "key")
     key.setDisplaySize((innerWidth+innerHeight)/18, (innerWidth+innerHeight)/18)
     key.setInteractive();
-  
+
     key.on('pointerdown', () => {
       key.x = innerWidth/3.1;
       key.y = innerHeight/3;
@@ -288,7 +290,7 @@ const minigameCattree = (game, end) => {
 const minigameLivingLibrary = (game, end) => {
   textbox(game, [
     "Only medical related books here.",
-    "But according to my investigation so far, this guy never worked in this field. ", 
+    "But according to my investigation so far, this guy never worked in this field. ",
     "He's a very simple office worker.",
   ], end)
 }
@@ -380,7 +382,7 @@ const minigameBathtub = (game, end) => {
 
 const minigameSaber = (game, end) => {
   textbox(game, [
-    "Old japanese katanas, they look really expensive. ", 
+    "Old japanese katanas, they look really expensive. ",
     "The table below has a locked drawer... There's something written on one of the blades.",
     '"Pay respect to the oldest."',
   ], end)
@@ -392,7 +394,7 @@ const box = (game, object) => {
   // graphics.fillStyle(0xFFFFFF);
   // graphics.fillRect(game.cameras.main.scrollX + innerWidth/2.3, game.cameras.main.scrollY + innerHeight/2.7, innerWidth/8, innerWidth/9);
 
-  
+
   container.setInteractive();
   game.input.setDraggable(container);
 

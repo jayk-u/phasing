@@ -14,12 +14,9 @@ const minigameDoor = (game, end) => {
 
   game.load.image("keylock", gameAssets.keylockImg);
   if (computerStatus == "Unlocked") {
-    status.timer = "stop";
     textbox(game, ["It's open!", "Let's go!"]);
     game.cameras.main.fadeOut(4000, 255, 255, 255);
     game.cameras.main.once("camerafadeoutcomplete", (camera) => {
-
-      console.log(camera)
       var graph = game.add.graphics()
       graph.fillStyle(0)
       graph.fillRect(0,0, 10000, 10000)
@@ -201,7 +198,7 @@ const minigameBonsai = (game, end) => {
     ring.on("pointerdown", () => {
       ring.ignoreDestroy = false
       ring.destroy()
-      status.inventory = ""
+      status.inventory = "";
       btn = "red"
       redBtn = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "redBtn").setDepth(4);
       redBtnText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, "Don't press ENTER!", {color: '#000000', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }}).setDepth(4);
@@ -293,7 +290,6 @@ const minigameLivingLibrary = (game, end) => {
 
 const minigameComputer = (game, end) => {
   game.load.image("computer", gameAssets.computerImg);
-
   const destroyMinigame = () => {
     if (inputText) {inputText.visible = false;}
     computer.destroy();
@@ -384,39 +380,11 @@ const minigameSaber = (game, end) => {
   ], end)
 }
 
-const box = (game, object) => {
-  var container = game.add.container(game.cameras.main.scrollX + innerWidth/2.3, game.cameras.main.scrollY + innerHeight/2.7, [object]);
-  container.setSize(innerWidth/8, innerWidth/9)
-  // graphics.fillStyle(0xFFFFFF);
-  // graphics.fillRect(game.cameras.main.scrollX + innerWidth/2.3, game.cameras.main.scrollY + innerHeight/2.7, innerWidth/8, innerWidth/9);
-
-
-  container.setInteractive();
-  game.input.setDraggable(container);
-
-  game.input.on('dragstart', function (pointer, gameObject) {
-    console.log(gameObject)
-    gameObject.setTint(0xff0000);
-
-});
-
-  game.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-
-    console.log(pointer)
-    gameObject.x = dragX;
-    gameObject.y = dragY;
-
-  });
-
-  game.input.keyboard.on("keydown-SPACE", () => {
-    container.destroy();
-  })
-}
-
 const textbox = (game, string, destroy) => {
   var content = string
   var border = game.add.graphics();
   var textBoxCounter = 0
+  
 
   border.fillStyle(0xFFFFFF);
   border.fillRect(game.cameras.main.scrollX + (innerWidth/3.27 - 3.0), game.cameras.main.scrollY + (innerHeight/1.67 - 3.0), innerWidth/2.68 + 6.0, innerHeight/15.08 + 6.0);
@@ -425,7 +393,7 @@ const textbox = (game, string, destroy) => {
 
   graphics.fillStyle(0x000000);
   graphics.fillRect(game.cameras.main.scrollX + innerWidth/3.27, game.cameras.main.scrollY + innerHeight/1.67, innerWidth/2.68, innerHeight/15.08);
-  var text = game.add.text(game.cameras.main.scrollX + innerWidth/3.275 + 6, game.cameras.main.scrollY + innerHeight/1.675 + 6, string[0], {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.69, height: 40 }})
+  var text = game.add.text(game.cameras.main.scrollX + innerWidth/3.275 + 6, game.cameras.main.scrollY + innerHeight/1.675 + 6, string[0], {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.69, height: 40 }});
 
   const incrementCounter = () => {
     textBoxCounter += 1

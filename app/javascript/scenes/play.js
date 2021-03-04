@@ -61,8 +61,8 @@ class Play extends Phaser.Scene {
     status.timer = ""
     s = 0;
     m = 0;
-    beginningMins = 0;
-    beginningSecs = 10;
+    beginningMins = 1;
+    beginningSecs = 45;
     then = 0;
     mins = "";
     sec = "";

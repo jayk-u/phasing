@@ -10,19 +10,18 @@ const minigameDoor = (game, end) => {
     keylock.destroy();
     end();
   }
-  var computerStatus = "Unlocked"
+  var computerStatus = "Unlocked";
 
   game.load.image("keylock", gameAssets.keylockImg);
   if (computerStatus == "Unlocked") {
     textbox(game, ["It's open!", "Let's go!"]);
-    game.cameras.main.fadeOut(4000, 255, 255, 255)
+    game.cameras.main.fadeOut(4000, 255, 255, 255);
     game.cameras.main.once("camerafadeoutcomplete", (camera) => {
-      console.log(camera)
-      var graph = game.add.graphics()
-      graph.fillStyle(0)
-      graph.fillRect(0,0, 10000, 10000)
-      game.add.text(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "You won!", {color:"#FFFFFF", font:"34px"})
-      game.cameras.main.fadeIn(4000, 255, 255, 255)
+      var graph = game.add.graphics();
+      graph.fillStyle(0);
+      graph.fillRect(0,0, 10000, 10000);
+      game.add.text(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "You won!", {color:"#FFFFFF", font:"34px"});
+      game.cameras.main.fadeIn(4000, 255, 255, 255);
     })
   } else if (inventory == "Key") {
     var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock").setDepth(4);
@@ -102,9 +101,9 @@ const minigameRoomLibrary = (game, end) => {
         key.ignoreDestroy = false;
         key.destroy();
         keylock.destroy();
-        textbox(game, ["Yes!"], destroyMinigame)
-        status.inventory = "none"
-        status.library = "Unlocked"
+        textbox(game, ["Yes!"], destroyMinigame);
+        status.inventory = "none";
+        status.library = "Unlocked";
     });
     } else {
       textbox(game, 

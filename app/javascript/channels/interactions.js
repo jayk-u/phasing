@@ -3,6 +3,7 @@ import { status } from "../scenes/play"
 var next;
 var ring;
 var key;
+var btn;
 
 const gameAssets = document.getElementById("game-assets").dataset;
 
@@ -183,12 +184,21 @@ const minigameSink = (game, end) => {
 
 const minigameBonsai = (game, end) => {
   game.load.image("redBtn", gameAssets.redbtnImg);
+  const enterRedBtn = () => {
+    if (status.computerStatus != "On" && status.computerStatus != "Unlocked") {
+      status.computerStatus = "On"
+      textbox(game, [ "*click*",
+      "I can hear a small whir close to me.",
+      "Let's hurry!"
+      ], destroyMinigame)
+    }
+  };
   var redBtnText;
   var redBtn;
-  var btn;
   const destroyMinigame = () => {
     redBtn.destroy();
     redBtnText.destroy();
+    game.input.keyboard.off("keydown-ENTER", (enterRedBtn))
     // tbox.destroy();
     end();
   }
@@ -196,35 +206,36 @@ const minigameBonsai = (game, end) => {
   if (status.computerStatus == "On") {
     textbox(game, ["This sounded like something booting up!"], end)
   } else if (status.inventory == "Ring") {
-    textbox(game, ["This bonsai is in fantastic shape. He probably spent hours working on it.", "There's a hole at the bottom, it's ring shaped."])
+    textbox(game, ["This bonsai is in fantastic shape. He probably spent hours working on it.", "There's a hole at the bottom, it's ring shaped.", "Should I try to put mine here...?"])
     ring.on("pointerdown", () => {
       ring.ignoreDestroy = false
       ring.destroy()
       status.inventory = "";
       btn = "red"
       redBtn = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "redBtn").setDepth(4);
-      redBtnText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, "Don't press ENTER!", {color: '#000000', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }}).setDepth(4);
+      redBtnText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, "hEy, No TimE to lose officeR", {color: '#000000', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }}).setDepth(4);
+        textbox(game, [
+          "The ring fits perfectly!",
+          "A small hidden door opened on the bottom of the altar, with a big red button in there." ,
+          "Maybe I need to do something with this...?"],
+          destroyMinigame
+        )
+      game.input.keyboard.on("keydown-ENTER", (enterRedBtn))
     })
-    let increment = 0;
-    game.input.keyboard.on("keydown-SPACE", () => {
-      if (btn == "red") {
-        if (increment < 2) {
-          textbox(game, [
-            ["The ring fits perfectly!"],
-            ["A small hidden door opened on the bottom of the altar, with a big red button in there." ]
-          ][increment])
-        }
-        increment += 1;
-        game.input.keyboard.on("keydown-ENTER", () => {
-          if (status.computerStatus != "On" && status.computerStatus != "Unlocked") {
-            status.computerStatus = "On"
-            textbox(game, [ "*click*",
-            "I can hear a small whir close to me.",
-            ], destroyMinigame)
-          }
-        })
-      }
-    })
+    // game.input.keyboard.on("keydown-SPACE", () => {
+    //   if (btn == "red") {
+    //     }
+    // })
+  } else if (btn == "red") {
+    redBtn = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "redBtn").setDepth(4);
+      redBtnText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, "hEy, No TimE to lose officeR", {color: '#000000', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }}).setDepth(4);
+        textbox(game, [
+          ["The ring fits perfectly!"],
+          ["A small hidden door opened on the bottom of the altar, with a big red button in there." ],
+          ["It looks like something is written on it...\nMaybe I need to do something with this...?"]],
+          destroyMinigame
+        )
+      game.input.keyboard.on("keydown-ENTER", (enterRedBtn))
   } else {
     textbox(game, ["This bonsai is in fantastic shape. He probably spent hours working on it.", "There's a hole at the bottom, it's ring shaped."], end)
   }
@@ -387,6 +398,7 @@ const minigameSaber = (game, end) => {
 }
 
 const textbox = (game, string, destroy) => {
+  if (next) {next.destroy()}
   var content = string
   var border = game.add.graphics();
   var textBoxCounter = 0

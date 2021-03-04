@@ -37,6 +37,7 @@ class Intro extends Phaser.Scene {
     this.load.image("picture3", introAssets.picture3Img);
     this.load.image("picture4", introAssets.picture4Img);
     this.load.image("picture5", introAssets.picture5Img);
+    this.load.audio("introMusic", introAssets.introMp3);
 
 
     const gameAssets = document.getElementById("game-assets").dataset;
@@ -77,6 +78,8 @@ create ()
       {
           this.scene.stop();
           this.scene.start('Play');
+          intromusic.stop();
+          console.log("biip");
       }
 
     })
@@ -99,20 +102,22 @@ create ()
     }).setDepth(2);
     status.setVisible(false);
 
-    let musique = this.sound.add('music');
-    musique.setVolume(0.1);
-    // musique.play();
+    let intromusic = this.sound.add('introMusic');
+    intromusic.setVolume(0.5);
+    intromusic.play();
 
     unmute.on("pointerup", (event) => {
-      musique.pause();
+      intromusic.pause();
       mute.setVisible(true);
       unmute.setVisible(false);
+      console.log("euh");
     });
 
     mute.on("pointerup", (event) => {
-      musique.resume();
+      intromusic.resume();
       unmute.setVisible(true);
       mute.setVisible(false);
+      console.log("ok");
     });
 
     const exit = this.add.image(innerWidth-110, innerHeight/10.5, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
@@ -128,6 +133,8 @@ create ()
     exit.on("pointerup", (event) => {
       this.scene.stop();
       this.scene.start('Login');
+      intromusic.stop();
+      console.log("hii");
     } );
 
   };

@@ -14,7 +14,17 @@ const minigameDoor = (game, end) => {
   }
 
   game.load.image("keylock", gameAssets.keylockImg);
+
   if (status.computerStatus == "Unlocked") {
+
+    
+    game.load.audio('door', gameAssets.doorMp3);
+    var door = game.sound.add('door');
+    door.play();
+
+
+    status.timer = "stop";
+
     textbox(game, ["It's open!", "Let's go!"]);
     game.cameras.main.fadeOut(4000, 255, 255, 255);
     game.cameras.main.once("camerafadeoutcomplete", (camera) => {

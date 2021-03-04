@@ -14,7 +14,7 @@ const minigameDoor = (game, end) => {
 
   game.load.image("keylock", gameAssets.keylockImg);
   if (computerStatus == "Unlocked") {
-    game.scene.pause();
+    status.timer = "stop";
     textbox(game, ["It's open!", "Let's go!"]);
     game.cameras.main.fadeOut(4000, 255, 255, 255)
     game.cameras.main.once("camerafadeoutcomplete", (camera) => {
@@ -22,9 +22,9 @@ const minigameDoor = (game, end) => {
       var graph = game.add.graphics()
       graph.fillStyle(0)
       graph.fillRect(0,0, 10000, 10000)
-      game.add.text(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "You won!", {color:"#FFFFFF", font:"34px"})
       game.cameras.main.fadeIn(4000, 255, 255, 255)
-      game.add.rectangle(0,0,600, 600, '#FFFFFF').setOrigin(0,0).alpha(0.3);
+      var winscreen = game.add.image(innerWidth/5, innerHeight/5, 'winscreen').setOrigin(0,0);
+      winscreen.setDisplaySize(innerWidth/7, innerHeight/4);
     })
   } else if (inventory == "Key") {
     var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock");

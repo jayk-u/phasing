@@ -23,8 +23,8 @@ const minigameDoor = (game, end) => {
       graph.fillStyle(0)
       graph.fillRect(0,0, 10000, 10000)
       game.cameras.main.fadeIn(4000, 255, 255, 255)
-      var winscreen = game.add.image(innerWidth/5, innerHeight/5, 'winscreen').setOrigin(0,0);
-      winscreen.setDisplaySize(innerWidth/7, innerHeight/4);
+      var winscreen = game.add.image(game.cameras.main.scrollX + innerWidth/2.35, game.cameras.main.scrollY + innerHeight/2.6, 'winscreen').setOrigin(0,0);
+      winscreen.setDisplaySize((innerWidth+innerHeight)/12, (innerWidth+innerHeight)/10.5);
     })
   } else if (inventory == "Key") {
     var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock");

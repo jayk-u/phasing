@@ -29,8 +29,8 @@ class Login extends Phaser.Scene {
     var lg = this.add.image(125, 80, "logoo");
     lg.setDisplaySize(225, 125);
 
-    var controls = this.add.image(innerWidth - 200, 120, "controls");
-    controls.setDisplaySize(200, 168);
+    var controls = this.add.image(innerWidth - 200, 150, "controls");
+    controls.setDisplaySize(200, 270);
 
     var perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, "perso");
     perso.setDisplaySize(230, 420);

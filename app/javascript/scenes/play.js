@@ -295,11 +295,11 @@ class Play extends Phaser.Scene {
     //End Inventory
 
     //SETTINGS
-    const unmute = this.add.image(innerWidth - 610, innerHeight/3.05, "volume").setInteractive().setDepth(2).setScrollFactor(0);
+    const unmute = this.add.image(innerWidth/1.5 -47, innerHeight/3.05, "volume").setInteractive().setDepth(2).setScrollFactor(0);
     unmute.setDisplaySize(35,35);
     unmute.setVisible(true);
 
-    var mute = this.add.image(innerWidth - 610, innerHeight/3.05, "mute").setInteractive().setDepth(2).setScrollFactor(0);
+    var mute = this.add.image(innerWidth/1.5 - 47, innerHeight/3.05, "mute").setInteractive().setDepth(2).setScrollFactor(0);
     mute.setDisplaySize(35,35);
     mute.setVisible(false);
 

@@ -46,7 +46,7 @@ class Play extends Phaser.Scene {
     then = 0
     mins = ""
     sec = ""
-    minigame = "none";
+    minigame = "";
     counter = 0;
     coordinates = [];
   }

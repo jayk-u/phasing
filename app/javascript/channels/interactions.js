@@ -26,7 +26,7 @@ const minigameDoor = (game, end) => {
 
     textbox(game, ["It's open!", "Let's go!"]);
     game.cameras.main.fadeOut(4000, 255, 255, 255);
-    game.cameras.main.once("camerafadeoutcomplete", (camera) => {
+    game.cameras.main.once("camerafadeoutcomplete", () => {
       var graph = game.add.graphics();
       graph.fillStyle(0);
       graph.fillRect(0, 0, 10000, 10000);
@@ -37,7 +37,8 @@ const minigameDoor = (game, end) => {
           game.cameras.main.scrollY + innerHeight / 2.6,
           "winscreen"
         )
-        .setOrigin(0, 0);
+        .setOrigin(0, 0)
+        .setDepth(99);
       winscreen.setDisplaySize(
         (innerWidth + innerHeight) / 12,
         (innerWidth + innerHeight) / 10.5
@@ -546,12 +547,14 @@ const minigameComputer = (game, end) => {
   }
 
   const destroyMinigame = () => {
-    if (inputText) {
-      inputText.visible = false;
+    if (active == false) {
+      if (inputText) {
+        inputText.visible = false;
+      }
+      computer.destroy();
+      game.input.keyboard.off("keyup", (inputComputer));
+      end();
     }
-    computer.destroy();
-    game.input.keyboard.off("keyup", (inputComputer));
-    end();
   };
   var computer = game.add
     .image(

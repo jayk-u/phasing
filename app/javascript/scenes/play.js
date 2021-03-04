@@ -22,6 +22,8 @@ var countDoor = 0;
 //Timer
 var s;
 var m;
+var ms;
+var endTime;
 var beginningMins;
 var beginningSecs;
 var then;
@@ -61,6 +63,7 @@ class Play extends Phaser.Scene {
     status.timer = ""
     s = 0;
     m = 0;
+    ms = 0;
 
     beginningMins = 1;
     beginningSecs = 45;
@@ -117,6 +120,7 @@ class Play extends Phaser.Scene {
     //   blankState = this.scene;
     //   counterScene++;
     // }
+    endTime = startTime + (beginningSecs + beginningMins * 60)  * 1000;
     localStorage.setItem('status', status.text)
 
     this.platforms = this.physics.add.staticGroup();
@@ -333,7 +337,6 @@ class Play extends Phaser.Scene {
       musique.pause();
       mute.setVisible(true);
       unmute.setVisible(false);
-      console.log("euh");
     });
 
 
@@ -341,7 +344,6 @@ class Play extends Phaser.Scene {
       unmute.setVisible(true);
       mute.setVisible(false);
       musique.resume();
-      console.log("ok");
     });
 
     const exit = this.add.image(innerWidth/1.5, innerHeight/3.05, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
@@ -410,9 +412,9 @@ class Play extends Phaser.Scene {
             );
             if (distBetween < 30) {
 
-              console.log("Object Position",objectCenterX, objectCenterY);
-              console.log("Distance to Object", distBetween);
-              console.log("Egyptian position", egyptian.x, egyptian.y);
+              // console.log("Object Position",objectCenterX, objectCenterY);
+              // console.log("Distance to Object", distBetween);
+              // console.log("Egyptian position", egyptian.x, egyptian.y);
               const testLine = this.add.graphics()
               testLine.lineStyle(1, 0xFFFFFF, 1.0);
               testLine.beginPath();
@@ -533,7 +535,7 @@ class Play extends Phaser.Scene {
           if (!startTime) {
             startTime = now;
           }
-          if (counter != 1) {
+          if (status.timer != "stop") {
             var ms = then - now;
           } else {
             var ms = 0;
@@ -605,8 +607,8 @@ class Play extends Phaser.Scene {
               musique.restart();
             });
           }
-          var endTime = startTime + (beginningSecs + beginningMins * 60)  * 1000;
-          if (now >= endTime && counter != 1) {
+          // console.log(endTime)
+          if (this.time.now >= endTime && status.timer != "stop") {
             status.timer = "stop"
             this.cameras.main.fadeOut(2500);
             endStatus = "true";
@@ -627,7 +629,6 @@ class Play extends Phaser.Scene {
             // End Textbox
 
             minigame = "active";
-            counter = 1;
             // var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(3);
             // rect.alpha = 0.7;
 

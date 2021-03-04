@@ -79,7 +79,6 @@ create ()
           this.scene.stop();
           this.scene.start('Play');
           intromusic.stop();
-          console.log("biip");
       }
 
     })
@@ -110,14 +109,14 @@ create ()
       intromusic.pause();
       mute.setVisible(true);
       unmute.setVisible(false);
-      console.log("euh");
+      // console.log("euh");
     });
 
     mute.on("pointerup", (event) => {
       intromusic.resume();
       unmute.setVisible(true);
       mute.setVisible(false);
-      console.log("ok");
+      // console.log("ok");
     });
 
     const exit = this.add.image(innerWidth-110, innerHeight/10.5, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
@@ -134,7 +133,7 @@ create ()
       this.scene.stop();
       this.scene.start('Login');
       intromusic.stop();
-      console.log("hii");
+      // console.log("hii");
     } );
 
   };
@@ -174,7 +173,6 @@ create ()
               line = "";
               incrementexpo += 0.07;
               pictureNum += incrementexpo;
-              console.log(pictureNum)
               picture = this.add.image(innerWidth/20, innerHeight/6, `picture${Math.min(5,Math.trunc(pictureNum))}`).setOrigin(0);
               if (Math.trunc(pictureNum) != Math.min(5,Math.trunc(pictureNum - incrementexpo))) {alphaIncrement = 0; picture.setAlpha(alphaIncrement)}
               picture.setDisplaySize(innerWidth*18/20, innerHeight*4/10);

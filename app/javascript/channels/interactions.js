@@ -275,10 +275,10 @@ const minigameCattree = (game, end) => {
     key.on('pointerdown', () => {
       key.x = innerWidth/3.1;
       key.y = innerHeight/3;
-      key.setDisplaySize(40,40)
-      key.ignoreDestroy = true
-      key.setScrollFactor(0)
-      status.inventory = "Key"
+      key.setDisplaySize(40,40);
+      key.ignoreDestroy = true;
+      key.setScrollFactor(0);
+      status.inventory = "Key";
   });
   }
 }

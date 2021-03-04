@@ -43,9 +43,9 @@ create ()
     var graphics = this.add.graphics();
 
     //graphics.fillStyle(0xFFFFFF);
-    var picture1 = this.add.image(50, 175, "picture1").setOrigin(0);
+    var picture1 = this.add.image(innerWidth/15, innerHeight/4.5, "picture1").setOrigin(0);
     picture1.setDisplaySize(1380, 485);
-    //picture1.setCrop(0, 0, innerWidth, innerHeight - 30);
+
 
     //graphics.fillRect(50, 175, innerWidth - 100, 200);
     var content = [ "Kyoto - October 13th 1997",
@@ -59,7 +59,7 @@ create ()
                     "I felt silly, I felt inadequate. I spent so much time preparing only to fail at the very first step.",
                     "No more time to look for evidence, this guy is sick. I must get out of here at all costs before he comes back..."
                   ]
-    text = this.add.text(60, innerHeight-250, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120 }})
+    text = this.add.text(60, innerWidth/2.3, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth - 120 }})
     skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
 
 
@@ -116,52 +116,6 @@ create ()
       localStorage.setItem('status', status.text)
 
     // END SETTINGS
-
-    // function nextLine() {
-    //   if (lineIndex === content.length)
-    //   {
-    //       //  We're finished
-    //       return;
-    //   }
-
-    //   //  Split the current line on spaces, so one word per array element
-    //   line = content[lineIndex].split(' ');
-
-    //   //  Reset the word index to zero (the first word in the line)
-    //   wordIndex = 0;
-
-    //   //  Call the 'nextWord' function once for each word in the line (line.length)
-    //   t.events.repeat(wordDelay, line.length, nextWord, this);
-    //   // line.forEach((w)=>{
-    //   //   // setTimeout(wordDelay/1000);
-    //   //   nextWord();
-    //   // })
-
-    //   //  Advance to the next line
-    //   lineIndex++;
-
-    // }
-
-    // function nextWord() {
-
-    //   //  Add the next word onto the text string, followed by a space
-    //   text.text = text.text.concat(line[wordIndex] + " ");
-
-    //   //  Advance the word index to the next word in the line
-    //   wordIndex++;
-
-    //   //  Last word?
-    //   if (wordIndex === line.length)
-    //   {
-    //       //  Add a carriage return
-    //       text.text = text.text.concat("\n");
-    //       // setTimeout(lineDelay/1000)
-    //       //  Get the next line after the lineDelay amount of ms has elapsed
-    //       t.events.add(lineDelay, nextLine, this);
-    //   }
-
-    // }
-
 
     exit.on("pointerup", (event) => {
       this.scene.stop();

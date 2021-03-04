@@ -145,8 +145,6 @@ class Play extends Phaser.Scene {
         var tileWorldY = tile.getTop();
         var collisionGroup = tile.getCollisionGroup();
 
-          // console.log(collisionGroup);
-
         if (!collisionGroup || collisionGroup.objects.length === 0) { return; }
 
           // The group will have an array of objects - these are the individual collision shapes
@@ -524,8 +522,10 @@ class Play extends Phaser.Scene {
           if (mins == "00" && sec == "00" && counter != 1) {
             minigame = "active";
             counter = 1;
-            var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#000000').setScrollFactor(0).setDepth(3);
+            var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(3);
             rect.alpha = 0.7;
+
+            //var losetext = this.add.text(innerWidth/2, innerHeight/2, "Too late...", { color: '#FFFFFF', font: "24px" }).setScrollFactor(0).setDepth(4);
 
             var again = this.add.image(innerWidth/2, innerHeight/3+200, 'playAgain').setScrollFactor(0).setDepth(4).setInteractive();
             again.setDisplaySize(250,200);

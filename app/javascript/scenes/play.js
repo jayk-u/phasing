@@ -304,7 +304,7 @@ class Play extends Phaser.Scene {
     mute.setVisible(false);
 
     let musique = this.sound.add('music');
-    musique.setVolume(0.1);
+    musique.setVolume(0.3);
     musique.play();
 
     unmute.on("pointerup", (event) => {
@@ -551,6 +551,7 @@ class Play extends Phaser.Scene {
               this.scene.stop();
               this.begin();
               this.scene.start('Play');
+              musique.restart();
             });
           }
         //End Timer

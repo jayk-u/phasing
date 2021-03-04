@@ -24,6 +24,10 @@ var timer;
 //Status
 var status = {};
 
+//Inventory
+var borderBox;
+var inventoryBox;
+
 class Play extends Phaser.Scene {
 
   constructor ()
@@ -105,8 +109,8 @@ class Play extends Phaser.Scene {
     this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
     this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
     // const testRect = this.add.rectangle(460, 323, 50, 100, 0xFFFFFF);
-    egyptian = this.physics.add.sprite(460, 323, "egyptian").setSize(15, 2).setOffset(9, 43);
-    this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0);
+    egyptian = this.physics.add.sprite(460, 323, "egyptian").setSize(15, 2).setOffset(9, 43).setDepth(1);
+    this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
     // console.log(testRect);
     // this.collision1 = this.map.createLayer('collision_1', this.tileset, 0, 0);
     // this.collision2 = this.map.createLayer('collision_2', this.tileset, 0, 0);
@@ -280,12 +284,14 @@ class Play extends Phaser.Scene {
     //End Timer
 
     //Inventory
-    var border = this.add.graphics().setScrollFactor(0);
-    border.fillStyle(0xFFFFFF);
-    border.fillRect(innerWidth/3.3 - 1, innerHeight/3.3 - 1, 52, 52)
-    var inventory = this.add.graphics().setScrollFactor(0);
-    inventory.fillStyle(0x000000)
-    inventory.fillRect(innerWidth/3.3, innerHeight/3.3, 50, 50);
+    borderBox = this.add.graphics().setScrollFactor(0);
+    borderBox.fillStyle(0xFFFFFF);
+    borderBox.fillRect(innerWidth/3.3 - 1, innerHeight/3.3 - 1, 52, 52);
+    borderBox.visible = false;
+    inventoryBox = this.add.graphics().setScrollFactor(0);
+    inventoryBox.fillStyle(0x000000)
+    inventoryBox.fillRect(innerWidth/3.3, innerHeight/3.3, 50, 50);
+    inventoryBox.visible = false;
     //End Inventory
 
     //SETTINGS
@@ -560,6 +566,14 @@ class Play extends Phaser.Scene {
       countDoor = 1;
     } else if (countDoor === 1) {
       camera(this.secretDoor);
+    }
+
+    if (status.inventory != "" && status.inventory != "none") {
+      borderBox.visible = true;
+      inventoryBox.visible = true;
+    } else {
+      borderBox.visible = false;
+      inventoryBox.visible = false;
     }
     camera(this.walls);
     camera(this.objectBottom);

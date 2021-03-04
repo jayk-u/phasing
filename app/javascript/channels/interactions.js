@@ -1,11 +1,7 @@
-var inventory
-var library
-var content
-var key
-var ring
+import { status } from "../scenes/play"
 // var redBtn
-var textBoxCounter
-var computerStatus
+var ring;
+var key;
 const gameAssets = document.getElementById("game-assets").dataset;
 
 const minigameDoor = (game, end) => {
@@ -88,7 +84,7 @@ const minigameFreezer = (game, end) => {
 }
 
 const minigameRoomLibrary = (game, end) => {
-  if (library != "Unlocked") {
+  if (status.library != "Unlocked") {
     const destroyMinigame = () => {
       keylock.destroy();
       end();
@@ -100,15 +96,15 @@ const minigameRoomLibrary = (game, end) => {
     keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16)
     keylock.setInteractive();
   
-    if (inventory && inventory != "" && inventory != "none") {
+    if (status.inventory && status.inventory != "" && status.inventory != "none") {
       textbox(game, ["I need the right tools..."], destroyMinigame)
       key.on('pointerdown', () => {
         key.ignoreDestroy = false;
         key.destroy();
         keylock.destroy();
         textbox(game, ["Yes!"], destroyMinigame)
-        inventory = "none"
-        library = "Unlocked"
+        status.inventory = "none"
+        status.library = "Unlocked"
     });
     } else {
       textbox(game, 
@@ -150,20 +146,20 @@ const minigameSink = (game, end) => {
     end();
   }
 
-  if (inventory == "Ring") {
+  if (status.inventory == "Ring") {
     textbox(game, ["My precious..."], end)
   } else {
     ring = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "ring")
     ring.setDisplaySize((innerWidth+innerHeight)/18, (innerWidth+innerHeight)/18)
     ring.setInteractive();
   
-    if (inventory && inventory != "" && inventory != "none") {
+    if (status.inventory && status.inventory != "" && status.inventory != "none") {
       textbox(game, [
         "The sink is full of clean plates.",
         "Wait, is that... a ring? He must have dropped it while doing the dishes... ", 
         "My hands are full right now, I'll come back later.",
       ], destroyMinigame)
-    } else if (inventory == "Ring") {
+    } else if (status.inventory == "Ring") {
       textbox(game, ["My precious..."], end)
     } else {
       textbox(game, [
@@ -175,9 +171,9 @@ const minigameSink = (game, end) => {
         ring.x = innerWidth/3.1;
         ring.y = innerHeight/3;
         ring.setDisplaySize(40,40)
-        ring.ignoreDestroy = true
+        ring.ignoreDestroy = true;
         ring.setScrollFactor(0)
-        inventory = "Ring"
+        status.inventory = "Ring"
       });
     }
   }
@@ -196,14 +192,14 @@ const minigameBonsai = (game, end) => {
     end();
   }
 
-  if (computerStatus == "On") {
+  if (status.computerStatus == "On") {
     textbox(game, ["This sounded like something booting up!"], end)
-  } else if (inventory == "Ring") {
+  } else if (status.inventory == "Ring") {
     textbox(game, ["This bonsai is in fantastic shape. He probably spent hours working on it.", "There's a hole at the bottom, it's ring shaped."])
     ring.on("pointerdown", () => {
       ring.ignoreDestroy = false
       ring.destroy()
-      inventory = ""
+      status.inventory = ""
       btn = "red"
       redBtn = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "redBtn")
       redBtnText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, "Don't press ENTER!", {color: '#000000', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }})
@@ -219,8 +215,8 @@ const minigameBonsai = (game, end) => {
         }
         increment += 1;
         game.input.keyboard.on("keydown-ENTER", () => {
-          if (computerStatus != "On" && computerStatus != "Unlocked") {
-            computerStatus = "On"
+          if (status.computerStatus != "On" && status.computerStatus != "Unlocked") {
+            status.computerStatus = "On"
             textbox(game, [ "*click*",
             "I can hear a small whir close to me.",
             ], destroyMinigame)
@@ -258,9 +254,9 @@ const minigameCattree = (game, end) => {
     end();
   }
 
-  if (inventory == "Key") {
+  if (status.inventory == "Key") {
     textbox(game, ["I already got the key.", "Let's hurry!"], end)
-  } else if (inventory && inventory != "") {
+  } else if (status.inventory && status.inventory != "") {
     key = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "key")
     key.setDisplaySize((innerWidth+innerHeight)/18, (innerWidth+innerHeight)/18)
     textbox(game, ["I can't carry anything else..."], destroyMinigame)
@@ -280,7 +276,7 @@ const minigameCattree = (game, end) => {
       key.setDisplaySize(40,40)
       key.ignoreDestroy = true
       key.setScrollFactor(0)
-      inventory = "Key"
+      status.inventory = "Key"
   });
   }
 }
@@ -303,8 +299,8 @@ const minigameComputer = (game, end) => {
   }
   var computer = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, 'computer').setDisplaySize((innerWidth+innerHeight)/10, (innerWidth+innerHeight)/10);
 
-  if (computerStatus == "Unlocked") { textbox(game, ["The computer is unlocked.", "I need to hurry!"], destroyMinigame) }
-  else if (computerStatus == "On") {
+  if (status.computerStatus == "Unlocked") { textbox(game, ["The computer is unlocked.", "I need to hurry!"], destroyMinigame) }
+  else if (status.computerStatus == "On") {
     textbox(game, [
       "Locked by a password.",
       "But I can still see the wallpaper: it looks like an old drunk sailor and a small white dog.",
@@ -326,7 +322,7 @@ const minigameComputer = (game, end) => {
         }
         inputText.setText(input)
         if (input == "Enter password: TINTIN") {
-          computerStatus = "Unlocked"
+          status.computerStatus = "Unlocked"
           inputText.setTint(0x88CC00, 0x00FF2A, 0x66FF19, 0x80FF66)
           textbox(game, [
             "Found it! There's only one icon on the desktop...",
@@ -341,7 +337,7 @@ const minigameComputer = (game, end) => {
 }
 
 const minigameAltar = (game, end) => {
-  if (inventory = "Ring") {
+  if (status.inventory = "Ring") {
     textbox(game, [
       "The ring fits perfectly!",
       "A small hidden door opened on the bottom of the altar, with a big red button in there.",
@@ -416,9 +412,9 @@ const box = (game, object) => {
 }
 
 const textbox = (game, string, destroy) => {
-  content = string
+  var content = string
   var border = game.add.graphics();
-  textBoxCounter = 0
+  var textBoxCounter = 0
 
   border.fillStyle(0xFFFFFF);
   border.fillRect(game.cameras.main.scrollX + (innerWidth/3.27 - 3.0), game.cameras.main.scrollY + (innerHeight/1.67 - 3.0), innerWidth/2.68 + 6.0, innerHeight/15.08 + 6.0);
@@ -444,4 +440,4 @@ const textbox = (game, string, destroy) => {
   game.input.keyboard.on("keydown-SPACE", incrementCounter)
 }
 
-export {computerStatus, minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer }
+export { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer }

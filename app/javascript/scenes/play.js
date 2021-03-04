@@ -1,14 +1,5 @@
-import {game} from "../channels/game"
-import {computerStatus, minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
-
-function Range(a,b){
-  // if only one argument supplied then return random number between 1 and argument
-  if (b === undefined) {
-    b = a;
-    a = 1;
-  }
-  return [...Array(b-a+1).keys()].map(x => x+a);
-}
+import { game } from "../channels/game"
+import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
 var minigame;
 var counter;
@@ -19,16 +10,18 @@ var coordinates;
 var countDoor = 0;
 
 //Timer
-var s
-var m
-var beginningMins
-var beginningSecs
-var then
-var mins
-var sec
-var timer
+var s;
+var m;
+var beginningMins;
+var beginningSecs;
+var then;
+var mins;
+var sec;
+var timer;
 //EndTimer
 
+//Status
+var status = {};
 
 class Play extends Phaser.Scene {
 
@@ -39,14 +32,17 @@ class Play extends Phaser.Scene {
   }
 
   begin () {
-    s = 0
-    m = 0
-    beginningMins = 0
-    beginningSecs = 10
-    then = 0
-    mins = ""
-    sec = ""
-    minigame = "";
+    status.computerStatus = "";
+    status.inventory = "";
+    status.library = "";
+    s = 0;
+    m = 0;
+    beginningMins = 0;
+    beginningSecs = 50;
+    then = 0;
+    mins = "";
+    sec = "";
+    minigame = "none";
     counter = 0;
     coordinates = [];
   }
@@ -55,7 +51,6 @@ class Play extends Phaser.Scene {
   preload()
   {
     const gameAssets = document.getElementById("game-assets").dataset;
-
 
     this.load.image("tv", gameAssets.tvImg);
     this.load.image("redBtn", gameAssets.redbtnImg);
@@ -87,7 +82,11 @@ class Play extends Phaser.Scene {
 
   create()
   {
-
+    // console.log(counterScene);
+    // if (counterScene === 0) {
+    //   blankState = this.scene;
+    //   counterScene++;
+    // }
     localStorage.setItem('status', status.text)
 
     this.platforms = this.physics.add.staticGroup();
@@ -316,8 +315,8 @@ class Play extends Phaser.Scene {
 
     exit.on("pointerup", (event) => {
      this.scene.stop();
-     this.begin();
      this.scene.start('Login');
+     this.begin();
    });
 
     //END SETTINGS
@@ -545,13 +544,11 @@ class Play extends Phaser.Scene {
 
 
         //Inventory
-    if (computerStatus === 'Unlocked' && countDoor < 1) {
+    if (status.computerStatus === 'Unlocked' && countDoor < 1) {
       this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
       countDoor = 1;
     } else if (countDoor === 1) {
       camera(this.secretDoor);
-    } else {
-      var looooop = "";
     }
     camera(this.walls);
     camera(this.objectBottom);
@@ -562,4 +559,4 @@ class Play extends Phaser.Scene {
   };
 };
 
-export { Play };
+export { Play, status };

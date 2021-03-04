@@ -1,6 +1,8 @@
 import { status } from "../scenes/play"
 // var redBtn
 var next;
+var ring;
+var key;
 
 const gameAssets = document.getElementById("game-assets").dataset;
 

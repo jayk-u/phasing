@@ -8,31 +8,36 @@ var textBoxCounter
 var computerStatus
 const gameAssets = document.getElementById("game-assets").dataset;
 
-  const minigameDoor = (game, end) => {
+const minigameDoor = (game, end) => {
 
-    const destroyMinigame = () => {
-      keylock.destroy();
-      end();
-    }
+  const destroyMinigame = () => {
+    keylock.destroy();
+    end();
+  }
+  var computerStatus = "Unlocked"
 
-    game.load.image("keylock", gameAssets.keylockImg);
-
-    var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock")
-    keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16)
-    keylock.setInteractive();
-  
-    if (inventory && inventory != "" && inventory != "none") {
-      textbox(game, ["A door.", "I need the right tools..."], destroyMinigame)
-      key.on('pointerdown', () => {
-        key.destroy();
-        keylock.destroy();
-        textbox(game, "Yes!", end)
-        inventory = "none"
-    });
-    } else {
-      textbox(game, ["The door is locked.", "I can't make it move."], destroyMinigame)
-    }
-    }
+  game.load.image("keylock", gameAssets.keylockImg);
+  if (computerStatus == "Unlocked") {
+    textbox(game, ["It's open!", "Let's go!"]);
+    game.cameras.main.fadeOut(4000, 255, 255, 255)
+    game.cameras.main.once("camerafadeoutcomplete", (camera) => {
+      console.log(camera)
+      var graph = game.add.graphics()
+      graph.fillStyle(0)
+      graph.fillRect(0,0, 10000, 10000)
+      game.add.text(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "You won!", {color:"#FFFFFF", font:"34px"})
+      game.cameras.main.fadeIn(4000, 255, 255, 255)
+    })
+  } else if (inventory == "Key") {
+    var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock");
+    keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16);
+    textbox(game, ["The key doesn't seem to fit..."], destroyMinigame);
+  } else {
+    var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock");
+    keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16);
+    textbox(game, ["A door.", "It's locked..."], destroyMinigame);
+  }
+}
 
 const minigameTV = (game, end) => {
 

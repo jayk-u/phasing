@@ -117,52 +117,6 @@ create ()
 
     // END SETTINGS
 
-    // function nextLine() {
-    //   if (lineIndex === content.length)
-    //   {
-    //       //  We're finished
-    //       return;
-    //   }
-
-    //   //  Split the current line on spaces, so one word per array element
-    //   line = content[lineIndex].split(' ');
-
-    //   //  Reset the word index to zero (the first word in the line)
-    //   wordIndex = 0;
-
-    //   //  Call the 'nextWord' function once for each word in the line (line.length)
-    //   t.events.repeat(wordDelay, line.length, nextWord, this);
-    //   // line.forEach((w)=>{
-    //   //   // setTimeout(wordDelay/1000);
-    //   //   nextWord();
-    //   // })
-
-    //   //  Advance to the next line
-    //   lineIndex++;
-
-    // }
-
-    // function nextWord() {
-
-    //   //  Add the next word onto the text string, followed by a space
-    //   text.text = text.text.concat(line[wordIndex] + " ");
-
-    //   //  Advance the word index to the next word in the line
-    //   wordIndex++;
-
-    //   //  Last word?
-    //   if (wordIndex === line.length)
-    //   {
-    //       //  Add a carriage return
-    //       text.text = text.text.concat("\n");
-    //       // setTimeout(lineDelay/1000)
-    //       //  Get the next line after the lineDelay amount of ms has elapsed
-    //       t.events.add(lineDelay, nextLine, this);
-    //   }
-
-    // }
-
-
     exit.on("pointerup", (event) => {
       this.scene.stop();
       this.scene.start('Login');

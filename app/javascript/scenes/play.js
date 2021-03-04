@@ -61,8 +61,10 @@ class Play extends Phaser.Scene {
     status.timer = ""
     s = 0;
     m = 0;
-    beginningMins = 0;
-    beginningSecs = 15;
+
+    beginningMins = 1;
+    beginningSecs = 45;
+
     then = 0;
     mins = "";
     sec = "";
@@ -582,7 +584,7 @@ class Play extends Phaser.Scene {
             endGraphics.destroy();
             endText.destroy();
             this.cameras.main.once("camerafadeoutcomplete", () => {
-              var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(3);
+              var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
               this.cameras.main.fadeIn(10);
             })
             // comment again
@@ -591,10 +593,9 @@ class Play extends Phaser.Scene {
             //new lost screen
             var lostscreen = this.add.image(this.cameras.main.scrollX + innerWidth/2.33, this.cameras.main.scrollY + innerHeight/3,'lostscreen').setOrigin(0,0);
             lostscreen.setDisplaySize((innerWidth+innerHeight)/12, (innerWidth+innerHeight)/10.5);
-            lostscreen.setDepth(4);
+            lostscreen.setDepth(5);
 
-            var again = this.add.image(innerWidth/2, innerHeight/1.6, 'playAgain').setScrollFactor(0).setDepth(4).setInteractive();
-
+            again = this.add.image(innerWidth/2, innerHeight/1.6, 'playAgain').setScrollFactor(0).setDepth(5).setInteractive();
             again.setDisplaySize(250,200);
 
             again.on("pointerup", (event) => {
@@ -606,6 +607,7 @@ class Play extends Phaser.Scene {
           }
           var endTime = startTime + (beginningSecs + beginningMins * 60)  * 1000;
           if (now >= endTime && counter != 1) {
+            status.timer = "stop"
             this.cameras.main.fadeOut(2500);
             endStatus = "true";
 

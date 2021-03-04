@@ -1,7 +1,9 @@
 import { status } from "../scenes/play"
 // var redBtn
+var next;
 var ring;
 var key;
+
 const gameAssets = document.getElementById("game-assets").dataset;
 
 const minigameDoor = (game, end) => {
@@ -10,23 +12,22 @@ const minigameDoor = (game, end) => {
     keylock.destroy();
     end();
   }
-  var computerStatus = "Unlocked";
 
   game.load.image("keylock", gameAssets.keylockImg);
-  if (computerStatus == "Unlocked") {
 
-    console.dir(game);
+  if (status.computerStatus == "Unlocked") {
+
+    
     game.load.audio('door', gameAssets.doorMp3);
     var door = game.sound.add('door');
     door.play();
 
 
     status.timer = "stop";
+
     textbox(game, ["It's open!", "Let's go!"]);
     game.cameras.main.fadeOut(4000, 255, 255, 255);
     game.cameras.main.once("camerafadeoutcomplete", (camera) => {
-
-      console.log(camera)
       var graph = game.add.graphics()
       graph.fillStyle(0)
       graph.fillRect(0,0, 10000, 10000)
@@ -34,7 +35,7 @@ const minigameDoor = (game, end) => {
       var winscreen = game.add.image(game.cameras.main.scrollX + innerWidth/2.35, game.cameras.main.scrollY + innerHeight/2.6, 'winscreen').setOrigin(0,0);
       winscreen.setDisplaySize((innerWidth+innerHeight)/12, (innerWidth+innerHeight)/10.5);
     })
-  } else if (inventory == "Key") {
+  } else if (status.inventory == "Key") {
     var keylock = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "keylock").setDepth(4);
     keylock.setDisplaySize((innerWidth+innerHeight)/16, (innerWidth+innerHeight)/16);
     textbox(game, ["The key doesn't seem to fit..."], destroyMinigame);
@@ -128,6 +129,7 @@ const minigameRoomLibrary = (game, end) => {
       'French comics here. I think they call these "band dessin" or something like this.',
       "Tintin... what a weird name... ",
       "Hey, that one with the two weirdos with a funny moustache and the small dog looks fun!",
+      "And there’s even one with a cowboy."
     ], end)
   }
 }
@@ -208,7 +210,7 @@ const minigameBonsai = (game, end) => {
     ring.on("pointerdown", () => {
       ring.ignoreDestroy = false
       ring.destroy()
-      status.inventory = ""
+      status.inventory = "";
       btn = "red"
       redBtn = game.add.image(game.cameras.main.scrollX + innerWidth/2.1, game.cameras.main.scrollY + innerHeight/2.3, "redBtn").setDepth(4);
       redBtnText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, "Don't press ENTER!", {color: '#000000', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }}).setDepth(4);
@@ -300,7 +302,7 @@ const minigameLivingLibrary = (game, end) => {
 
 const minigameComputer = (game, end) => {
   game.load.image("computer", gameAssets.computerImg);
-
+  
   const destroyMinigame = () => {
     if (inputText) {inputText.visible = false;}
     computer.destroy();
@@ -312,31 +314,34 @@ const minigameComputer = (game, end) => {
   else if (status.computerStatus == "On") {
     textbox(game, [
       "Locked by a password.",
-      "But I can still see the wallpaper: it looks like an old drunk sailor and a small white dog.",
+      "But I can still see the wallpaper: it looks like a big guy holding a huge rock.",
+      "Maybe I should try something out?"
       ])
     var input = "Enter password: "
     var inputText = game.add.text(game.cameras.main.scrollX + innerWidth/2.22, game.cameras.main.scrollY + innerHeight/2.5, input, {color: '#FFFFFF', font: "11.5px", wordWrap: {width: (innerWidth)/19, height: (innerHeight)/5 }}).setDepth(4);
     game.input.keyboard.on("keyup", (event) => {
-      if ((input != "Enter password: " || event.key != "e") && (event.keyCode <= 90 && event.keyCode >= 65)  || event.key == "Backspace" ) {
-        if (event.key == "Backspace") {
-          input = "Enter password: "
-        } else if (input.length > 23) {
-          input = "Enter password: ERROR"
-          inputText.setTint(0xFF6666, 0xFF4019, 0xB30000, 0xE60000)
-          game.input.keyboard.once("keydown-SPACE", () => {
-            destroyMinigame();
-          })
-        } else {
-          input = input.concat(event.key.toUpperCase())
-        }
-        inputText.setText(input)
-        if (input == "Enter password: TINTIN") {
-          status.computerStatus = "Unlocked"
-          inputText.setTint(0x88CC00, 0x00FF2A, 0x66FF19, 0x80FF66)
-          textbox(game, [
-            "Found it! There's only one icon on the desktop...",
-            '"Main control lock", this must be the thing! Quick!',
-          ], destroyMinigame)
+      if (next.scene != game.scene.scene) {
+        if ((input != "Enter password: " || event.key != "e") && (event.keyCode <= 90 && event.keyCode >= 65)  || event.key == "Backspace" ) {
+          if (event.key == "Backspace") {
+            input = "Enter password: "
+          } else if (input.length > 23) {
+            input = "Enter password: ERROR"
+            inputText.setTint(0xFF6666, 0xFF4019, 0xB30000, 0xE60000)
+            game.input.keyboard.once("keydown-SPACE", () => {
+              destroyMinigame();
+            })
+          } else {
+            input = input.concat(event.key.toUpperCase())
+          }
+          inputText.setText(input)
+          if (input == "Enter password: ASTERIX") {
+            status.computerStatus = "Unlocked"
+            inputText.setTint(0x88CC00, 0x00FF2A, 0x66FF19, 0x80FF66)
+            textbox(game, [
+              "Found it! There's only one icon on the desktop...",
+              '"Main control lock", this must be the thing! Quick!',
+            ], destroyMinigame)
+          }
         }
       }
     })
@@ -391,39 +396,11 @@ const minigameSaber = (game, end) => {
   ], end)
 }
 
-const box = (game, object) => {
-  var container = game.add.container(game.cameras.main.scrollX + innerWidth/2.3, game.cameras.main.scrollY + innerHeight/2.7, [object]);
-  container.setSize(innerWidth/8, innerWidth/9)
-  // graphics.fillStyle(0xFFFFFF);
-  // graphics.fillRect(game.cameras.main.scrollX + innerWidth/2.3, game.cameras.main.scrollY + innerHeight/2.7, innerWidth/8, innerWidth/9);
-
-
-  container.setInteractive();
-  game.input.setDraggable(container);
-
-  game.input.on('dragstart', function (pointer, gameObject) {
-    console.log(gameObject)
-    gameObject.setTint(0xff0000);
-
-});
-
-  game.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-
-    console.log(pointer)
-    gameObject.x = dragX;
-    gameObject.y = dragY;
-
-  });
-
-  game.input.keyboard.on("keydown-SPACE", () => {
-    container.destroy();
-  })
-}
-
 const textbox = (game, string, destroy) => {
   var content = string
   var border = game.add.graphics();
   var textBoxCounter = 0
+  
 
   border.fillStyle(0xFFFFFF);
   border.fillRect(game.cameras.main.scrollX + (innerWidth/3.27 - 3.0), game.cameras.main.scrollY + (innerHeight/1.67 - 3.0), innerWidth/2.68 + 6.0, innerHeight/15.08 + 6.0);
@@ -433,15 +410,20 @@ const textbox = (game, string, destroy) => {
   graphics.fillStyle(0x000000);
   graphics.fillRect(game.cameras.main.scrollX + innerWidth/3.27, game.cameras.main.scrollY + innerHeight/1.67, innerWidth/2.68, innerHeight/15.08);
   var text = game.add.text(game.cameras.main.scrollX + innerWidth/3.275 + 6, game.cameras.main.scrollY + innerHeight/1.675 + 6, string[0], {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.69, height: 40 }})
+  if (string.length != 1) {next = game.add.text(game.cameras.main.scrollX + innerWidth/1.505, game.cameras.main.scrollY + innerHeight/1.54, "...", {color: '#FFFFFF', font: "6px"} )}
 
   const incrementCounter = () => {
     textBoxCounter += 1
+    if (textBoxCounter == string.length - 1) {
+      next.destroy();
+    }
     if (string.length > textBoxCounter) {
       text.setText(string[textBoxCounter])
     } else {
       graphics.destroy();
       border.destroy();
       text.destroy();
+      if (next) {next.destroy()}
       if (destroy) {destroy()};
       game.input.keyboard.off("keydown-SPACE", incrementCounter)
     }

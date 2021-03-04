@@ -161,7 +161,7 @@ create ()
         // picturecam.visible = true
         // picturecam.fadeOut(2000)
       }
-      if (Math.trunc(pictureNum) != Math.trunc(pictureNum + incrementexpo)) {
+      if (Math.trunc(pictureNum) != Math.min(5,Math.trunc(pictureNum + incrementexpo))) {
         alphaIncrement += 0.025
         picture.setAlpha(1 - alphaIncrement)
       }
@@ -174,8 +174,9 @@ create ()
               line = "";
               incrementexpo += 0.07;
               pictureNum += incrementexpo;
+              console.log(pictureNum)
               picture = this.add.image(innerWidth/20, innerHeight/6, `picture${Math.min(5,Math.trunc(pictureNum))}`).setOrigin(0);
-              if (Math.trunc(pictureNum) != Math.trunc(pictureNum - incrementexpo)) {alphaIncrement = 0; picture.setAlpha(alphaIncrement)}
+              if (Math.trunc(pictureNum) != Math.min(5,Math.trunc(pictureNum - incrementexpo))) {alphaIncrement = 0; picture.setAlpha(alphaIncrement)}
               picture.setDisplaySize(innerWidth*18/20, innerHeight*4/10);
               // picturecam.fadeIn(2000)
               // picturecam.visibe = false

@@ -66,8 +66,8 @@ class Play extends Phaser.Scene {
     m = 0;
     ms = 0;
 
-    beginningMins = 0;
-    beginningSecs = 5;
+    beginningMins = 1;
+    beginningSecs = 45;
 
     then = 0;
     mins = "";

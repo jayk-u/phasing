@@ -2,7 +2,8 @@ import { Time } from "phaser";
 import { game } from "../channels/game"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
-var musique
+var musique;
+var fadeComplete;
 var minigame;
 var startTime;
 var endTimer;
@@ -583,8 +584,11 @@ class Play extends Phaser.Scene {
 
 
           this.cameras.main.once("camerafadeoutcomplete", () => {
-            var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
-            this.cameras.main.fadeIn(10);
+            if (!fadeComplete) {
+              var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
+              this.cameras.main.fadeIn(10);
+              fadeComplete = true;
+            }
           })
 
           if (endTimer > 2900) {

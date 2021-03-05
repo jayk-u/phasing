@@ -2,6 +2,7 @@ import { Time } from "phaser";
 import { game } from "../channels/game"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
+var musique
 var minigame;
 var startTime;
 var endTimer;
@@ -22,6 +23,8 @@ var countDoor = 0;
 //Timer
 var s;
 var m;
+var ms;
+var endTime;
 var beginningMins;
 var beginningSecs;
 var then;
@@ -61,9 +64,10 @@ class Play extends Phaser.Scene {
     status.timer = ""
     s = 0;
     m = 0;
+    ms = 0;
 
-    beginningMins = 1;
-    beginningSecs = 45;
+    beginningMins = 0;
+    beginningSecs = 10;
 
     then = 0;
     mins = "";
@@ -87,7 +91,7 @@ class Play extends Phaser.Scene {
     this.load.image("key", gameAssets.keyImg);
     this.load.tilemapTiledJSON('map', gameAssets.mapJson);
     this.load.image('tiles', gameAssets.mapPng);
-    this.load.image('ground', gameAssets.platformPng);
+    // this.load.image('ground', gameAssets.platformPng);
     this.load.image('exit', gameAssets.exitImg);
     this.load.spritesheet('egyptian', gameAssets.policemanSprite, {
       frameWidth: 32,
@@ -117,6 +121,7 @@ class Play extends Phaser.Scene {
     //   blankState = this.scene;
     //   counterScene++;
     // }
+    endTime = startTime + (beginningSecs + beginningMins * 60)  * 1000;
     localStorage.setItem('status', status.text)
 
     this.platforms = this.physics.add.staticGroup();
@@ -325,7 +330,7 @@ class Play extends Phaser.Scene {
     mute.setDisplaySize(35,35);
     mute.setVisible(false);
 
-    let musique = this.sound.add('music');
+    musique = this.sound.add('music');
     musique.setVolume(0.3);
     musique.play();
 
@@ -333,7 +338,6 @@ class Play extends Phaser.Scene {
       musique.pause();
       mute.setVisible(true);
       unmute.setVisible(false);
-      console.log("euh");
     });
 
 
@@ -341,7 +345,6 @@ class Play extends Phaser.Scene {
       unmute.setVisible(true);
       mute.setVisible(false);
       musique.resume();
-      console.log("ok");
     });
 
     const exit = this.add.image(innerWidth/1.5, innerHeight/3.05, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
@@ -410,9 +413,9 @@ class Play extends Phaser.Scene {
             );
             if (distBetween < 30) {
 
-              console.log("Object Position",objectCenterX, objectCenterY);
-              console.log("Distance to Object", distBetween);
-              console.log("Egyptian position", egyptian.x, egyptian.y);
+              // console.log("Object Position",objectCenterX, objectCenterY);
+              // console.log("Distance to Object", distBetween);
+              // console.log("Egyptian position", egyptian.x, egyptian.y);
               const testLine = this.add.graphics()
               testLine.lineStyle(1, 0xFFFFFF, 1.0);
               testLine.beginPath();
@@ -533,7 +536,7 @@ class Play extends Phaser.Scene {
           if (!startTime) {
             startTime = now;
           }
-          if (counter != 1) {
+          if (status.timer != "stop") {
             var ms = then - now;
           } else {
             var ms = 0;
@@ -593,26 +596,25 @@ class Play extends Phaser.Scene {
             //new lost screen
             var lostscreen = this.add.image(this.cameras.main.scrollX + innerWidth/2.33, this.cameras.main.scrollY + innerHeight/3,'lostscreen').setOrigin(0,0);
             lostscreen.setDisplaySize((innerWidth+innerHeight)/12, (innerWidth+innerHeight)/10.5);
-            lostscreen.setDepth(5);
+            lostscreen.setDepth(10);
 
-            again = this.add.image(innerWidth/2, innerHeight/1.6, 'playAgain').setScrollFactor(0).setDepth(5).setInteractive();
+            again = this.add.image(innerWidth/2, innerHeight/1.6, 'playAgain').setScrollFactor(0).setDepth(11).setInteractive();
             again.setDisplaySize(250,200);
 
             again.on("pointerup", (event) => {
               this.scene.stop();
               this.scene.start('Play');
               this.begin();
-              musique.restart();
+              musique.destroy();
             });
           }
-          var endTime = startTime + (beginningSecs + beginningMins * 60)  * 1000;
-          if (now >= endTime && counter != 1) {
+          // console.log(endTime)
+          if ((now - startTime) >= endTime && status.timer != "stop") {
             status.timer = "stop"
             this.cameras.main.fadeOut(2500);
             endStatus = "true";
 
             // Textbox
-            // def t = 0 hors de update
             endContent = "Here you are officer!";
             endBorder = this.add.graphics();
 
@@ -627,7 +629,6 @@ class Play extends Phaser.Scene {
             // End Textbox
 
             minigame = "active";
-            counter = 1;
             // var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(3);
             // rect.alpha = 0.7;
 

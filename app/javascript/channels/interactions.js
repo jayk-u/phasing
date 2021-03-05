@@ -3,7 +3,6 @@ import { status } from "../scenes/play";
 var next;
 var ring;
 var key;
-var btn;
 var content;
 var active;
 
@@ -246,7 +245,7 @@ const minigameSink = (game, end) => {
     end();
   };
 
-  if (status.inventory == "Ring" || btn == "red") {
+  if (status.inventory == "Ring" || status.btn == "red") {
     textbox(game, ["My precious..."], end);
   } else {
     ring = game.add
@@ -319,7 +318,7 @@ const minigameBonsai = (game, end) => {
       ring.ignoreDestroy = false;
       ring.destroy();
       status.inventory = "";
-      btn = "red";
+      status.btn = "red";
       redBtn = game.add
         .image(
           game.cameras.main.scrollX + innerWidth / 2.1,
@@ -382,7 +381,7 @@ const minigameBonsai = (game, end) => {
       destroyMinigame
     );
     ring.on("pointerdown", pointRing);
-  } else if (btn == "red") {
+  } else if (status.btn == "red") {
     redBtn = game.add
       .image(
         game.cameras.main.scrollX + innerWidth / 2.1,

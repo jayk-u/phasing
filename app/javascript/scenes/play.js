@@ -66,8 +66,8 @@ class Play extends Phaser.Scene {
     m = 0;
     ms = 0;
 
-    beginningMins = 0;
-    beginningSecs = 10;
+    beginningMins = 1;
+    beginningSecs = 45;
 
     then = 0;
     mins = "";
@@ -581,15 +581,16 @@ class Play extends Phaser.Scene {
           }
 
 
-          if (endTimer > 2400) {
+          this.cameras.main.once("camerafadeoutcomplete", () => {
+            var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
+            this.cameras.main.fadeIn(10);
+          })
+
+          if (endTimer > 2900) {
 
             endBorder.destroy();
             endGraphics.destroy();
             endText.destroy();
-            this.cameras.main.once("camerafadeoutcomplete", () => {
-              var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
-              this.cameras.main.fadeIn(10);
-            })
             // comment again
             // again = this.add.image(innerWidth/2, innerHeight/3+200, 'playAgain').setScrollFactor(0).setDepth(4).setInteractive();
 
@@ -610,8 +611,9 @@ class Play extends Phaser.Scene {
           }
           // console.log(endTime)
           if ((now - startTime) >= endTime && status.timer != "stop") {
+            timer.setText("00:00:00")
             status.timer = "stop"
-            this.cameras.main.fadeOut(2500);
+            this.cameras.main.fadeOut(3000);
             endStatus = "true";
 
             // Textbox

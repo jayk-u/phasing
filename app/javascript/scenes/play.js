@@ -57,6 +57,7 @@ class Play extends Phaser.Scene {
     again = "";
     endTimer = 0;
     start = 0;
+    status.btn = "";
     startStatus = "false";
     status.computerStatus = "";
     status.inventory = "";

@@ -448,7 +448,7 @@ const minigameCattree = (game, end) => {
     if (next.scene != game.scene.scene) {end()};
   };
 
-  if (status.inventory == "Key") {
+  if (status.inventory == "Key" || status.library == "Unlocked") {
     textbox(game, ["I already got the key.", "Let's hurry!"], end);
   } else if (status.inventory && status.inventory != "") {
     key = game.add

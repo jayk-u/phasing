@@ -600,8 +600,8 @@ class Play extends Phaser.Scene {
             lostscreen.setDisplaySize((innerWidth+innerHeight)/12, (innerWidth+innerHeight)/10.5);
             lostscreen.setDepth(10);
 
-            again = this.add.image(innerWidth/2, innerHeight/1.6, 'playAgain').setScrollFactor(0).setDepth(11).setInteractive();
-            again.setDisplaySize(250,200);
+            again = this.add.image(this.cameras.main.scrollX + innerWidth/2.45, this.cameras.main.scrollY + innerHeight/1.95, 'playAgain').setOrigin(0,0).setDepth(11).setInteractive();
+            again.setDisplaySize((innerWidth+innerHeight)/9, (innerWidth+innerHeight)/11);
 
             again.on("pointerup", (event) => {
               this.scene.stop();

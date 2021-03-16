@@ -1,12 +1,14 @@
-import { game } from "../channels/game"
+import { game } from "../channels/game";
+import {
+  beginningInstructions,
+  minigameShelves,
+  minigameDoor,
+  endingInstructions,
+} from "../channels/tutorialInteractions";
 
 var minigame;
 var startTime;
 var endTimer;
-var endContent;
-var endGraphics;
-var endText;
-var endBorder;
 var start;
 var startStatus;
 var endStatus;
@@ -16,6 +18,11 @@ var cursors;
 var shapeGraphics;
 var coordinates;
 var countDoor = 0;
+var chrono
+
+const end = () => {
+  minigame = "none"
+}
 
 //Timer
 var s;
@@ -60,8 +67,8 @@ class Tutorial extends Phaser.Scene {
     s = 0;
     m = 0;
 
-    beginningMins = 1;
-    beginningSecs = 45;
+    beginningMins = 0;
+    beginningSecs = 10;
 
     then = 0;
     mins = "";
@@ -75,6 +82,9 @@ class Tutorial extends Phaser.Scene {
   preload()
   {
     const gameAssets = document.getElementById("game-assets").dataset;
+
+    this.load.image("keylock", gameAssets.keylockImg);
+    this.load.image("key", gameAssets.keyImg);
 
     this.load.tilemapTiledJSON('map', gameAssets.mapJson);
     this.load.image('tiles', gameAssets.mapPng);
@@ -238,12 +248,17 @@ class Tutorial extends Phaser.Scene {
     this.cameras.main.zoom = 2.5;
     this.cameras.main.startFollow(egyptian);
 
-    //Timer
-    var chrono = this.add.graphics();
-    chrono.fillStyle(0x000000);
-    chrono.fillRect(innerWidth/1.75, innerHeight/1.57, 100, 50).setScrollFactor(0)
+    minigame = "active";
+    beginningInstructions(this, end);
 
-    timer = this.add.text(innerWidth/1.75, innerHeight/1.57, "", { color: '#FFFFFF', font: "24px" }).setScrollFactor(0)
+    //Timer
+    chrono = this.add.graphics();
+    chrono.fillStyle(0x000000);
+    chrono.fillRect(innerWidth/1.75, innerHeight/1.57, 100, 50).setScrollFactor(0);
+
+    chrono.setVisible(false);
+
+    timer = this.add.text(innerWidth/1.75, innerHeight/1.57, "", { color: '#FFFFFF', font: "24px" }).setScrollFactor(0).setVisible(false);
     //End Timer
 
     //Inventory
@@ -298,31 +313,31 @@ class Tutorial extends Phaser.Scene {
     //END SETTINGS
 
   const items = [
-    {x: 400, y: 188, name: 'kitchen-tree', minigame: minigameKitchenTree},
-    {x: 400, y: 197, name: 'kitchen-tree', minigame: minigameKitchenTree},
-    {x: 304, y: 101, name: 'stove', minigame: minigameSink},
-    {x: 336, y: 101, name: 'stove', minigame: minigameSink},
-    {x: 400, y: 101, name: 'microwave', minigame: minigameMicrowave},
-    {x: 115, y: 183, name: 'sofa', minigame: minigameSofa},
-    {x: 116, y: 207, name: 'sofa', minigame: minigameSofa},
-    {x: 116, y: 227, name: 'sofa', minigame: minigameSofa},
-    {x: 207, y: 217, name: 'cat-tree', minigame: minigameCattree},
-    {x: 207, y: 229, name: 'cat-tree', minigame: minigameCattree},
-    {x: 40, y: 208, name: 'television', minigame: minigameTV},
-    {x: 111, y: 133, name: 'living-library', minigame: minigameLivingLibrary},
-    {x: 143, y: 132, name: 'living-library', minigame: minigameLivingLibrary},
-    {x: 207, y: 133, name: 'bonsai', minigame: minigameBonsai},
-    {x: 239, y: 101, name: 'fridge', minigame: minigameFreezer},
-    {x: 641, y: 209, name: 'bath-plant', minigame: minigameBathPlant},
-    {x: 722, y: 204, name: 'windbreak', minigame: minigameWindbreak},
-    {x: 816, y: 175, name: 'baththub', minigame: minigameBathtub},
-    {x: 559, y: 133, name: 'computer', minigame: minigameComputer},
-    {x: 527, y: 133, name: 'bookshelf', minigame: minigameRoomLibrary},
-    {x: 431, y: 325, name: 'hallway', minigame: minigameHallway},
-    {x: 461, y: 295, name: 'door', minigame: minigameDoor},
-    {x: 591, y: 249, name: 'aquarium', minigame: minigameFish},
-    {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
-    {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
+    // {x: 400, y: 188, name: 'kitchen-tree', minigame: minigameKitchenTree},
+    // {x: 400, y: 197, name: 'kitchen-tree', minigame: minigameKitchenTree},
+    // {x: 304, y: 101, name: 'stove', minigame: minigameSink},
+    // {x: 336, y: 101, name: 'stove', minigame: minigameSink},
+    // {x: 400, y: 101, name: 'microwave', minigame: minigameMicrowave},
+    // {x: 115, y: 183, name: 'sofa', minigame: minigameSofa},
+    // {x: 116, y: 207, name: 'sofa', minigame: minigameSofa},
+    // {x: 116, y: 227, name: 'sofa', minigame: minigameSofa},
+    // {x: 207, y: 217, name: 'cat-tree', minigame: minigameCattree},
+    // {x: 207, y: 229, name: 'cat-tree', minigame: minigameCattree},
+    // {x: 40, y: 208, name: 'television', minigame: minigameTV},
+    // {x: 111, y: 133, name: 'living-library', minigame: minigameLivingLibrary},
+    // {x: 143, y: 132, name: 'living-library', minigame: minigameLivingLibrary},
+    // {x: 207, y: 133, name: 'bonsai', minigame: minigameBonsai},
+    // {x: 239, y: 101, name: 'fridge', minigame: minigameFreezer},
+    // {x: 641, y: 209, name: 'bath-plant', minigame: minigameBathPlant},
+    // {x: 722, y: 204, name: 'windbreak', minigame: minigameWindbreak},
+    // {x: 816, y: 175, name: 'baththub', minigame: minigameBathtub},
+    // {x: 559, y: 133, name: 'computer', minigame: minigameComputer},
+    {x: 527, y: 133, name: 'bookshelf', minigame: minigameShelves},
+    // {x: 431, y: 325, name: 'hallway', minigame: minigameShelves},
+    {x: 461, y: 280, name: 'door', minigame: minigameDoor},
+    // {x: 591, y: 249, name: 'aquarium', minigame: minigameFish},
+    // {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
+    // {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
   ];
 
     const debugInteraction = (layout) => {
@@ -370,9 +385,6 @@ class Tutorial extends Phaser.Scene {
           item.y
         );
         if (distBetween < 30 && counter < 1 && minigame != "active") {
-          const end = () => {
-            minigame = "none"
-          }
           minigame = "active"
           item.minigame(this, end);
           counter++;
@@ -460,7 +472,9 @@ class Tutorial extends Phaser.Scene {
     }
 
         // Timer
-        if (status.timer != "stop") {
+        if (status.timer != "stop" && status.library == "end") {
+          chrono.setVisible(true);
+          timer.setVisible(true);
           var now = this.time.now;
           if (!startTime) {
             startTime = now;
@@ -495,7 +509,7 @@ class Tutorial extends Phaser.Scene {
           }
         }
           var time = mins + ":" + sec + ":" + milli
-          timer.setText(time);
+          if (counter != 1) {timer.setText(time)};
 
           if (endStatus === "true") {
             let doorsound = this.sound.add('door');
@@ -512,49 +526,19 @@ class Tutorial extends Phaser.Scene {
 
           if (endTimer > 2400) {
 
-            endBorder.destroy();
-            endGraphics.destroy();
-            endText.destroy();
             this.cameras.main.once("camerafadeoutcomplete", () => {
               var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
               this.cameras.main.fadeIn(10);
+              endingInstructions(this, end);
             })
 
-            var lostscreen = this.add.image(this.cameras.main.scrollX + innerWidth/2.33, this.cameras.main.scrollY + innerHeight/3,'lostscreen').setOrigin(0,0);
-            lostscreen.setDisplaySize((innerWidth+innerHeight)/12, (innerWidth+innerHeight)/10.5);
-            lostscreen.setDepth(5);
-
-            again = this.add.image(innerWidth/2, innerHeight/1.6, 'playAgain').setScrollFactor(0).setDepth(5).setInteractive();
-            again.setDisplaySize(250,200);
-
-            again.on("pointerup", (event) => {
-              this.scene.stop();
-              this.scene.start('Play');
-              this.begin();
-              musique.restart();
-            });
           }
           var endTime = startTime + (beginningSecs + beginningMins * 60)  * 1000;
           if (now >= endTime && counter != 1) {
             status.timer = "stop"
+            timer.setText("00:00:00")
             this.cameras.main.fadeOut(2500);
             endStatus = "true";
-
-            // Textbox
-            // def t = 0 hors de update
-            endContent = "Here you are officer!";
-            endBorder = this.add.graphics();
-
-            endBorder.fillStyle(0xFFFFFF);
-            endBorder.fillRect(this.cameras.main.scrollX + (innerWidth/3.27 - 3.0), this.cameras.main.scrollY + (innerHeight/1.67 - 3.0), innerWidth/2.68 + 6.0, innerHeight/15.08 + 6.0);
-
-            endGraphics = this.add.graphics();
-
-            endGraphics.fillStyle(0x000000);
-            endGraphics.fillRect(this.cameras.main.scrollX + innerWidth/3.27, this.cameras.main.scrollY + innerHeight/1.67, innerWidth/2.68, innerHeight/15.08);
-            endText = this.add.text(this.cameras.main.scrollX + innerWidth/3.275 + 6, this.cameras.main.scrollY + innerHeight/1.675 + 6, endContent, {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.69, height: 40 }})
-            // End Textbox
-
             minigame = "active";
             counter = 1;
           }

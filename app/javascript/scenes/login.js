@@ -101,7 +101,7 @@ class Login extends Phaser.Scene {
 
     play.on("pointerup", (event) => {
       this.scene.stop();
-      this.scene.start("Intro");
+      this.scene.start("Tutorial");
     });
   }
 }

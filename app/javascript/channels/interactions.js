@@ -3,7 +3,8 @@ import { status } from "../scenes/play1";
 var next;
 var ring;
 var key;
-var btn;
+var content;
+var active;
 
 const gameAssets = document.getElementById("game-assets").dataset;
 
@@ -24,7 +25,7 @@ const minigameDoor = (game, end) => {
 
     textbox(game, ["It's open!", "Let's go!"]);
     game.cameras.main.fadeOut(4000, 255, 255, 255);
-    game.cameras.main.once("camerafadeoutcomplete", (camera) => {
+    game.cameras.main.once("camerafadeoutcomplete", () => {
       var graph = game.add.graphics();
       graph.fillStyle(0);
       graph.fillRect(0, 0, 10000, 10000);
@@ -35,7 +36,8 @@ const minigameDoor = (game, end) => {
           game.cameras.main.scrollY + innerHeight / 2.6,
           "winscreen"
         )
-        .setOrigin(0, 0);
+        .setOrigin(0, 0)
+        .setDepth(99);
       winscreen.setDisplaySize(
         (innerWidth + innerHeight) / 12,
         (innerWidth + innerHeight) / 10.5
@@ -243,7 +245,7 @@ const minigameSink = (game, end) => {
     end();
   };
 
-  if (status.inventory == "Ring") {
+  if (status.inventory == "Ring" || status.btn == "red") {
     textbox(game, ["My precious..."], end);
   } else {
     ring = game.add
@@ -298,21 +300,88 @@ const minigameSink = (game, end) => {
 
 const minigameBonsai = (game, end) => {
   game.load.image("redBtn", gameAssets.redbtnImg);
+
   const enterRedBtn = () => {
-    if (status.computerStatus != "On" && status.computerStatus != "Unlocked") {
-      status.computerStatus = "On";
-      textbox(
-        game,
-        ["*click*", "I can hear a small whir close to me.", "Let's hurry!"],
-        destroyMinigame
-      );
+    if (next.scene != game.scene.scene) {
+      if (status.computerStatus != "On" && status.computerStatus != "Unlocked") {
+        status.computerStatus = "On";
+        textbox(
+          game,
+          ["*click*", "I can hear a small whir close to me.", "Let's hurry!"],
+          destroyMinigame
+        );
+      }
     }
   };
   const pointRing = () => {
-    ring.ignoreDestroy = false;
-    ring.destroy();
-    status.inventory = "";
-    btn = "red";
+    if (next.scene != game.scene.scene) {
+      ring.ignoreDestroy = false;
+      ring.destroy();
+      status.inventory = "";
+      status.btn = "red";
+      redBtn = game.add
+        .image(
+          game.cameras.main.scrollX + innerWidth / 2.1,
+          game.cameras.main.scrollY + innerHeight / 2.3,
+          "redBtn"
+        )
+        .setDepth(4);
+      redBtnText = game.add
+        .text(
+          game.cameras.main.scrollX + innerWidth / 2.22,
+          game.cameras.main.scrollY + innerHeight / 2.5,
+          "hEy, No TimE to lose officeR",
+          {
+            color: "#000000",
+            font: "11.5px",
+            wordWrap: { width: innerWidth / 19, height: innerHeight / 5 },
+          }
+        )
+        .setDepth(4);
+      textbox(
+        game,
+        [
+          "The ring fits perfectly!",
+          "A small hidden door opened on the bottom of the altar, with a big red button in there.",
+          "Maybe I need to do something with this...?",
+        ],
+        destroyMinigame
+      );
+      game.input.keyboard.on("keydown-ENTER", enterRedBtn);
+    };
+  };
+
+  var redBtnText;
+  var redBtn;
+
+  const destroyMinigame = () => {
+    if (next.scene != game.scene.scene && active == false) {
+      if (redBtn) {
+        redBtn.destroy();
+      }
+      if (redBtnText) {
+        redBtnText.destroy();
+      }
+      game.input.keyboard.off("keydown-ENTER", enterRedBtn);
+      ring.off("pointerdown", pointRing);
+      end()
+    };
+  };
+
+  if (status.computerStatus == "On") {
+    textbox(game, ["This sounded like something booting up!"], end);
+  } else if (status.inventory == "Ring") {
+    textbox(
+      game,
+      [
+        "This bonsai is in fantastic shape. He probably spent hours working on it.",
+        "There's a hole at the bottom, it's ring shaped.",
+        "Should I try to put mine here...?",
+      ],
+      destroyMinigame
+    );
+    ring.on("pointerdown", pointRing);
+  } else if (status.btn == "red") {
     redBtn = game.add
       .image(
         game.cameras.main.scrollX + innerWidth / 2.1,
@@ -337,74 +406,7 @@ const minigameBonsai = (game, end) => {
       [
         "The ring fits perfectly!",
         "A small hidden door opened on the bottom of the altar, with a big red button in there.",
-        "Maybe I need to do something with this...?",
-      ],
-      destroyMinigame
-    );
-    game.input.keyboard.on("keydown-ENTER", enterRedBtn);
-  };
-  var redBtnText;
-  var redBtn;
-  const destroyMinigame = () => {
-    if (redBtn) {
-      redBtn.destroy();
-    }
-    if (redBtnText) {
-      redBtnText.destroy();
-    }
-    game.input.keyboard.off("keydown-ENTER", enterRedBtn);
-    ring.off("pointerdown", pointRing);
-    // tbox.destroy();
-    end();
-  };
-
-  if (status.computerStatus == "On") {
-    textbox(game, ["This sounded like something booting up!"], end);
-  } else if (status.inventory == "Ring") {
-    textbox(
-      game,
-      [
-        "This bonsai is in fantastic shape. He probably spent hours working on it.",
-        "There's a hole at the bottom, it's ring shaped.",
-        "Should I try to put mine here...?",
-      ],
-      destroyMinigame
-    );
-    ring.on("pointerdown", pointRing);
-    // game.input.keyboard.on("keydown-SPACE", () => {
-    //   if (btn == "red") {
-    //     }
-    // })
-  } else if (btn == "red") {
-    redBtn = game.add
-      .image(
-        game.cameras.main.scrollX + innerWidth / 2.1,
-        game.cameras.main.scrollY + innerHeight / 2.3,
-        "redBtn"
-      )
-      .setDepth(4);
-    redBtnText = game.add
-      .text(
-        game.cameras.main.scrollX + innerWidth / 2.22,
-        game.cameras.main.scrollY + innerHeight / 2.5,
-        "hEy, No TimE to lose officeR",
-        {
-          color: "#000000",
-          font: "11.5px",
-          wordWrap: { width: innerWidth / 19, height: innerHeight / 5 },
-        }
-      )
-      .setDepth(4);
-    textbox(
-      game,
-      [
-        ["The ring fits perfectly!"],
-        [
-          "A small hidden door opened on the bottom of the altar, with a big red button in there.",
-        ],
-        [
-          "It looks like something is written on it...\nMaybe I need to do something with this...?",
-        ],
+        "It looks like something is written on it...\nMaybe I need to do something with this...?"
       ],
       destroyMinigame
     );
@@ -442,10 +444,10 @@ const minigameCattree = (game, end) => {
 
   const destroyMinigame = () => {
     key.destroy();
-    end();
+    if (next.scene != game.scene.scene) {end()};
   };
 
-  if (status.inventory == "Key") {
+  if (status.inventory == "Key" || status.library == "Unlocked") {
     textbox(game, ["I already got the key.", "Let's hurry!"], end);
   } else if (status.inventory && status.inventory != "") {
     key = game.add
@@ -507,12 +509,51 @@ const minigameLivingLibrary = (game, end) => {
 const minigameComputer = (game, end) => {
   game.load.image("computer", gameAssets.computerImg);
 
-  const destroyMinigame = () => {
-    if (inputText) {
-      inputText.visible = false;
+  const inputComputer = (event) => {
+    if (next.scene != game.scene.scene) {
+      if (
+        ((input != "Enter password: " || event.key != "e") &&
+          event.keyCode <= 90 &&
+          event.keyCode >= 65) ||
+        event.key == "Backspace"
+      ) {
+        if (event.key == "Backspace") {
+          input = "Enter password: ";
+        } else if (input.length > 23) {
+          input = "Enter password: ERROR";
+          inputText.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000);
+          // game.input.keyboard.once("keydown-SPACE", () => {
+          //   destroyMinigame();
+          // });
+        } else {
+          input = input.concat(event.key.toUpperCase());
+        }
+        inputText.setText(input);
+        if (input == "Enter password: ASTERIX") {
+          status.computerStatus = "Unlocked";
+          inputText.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
+          textbox(
+            game,
+            [
+              "Found it! There's only one icon on the desktop...",
+              '"Main control lock", this must be the thing! Quick!',
+            ],
+            destroyMinigame
+          );
+        }
+      }
     }
-    computer.destroy();
-    end();
+  }
+
+  const destroyMinigame = () => {
+    if (active == false) {
+      if (inputText) {
+        inputText.visible = false;
+      }
+      computer.destroy();
+      game.input.keyboard.off("keyup", (inputComputer));
+      end();
+    }
   };
   var computer = game.add
     .image(
@@ -537,7 +578,7 @@ const minigameComputer = (game, end) => {
       "Locked by a password.",
       "But I can still see the wallpaper: it looks like a big guy holding a huge rock.",
       "Maybe I should try something out?",
-    ]);
+    ], destroyMinigame);
     var input = "Enter password: ";
     var inputText = game.add
       .text(
@@ -551,41 +592,7 @@ const minigameComputer = (game, end) => {
         }
       )
       .setDepth(4);
-    game.input.keyboard.on("keyup", (event) => {
-      if (next.scene != game.scene.scene) {
-        if (
-          ((input != "Enter password: " || event.key != "e") &&
-            event.keyCode <= 90 &&
-            event.keyCode >= 65) ||
-          event.key == "Backspace"
-        ) {
-          if (event.key == "Backspace") {
-            input = "Enter password: ";
-          } else if (input.length > 23) {
-            input = "Enter password: ERROR";
-            inputText.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000);
-            game.input.keyboard.once("keydown-SPACE", () => {
-              destroyMinigame();
-            });
-          } else {
-            input = input.concat(event.key.toUpperCase());
-          }
-          inputText.setText(input);
-          if (input == "Enter password: ASTERIX") {
-            status.computerStatus = "Unlocked";
-            inputText.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
-            textbox(
-              game,
-              [
-                "Found it! There's only one icon on the desktop...",
-                '"Main control lock", this must be the thing! Quick!',
-              ],
-              destroyMinigame
-            );
-          }
-        }
-      }
-    });
+    game.input.keyboard.on("keyup", (inputComputer));
   } else {
     textbox(
       game,
@@ -666,12 +673,16 @@ const minigameSaber = (game, end) => {
 };
 
 const textbox = (game, string, destroy) => {
+  // if (game.input.keyboard.listenerCount("keydown-SPACE", incrementCounter) > 1) { game.input.keyboard.removeAllListeners("keydown-SPACE", incrementCounter)};
   if (next) {
     next.destroy();
   }
-  var content = string;
+  if (graphics) {graphics.destroy()};
+  if (border) {border.destroy()};
+  if (text) {text.destroy()};
+  content = string;
   var border = game.add.graphics();
-  var textBoxCounter = 0;
+  let textBoxCounter = 0;
 
   border.fillStyle(0xffffff);
   border.fillRect(
@@ -710,6 +721,7 @@ const textbox = (game, string, destroy) => {
   }
 
   const incrementCounter = () => {
+    active = false
     textBoxCounter += 1;
     if (textBoxCounter == string.length - 1) {
       next.destroy();
@@ -724,6 +736,7 @@ const textbox = (game, string, destroy) => {
         next.destroy();
       }
       if (destroy) {
+        if (game.input.keyboard.listenerCount("keydown-SPACE", incrementCounter) > 2) {active = true}
         destroy();
       }
       game.input.keyboard.off("keydown-SPACE", incrementCounter);

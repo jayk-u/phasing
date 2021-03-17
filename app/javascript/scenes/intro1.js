@@ -170,7 +170,6 @@ create ()
               line = "";
               incrementexpo += 0.07;
               pictureNum += incrementexpo;
-              console.log(pictureNum)
               picture = this.add.image(innerWidth/20, innerHeight/6, `picture${Math.min(5,Math.trunc(pictureNum))}`).setOrigin(0);
               if (Math.trunc(pictureNum) != Math.min(5,Math.trunc(pictureNum - incrementexpo))) {alphaIncrement = 0; picture.setAlpha(alphaIncrement)}
               picture.setDisplaySize(innerWidth*18/20, innerHeight*4/10);

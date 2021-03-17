@@ -95,7 +95,7 @@ class Login extends Phaser.Scene {
     this.input.keyboard.on("keydown", (event) => {
       if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.SPACE) {
         this.scene.stop();
-        this.scene.start("Intro1");
+        this.scene.start("Select");
       }
     });
 

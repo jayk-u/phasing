@@ -41,11 +41,11 @@ var again;
 
 var t = 0;
 
-class Play extends Phaser.Scene {
+class Play1 extends Phaser.Scene {
 
   constructor ()
   {
-    super("Play");
+    super("Play1");
     this.begin();
   }
 
@@ -660,4 +660,4 @@ class Play extends Phaser.Scene {
   };
 };
 
-export { Play, status };
+export { Play1, status };

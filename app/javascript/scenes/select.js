@@ -1,4 +1,4 @@
-var nameCounter = 0;
+var nameCounter;
 var level
 
 const box = (game, x, y, width, height) => {
@@ -24,7 +24,7 @@ const box = (game, x, y, width, height) => {
 
 class Select extends Phaser.Scene {
 
-    constructor ()
+  constructor ()
     {
         super('Select');
     }
@@ -48,6 +48,7 @@ class Select extends Phaser.Scene {
 
   create ()
   {
+    nameCounter = 0;
     box(this, innerWidth/5, innerHeight/3, innerWidth/5, innerHeight/5);
     box(this, innerWidth/2, innerHeight/3, innerWidth/5, innerHeight/5);
 

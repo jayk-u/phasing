@@ -1,18 +1,18 @@
 import { game } from "../channels/game"
 
-var text
-var skip
-var then = 0;
-var wordIndex = 0;
-var letterIndex = 0;
-var lineIndex = 0;
-var line = "";
-var run = true;
-var pictureNum = 1.58;
+var text;
+var skip;
+var then;
+var wordIndex;
+var letterIndex;
+var lineIndex;
+var line;
+var run;
+var pictureNum;
 var picture;
 var picturecam;
-var incrementexpo = 0.1;
-var alphaIncrement = 0;
+var incrementexpo;
+var alphaIncrement;
 
 class Intro1 extends Phaser.Scene {
 
@@ -62,31 +62,11 @@ class Intro1 extends Phaser.Scene {
   create ()
   {
     this.begin();
-    // var graphics = this.add.graphics();
 
-    //graphics.fillStyle(0xFFFFFF);
     picture = this.add.image(innerWidth/20, innerHeight/6, `picture${Math.trunc(pictureNum)}`).setOrigin(0);
     picture.setDisplaySize(innerWidth*18/20, innerHeight*4/10);
-    // picturecam = this.cameras.add(innerWidth/20, innerHeight/10, innerWidth*18.2/20, innerHeight*4.1/10).setAlpha(0);
-    // picturecam.visible = false
-
-    //graphics.fillRect(50, 175, innerWidth - 100, 200);
-    var content = [ "Kyoto - October 13th 1997",
-                    "The city has been in the grip of terror for several months, as a killer chains the victims week after week.",
-                    "He didn’t follow any pattern, never stopping at anything, killing women, children, the elderly... The victims were all found sliced, cut by what seems to be a large blade, a sword or a saber.",
-                    "But I had something solid. On several TV reports, a man can be seen in the background, hidden in the crowd.",
-                    "After 3 weeks of investigation, I did not have further doubt: this is our man.",
-                    "I have shadowed him ever since, I knew by heart his daily schedule: when he sleeps, when he eats, when he moves.",
-                    "One night, as he went to pick some cigarettes, I took my chance and sneaked into his apartment.",
-                    "Suffice to say I might have underestimated the guy... and the door locked securely after my passage.",
-                    "I felt silly, I felt inadequate. I spent so much time preparing only to fail at the very first step.",
-                    "No more time to look for evidence, this guy is sick. I must get out of here at all costs before he comes back..."
-                  ]
     text = this.add.text(innerWidth/20, innerHeight/1.65, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth*18/20 }})
     skip = this.add.text(innerWidth*16/20, innerHeight*8/9, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
-
-
-    // nextLine();
 
     this.input.keyboard.on('keydown', (event)  => {
 
@@ -170,8 +150,6 @@ class Intro1 extends Phaser.Scene {
       var letterDelay = 30;
       if (letter.length == letterIndex) {
         letterDelay = 2000;
-        // picturecam.visible = true
-        // picturecam.fadeOut(2000)
       }
       if (Math.trunc(pictureNum) != Math.min(5,Math.trunc(pictureNum + incrementexpo))) {
         alphaIncrement += 0.025
@@ -189,8 +167,6 @@ class Intro1 extends Phaser.Scene {
               picture = this.add.image(innerWidth/20, innerHeight/6, `picture${Math.min(5,Math.trunc(pictureNum))}`).setOrigin(0);
               if (Math.trunc(pictureNum) != Math.min(5,Math.trunc(pictureNum - incrementexpo))) {alphaIncrement = 0; picture.setAlpha(alphaIncrement)}
               picture.setDisplaySize(innerWidth*18/20, innerHeight*4/10);
-              // picturecam.fadeIn(2000)
-              // picturecam.visibe = false
             }
             if (lineIndex == content.length) {run = false; return ;}
             if (run) { letter = content[lineIndex].split("") }

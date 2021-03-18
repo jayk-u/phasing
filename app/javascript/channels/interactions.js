@@ -1,4 +1,4 @@
-import { status } from "../scenes/play";
+import { status } from "../scenes/play1";
 // var redBtn
 var next;
 var ring;

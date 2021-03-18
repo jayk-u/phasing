@@ -14,11 +14,11 @@ var picturecam;
 var incrementexpo = 0.1;
 var alphaIncrement = 0;
 
-class Intro extends Phaser.Scene {
+class Intro1 extends Phaser.Scene {
 
   constructor ()
   {
-      super('Intro');
+      super('Intro1');
   }
 
 
@@ -77,7 +77,7 @@ create ()
       if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
       {
           this.scene.stop();
-          this.scene.start('Play');
+          this.scene.start('Play1');
           intromusic.stop();
       }
 
@@ -109,14 +109,12 @@ create ()
       intromusic.pause();
       mute.setVisible(true);
       unmute.setVisible(false);
-      // console.log("euh");
     });
 
     mute.on("pointerup", (event) => {
       intromusic.resume();
       unmute.setVisible(true);
       mute.setVisible(false);
-      // console.log("ok");
     });
 
     const exit = this.add.image(innerWidth-110, innerHeight/10.5, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
@@ -133,7 +131,6 @@ create ()
       this.scene.stop();
       this.scene.start('Login');
       intromusic.stop();
-      // console.log("hii");
     } );
 
   };
@@ -198,4 +195,4 @@ create ()
 
 }
 
-export { Intro }
+export { Intro1 }

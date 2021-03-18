@@ -1,7 +1,7 @@
 import { status } from "../scenes/tutorial";
 
-var key
-var next
+var key;
+var next;
 const gameAssets = document.getElementById("game-assets").dataset;
 
 

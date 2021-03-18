@@ -1,5 +1,8 @@
 import { Time } from "phaser";
 import { game } from "../channels/game"
+import { debugInteraction } from "../components/debugInteraction"
+import { drawCollisionShapes } from "../components/drawCollision"
+import { camera } from "../components/cameraOpacity"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
 var musique;
@@ -123,8 +126,9 @@ class Play1 extends Phaser.Scene {
     //   blankState = this.scene;
     //   counterScene++;
     // }
+    console.log(this);
     endTime = startTime + (beginningSecs + beginningMins * 60)  * 1000;
-    localStorage.setItem('status', status.text)
+    localStorage.setItem('status', status.text);
 
     this.platforms = this.physics.add.staticGroup();
     this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });  //
@@ -173,64 +177,13 @@ class Play1 extends Phaser.Scene {
     this.transparent.setCollisionFromCollisionGroup();
     // this.secretDoor.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
-    const drawCollisionShapes = (graphics, object) => {
-      graphics.clear();
-
-      // Loop over each tile and visualize its collision shape (if it has one)
-      object.forEachTile((tile) => {
-        var tileWorldX = tile.getLeft();
-        var tileWorldY = tile.getTop();
-        var collisionGroup = tile.getCollisionGroup();
-
-        if (!collisionGroup || collisionGroup.objects.length === 0) { return; }
-
-          // The group will have an array of objects - these are the individual collision shapes
-          var objects = collisionGroup.objects;
-          for (var i = 0; i < objects.length; i++)
-          {
-              var object = objects[i];
-              var objectX = tileWorldX + object.x;
-              var objectY = tileWorldY + object.y;
-
-              // When objects are parsed by Phaser, they will be guaranteed to have one of the
-              // following properties if they are a rectangle/ellipse/polygon/polyline.
-              if (object.rectangle) {
-                  this.platforms.create(objectX, objectY, "ground").setSize(object.width, object.height).setOffset(16, 16).visible = false;
-                  coordinates.push({ x:objectX, y:objectY, w:object.width, h:object.height });
-              } else if (object.ellipse) {
-                  // Ellipses in Tiled have a top-left origin, while ellipses in Phaser have a center
-                  // origin
-                  graphics.strokeEllipse(
-                    objectX + object.width / 2, objectY + object.height / 2,
-                    object.width, object.height
-                  );
-              } else if (object.polygon || object.polyline) {
-                  var originalPoints = object.polygon ? object.polygon : object.polyline;
-                  var points = [];
-                  for (var j = 0; j < originalPoints.length; j++) {
-                    var point = originalPoints[j];
-                    points.push({
-                      x: objectX + point.x,
-                      y: objectY + point.y
-                    });
-                  }
-                  graphics.strokePoints(points);
-              }
-          }
-      });
-    }
 
     // drawCollisionShapes(shapeGraphics, this.secretDoor);
-    drawCollisionShapes(shapeGraphics, this.extraObj);
-    drawCollisionShapes(shapeGraphics, this.objectBottom);
-    drawCollisionShapes(shapeGraphics, this.objectTop);
+    drawCollisionShapes(this, shapeGraphics, this.extraObj);
+    drawCollisionShapes(this, shapeGraphics, this.objectBottom);
+    drawCollisionShapes(this, shapeGraphics, this.objectTop);
     // drawCollisionShapes(shapeGraphics, this.objectBottom);
     // drawCollisionShapes(shapeGraphics, this.objectTop);
-    // console.log(shapeGraphics);
-    // console.log(this)
-    // console.log(this.matter)
-    // console.log(coordinates);
-
     this.anims.create({
       key: "left",
       frames: this.anims.generateFrameNumbers("egyptian", { start: 5, end: 7 }),
@@ -288,8 +241,6 @@ class Play1 extends Phaser.Scene {
     frames: this.anims.generateFrameNumbers('egyptian', { start: 8 }),
       frameRate: 20,
     });
-
-
     // this.physics.world.collide(egyptian, this.layer)
     this.physics.add.collider(this.walls, egyptian);
     this.physics.add.collider(this.extraObj, egyptian);
@@ -395,41 +346,6 @@ class Play1 extends Phaser.Scene {
     //     minigame = "active";
     //   }
     // });
-    const debugInteraction = (layout) => {
-      this.input.keyboard.on("keyup-SPACE", () => {
-        this.findCoordinates = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.findCoordinates
-        layout.forEachTile(tile => {
-          var tileWorldX = tile.getLeft();
-          var tileWorldY = tile.getTop();
-          if (!this.findCoordinates) return
-          var collisionGroup = tile.getCollisionGroup();
-          if (!collisionGroup || collisionGroup.objects.length === 0) { return; }
-          tile.getCollisionGroup().objects.forEach((object) => {
-            var objectCenterX = object.x + tileWorldX + object.width / 2;
-            var objectCenterY = object.y + tileWorldY + object.height / 2;
-            var distBetween = Phaser.Math.Distance.Between(
-              egyptian.x,
-              egyptian.y,
-              objectCenterX,
-              objectCenterY
-            );
-            if (distBetween < 30) {
-
-              // console.log("Object Position",objectCenterX, objectCenterY);
-              // console.log("Distance to Object", distBetween);
-              // console.log("Egyptian position", egyptian.x, egyptian.y);
-              const testLine = this.add.graphics()
-              testLine.lineStyle(1, 0xFFFFFF, 1.0);
-              testLine.beginPath();
-              testLine.moveTo(egyptian.x, egyptian.y);
-              testLine.lineTo(objectCenterX, objectCenterY);
-              testLine.closePath();
-              testLine.strokePath();
-            }
-          })
-        });
-      });
-    }
     this.input.keyboard.on("keydown-SPACE", () => {
       var counter = 0;
       items.forEach ((item) => {
@@ -450,7 +366,7 @@ class Play1 extends Phaser.Scene {
       });
 
     });
-    // debugInteraction(this.objectTop);
+    // debugInteraction(this, this.objectTop, egyptian);
     // debugInteraction(this.objectBottom);
     // debugInteraction(this.secretDoor);
   };
@@ -465,7 +381,7 @@ class Play1 extends Phaser.Scene {
       if (cursors.left.isDown) {
         egyptian.setVelocityX(-90);
 
-        egyptian.anims.play("left", true);
+        movementSprite(egyptian.anims.play("left", true));
         this.x = 1;
       } else if (cursors.right.isDown) {
         egyptian.setVelocityX(90);
@@ -514,24 +430,6 @@ class Play1 extends Phaser.Scene {
             egyptian.anims.play("upend");
           }
       }
-    const camera = (layout) => {
-      this.origin = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.origin
-      layout.forEachTile(tile => {
-        if (!this.origin) return
-        var dist = Phaser.Math.Distance.Chebyshev(
-            this.origin.x,
-            this.origin.y,
-            tile.x,
-            tile.y
-        );
-        if (dist === 1) {
-          tile.setAlpha(1);
-        } else {
-          tile.setAlpha(1 - 0.3 * dist);
-        }
-      })
-    }
-
         // Timer
         if (status.timer != "stop") {
           var now = this.time.now;
@@ -659,13 +557,12 @@ class Play1 extends Phaser.Scene {
       borderBox.visible = false;
       inventoryBox.visible = false;
     }
-    camera(this.walls);
-    camera(this.objectBottom);
-    camera(this.objectTop);
-    camera(this.extraObj);
-    camera(this.layer);
-    camera(this.transparent);
+    camera(this, this.walls, egyptian);
+    camera(this, this.objectBottom, egyptian);
+    camera(this, this.objectTop, egyptian);
+    camera(this, this.extraObj, egyptian);
+    camera(this, this.layer, egyptian);
+    camera(this, this.transparent, egyptian);
   };
 };
-
-export { Play1, status };
+export { Play1, status, coordinates };

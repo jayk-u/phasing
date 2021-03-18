@@ -2,7 +2,7 @@ import { game } from "../channels/game"
 
 var text
 var skip
-var then = 0
+var then = 0;
 var wordIndex = 0;
 var letterIndex = 0;
 var lineIndex = 0;
@@ -19,6 +19,21 @@ class Intro1 extends Phaser.Scene {
   constructor ()
   {
       super('Intro1');
+  }
+
+  begin ()
+  {
+    then = 0
+    wordIndex = 0;
+    letterIndex = 0;
+    lineIndex = 0;
+    line = "";
+    run = true;
+    pictureNum = 1.58;
+    picture;
+    picturecam;
+    incrementexpo = 0.1;
+    alphaIncrement = 0;
   }
 
 
@@ -44,8 +59,9 @@ class Intro1 extends Phaser.Scene {
     this.load.image('exit', gameAssets.exitImg);
   };
 
-create ()
-{
+  create ()
+  {
+    this.begin();
     // var graphics = this.add.graphics();
 
     //graphics.fillStyle(0xFFFFFF);

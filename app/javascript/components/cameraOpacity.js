@@ -1,5 +1,5 @@
-const camera = (game, layout, egyptian) => {
-  game.origin = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || game.origin
+const camera = (game, layout, character) => {
+  game.origin = layout.getTileAtWorldXY(character.x, character.y) || game.origin
   layout.forEachTile(tile => {
     if (!game.origin) return
     var dist = Phaser.Math.Distance.Chebyshev(

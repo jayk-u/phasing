@@ -2,7 +2,9 @@ import { Time } from "phaser";
 import { game } from "../channels/game"
 import { debugInteraction } from "../components/debugInteraction"
 import { drawCollisionShapes } from "../components/drawCollision"
-import { timerLooseScreenDisplay } from "../components/timer" 
+import { timerLooseScreenDisplay } from "../components/timer"
+import { movementSprite } from "../components/spriteMovement"
+import { spriteFrame } from "../components/spriteFrame"
 import { camera } from "../components/cameraOpacity"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
@@ -173,63 +175,7 @@ class Play1 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.objectTop);
     // drawCollisionShapes(shapeGraphics, this.objectBottom);
     // drawCollisionShapes(shapeGraphics, this.objectTop);
-    this.anims.create({
-      key: "left",
-      frames: this.anims.generateFrameNumbers("character", { start: 5, end: 7 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "turn",
-      frames: [{ key: "character", frame: 0 }],
-      frameRate: 20,
-    });
-
-    this.anims.create({
-      key: "right",
-      frames: this.anims.generateFrameNumbers("character", { start: 9, end: 11 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: 'down',
-      frames: this.anims.generateFrameNumbers('character', { start: 1, end: 3 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'up',
-    frames: this.anims.generateFrameNumbers('character', { start: 13, end: 15 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'upend',
-    frames: this.anims.generateFrameNumbers('character', { start: 12 }),
-      frameRate: 20,
-    });
-
-    this.anims.create({
-      key: 'downend',
-    frames: this.anims.generateFrameNumbers('character', { start: 0 }),
-      frameRate: 20,
-    });
-
-    this.anims.create({
-      key: 'leftend',
-    frames: this.anims.generateFrameNumbers('character', { start: 4 }),
-      frameRate: 20,
-    });
-
-    this.anims.create({
-      key: 'rightend',
-    frames: this.anims.generateFrameNumbers('character', { start: 8 }),
-      frameRate: 20,
-    });
+    spriteFrame(this);
     // this.physics.world.collide(character, this.layer)
     this.physics.add.collider(this.walls, character);
     this.physics.add.collider(this.extraObj, character);
@@ -345,9 +291,10 @@ class Play1 extends Phaser.Scene {
         );
         if (distBetween < 30 && counter < 1 && status.minigame != "active") {
           const end = () => {
-            status.minigame = "none"
+            status.minigame = "none";
           }
-          status.minigame = "active"
+          status.minigame = "active";
+          console.log(status.minigame);
           item.minigame(this, end);
           counter++;
         }
@@ -361,60 +308,7 @@ class Play1 extends Phaser.Scene {
 
   update ()
   {
-    character.body.setVelocity(0);
-    if (status.minigame != "active") {
-      if (cursors.left.isDown) {
-        character.setVelocityX(-90);
-
-        character.anims.play("left", true);
-        this.x = 1;
-      } else if (cursors.right.isDown) {
-        character.setVelocityX(90);
-
-        character.anims.play("right", true);
-        this.x = 2;
-      } else if (cursors.down.isDown) {
-        character.setVelocityY(90);
-
-        character.anims.play("down", true);
-        this.x = 3;
-      } else if (cursors.up.isDown) // && character.body.touching.down
-      {
-        character.setVelocityY(-90);
-
-        character.anims.play("up", true);
-        this.x = 4;
-      } else {
-        character.setVelocityX(0);
-        if (this.x === 1) {
-          character.anims.play("leftend");
-        }
-        else if (this.x === 2) {
-          character.anims.play("rightend");
-        }
-        else if (this.x === 3) {
-          character.anims.play("downend");
-        }
-        else if (this.x === 4) {
-          character.anims.play("upend");
-        }
-        //character.anims.play("turn");
-        }
-     } else {
-        character.setVelocityX(0);
-        if (this.x === 1) {
-          character.anims.play("leftend");
-        }
-        else if (this.x === 2) {
-          character.anims.play("rightend");
-        }
-        else if (this.x === 3) {
-          character.anims.play("downend");
-        }
-        else if (this.x === 4) {
-          character.anims.play("upend");
-        }
-    }
+    movementSprite(this);
     timerLooseScreenDisplay(this, beginningSecs, beginningMins);
 
       //Inventory
@@ -422,7 +316,7 @@ class Play1 extends Phaser.Scene {
       this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
       countDoor = 1;
     } else if (countDoor === 1) {
-      camera(this.secretDoor);
+      camera(this, this.secretDoor, character);
     }
 
     if (status.inventory != "" && status.inventory != "none") {
@@ -440,4 +334,4 @@ class Play1 extends Phaser.Scene {
     camera(this, this.transparent, character);
   };
 };
-export { Play1, status, coordinates, musique, timer };
+export { Play1, status, coordinates, musique, timer, character, cursors };

@@ -52,6 +52,7 @@ class Play1 extends Phaser.Scene {
     status.inventory = "";
     status.library = "";
     status.timer = "";
+    status.btn = "";
     status.fade = false
     status.s = 0;
     status.m = 0;
@@ -308,6 +309,7 @@ class Play1 extends Phaser.Scene {
 
   update ()
   {
+    console.log(status.inventory);
     movementSprite(this);
     timerLooseScreenDisplay(this, beginningSecs, beginningMins);
 

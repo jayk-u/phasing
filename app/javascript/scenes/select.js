@@ -1,4 +1,4 @@
-var nameCounter = 0;
+var nameCounter;
 var level
 var activerect
 
@@ -32,7 +32,7 @@ const box = (game, x, y, width, height) => {
 
 class Select extends Phaser.Scene {
 
-    constructor ()
+  constructor ()
     {
         super('Select');
     }
@@ -56,8 +56,12 @@ class Select extends Phaser.Scene {
 
   create ()
   {
-    var video = this.add.video(0, 0, "overlay");
-    video.setDisplaySize(innerWidth*2, innerHeight*2);
+    nameCounter = 0;
+    box(this, innerWidth/5, innerHeight/3, innerWidth/5, innerHeight/5);
+    box(this, innerWidth/2, innerHeight/3, innerWidth/5, innerHeight/5);
+
+    var video = this.add.video(10, 10, "overlay");
+    video.setDisplaySize(innerWidth, innerHeight);
 
     video.setBlendMode(Phaser.BlendModes.SCREEN);
     video.play(true);

@@ -65,8 +65,6 @@ class Select extends Phaser.Scene {
 
     video.setBlendMode(Phaser.BlendModes.SCREEN);
     video.play(true);
-    box(this, innerWidth/5, innerHeight/3, innerWidth/5, innerHeight/5);
-    box(this, innerWidth/2, innerHeight/3, innerWidth/5, innerHeight/5);
 
     var lg = this.add.image(125, 80, "logoo");
     lg.setDisplaySize(225, 125);

@@ -1,24 +1,18 @@
 var nameCounter = 0;
 var level
-var loopColor
-const genRanHex = size => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+var activerect
 
 
 const box = (game, x, y, width, height) => {
   game.add.graphics().fillStyle(0xFFFFFF).fillRect(x - 5, y - 5, width + 10, height + 10);
   game.add.graphics().fillStyle(0x000000).fillRect(x - 2.5, y - 2.5, width + 5, height + 5);
   level = game.add.image(x, y, `map${nameCounter}`).setOrigin(0).setDisplaySize(width, height).setInteractive();
-  game.input.on("gameobjectover", (p, gameObject, e) => {
-    // setInterval(gameObject.setTint("0x" + genRanHex(6), "0x" + genRanHex(6), "0x" + genRanHex(6), "0x" + genRanHex(6)), 100);
-    loopColor = game.time.addEvent({
-      delay: 100,                // ms
-      callback: function() {  gameObject.setTint("0x" + genRanHex(6), "0x" + genRanHex(6), "0x" + genRanHex(6), "0x" + genRanHex(6))
-    },
-      //args: [],
-      callbackScope: game,
-      loop: true
-  });
+  level.on("pointerover", () => {
+    activerect = game.add.graphics().fillStyle(0xFFFFFF).fillRect(x - 10, y - 10, width + 20, height + 20).setDepth(-1);
 })
+  level.on("pointerout", () => {
+    activerect.destroy();
+  })
   if (nameCounter == 0) {
     game.add.text(x + width/4, y + height + 10, `Tutorial`, {font: "24px", color:"#FFFFFF"})
     level.on("pointerdown", () => {

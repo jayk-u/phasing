@@ -1,38 +1,31 @@
 import { Time } from "phaser";
 import { game } from "../channels/game"
+import { debugInteraction } from "../components/debugInteraction"
+import { drawCollisionShapes } from "../components/drawCollision"
+import { timerLooseScreenDisplay } from "../components/timer"
+import { movementSprite } from "../components/spriteMovement"
+import { spriteFrame } from "../components/spriteFrame"
+import { camera } from "../components/cameraOpacity"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
 var musique;
-var fadeComplete;
-var minigame;
-var startTime;
-var endTimer;
-var endContent;
-var endGraphics;
-var endText;
-var endBorder;
-var start;
-var startStatus;
-var endStatus;
 var counter;
-var egyptian;
+var character;
 var cursors;
 var shapeGraphics;
 var coordinates;
 var countDoor = 0;
 
+
 //Timer
-var s;
-var m;
-var ms;
-var endTime;
+// var s;
+// var m;
+// var ms;
+// var endTime;
 var beginningMins;
 var beginningSecs;
-var then;
-var mins;
-var sec;
-var milli;
 var timer;
+var now;
 //EndTimer
 
 //Status
@@ -41,8 +34,6 @@ var status = {};
 //Inventory
 var borderBox;
 var inventoryBox;
-var again;
-
 var t = 0;
 
 class Play1 extends Phaser.Scene {
@@ -54,28 +45,33 @@ class Play1 extends Phaser.Scene {
   }
 
   begin () {
-    startTime = null;
-    again = "";
-    endTimer = 0;
-    start = 0;
-    status.btn = "";
-    startStatus = "false";
+    status.end = false;
+    status.start = false;
+    status.minigame = "none";
     status.computerStatus = "";
     status.inventory = "";
     status.library = "";
-    status.timer = ""
-    s = 0;
-    m = 0;
-    ms = 0;
+    status.timer = "";
+    status.btn = "";
+    status.fade = false
+    status.s = 0;
+    status.m = 0;
+    status.ms = 0;
+    status.endTimer = 0;
+    status.then = 0;
+    status.endTime = null;
+    status.startTime = null;
+    status.min = "";
+    status.sec = "";
+    status.milli = "";
 
     beginningMins = 1;
     beginningSecs = 45;
 
-    then = 0;
-    mins = "";
-    sec = "";
-    milli = "";
-    minigame = "none";
+    // then = 0;
+    // mins = "";
+    // sec = "";
+    // milli = "";
     counter = 0;
     coordinates = [];
   }
@@ -95,7 +91,7 @@ class Play1 extends Phaser.Scene {
     this.load.image('tiles', gameAssets.mapPng);
     // this.load.image('ground', gameAssets.platformPng);
     this.load.image('exit', gameAssets.exitImg);
-    this.load.spritesheet('egyptian', gameAssets.policemanSprite, {
+    this.load.spritesheet('character', gameAssets.policemanSprite, {
       frameWidth: 32,
       frameHeight: 48,
     });
@@ -123,8 +119,8 @@ class Play1 extends Phaser.Scene {
     //   blankState = this.scene;
     //   counterScene++;
     // }
-    endTime = startTime + (beginningSecs + beginningMins * 60)  * 1000;
-    localStorage.setItem('status', status.text)
+
+    localStorage.setItem('status', status.text);
 
     this.platforms = this.physics.add.staticGroup();
     this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });  //
@@ -138,7 +134,7 @@ class Play1 extends Phaser.Scene {
     this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
     this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
     // const testRect = this.add.rectangle(460, 323, 50, 100, 0xFFFFFF);
-    egyptian = this.physics.add.sprite(460, 323, "egyptian").setSize(15, 2).setOffset(9, 43).setDepth(1);
+    character = this.physics.add.sprite(460, 323, "character").setSize(15, 2).setOffset(9, 43).setDepth(1);
     this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
     // console.log(testRect);
     // this.collision1 = this.map.createLayer('collision_1', this.tileset, 0, 0);
@@ -163,9 +159,9 @@ class Play1 extends Phaser.Scene {
     // this.collision6.setCollisionByExclusion([0, -1, 1]);
     // this.objectBottom.setCollisionByExclusion([0, -1, 1]);
 
-    // egyptian.body.setSize(15, 1);
-    // egyptian.setBounce(0.2);
-    // egyptian.setCollideWorldBounds(true);
+    // character.body.setSize(15, 1);
+    // character.setBounce(0.2);
+    // character.setCollideWorldBounds(true);
     this.walls.setCollisionFromCollisionGroup();
     this.extraObj.setCollisionFromCollisionGroup();
     this.objectBottom.setCollisionFromCollisionGroup();
@@ -173,136 +169,27 @@ class Play1 extends Phaser.Scene {
     this.transparent.setCollisionFromCollisionGroup();
     // this.secretDoor.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
-    const drawCollisionShapes = (graphics, object) => {
-      graphics.clear();
-
-      // Loop over each tile and visualize its collision shape (if it has one)
-      object.forEachTile((tile) => {
-        var tileWorldX = tile.getLeft();
-        var tileWorldY = tile.getTop();
-        var collisionGroup = tile.getCollisionGroup();
-
-        if (!collisionGroup || collisionGroup.objects.length === 0) { return; }
-
-          // The group will have an array of objects - these are the individual collision shapes
-          var objects = collisionGroup.objects;
-          for (var i = 0; i < objects.length; i++)
-          {
-              var object = objects[i];
-              var objectX = tileWorldX + object.x;
-              var objectY = tileWorldY + object.y;
-
-              // When objects are parsed by Phaser, they will be guaranteed to have one of the
-              // following properties if they are a rectangle/ellipse/polygon/polyline.
-              if (object.rectangle) {
-                  this.platforms.create(objectX, objectY, "ground").setSize(object.width, object.height).setOffset(16, 16).visible = false;
-                  coordinates.push({ x:objectX, y:objectY, w:object.width, h:object.height });
-              } else if (object.ellipse) {
-                  // Ellipses in Tiled have a top-left origin, while ellipses in Phaser have a center
-                  // origin
-                  graphics.strokeEllipse(
-                    objectX + object.width / 2, objectY + object.height / 2,
-                    object.width, object.height
-                  );
-              } else if (object.polygon || object.polyline) {
-                  var originalPoints = object.polygon ? object.polygon : object.polyline;
-                  var points = [];
-                  for (var j = 0; j < originalPoints.length; j++) {
-                    var point = originalPoints[j];
-                    points.push({
-                      x: objectX + point.x,
-                      y: objectY + point.y
-                    });
-                  }
-                  graphics.strokePoints(points);
-              }
-          }
-      });
-    }
 
     // drawCollisionShapes(shapeGraphics, this.secretDoor);
-    drawCollisionShapes(shapeGraphics, this.extraObj);
-    drawCollisionShapes(shapeGraphics, this.objectBottom);
-    drawCollisionShapes(shapeGraphics, this.objectTop);
+    drawCollisionShapes(this, shapeGraphics, this.extraObj);
+    drawCollisionShapes(this, shapeGraphics, this.objectBottom);
+    drawCollisionShapes(this, shapeGraphics, this.objectTop);
     // drawCollisionShapes(shapeGraphics, this.objectBottom);
     // drawCollisionShapes(shapeGraphics, this.objectTop);
-    // console.log(shapeGraphics);
-    // console.log(this)
-    // console.log(this.matter)
-    // console.log(coordinates);
-
-    this.anims.create({
-      key: "left",
-      frames: this.anims.generateFrameNumbers("egyptian", { start: 5, end: 7 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "turn",
-      frames: [{ key: "egyptian", frame: 0 }],
-      frameRate: 20,
-    });
-
-    this.anims.create({
-      key: "right",
-      frames: this.anims.generateFrameNumbers("egyptian", { start: 9, end: 11 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: 'down',
-      frames: this.anims.generateFrameNumbers('egyptian', { start: 1, end: 3 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'up',
-    frames: this.anims.generateFrameNumbers('egyptian', { start: 13, end: 15 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'upend',
-    frames: this.anims.generateFrameNumbers('egyptian', { start: 12 }),
-      frameRate: 20,
-    });
-
-    this.anims.create({
-      key: 'downend',
-    frames: this.anims.generateFrameNumbers('egyptian', { start: 0 }),
-      frameRate: 20,
-    });
-
-    this.anims.create({
-      key: 'leftend',
-    frames: this.anims.generateFrameNumbers('egyptian', { start: 4 }),
-      frameRate: 20,
-    });
-
-    this.anims.create({
-      key: 'rightend',
-    frames: this.anims.generateFrameNumbers('egyptian', { start: 8 }),
-      frameRate: 20,
-    });
-
-
-    // this.physics.world.collide(egyptian, this.layer)
-    this.physics.add.collider(this.walls, egyptian);
-    this.physics.add.collider(this.extraObj, egyptian);
-    this.physics.add.collider(this.platforms, egyptian);
-    this.physics.add.collider(this.transparent, egyptian);
-    // this.physics.add.collider(this.secretDoor, egyptian);
-    // this.physics.add.collider(egyptian, this.objectTop);
-    // this.physics.add.collider(this.objectBottom, egyptian);
+    spriteFrame(this);
+    // this.physics.world.collide(character, this.layer)
+    this.physics.add.collider(this.walls, character);
+    this.physics.add.collider(this.extraObj, character);
+    this.physics.add.collider(this.platforms, character);
+    this.physics.add.collider(this.transparent, character);
+    // this.physics.add.collider(this.secretDoor, character);
+    // this.physics.add.collider(character, this.objectTop);
+    // this.physics.add.collider(this.objectBottom, character);
 
     cursors = this.input.keyboard.createCursorKeys();
     this.cameras.main.setBounds(0, 0, 1000, 1000);
     this.cameras.main.zoom = 2.5;
-    this.cameras.main.startFollow(egyptian);
+    this.cameras.main.startFollow(character);
 
     //Timer
     var chrono = this.add.graphics();
@@ -335,7 +222,6 @@ class Play1 extends Phaser.Scene {
     musique = this.sound.add('music');
     musique.setVolume(0.3);
     musique.play();
-
     unmute.on("pointerup", (event) => {
       musique.pause();
       mute.setVisible(true);
@@ -389,267 +275,50 @@ class Play1 extends Phaser.Scene {
     {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
   ];
     // this.input.keyboard.on("keydown-SPACE", () => {
-    //   egyptian.anims.stop();
-    //   if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {
+    //   character.anims.stop();
+    //   if (Range(0,88).includes(Math.round(character.x)) && Range(78,178).includes(Math.round(character.y))) {
     //     minigameSaber(this);
     //     minigame = "active";
     //   }
     // });
-    const debugInteraction = (layout) => {
-      this.input.keyboard.on("keyup-SPACE", () => {
-        this.findCoordinates = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.findCoordinates
-        layout.forEachTile(tile => {
-          var tileWorldX = tile.getLeft();
-          var tileWorldY = tile.getTop();
-          if (!this.findCoordinates) return
-          var collisionGroup = tile.getCollisionGroup();
-          if (!collisionGroup || collisionGroup.objects.length === 0) { return; }
-          tile.getCollisionGroup().objects.forEach((object) => {
-            var objectCenterX = object.x + tileWorldX + object.width / 2;
-            var objectCenterY = object.y + tileWorldY + object.height / 2;
-            var distBetween = Phaser.Math.Distance.Between(
-              egyptian.x,
-              egyptian.y,
-              objectCenterX,
-              objectCenterY
-            );
-            if (distBetween < 30) {
-
-              // console.log("Object Position",objectCenterX, objectCenterY);
-              // console.log("Distance to Object", distBetween);
-              // console.log("Egyptian position", egyptian.x, egyptian.y);
-              const testLine = this.add.graphics()
-              testLine.lineStyle(1, 0xFFFFFF, 1.0);
-              testLine.beginPath();
-              testLine.moveTo(egyptian.x, egyptian.y);
-              testLine.lineTo(objectCenterX, objectCenterY);
-              testLine.closePath();
-              testLine.strokePath();
-            }
-          })
-        });
-      });
-    }
     this.input.keyboard.on("keydown-SPACE", () => {
       var counter = 0;
       items.forEach ((item) => {
         var distBetween = Phaser.Math.Distance.Between(
-          egyptian.x,
-          egyptian.y,
+          character.x,
+          character.y,
           item.x,
           item.y
         );
-        if (distBetween < 30 && counter < 1 && minigame != "active") {
+        if (distBetween < 30 && counter < 1 && status.minigame != "active") {
           const end = () => {
-            minigame = "none"
+            status.minigame = "none";
           }
-          minigame = "active"
+          status.minigame = "active";
+          console.log(status.minigame);
           item.minigame(this, end);
           counter++;
         }
       });
 
     });
-    // debugInteraction(this.objectTop);
+    // debugInteraction(this, this.objectTop, character);
     // debugInteraction(this.objectBottom);
     // debugInteraction(this.secretDoor);
   };
 
   update ()
   {
-    // this.input.keyboard.on("keydown-SPACE", () => {
-    //   if (Range(0,88).includes(Math.round(egyptian.x)) && Range(78,178).includes(Math.round(egyptian.y))) {  updateSaber(this, egyptian) }
-    // })
-    egyptian.body.setVelocity(0);
-    if (minigame != "active") {
-      if (cursors.left.isDown) {
-        egyptian.setVelocityX(-90);
+    console.log(status.inventory);
+    movementSprite(this);
+    timerLooseScreenDisplay(this, beginningSecs, beginningMins);
 
-        egyptian.anims.play("left", true);
-        this.x = 1;
-      } else if (cursors.right.isDown) {
-        egyptian.setVelocityX(90);
-
-        egyptian.anims.play("right", true);
-        this.x = 2;
-      } else if (cursors.down.isDown) {
-        egyptian.setVelocityY(90);
-
-        egyptian.anims.play("down", true);
-        this.x = 3;
-      } else if (cursors.up.isDown) // && egyptian.body.touching.down
-      {
-        egyptian.setVelocityY(-90);
-
-        egyptian.anims.play("up", true);
-        this.x = 4;
-      } else {
-        egyptian.setVelocityX(0);
-        if (this.x === 1) {
-          egyptian.anims.play("leftend");
-        }
-        else if (this.x === 2) {
-          egyptian.anims.play("rightend");
-        }
-        else if (this.x === 3) {
-          egyptian.anims.play("downend");
-        }
-        else if (this.x === 4) {
-          egyptian.anims.play("upend");
-        }
-        //egyptian.anims.play("turn");
-        }
-     } else {
-          egyptian.setVelocityX(0);
-          if (this.x === 1) {
-            egyptian.anims.play("leftend");
-          }
-          else if (this.x === 2) {
-            egyptian.anims.play("rightend");
-          }
-          else if (this.x === 3) {
-            egyptian.anims.play("downend");
-          }
-          else if (this.x === 4) {
-            egyptian.anims.play("upend");
-          }
-      }
-    const camera = (layout) => {
-      this.origin = layout.getTileAtWorldXY(egyptian.x, egyptian.y) || this.origin
-      layout.forEachTile(tile => {
-        if (!this.origin) return
-        var dist = Phaser.Math.Distance.Chebyshev(
-            this.origin.x,
-            this.origin.y,
-            tile.x,
-            tile.y
-        );
-        if (dist === 1) {
-          tile.setAlpha(1);
-        } else {
-          tile.setAlpha(1 - 0.3 * dist);
-        }
-      })
-    }
-
-        // Timer
-        if (status.timer != "stop") {
-          var now = this.time.now;
-          if (!startTime) {
-            startTime = now;
-          }
-          if (status.timer != "stop") {
-            var ms = then - now;
-          } else {
-            var ms = 0;
-          }
-            if (ms < 0) {
-              then = now + 1000;
-              s++;
-            } else if ((beginningSecs - s) < 0) {
-              beginningSecs = 59;
-              s = 0;
-              m++;
-            }
-            if ((beginningMins - m) < 10) {
-              mins = "0" + Math.max(0,(beginningMins - m))
-            } else {
-              mins = (beginningMins - m)
-            };
-            if ((beginningSecs - s) < 10) {
-              sec = "0" + Math.max(0,(beginningSecs - s));
-            } else {
-              sec = (beginningSecs - s)
-            };
-          if (Math.min(Math.trunc(ms/10),99) < 10) {
-            milli = "0" + Math.max(Math.min(Math.trunc(ms/10),99),0)
-          } else {
-            milli = Math.min(Math.trunc(ms/10),99)
-          }
-        }
-          var time = mins + ":" + sec + ":" + milli
-          timer.setText(time);
-
-          if (endStatus === "true") {
-            let doorsound = this.sound.add('door');
-            doorsound.setVolume(0.5);
-            doorsound.play();
-            start = this.time.now;
-            startStatus = "true";
-          }
-          endStatus = "false";
-          if (startStatus === "true") {
-            endTimer = this.time.now - start;
-          }
-
-
-          this.cameras.main.once("camerafadeoutcomplete", () => {
-            if (!fadeComplete) {
-              var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
-              this.cameras.main.fadeIn(10);
-              fadeComplete = true;
-            }
-          })
-
-          if (endTimer > 2900) {
-
-            endBorder.destroy();
-            endGraphics.destroy();
-            endText.destroy();
-            // comment again
-            // again = this.add.image(innerWidth/2, innerHeight/3+200, 'playAgain').setScrollFactor(0).setDepth(4).setInteractive();
-
-            //new lost screen
-            var lostscreen = this.add.image(this.cameras.main.scrollX + innerWidth/2.33, this.cameras.main.scrollY + innerHeight/3,'lostscreen').setOrigin(0,0);
-            lostscreen.setDisplaySize((innerWidth+innerHeight)/12, (innerWidth+innerHeight)/10.5);
-            lostscreen.setDepth(10);
-
-            again = this.add.image(this.cameras.main.scrollX + innerWidth/2.45, this.cameras.main.scrollY + innerHeight/1.95, 'playAgain').setOrigin(0,0).setDepth(11).setInteractive();
-            again.setDisplaySize((innerWidth+innerHeight)/9, (innerWidth+innerHeight)/11);
-
-            again.on("pointerup", (event) => {
-              this.scene.stop();
-              this.scene.start('Play');
-              this.begin();
-              musique.destroy();
-            });
-          }
-          // console.log(endTime)
-          if ((now - startTime) >= endTime && status.timer != "stop") {
-            timer.setText("00:00:00")
-            status.timer = "stop"
-            this.cameras.main.fadeOut(3000);
-            endStatus = "true";
-
-            // Textbox
-            endContent = "Here you are officer!";
-            endBorder = this.add.graphics();
-
-            endBorder.fillStyle(0xFFFFFF);
-            endBorder.fillRect(this.cameras.main.scrollX + (innerWidth/3.27 - 3.0), this.cameras.main.scrollY + (innerHeight/1.67 - 3.0), innerWidth/2.68 + 6.0, innerHeight/15.08 + 6.0);
-
-            endGraphics = this.add.graphics();
-
-            endGraphics.fillStyle(0x000000);
-            endGraphics.fillRect(this.cameras.main.scrollX + innerWidth/3.27, this.cameras.main.scrollY + innerHeight/1.67, innerWidth/2.68, innerHeight/15.08);
-            endText = this.add.text(this.cameras.main.scrollX + innerWidth/3.275 + 6, this.cameras.main.scrollY + innerHeight/1.675 + 6, endContent, {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.69, height: 40 }})
-            // End Textbox
-
-            minigame = "active";
-            // var rect = this.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(3);
-            // rect.alpha = 0.7;
-
-            //var losetext = this.add.text(innerWidth/2, innerHeight/2, "Too late...", { color: '#FFFFFF', font: "24px" }).setScrollFactor(0).setDepth(4);
-
-          }
-        //End Timer
-
-        //Inventory
+      //Inventory
     if (status.computerStatus === 'Unlocked' && countDoor < 1) {
       this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
       countDoor = 1;
     } else if (countDoor === 1) {
-      camera(this.secretDoor);
+      camera(this, this.secretDoor, character);
     }
 
     if (status.inventory != "" && status.inventory != "none") {
@@ -659,13 +328,12 @@ class Play1 extends Phaser.Scene {
       borderBox.visible = false;
       inventoryBox.visible = false;
     }
-    camera(this.walls);
-    camera(this.objectBottom);
-    camera(this.objectTop);
-    camera(this.extraObj);
-    camera(this.layer);
-    camera(this.transparent);
+    camera(this, this.walls, character);
+    camera(this, this.objectBottom, character);
+    camera(this, this.objectTop, character);
+    camera(this, this.extraObj, character);
+    camera(this, this.layer, character);
+    camera(this, this.transparent, character);
   };
 };
-
-export { Play1, status };
+export { Play1, status, coordinates, musique, timer, character, cursors };

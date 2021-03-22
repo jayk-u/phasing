@@ -238,6 +238,7 @@ const minigameMicrowave = (game, end) => {
 };
 
 const minigameSink = (game, end) => {
+  console.log("coucou");
   game.load.image("ring", gameAssets.ringImg);
 
   const destroyMinigame = () => {
@@ -274,7 +275,7 @@ const minigameSink = (game, end) => {
         ],
         destroyMinigame
       );
-    } else if (status.inventory == "Ring") {
+    } else if (status.inventory === "Ring") {
       textbox(game, ["My precious..."], end);
     } else {
       textbox(
@@ -440,6 +441,7 @@ const minigameWindbreak = (game, end) => {
 };
 
 const minigameCattree = (game, end) => {
+  console.log("key");
   game.load.image("key", gameAssets.keyImg);
 
   const destroyMinigame = () => {
@@ -489,6 +491,7 @@ const minigameCattree = (game, end) => {
       key.setDisplaySize(40, 40);
       key.ignoreDestroy = true;
       key.setScrollFactor(0);
+      console.log(status);
       status.inventory = "Key";
     });
   }

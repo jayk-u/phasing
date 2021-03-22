@@ -1,10 +1,18 @@
 var nameCounter;
 var level
+var activerect
+
 
 const box = (game, x, y, width, height) => {
   game.add.graphics().fillStyle(0xFFFFFF).fillRect(x - 5, y - 5, width + 10, height + 10);
   game.add.graphics().fillStyle(0x000000).fillRect(x - 2.5, y - 2.5, width + 5, height + 5);
   level = game.add.image(x, y, `map${nameCounter}`).setOrigin(0).setDisplaySize(width, height).setInteractive();
+  level.on("pointerover", () => {
+    activerect = game.add.graphics().fillStyle(0xFFFFFF).fillRect(x - 10, y - 10, width + 20, height + 20).setDepth(-1);
+})
+  level.on("pointerout", () => {
+    activerect.destroy();
+  })
   if (nameCounter == 0) {
     game.add.text(x + width/4, y + height + 10, `Tutorial`, {font: "24px", color:"#FFFFFF"})
     level.on("pointerdown", () => {
@@ -39,7 +47,7 @@ class Select extends Phaser.Scene {
 
       this.load.image("logoo", loginAssets.logoImg);
       this.load.image("settings", loginAssets.settingsBtn);
-      this.load.video("overlay", loginAssets.overlayVid);
+      this.load.video("overlay", loginAssets.overlayVid, false, true);
       this.load.image("containersett", loginAssets.containerImg);
       this.load.image("volume", loginAssets.volumeImg);
       this.load.audio("music", loginAssets.musicMp3);
@@ -56,6 +64,9 @@ class Select extends Phaser.Scene {
     video.setDisplaySize(innerWidth, innerHeight);
 
     video.setBlendMode(Phaser.BlendModes.SCREEN);
+    video.play(true);
+    box(this, innerWidth/5, innerHeight/3, innerWidth/5, innerHeight/5);
+    box(this, innerWidth/2, innerHeight/3, innerWidth/5, innerHeight/5);
 
     var lg = this.add.image(125, 80, "logoo");
     lg.setDisplaySize(225, 125);

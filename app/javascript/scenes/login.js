@@ -11,7 +11,7 @@ class Login extends Phaser.Scene {
     this.load.image("perso", loginAssets.persoImg);
     this.load.image("play", loginAssets.playBtn);
     this.load.image("settings", loginAssets.settingsBtn);
-    this.load.video("overlay", loginAssets.overlayVid);
+    this.load.video("overlay", loginAssets.overlayVid, false, true);
     this.load.image("containersett", loginAssets.containerImg);
     this.load.image("volume", loginAssets.volumeImg);
     this.load.audio("music", loginAssets.musicMp3);
@@ -21,10 +21,11 @@ class Login extends Phaser.Scene {
   create() {
     // var containersett = this.add.image(125, 80, "containersett");
 
-    var video = this.add.video(10, 10, "overlay");
-    video.setDisplaySize(innerWidth, innerHeight);
+    var video = this.add.video(0, 0, "overlay");
+    video.setDisplaySize(innerWidth*2, innerHeight*2);
 
     video.setBlendMode(Phaser.BlendModes.SCREEN);
+    video.play(true);
 
     var lg = this.add.image(125, 80, "logoo");
     lg.setDisplaySize(225, 125);

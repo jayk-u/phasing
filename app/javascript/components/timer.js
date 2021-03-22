@@ -28,8 +28,8 @@ const timerLooseScreenDisplay = (game, beginningSecs, beginningMins) => {
       if (status.ms < 0) {
         status.then = status.now + 1000;
         status.s++;
-      } else if ((beginningSecs - status.s) < 0) {
-        beginningSecs = 59;
+      } else if ((beginningSecs + status.difference - status.s) < 0) {
+        status.difference = 59 - beginningSecs;
         status.s = 0;
         status.m++;
       }
@@ -38,10 +38,10 @@ const timerLooseScreenDisplay = (game, beginningSecs, beginningMins) => {
       } else {
         status.min = (beginningMins - status.m)
       };
-      if ((beginningSecs - status.s) < 10) {
-        status.sec = "0" + Math.max(0,(beginningSecs - status.s));
+      if ((beginningSecs + status.difference - status.s) < 10) {
+        status.sec = "0" + Math.max(0,(beginningSecs + status.difference - status.s));
       } else {
-        status.sec = (beginningSecs - status.s)
+        status.sec = (beginningSecs + status.difference - status.s)
       };
     if (Math.min(Math.trunc(status.ms/10),99) < 10) {
       status.milli = "0" + Math.max(Math.min(Math.trunc(status.ms/10),99),0)
@@ -51,7 +51,7 @@ const timerLooseScreenDisplay = (game, beginningSecs, beginningMins) => {
   }
   status.time = status.min + ":" + status.sec + ":" + status.milli
   timer.setText(status.time);
-  if ((status.now - status.startTime) >= status.endTime && status.timer != "stop") {
+  if ((status.now) >= (status.endTime + status.startTime) && status.timer != "stop") {
     timer.setText("00:00:00");
     status.timer = "stop";
     game.cameras.main.fadeOut(3000);

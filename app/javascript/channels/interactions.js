@@ -238,7 +238,6 @@ const minigameMicrowave = (game, end) => {
 };
 
 const minigameSink = (game, end) => {
-  console.log("coucou");
   game.load.image("ring", gameAssets.ringImg);
 
   const destroyMinigame = () => {
@@ -441,7 +440,6 @@ const minigameWindbreak = (game, end) => {
 };
 
 const minigameCattree = (game, end) => {
-  console.log("key");
   game.load.image("key", gameAssets.keyImg);
 
   const destroyMinigame = () => {

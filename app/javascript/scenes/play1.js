@@ -22,8 +22,8 @@ var countDoor = 0;
 // var m;
 // var ms;
 // var endTime;
-var beginningMins;
-var beginningSecs;
+// var beginningMins;
+// var beginningSecs;
 var timer;
 var now;
 //EndTimer
@@ -64,9 +64,10 @@ class Play1 extends Phaser.Scene {
     status.min = "";
     status.sec = "";
     status.milli = "";
+    status.difference = 0;
 
-    beginningMins = 1;
-    beginningSecs = 45;
+    // beginningMins = 1;
+    // beginningSecs = 45;
 
     // then = 0;
     // mins = "";
@@ -301,7 +302,6 @@ class Play1 extends Phaser.Scene {
             status.minigame = "none";
           }
           status.minigame = "active";
-          console.log(status.minigame);
           item.minigame(this, end);
           counter++;
         }
@@ -315,9 +315,8 @@ class Play1 extends Phaser.Scene {
 
   update ()
   {
-    console.log(status.inventory);
     movementSprite(this);
-    timerLooseScreenDisplay(this, beginningSecs, beginningMins);
+    timerLooseScreenDisplay(this, 10, 1);
 
       //Inventory
     if (status.computerStatus === 'Unlocked' && countDoor < 1) {

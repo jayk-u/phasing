@@ -1,8 +1,6 @@
-import { status } from "../scenes/play1"
-
 var counter;
 
-const interactionObject = (game, items, character) => {
+const interactionObject = (game, items, character, status) => {
   game.input.keyboard.on("keydown-SPACE", () => {
     counter = 0;
     items.forEach ((item) => {

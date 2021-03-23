@@ -1,5 +1,3 @@
-import { status, musique } from "../scenes/play1"
-
 var endContent;
 var endGraphics;
 var endText;
@@ -11,7 +9,7 @@ lostscreen = null;
 start = 0;
 again = "";
 
-const timerLooseScreenDisplay = (game, beginningSecs, beginningMins) => {
+const timerLooseScreenDisplay = (game, beginningSecs, beginningMins, status, musique) => {
   if (status.timer != "stop") {
     status.now = game.time.now;
     if (!status.startTime) {

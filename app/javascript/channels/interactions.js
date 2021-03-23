@@ -489,7 +489,6 @@ const minigameCattree = (game, end) => {
       key.setDisplaySize(40, 40);
       key.ignoreDestroy = true;
       key.setScrollFactor(0);
-      console.log(status);
       status.inventory = "Key";
     });
   }

@@ -1,6 +1,4 @@
-import { coordinates } from "../scenes/play1"
-
-const drawCollisionShapes = (game, graph, object) => {
+const drawCollisionShapes = (game, graph, object, coordinates) => {
   graph.clear();
   // Loop over each tile and visualize its collision shape (if it has one)
   object.forEachTile((tile) => {

@@ -1,6 +1,4 @@
-import { status } from "../scenes/play1"
-
-const borderInventory = (game) => {
+const borderInventory = (game, status) => {
   status.borderBox = game.add.graphics().setScrollFactor(0);
   status.borderBox.fillStyle(0xFFFFFF);
   status.borderBox.fillRect(innerWidth/3.3 - 1, innerHeight/3.3 - 1, 52, 52);

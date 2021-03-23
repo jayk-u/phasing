@@ -158,9 +158,9 @@ class Play1 extends Phaser.Scene {
     shapeGraphics = this.add.graphics();
 
     // drawCollisionShapes(shapeGraphics, this.secretDoor);
-    drawCollisionShapes(this, shapeGraphics, this.extraObj);
-    drawCollisionShapes(this, shapeGraphics, this.objectBottom);
-    drawCollisionShapes(this, shapeGraphics, this.objectTop);
+    drawCollisionShapes(this, shapeGraphics, this.extraObj, coordinates);
+    drawCollisionShapes(this, shapeGraphics, this.objectBottom, coordinates);
+    drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
     // drawCollisionShapes(shapeGraphics, this.objectBottom);
     // drawCollisionShapes(shapeGraphics, this.objectTop);
     spriteFrame(this);
@@ -175,44 +175,44 @@ class Play1 extends Phaser.Scene {
 
     cursors = this.input.keyboard.createCursorKeys();
     cameraSettings(this, character);
-    timerBox(this, status.timer);
-    borderInventory(this);
+    timerBox(this, status);
+    borderInventory(this, status);
 
     //SETTINGS
     musique = game.sound.add('music');
-    sound(this);
-    leaveGame(this);
+    sound(this, musique);
+    leaveGame(this, musique);
     //END SETTINGS
 
-  const items = [
-    {x: 400, y: 188, name: 'kitchen-tree', minigame: minigameKitchenTree},
-    {x: 400, y: 197, name: 'kitchen-tree', minigame: minigameKitchenTree},
-    {x: 304, y: 101, name: 'stove', minigame: minigameSink},
-    {x: 336, y: 101, name: 'stove', minigame: minigameSink},
-    {x: 400, y: 101, name: 'microwave', minigame: minigameMicrowave},
-    {x: 115, y: 183, name: 'sofa', minigame: minigameSofa},
-    {x: 116, y: 207, name: 'sofa', minigame: minigameSofa},
-    {x: 116, y: 227, name: 'sofa', minigame: minigameSofa},
-    {x: 207, y: 217, name: 'cat-tree', minigame: minigameCattree},
-    {x: 207, y: 229, name: 'cat-tree', minigame: minigameCattree},
-    {x: 40, y: 208, name: 'television', minigame: minigameTV},
-    {x: 111, y: 133, name: 'living-library', minigame: minigameLivingLibrary},
-    {x: 143, y: 132, name: 'living-library', minigame: minigameLivingLibrary},
-    {x: 207, y: 133, name: 'bonsai', minigame: minigameBonsai},
-    {x: 239, y: 101, name: 'fridge', minigame: minigameFreezer},
-    {x: 641, y: 209, name: 'bath-plant', minigame: minigameBathPlant},
-    {x: 722, y: 204, name: 'windbreak', minigame: minigameWindbreak},
-    {x: 816, y: 175, name: 'baththub', minigame: minigameBathtub},
-    {x: 559, y: 133, name: 'computer', minigame: minigameComputer},
-    {x: 527, y: 133, name: 'bookshelf', minigame: minigameRoomLibrary},
-    {x: 431, y: 325, name: 'hallway', minigame: minigameHallway},
-    {x: 461, y: 295, name: 'door', minigame: minigameDoor},
-    {x: 591, y: 249, name: 'aquarium', minigame: minigameFish},
-    {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
-    {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
-  ];
+    const items = [
+      {x: 400, y: 188, name: 'kitchen-tree', minigame: minigameKitchenTree},
+      {x: 400, y: 197, name: 'kitchen-tree', minigame: minigameKitchenTree},
+      {x: 304, y: 101, name: 'stove', minigame: minigameSink},
+      {x: 336, y: 101, name: 'stove', minigame: minigameSink},
+      {x: 400, y: 101, name: 'microwave', minigame: minigameMicrowave},
+      {x: 115, y: 183, name: 'sofa', minigame: minigameSofa},
+      {x: 116, y: 207, name: 'sofa', minigame: minigameSofa},
+      {x: 116, y: 227, name: 'sofa', minigame: minigameSofa},
+      {x: 207, y: 217, name: 'cat-tree', minigame: minigameCattree},
+      {x: 207, y: 229, name: 'cat-tree', minigame: minigameCattree},
+      {x: 40, y: 208, name: 'television', minigame: minigameTV},
+      {x: 111, y: 133, name: 'living-library', minigame: minigameLivingLibrary},
+      {x: 143, y: 132, name: 'living-library', minigame: minigameLivingLibrary},
+      {x: 207, y: 133, name: 'bonsai', minigame: minigameBonsai},
+      {x: 239, y: 101, name: 'fridge', minigame: minigameFreezer},
+      {x: 641, y: 209, name: 'bath-plant', minigame: minigameBathPlant},
+      {x: 722, y: 204, name: 'windbreak', minigame: minigameWindbreak},
+      {x: 816, y: 175, name: 'baththub', minigame: minigameBathtub},
+      {x: 559, y: 133, name: 'computer', minigame: minigameComputer},
+      {x: 527, y: 133, name: 'bookshelf', minigame: minigameRoomLibrary},
+      {x: 431, y: 325, name: 'hallway', minigame: minigameHallway},
+      {x: 461, y: 295, name: 'door', minigame: minigameDoor},
+      {x: 591, y: 249, name: 'aquarium', minigame: minigameFish},
+      {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
+      {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
+    ];
     //   character.anims.stop();
-    interactionObject(this, items, character);
+    interactionObject(this, items, character, status);
     // debugInteraction(this, this.objectTop, character);
     // debugInteraction(this.objectBottom);
     // debugInteraction(this.secretDoor);
@@ -220,8 +220,8 @@ class Play1 extends Phaser.Scene {
 
   update ()
   {
-    movementSprite(this);
-    timerLooseScreenDisplay(this, beginningSecs, beginningMins);
+    movementSprite(this, character, cursors, status);
+    timerLooseScreenDisplay(this, beginningSecs, beginningMins, status, musique);
 
       //Inventory
     if (status.computerStatus === 'Unlocked' && countDoor < 1) {

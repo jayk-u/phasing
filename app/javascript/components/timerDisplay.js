@@ -1,4 +1,4 @@
-import { status, musique, timer } from "../scenes/play1"
+import { status, musique } from "../scenes/play1"
 
 var endContent;
 var endGraphics;
@@ -49,10 +49,10 @@ const timerLooseScreenDisplay = (game, beginningSecs, beginningMins) => {
       status.milli = Math.min(Math.trunc(status.ms/10),99)
     }
   }
-  status.time = status.min + ":" + status.sec + ":" + status.milli
-  timer.setText(status.time);
+  status.time = status.min + ":" + status.sec + ":" + status.milli;
+  status.actualTime.setText(status.time);
   if ((status.now) >= (status.endTime + status.startTime) && status.timer != "stop") {
-    timer.setText("00:00:00");
+    status.actualTime.setText("00:00:00");
     status.timer = "stop";
     game.cameras.main.fadeOut(3000);
     status.end = true;

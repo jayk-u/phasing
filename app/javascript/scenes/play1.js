@@ -221,7 +221,7 @@ class Play1 extends Phaser.Scene {
   update ()
   {
     movementSprite(this, character, cursors, status);
-    timerLooseScreenDisplay(this, beginningSecs, beginningMins, status, musique);
+    timerLooseScreenDisplay(this, beginningSecs, beginningMins, "Here you are, Officer!", status, musique);
 
       //Inventory
     if (status.computerStatus === 'Unlocked' && countDoor < 1) {

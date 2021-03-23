@@ -155,7 +155,17 @@ const minigameRoomLibrary = (game, end) => {
   if (status.library != "Unlocked") {
     const destroyMinigame = () => {
       keylock.destroy();
+      if (key) {key.off("pointerdown", pointKey)};
       end();
+    };
+
+    const pointKey = () => {
+      key.ignoreDestroy = false;
+      key.destroy();
+      keylock.destroy();
+      textbox(game, ["Yes!"], destroyMinigame);
+      status.inventory = "none";
+      status.library = "Unlocked";
     };
 
     game.load.image("keylock", gameAssets.keylockImg);
@@ -179,14 +189,7 @@ const minigameRoomLibrary = (game, end) => {
       status.inventory != "none"
     ) {
       textbox(game, ["I need the right tools..."], destroyMinigame);
-      key.on("pointerdown", () => {
-        key.ignoreDestroy = false;
-        key.destroy();
-        keylock.destroy();
-        textbox(game, ["Yes!"], destroyMinigame);
-        status.inventory = "none";
-        status.library = "Unlocked";
-      });
+      if (status.inventory == "Key") {key.on("pointerdown", pointKey)}
     } else {
       textbox(
         game,

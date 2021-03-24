@@ -9,7 +9,7 @@ lostscreen = null;
 start = 0;
 again = "";
 
-const timerLooseScreenDisplay = (game, beginningSecs, beginningMins, status, musique) => {
+const timerLooseScreenDisplay = (game, beginningSecs, beginningMins, endContent, status, musique) => {
   if (status.timer != "stop") {
     status.now = game.time.now;
     if (!status.startTime) {
@@ -54,8 +54,7 @@ const timerLooseScreenDisplay = (game, beginningSecs, beginningMins, status, mus
     status.timer = "stop";
     game.cameras.main.fadeOut(3000);
     status.end = true;
-    // Textbox
-    endContent = "Here you are officer!";
+    // Textbox;
     endBorder = game.add.graphics();
 
     endBorder.fillStyle(0xFFFFFF);
@@ -105,9 +104,8 @@ const timerLooseScreenDisplay = (game, beginningSecs, beginningMins, status, mus
     again = game.add.image(game.cameras.main.scrollX + innerWidth/2.45, game.cameras.main.scrollY + innerHeight/1.95, 'playAgain').setOrigin(0,0).setDepth(11).setInteractive();
     again.setDisplaySize((innerWidth+innerHeight)/9, (innerWidth+innerHeight)/11);
 
-    again.on("pointerup", (event) => {
-      game.scene.stop();
-      game.scene.start('Play1');
+    again.on("pointerup", () => {
+      game.scene.restart();
       game.begin();
       musique.destroy();
     });

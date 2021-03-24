@@ -19,6 +19,7 @@ var cursors;
 var shapeGraphics;
 var coordinates;
 var countDoor = 0;
+var instructions = false
 
 var beginningMins;
 var beginningSecs;
@@ -97,6 +98,8 @@ class Tutorial extends Phaser.Scene {
   {
     localStorage.setItem('status', status.text)
 
+    timerBox(this, status);
+
     this.platforms = this.physics.add.staticGroup();
     this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
     this.tileset = this.map.addTilesetImage("MainTileMap", 'tiles');
@@ -131,7 +134,6 @@ class Tutorial extends Phaser.Scene {
     // TIMER
     timerBox(this, status);
     borderInventory(this, status);
-    beginningInstructions(this, end);
     //SETTINGS
     cameraSettings(this, character);
     musique = game.sound.add('music');
@@ -153,6 +155,12 @@ class Tutorial extends Phaser.Scene {
   {
     movementSprite(this, character, cursors, status);
       //Inventory
+    if (status.library == "end") {
+      timerLooseScreenDisplay(this, 5, 0, "", status, musique)
+    }
+    this.cameras.main.on("camerafadeoutcomplete", () => {
+      endingInstructions(this, end)
+    });
     if (status.computerStatus === 'Unlocked' && countDoor < 1) {
       this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
       countDoor = 1;
@@ -173,6 +181,11 @@ class Tutorial extends Phaser.Scene {
     camera(this, this.extraObj, character);
     camera(this, this.layer, character);
     camera(this, this.transparent, character);
+
+    if (!instructions) {
+      beginningInstructions(this, end);
+      instructions = true
+    }
   };
 };
 

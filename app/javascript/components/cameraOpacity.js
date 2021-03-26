@@ -6,14 +6,14 @@ const camera = (game, layout, character) => {
         game.origin.x,
         game.origin.y,
         tile.x,
-        tile.y
+        tile.y,
     );
     if (dist === 1) {
       tile.setAlpha(1);
     } else {
       tile.setAlpha(1 - 0.3 * dist);
     }
-  })
+  });
 }
 
 export { camera };

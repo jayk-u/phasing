@@ -103,12 +103,12 @@ class Tutorial extends Phaser.Scene {
     this.platforms = this.physics.add.staticGroup();
     this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
     this.tileset = this.map.addTilesetImage("office_tiles", 'tiles');
-    this.walls = this.map.createLayer("wall", this.tileset, 0, 0);
+    this.walls = this.map.createLayer("wall", this.tileset, 0, 0).setDepth(1);
     this.layer = this.map.createLayer('floor', this.tileset, 0, 0);
-    this.objectBottom = this.map.createLayer("furniture", this.tileset, 0, 0);
+    this.objectBottom = this.map.createLayer("furniture", this.tileset, 0, 0).setDepth(2);
     // this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
     // this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
-    character = this.physics.add.sprite(50, 60, "character").setSize(15, 2).setOffset(9, 43).setDepth(1);
+    character = this.physics.add.sprite(50, 60, "character").setSize(15, 2).setOffset(9, 43).setDepth(3);
     // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
 
     this.walls.setCollisionFromCollisionGroup();

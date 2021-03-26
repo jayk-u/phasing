@@ -21,7 +21,6 @@ const drawCollisionShapes = (game, graph, object, coordinates) => {
           if (object.rectangle) {
               game.platforms.create(objectX, objectY, "ground").setSize(object.width, object.height).setOffset(16, 16).visible = false;
               coordinates.push({ x:objectX, y:objectY, w:object.width, h:object.height });
-              console.log(coordinates)
           } else if (object.ellipse) {
               // Ellipses in Tiled have a top-left origin, while ellipses in Phaser have a center
               // origin

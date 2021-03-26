@@ -5,10 +5,8 @@ const drawCollisionShapes = (game, graph, object, coordinates) => {
     var tileWorldX = tile.getLeft();
     var tileWorldY = tile.getTop();
     var collisionGroup = tile.getCollisionGroup();
-    console.log(!collisionGroup)
 
     if (!collisionGroup || collisionGroup.objects.length === 0) { return; }
-    console.log("hey")
 
       // The group will have an array of objects - these are the individual collision shapes
       var objects = collisionGroup.objects;
@@ -17,8 +15,6 @@ const drawCollisionShapes = (game, graph, object, coordinates) => {
           var object = objects[i];
           var objectX = tileWorldX + object.x;
           var objectY = tileWorldY + object.y;
-          console.log(object)
-
 
           // When objects are parsed by Phaser, they will be guaranteed to have one of the
           // following properties if they are a rectangle/ellipse/polygon/polyline.

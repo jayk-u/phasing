@@ -73,8 +73,8 @@ class Tutorial extends Phaser.Scene {
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
 
-    this.load.tilemapTiledJSON('map', gameAssets.mapJson);
-    this.load.image('tiles', gameAssets.mapPng);
+    this.load.tilemapTiledJSON('map', gameAssets.map0Json);
+    this.load.image('tiles', gameAssets.map0Png);
     this.load.image('exit', gameAssets.exitImg);
     this.load.spritesheet('character', gameAssets.policemanSprite, {
       frameWidth: 32,
@@ -102,32 +102,32 @@ class Tutorial extends Phaser.Scene {
 
     this.platforms = this.physics.add.staticGroup();
     this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
-    this.tileset = this.map.addTilesetImage("MainTileMap", 'tiles');
-    this.walls = this.map.createLayer("Walls", this.tileset, 0, 0);
-    this.layer = this.map.createLayer('Main Map', this.tileset, 0, 0);
-    this.objectBottom = this.map.createLayer("bottom", this.tileset, 0, 0);
-    this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
-    this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
+    this.tileset = this.map.addTilesetImage("office_tiles", 'tiles');
+    this.walls = this.map.createLayer("wall", this.tileset, 0, 0);
+    this.layer = this.map.createLayer('floor', this.tileset, 0, 0);
+    this.objectBottom = this.map.createLayer("furniture", this.tileset, 0, 0);
+    // this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
+    // this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
     character = this.physics.add.sprite(460, 323, "character").setSize(15, 2).setOffset(9, 43).setDepth(1);
-    this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
+    // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
 
     this.walls.setCollisionFromCollisionGroup();
-    this.extraObj.setCollisionFromCollisionGroup();
+    // this.extraObj.setCollisionFromCollisionGroup();
     this.objectBottom.setCollisionFromCollisionGroup();
-    this.objectTop.setCollisionFromCollisionGroup();
-    this.transparent.setCollisionFromCollisionGroup();
+    // this.objectTop.setCollisionFromCollisionGroup();
+    // this.transparent.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
 
     spriteFrame(this);
 
-    drawCollisionShapes(this, shapeGraphics, this.extraObj, coordinates);
+    // drawCollisionShapes(this, shapeGraphics, this.extraObj, coordinates);
     drawCollisionShapes(this, shapeGraphics, this.objectBottom, coordinates);
-    drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
+    // drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
 
     this.physics.add.collider(this.walls, character);
-    this.physics.add.collider(this.extraObj, character);
+    // this.physics.add.collider(this.extraObj, character);
     this.physics.add.collider(this.platforms, character);
-    this.physics.add.collider(this.transparent, character);
+    // this.physics.add.collider(this.transparent, character);
 
     cursors = this.input.keyboard.createCursorKeys();
     status.minigame = "active";
@@ -141,14 +141,12 @@ class Tutorial extends Phaser.Scene {
     leaveGame(this, musique);
     //END SETTINGS
 
-  const items = [
-    {x: 527, y: 133, name: 'bookshelf', minigame: minigameShelves},
-    {x: 461, y: 280, name: 'door', minigame: minigameDoor},
-    ];
+    const items = [
+      {x: 527, y: 133, name: 'bookshelf', minigame: minigameShelves},
+      {x: 461, y: 280, name: 'door', minigame: minigameDoor},
+      ];
     interactionObject(this, items, character, status);
-    // debugInteraction(this.objectTop);
-    // debugInteraction(this.objectBottom);
-    // debugInteraction(this.secretDoor);
+    debugInteraction(this, this.objectBottom, character)
   };
 
   update ()
@@ -177,10 +175,10 @@ class Tutorial extends Phaser.Scene {
     }
     camera(this, this.walls, character);
     camera(this, this.objectBottom, character);
-    camera(this, this.objectTop, character);
-    camera(this, this.extraObj, character);
+    // camera(this, this.objectTop, character);
+    // camera(this, this.extraObj, character);
     camera(this, this.layer, character);
-    camera(this, this.transparent, character);
+    // camera(this, this.transparent, character);
 
     if (!instructions) {
       beginningInstructions(this, end);

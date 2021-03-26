@@ -14,13 +14,13 @@ const box = (game, x, y, width, height) => {
     activerect.destroy();
   })
   if (nameCounter == 0) {
-    game.add.text(x + width/4, y + height + 10, `Tutorial`, {font: "24px", color:"#FFFFFF"})
+    game.add.text(x + width/3, y + height + 10, `Tutorial`, {font: `${width/13}px`, color:"#FFFFFF", align: 'center', wordWrap: {width: width}})
     level.on("pointerdown", () => {
       game.scene.stop();
       game.scene.start("Tutorial");
     });
   } else {
-    game.add.text(x + width/4, y + height + 10, `Level ${nameCounter}`, {font: "24px", color:"#FFFFFF"})
+    game.add.text(x + width/3, y + height + 10, `Level ${nameCounter}`, {font: `${width/12.2}px`, color:"#FFFFFF"}).setAlign('center')
     var sceneName = `Intro${nameCounter}`;
     level.on("pointerdown", () => {
       game.scene.stop();
@@ -40,7 +40,7 @@ class Select extends Phaser.Scene {
   preload ()
   {
       const selectAssets = document.getElementById("selectScreen").dataset;
-      this.load.image('map0', selectAssets.map1Img);
+      this.load.image('map0', selectAssets.map0Img);
       this.load.image('map1', selectAssets.map1Img);
 
       const loginAssets = document.getElementById("login").dataset;
@@ -61,7 +61,7 @@ class Select extends Phaser.Scene {
     box(this, innerWidth/2, innerHeight/3, innerWidth/5, innerHeight/5);
 
     var video = this.add.video(10, 10, "overlay");
-    video.setDisplaySize(innerWidth, innerHeight);
+    video.setDisplaySize(innerWidth*2, innerHeight*2);
 
     video.setBlendMode(Phaser.BlendModes.SCREEN);
     video.play(true);

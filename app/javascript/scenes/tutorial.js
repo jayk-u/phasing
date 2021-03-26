@@ -142,11 +142,11 @@ class Tutorial extends Phaser.Scene {
     //END SETTINGS
 
     const items = [
-      {x: 527, y: 133, name: 'bookshelf', minigame: minigameShelves},
-      {x: 461, y: 280, name: 'door', minigame: minigameDoor},
+      {x: 290, y: 210, name: 'bookshelf', minigame: minigameShelves},
+      {x: 28, y: 40, name: 'door', minigame: minigameDoor},
       ];
     interactionObject(this, items, character, status);
-    debugInteraction(this, this.objectBottom, character)
+    // debugInteraction(this, this.objectBottom, character)
   };
 
   update ()

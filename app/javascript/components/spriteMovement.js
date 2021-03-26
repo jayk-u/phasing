@@ -1,6 +1,4 @@
-import { character, cursors, status } from "../scenes/play1"
-
-const movementSprite = (game) => {
+const movementSprite = (game, character, cursors, status) => {
   character.body.setVelocity(0);
   if (status.minigame != "active") {
     if (cursors.left.isDown) {

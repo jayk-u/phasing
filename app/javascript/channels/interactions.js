@@ -11,8 +11,13 @@ const gameAssets = document.getElementById("game-assets").dataset;
 const minigameDoor = (game, end) => {
   const destroyMinigame = () => {
     keylock.destroy();
+    if (key) {key.off("pointerdown", pointKey)};
     end();
   };
+
+  const pointKey = () => {
+    textbox(game, ["The key doesn't seem to fit..."], destroyMinigame)
+  }
 
   game.load.image("keylock", gameAssets.keylockImg);
 
@@ -43,7 +48,7 @@ const minigameDoor = (game, end) => {
         (innerWidth + innerHeight) / 10.5
       );
     });
-  } else if (status.inventory == "Key") {
+  } else if (status.inventory != "none" && status.inventory != "") {
     var keylock = game.add
       .image(
         game.cameras.main.scrollX + innerWidth / 2.1,
@@ -55,7 +60,12 @@ const minigameDoor = (game, end) => {
       (innerWidth + innerHeight) / 16,
       (innerWidth + innerHeight) / 16
     );
-    textbox(game, ["The key doesn't seem to fit..."], destroyMinigame);
+    if (status.inventory == "Key") {
+      textbox(game, ["Should I perhaps...?"], destroyMinigame)
+      key.on("pointerdown", pointKey)
+    } else {
+      textbox(game, ["No time to lose.", "I need the right tools!"], destroyMinigame)
+    }
   } else {
     var keylock = game.add
       .image(
@@ -155,7 +165,17 @@ const minigameRoomLibrary = (game, end) => {
   if (status.library != "Unlocked") {
     const destroyMinigame = () => {
       keylock.destroy();
+      if (key) {key.off("pointerdown", pointKey)};
       end();
+    };
+
+    const pointKey = () => {
+      key.ignoreDestroy = false;
+      key.destroy();
+      keylock.destroy();
+      textbox(game, ["Yes!"], destroyMinigame);
+      status.inventory = "none";
+      status.library = "Unlocked";
     };
 
     game.load.image("keylock", gameAssets.keylockImg);
@@ -179,14 +199,7 @@ const minigameRoomLibrary = (game, end) => {
       status.inventory != "none"
     ) {
       textbox(game, ["I need the right tools..."], destroyMinigame);
-      key.on("pointerdown", () => {
-        key.ignoreDestroy = false;
-        key.destroy();
-        keylock.destroy();
-        textbox(game, ["Yes!"], destroyMinigame);
-        status.inventory = "none";
-        status.library = "Unlocked";
-      });
+      if (status.inventory == "Key") {key.on("pointerdown", pointKey)}
     } else {
       textbox(
         game,
@@ -302,7 +315,7 @@ const minigameBonsai = (game, end) => {
   game.load.image("redBtn", gameAssets.redbtnImg);
 
   const enterRedBtn = () => {
-    if (next.scene != game.scene.scene) {
+    // if (next.scene != game.scene.scene) {
       if (status.computerStatus != "On" && status.computerStatus != "Unlocked") {
         status.computerStatus = "On";
         textbox(
@@ -311,10 +324,10 @@ const minigameBonsai = (game, end) => {
           destroyMinigame
         );
       }
-    }
+    // }
   };
   const pointRing = () => {
-    if (next.scene != game.scene.scene) {
+    // if (next.scene != game.scene.scene) {
       ring.ignoreDestroy = false;
       ring.destroy();
       status.inventory = "";
@@ -349,7 +362,7 @@ const minigameBonsai = (game, end) => {
       );
       game.input.keyboard.on("keydown-ENTER", enterRedBtn);
     };
-  };
+  // };
 
   var redBtnText;
   var redBtn;
@@ -489,7 +502,6 @@ const minigameCattree = (game, end) => {
       key.setDisplaySize(40, 40);
       key.ignoreDestroy = true;
       key.setScrollFactor(0);
-      console.log(status);
       status.inventory = "Key";
     });
   }
@@ -511,10 +523,9 @@ const minigameComputer = (game, end) => {
   game.load.image("computer", gameAssets.computerImg);
 
   const inputComputer = (event) => {
-    if (next.scene != game.scene.scene) {
+    // if (next.scene != game.scene.scene) {
       if (
-        ((input != "Enter password: " || event.key != "e") &&
-          event.keyCode <= 90 &&
+        ( event.keyCode <= 90 &&
           event.keyCode >= 65) ||
         event.key == "Backspace"
       ) {
@@ -537,13 +548,14 @@ const minigameComputer = (game, end) => {
             game,
             [
               "Found it! There's only one icon on the desktop...",
-              '"Main control lock", this must be the thing! Quick!',
+              '"Main control lock", this must be the thing!',
+              "Quick!"
             ],
             destroyMinigame
           );
         }
       }
-    }
+    // }
   }
 
   const destroyMinigame = () => {
@@ -578,7 +590,7 @@ const minigameComputer = (game, end) => {
     textbox(game, [
       "Locked by a password.",
       "But I can still see the wallpaper: it looks like a big guy holding a huge rock.",
-      "Maybe I should try something out?",
+      "Maybe I should type something up?",
     ], destroyMinigame);
     var input = "Enter password: ";
     var inputText = game.add

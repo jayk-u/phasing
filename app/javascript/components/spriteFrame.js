@@ -1,5 +1,3 @@
-import { character } from "../scenes/play1"
-
 const spriteFrame = (game) => {
   game.anims.create({
     key: "left",

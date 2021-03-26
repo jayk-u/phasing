@@ -1,10 +1,7 @@
-import { musique } from "../scenes/play1"
-
 var unmute;
 var mute;
 
-const sound = (game) => {
-  console.log(musique);
+const sound = (game, musique) => {
   unmute = game.add.image(innerWidth/1.5 -47, innerHeight/3.05, "volume").setInteractive().setDepth(2).setScrollFactor(0);
   unmute.setDisplaySize(35,35);
   unmute.setVisible(true);

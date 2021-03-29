@@ -68,25 +68,36 @@ class Play1 extends Phaser.Scene {
   {
     const gameAssets = document.getElementById("game-assets").dataset;
 
+    // Minigames
     this.load.image("tv", gameAssets.tvImg);
     this.load.image("redBtn", gameAssets.redbtnImg);
     this.load.image("computer", gameAssets.computerImg);
     this.load.image("ring", gameAssets.ringImg);
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
-    this.load.tilemapTiledJSON('map', gameAssets.mapJson);
-    this.load.image('tiles', gameAssets.mapPng);
+    //end minigames
+
+    //Map
+    this.load.tilemapTiledJSON('map', gameAssets.map1Json);
+    this.load.image('tiles', gameAssets.map1Png);
+    //End map
+
     // this.load.image('ground', gameAssets.platformPng);
+
     this.load.image('exit', gameAssets.exitImg);
     this.load.spritesheet('character', gameAssets.policemanSprite, {
       frameWidth: 32,
       frameHeight: 48,
     });
+
+    //Endscreen
     this.load.image('playAgain', gameAssets.playagainPng);
     this.load.image('winscreen', gameAssets.winscreenPng);
     this.load.image('lostscreen', gameAssets.lostscreenPng);
     this.load.audio('door', gameAssets.doorMp3);
+    //End endscreen
 
+    // Overlay
     const loginAssets = document.getElementById("login").dataset;
 
     this.load.image("settings", loginAssets.settingsBtn);
@@ -94,6 +105,7 @@ class Play1 extends Phaser.Scene {
     this.load.image("containersett", loginAssets.containerImg);
     this.load.image("volume", loginAssets.volumeImg);
     this.load.audio("music", loginAssets.musicMp3);
+    //End overlay
 
     const introAssets = document.getElementById("intro").dataset;
 

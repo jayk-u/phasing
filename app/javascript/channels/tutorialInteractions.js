@@ -6,7 +6,7 @@ const gameAssets = document.getElementById("game-assets").dataset;
 
 
 const beginningInstructions = (game, end) => {
-  textbox(game, ["Welcome to Breaking Out!\n...Press space to continue!", "Breaking Out is an Escape Game in which you'll have to find clues, solve problems and memorize information in order to complete levels!", "For starters, move with directional arrows and interact with space.", "Let's try it out on those shelves!"], end);
+  textbox(game, ["Welcome to Breaking Out!\n...Press space to continue!", "Breaking Out is an Escape Game in which you'll have to find clues, solve problems and memorize information in order to complete levels!", "For starters, move with directional arrows and interact with space.", "Let's try it out on this drawer!"], end);
 }
 
 const minigameShelves = (game, end) => {

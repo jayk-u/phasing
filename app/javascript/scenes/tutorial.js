@@ -2,7 +2,7 @@ import { game } from "../channels/game"
 import { debugInteraction } from "../components/debugInteraction"
 import { drawCollisionShapes } from "../components/drawCollision"
 import { timerBox } from "../components/timerBox"
-import { timerLooseScreenDisplay } from "../components/timerDisplay"
+import { timerLoseScreenDisplay } from "../components/timerDisplay"
 import { borderInventory } from "../components/inventoryDisplay"
 import { interactionObject } from "../components/interactionWithObject"
 import { cameraSettings } from "../components/cameraSettings"
@@ -154,7 +154,7 @@ class Tutorial extends Phaser.Scene {
     movementSprite(this, character, cursors, status);
       //Inventory
     if (status.library == "end") {
-      timerLooseScreenDisplay(this, 5, 0, "", status, musique)
+      timerLoseScreenDisplay(this, 5, 0, "", status, musique)
     }
     this.cameras.main.on("camerafadeoutcomplete", () => {
       endingInstructions(this, end)

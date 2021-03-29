@@ -3,7 +3,7 @@ import { game } from "../channels/game"
 import { debugInteraction } from "../components/debugInteraction"
 import { drawCollisionShapes } from "../components/drawCollision"
 import { timerBox } from "../components/timerBox"
-import { timerLooseScreenDisplay } from "../components/timerDisplay"
+import { timerLoseScreenDisplay } from "../components/timerDisplay"
 import { borderInventory } from "../components/inventoryDisplay"
 import { interactionObject } from "../components/interactionWithObject"
 import { cameraSettings } from "../components/cameraSettings"
@@ -12,6 +12,7 @@ import { leaveGame } from "../components/buttonExit"
 import { movementSprite } from "../components/spriteMovement"
 import { spriteFrame } from "../components/spriteFrame"
 import { camera } from "../components/cameraOpacity"
+import { displayLoseScreen } from "../components/displayLoseEvent"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
 var musique;
@@ -221,7 +222,7 @@ class Play1 extends Phaser.Scene {
   update ()
   {
     movementSprite(this, character, cursors, status);
-    timerLooseScreenDisplay(this, beginningSecs, beginningMins, "Here you are, Officer!", status, musique);
+    timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen);
 
       //Inventory
     if (status.computerStatus === 'Unlocked' && countDoor < 1) {

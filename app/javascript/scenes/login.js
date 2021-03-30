@@ -1,5 +1,3 @@
-// import { spriteSheet, perso } from "../components/spriteSheet"
-
 var perso
 var characterCounter = 1
 
@@ -7,8 +5,6 @@ var sprites = [
   { counter: 0, character: "perso" },
   { counter: 1, character: "perso2" }
 ];
-
-var counter = 0;
 
 class Login extends Phaser.Scene {
   constructor() {
@@ -41,7 +37,6 @@ class Login extends Phaser.Scene {
     var play;
     var leftArrow;
     var rightArrow;
-    var arraySprite = [];
 
     video = this.add.video(0, 0, "overlay");
     video.setDisplaySize(innerWidth*2, innerHeight*2);
@@ -131,18 +126,9 @@ class Login extends Phaser.Scene {
         this.scene.start("Select");
       });
 
-    sprites.forEach((sprite) => {
-      arraySprite.push(sprite.counter);
-    })
-    // spriteSheet(this, sprites, counter);
     perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(230, 420);
 
     leftArrow.on("pointerup", () => {
-      // perso.destroy();
-      // if (arraySprite.includes(counter - 1)) {
-      //   counter--;
-      // }
-      // spriteSheet(this, sprites, counter);
       if (characterCounter <= 1) {
         characterCounter = 2
       } else {
@@ -153,11 +139,6 @@ class Login extends Phaser.Scene {
     });
 
     rightArrow.on("pointerup", () => {
-      // perso.destroy();
-      // if (arraySprite.includes(counter + 1)) {
-      //   counter++;
-      // }
-      // spriteSheet(this, sprites, counter);
       if (characterCounter >= 2) {
         characterCounter = 1
       } else {

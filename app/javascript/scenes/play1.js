@@ -12,7 +12,7 @@ import { leaveGame } from "../components/buttonExit"
 import { movementSprite } from "../components/spriteMovement"
 import { spriteFrame } from "../components/spriteFrame"
 import { camera } from "../components/cameraOpacity"
-import { sprites, characterCounter } from "../scenes/login"
+import { characterCounter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
@@ -63,22 +63,14 @@ class Play1 extends Phaser.Scene {
     beginningMins = 1;
     beginningSecs = 45;
     coordinates = [];
+    this.x = 3;
   }
 
 
   preload()
   {
-    console.log(sprites);
     const gameAssets = document.getElementById("game-assets").dataset;
-    // sprites.forEach((sprite) => {
-    //   if (sprite.counter === 0) {
-    //     sprite.data = gameAssets.policemanSprite
-    //   }
-    //   else if (sprite.counter === 1) {
-    //     sprite.data = gameAssets.egyptianSprite
-    //   }
-    // });
-    console.log(sprites);
+
     // Minigames
     this.load.image("tv", gameAssets.tvImg);
     this.load.image("redBtn", gameAssets.redbtnImg);
@@ -95,29 +87,22 @@ class Play1 extends Phaser.Scene {
 
     // this.load.image('ground', gameAssets.platformPng);
     
-    // if (characterCounter === 1) {
+    // Sprite
+    if (characterCounter === 1) {
       this.load.spritesheet("character1", gameAssets.character1Sprite, {
       frameWidth: 32,
       frameHeight: 48,
     });
-    // } else if (characterCounter === 2) {
+    } else if (characterCounter === 2) {
       this.load.spritesheet("character2", gameAssets.character2Sprite, {
         frameWidth: 32,
         frameHeight: 48,
       });
-    // }
+    }
+    //End Sprite
 
     this.load.image('exit', gameAssets.exitImg);
-    // sprites.forEach((sprite) => {
-    //   if (sprite.counter === counter) {
-    //     console.log("coucou");
-    //     console.log(sprite.data);
-    //     this.load.spritesheet('character', sprite.data, {
-    //       frameWidth: 32,
-    //       frameHeight: 48,
-    //     });
-    //   }
-    // });
+
     //Endscreen
     this.load.image('playAgain', gameAssets.playagainPng);
     this.load.image('winscreen', gameAssets.winscreenPng);
@@ -133,11 +118,12 @@ class Play1 extends Phaser.Scene {
     this.load.image("containersett", loginAssets.containerImg);
     this.load.image("volume", loginAssets.volumeImg);
     this.load.audio("music", loginAssets.musicMp3);
-    //End overlay
 
     const introAssets = document.getElementById("intro").dataset;
 
     this.load.image("mute", introAssets.muteImg);
+    //End overlay
+
   };
 
   create()
@@ -169,10 +155,8 @@ class Play1 extends Phaser.Scene {
     // const testRect = this.add.rectangle(460, 323, 50, 100, 0xFFFFFF);
     // if (character) {character.key = `character${characterCounter}`}
     // else {character = this.physics.add.sprite(460, 323, `character${characterCounter}`).setSize(15, 2).setOffset(9, 43).setDepth(1);}
-    if (character) {console.log(character)}
+    spriteFrame(this, characterCounter);
     character = this.physics.add.sprite(460, 323, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
-    console.log(character)
-    console.log(characterCounter)
     this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
     // console.log(testRect);
     // this.collision1 = this.map.createLayer('collision_1', this.tileset, 0, 0);
@@ -208,7 +192,7 @@ class Play1 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
     // drawCollisionShapes(shapeGraphics, this.objectBottom);
     // drawCollisionShapes(shapeGraphics, this.objectTop);
-    spriteFrame(this, characterCounter);
+
     // this.physics.world.collide(character, this.layer)
     this.physics.add.collider(this.walls, character);
     this.physics.add.collider(this.extraObj, character);
@@ -226,7 +210,7 @@ class Play1 extends Phaser.Scene {
     //SETTINGS
     musique = game.sound.add('music');
     sound(this, musique);
-    leaveGame(this, musique, character);
+    leaveGame(this, musique);
     //END SETTINGS
 
     const items = [

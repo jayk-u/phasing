@@ -1,6 +1,6 @@
 const movementSprite = (game, character, cursors, counter, status) => {
   character.body.setVelocity(0);
-  if (status.minigame != `active${counter}`) {
+  if (status.minigame != `active`) {
     if (cursors.left.isDown) {
       character.setVelocityX(-90);
       character.anims.play(`left${counter}`, true);

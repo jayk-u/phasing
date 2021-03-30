@@ -1,3 +1,12 @@
+import { spriteSheet, perso } from "../components/spriteSheet"
+
+var sprites = [
+  { counter: 0, character: "perso" },
+  { counter: 1, character: "perso2" }
+];
+
+var counter = 0;
+
 class Login extends Phaser.Scene {
   constructor() {
     super("Login");
@@ -9,6 +18,9 @@ class Login extends Phaser.Scene {
 
     this.load.image("logoo", loginAssets.logoImg);
     this.load.image("perso", loginAssets.persoImg);
+    this.load.image("perso2", loginAssets.perso2Img);
+    this.load.image("arrowLeft", loginAssets.arrowLeftImg)
+    this.load.image("arrowRight", loginAssets.arrowRightImg)
     this.load.image("play", loginAssets.playBtn);
     this.load.image("settings", loginAssets.settingsBtn);
     this.load.video("overlay", loginAssets.overlayVid, false, true);
@@ -20,23 +32,34 @@ class Login extends Phaser.Scene {
 
   create() {
     // var containersett = this.add.image(125, 80, "containersett");
+    var video;
+    var lg;
+    var controls;
+    var play;
+    var leftArrow;
+    var rightArrow;
+    var arraySprite = [];
 
-    var video = this.add.video(0, 0, "overlay");
+    video = this.add.video(0, 0, "overlay");
     video.setDisplaySize(innerWidth*2, innerHeight*2);
 
     video.setBlendMode(Phaser.BlendModes.SCREEN);
     video.play(true);
 
-    var lg = this.add.image(125, 80, "logoo");
+    lg = this.add.image(125, 80, "logoo");
     lg.setDisplaySize(225, 125);
 
-    var controls = this.add.image(innerWidth - 200, 150, "controls");
+    controls = this.add.image(innerWidth - 200, 150, "controls");
     controls.setDisplaySize(200, 270);
 
-    var perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, "perso");
-    perso.setDisplaySize(230, 420);
+    leftArrow = this.add.image(innerWidth / 2 - 130, innerHeight / 2, "arrowLeft")
+      .setInteractive();
+    leftArrow.setDisplaySize(150, 150);
+    rightArrow = this.add.image(innerWidth / 2 + 130 , innerHeight / 2, "arrowRight")
+      .setInteractive();
+    rightArrow.setDisplaySize(150, 150);
 
-    var play = this.add
+    play = this.add
       .image(innerWidth / 2, innerHeight / 3 + 400, "play")
       .setInteractive();
     play.setDisplaySize(200, 80);
@@ -101,10 +124,30 @@ class Login extends Phaser.Scene {
     });
 
     play.on("pointerup", () => {
-      this.scene.stop();
-      this.scene.start("Select");
+        this.scene.stop();
+        this.scene.start("Select");
+      });
+
+    sprites.forEach((sprite) => {
+      arraySprite.push(sprite.counter);
+    })
+    spriteSheet(this, sprites, counter);
+    leftArrow.on("pointerup", () => {
+      perso.destroy();
+      if (arraySprite.includes(counter - 1)) {
+        counter--;
+      }
+      spriteSheet(this, sprites, counter);
+    });
+
+    rightArrow.on("pointerup", () => {
+      perso.destroy();
+      if (arraySprite.includes(counter + 1)) {
+        counter++;
+      }
+      spriteSheet(this, sprites, counter);
     });
   }
 }
 
-export { Login };
+export { Login, sprites, counter };

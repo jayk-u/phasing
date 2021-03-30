@@ -1,9 +1,19 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Hey guys.
 
-Things you may want to cover:
+This is Breaking Out!'s team.
+
+This game was originally a two-weeks long end-of-bootcamp project.
+The code might not be the most seamless, but it works so oh well.
+
+We originally only managed to finish a single level, but this is still getting updated.
+On the off-chance you don't know, the game can be found at breakingout.xyz .
+Should anything freeze or not load for some reason, odds are it'll e better once you refresh the page.
+
+If you find bugs please don't hesitate to contact us (my email: dumontnico5@gmail.com)!
+
+<!-- Things you may want to cover:
 
 * Ruby version
 
@@ -21,4 +31,4 @@ Things you may want to cover:
 
 * Deployment instructions
 
-* ...
+* ... -->

@@ -7,7 +7,6 @@ const leaveGame = (game, musique) => {
   exit.on("pointerup", () => {
     game.scene.stop();
     game.scene.start('Login');
-    game.begin();
     musique.stop();
   });
 }

@@ -12,6 +12,7 @@ import { leaveGame } from "../components/buttonExit"
 import { movementSprite } from "../components/spriteMovement"
 import { spriteFrame } from "../components/spriteFrame"
 import { camera } from "../components/cameraOpacity"
+import { sprites, counter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
@@ -67,8 +68,18 @@ class Play1 extends Phaser.Scene {
 
   preload()
   {
+    console.log(sprites);
+    console.log(counter);
     const gameAssets = document.getElementById("game-assets").dataset;
-
+    sprites.forEach((sprite) => {
+      if (sprite.counter === 0) {
+        sprite.data = gameAssets.policemanSprite
+      }
+      else if (sprite.counter === 1) {
+        sprite.data = gameAssets.egyptianSprite
+      }
+    });
+    console.log(sprites);
     // Minigames
     this.load.image("tv", gameAssets.tvImg);
     this.load.image("redBtn", gameAssets.redbtnImg);
@@ -86,11 +97,16 @@ class Play1 extends Phaser.Scene {
     // this.load.image('ground', gameAssets.platformPng);
 
     this.load.image('exit', gameAssets.exitImg);
-    this.load.spritesheet('character', gameAssets.policemanSprite, {
-      frameWidth: 32,
-      frameHeight: 48,
+    sprites.forEach((sprite) => {
+      if (sprite.counter === counter) {
+        console.log("coucou");
+        console.log(sprite.data);
+        this.load.spritesheet('character', sprite.data, {
+          frameWidth: 32,
+          frameHeight: 48,
+        });
+      }
     });
-
     //Endscreen
     this.load.image('playAgain', gameAssets.playagainPng);
     this.load.image('winscreen', gameAssets.winscreenPng);

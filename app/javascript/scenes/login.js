@@ -1,4 +1,7 @@
-import { spriteSheet, perso } from "../components/spriteSheet"
+// import { spriteSheet, perso } from "../components/spriteSheet"
+
+var perso
+var characterCounter = 1
 
 var sprites = [
   { counter: 0, character: "perso" },
@@ -17,7 +20,7 @@ class Login extends Phaser.Scene {
     const loginAssets = document.getElementById("login").dataset;
 
     this.load.image("logoo", loginAssets.logoImg);
-    this.load.image("perso", loginAssets.persoImg);
+    this.load.image("perso1", loginAssets.perso1Img);
     this.load.image("perso2", loginAssets.perso2Img);
     this.load.image("arrowLeft", loginAssets.arrowLeftImg)
     this.load.image("arrowRight", loginAssets.arrowRightImg)
@@ -131,23 +134,39 @@ class Login extends Phaser.Scene {
     sprites.forEach((sprite) => {
       arraySprite.push(sprite.counter);
     })
-    spriteSheet(this, sprites, counter);
+    // spriteSheet(this, sprites, counter);
+    perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(230, 420);
+
     leftArrow.on("pointerup", () => {
-      perso.destroy();
-      if (arraySprite.includes(counter - 1)) {
-        counter--;
+      // perso.destroy();
+      // if (arraySprite.includes(counter - 1)) {
+      //   counter--;
+      // }
+      // spriteSheet(this, sprites, counter);
+      if (characterCounter <= 1) {
+        characterCounter = 2
+      } else {
+        characterCounter--
       }
-      spriteSheet(this, sprites, counter);
+      perso.destroy();
+      perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(230, 420);
     });
 
     rightArrow.on("pointerup", () => {
-      perso.destroy();
-      if (arraySprite.includes(counter + 1)) {
-        counter++;
+      // perso.destroy();
+      // if (arraySprite.includes(counter + 1)) {
+      //   counter++;
+      // }
+      // spriteSheet(this, sprites, counter);
+      if (characterCounter >= 2) {
+        characterCounter = 1
+      } else {
+        characterCounter++
       }
-      spriteSheet(this, sprites, counter);
+      perso.destroy();
+      perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(230, 420);
     });
   }
 }
 
-export { Login, sprites, counter };
+export { Login, sprites, characterCounter };

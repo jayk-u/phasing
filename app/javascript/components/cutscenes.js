@@ -3,20 +3,28 @@ var skip;
 var picture;
 
 const createCutscene = (game, status, nextScene) => {
+  game.cameras.main.fadeIn(200)
   picture = game.add.image(innerWidth/20, innerHeight/6, `picture${Math.trunc(status.pictureNum)}`).setOrigin(0);
   picture.setDisplaySize(innerWidth*18/20, innerHeight*4/10);
   text = game.add.text(innerWidth/20, innerHeight/1.65, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth*18/20 }})
   skip = game.add.text(innerWidth*16/20, innerHeight*8/9, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
 
-  game.input.keyboard.on('keydown', (event)  => {
+  game.input.keyboard.on('keydown-ENTER', ()  => {
+    game.cameras.main.fadeOut(1000)
+    game.time.delayedCall(1000, () => {
+      game.scene.stop();
+      game.scene.start(nextScene);
+      intromusic.stop();
+    })
+  });
 
-    if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
-    {
-        game.scene.stop();
-        game.scene.start(nextScene);
-        intromusic.stop();
-    }
-
+  game.events.once("finished", () => {
+    game.cameras.main.fadeOut(1000)
+    game.cameras.main.once("camerafadeoutcomplete", () => {
+      game.scene.stop();
+      intromusic.stop();
+      game.scene.start(nextScene);
+    })
   })
 
   // START SETTINGS
@@ -105,7 +113,8 @@ const updateCutscene = (game, content, status) => {
       picture.setAlpha(status.alphaIncrement)
     }
   } else {
-    skip.setText("Press Enter").setAlign('right')
+    skip.destroy();
+    game.events.emit("finished")
   }
 }
 

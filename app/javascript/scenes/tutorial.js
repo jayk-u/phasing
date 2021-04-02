@@ -36,7 +36,7 @@ class Tutorial extends Phaser.Scene {
   constructor ()
   {
     super("Tutorial");
-    this.begin();
+    this.begin()
   }
 
   begin () {
@@ -107,6 +107,8 @@ class Tutorial extends Phaser.Scene {
 
   create()
   {
+    this.begin();
+    this.cameras.main.fadeIn(1000);
     localStorage.setItem('status', status.text)
 
     timerBox(this, status);

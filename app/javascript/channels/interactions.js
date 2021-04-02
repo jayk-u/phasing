@@ -47,6 +47,11 @@ const minigameDoor = (game, end) => {
         (innerWidth + innerHeight) / 12,
         (innerWidth + innerHeight) / 10.5
       );
+      game.cameras.main.fadeOut(4000, 0, 0, 0);
+      game.cameras.main.once("camerafadeoutcomplete", () => {
+        game.scene.stop();
+        game.scene.start('Outro1');
+      });
     });
   } else if (status.inventory != "none" && status.inventory != "") {
     var keylock = game.add

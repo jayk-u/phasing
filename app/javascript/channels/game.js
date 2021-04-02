@@ -5,6 +5,8 @@ import { Select } from "../scenes/select"
 import { Tutorial } from "../scenes/tutorial"
 import { Intro1 } from "../scenes/intro1"
 import { Play1 } from "../scenes/play1"
+import { Outro1 } from "../scenes/outro1"
+
 
 var config = {
   type: Phaser.AUTO,
@@ -17,7 +19,7 @@ var config = {
         gravity: { y: 0 },
       }
   },
-  scene: [Waiting, Login, Select, Tutorial, Intro1, Play1]
+  scene: [Waiting, Login, Select, Tutorial, Intro1, Play1, Outro1]
 };
 
 const game = new Phaser.Game(config);

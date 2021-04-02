@@ -129,6 +129,7 @@ class Play1 extends Phaser.Scene {
   create()
   {
     this.begin();
+    this.cameras.main.fadeIn(1000)
 
     var video = this.add.video(0, 0, "overlay");
     video.setDisplaySize(innerWidth*2, innerHeight*2);
@@ -259,7 +260,7 @@ class Play1 extends Phaser.Scene {
       this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
       status.countDoor = 1;
     } else if (status.countDoor === 1) {
-      camera(this, this.secretDoor, character, "end");
+      camera(this, this.secretDoor, character);
     }
 
     if (status.inventory != "" && status.inventory != "none") {

@@ -11,6 +11,7 @@ import { leaveGame } from "../components/buttonExit"
 import { movementSprite } from "../components/spriteMovement"
 import { spriteFrame } from "../components/spriteFrame"
 import { camera } from "../components/cameraOpacity"
+import { characterCounter } from "../scenes/login"
 import { beginningInstructions, minigameShelves, minigameDoor, endingInstructions } from "../channels/tutorialInteractions";
 
 var musique;
@@ -36,7 +37,7 @@ class Tutorial extends Phaser.Scene {
   constructor ()
   {
     super("Tutorial");
-    this.begin();
+    this.begin()
   }
 
   begin () {
@@ -76,10 +77,19 @@ class Tutorial extends Phaser.Scene {
     this.load.tilemapTiledJSON('map', gameAssets.map0Json);
     this.load.image('tiles', gameAssets.map0Png);
     this.load.image('exit', gameAssets.exitImg);
-    this.load.spritesheet('character', gameAssets.policemanSprite, {
+    // Sprite
+    if (characterCounter === 1) {
+      this.load.spritesheet("character1", gameAssets.character1Sprite, {
       frameWidth: 32,
       frameHeight: 48,
     });
+    } else if (characterCounter === 2) {
+      this.load.spritesheet("character2", gameAssets.character2Sprite, {
+        frameWidth: 32,
+        frameHeight: 48,
+      });
+    }
+    //End Sprite
     this.load.audio('door', gameAssets.doorMp3);
 
     const loginAssets = document.getElementById("login").dataset;
@@ -96,6 +106,8 @@ class Tutorial extends Phaser.Scene {
 
   create()
   {
+    this.begin();
+    this.cameras.main.fadeIn(1000);
     localStorage.setItem('status', status.text)
 
     timerBox(this, status);
@@ -108,7 +120,7 @@ class Tutorial extends Phaser.Scene {
     this.objectBottom = this.map.createLayer("furniture", this.tileset, 0, 0).setDepth(2);
     // this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
     // this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
-    character = this.physics.add.sprite(50, 60, "character").setSize(15, 2).setOffset(9, 43).setDepth(3);
+    character = this.physics.add.sprite(50, 60, `character${characterCounter}`).setSize(15, 2).setOffset(9, 43).setDepth(3);
     // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
 
     this.walls.setCollisionFromCollisionGroup();
@@ -118,7 +130,7 @@ class Tutorial extends Phaser.Scene {
     // this.transparent.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
 
-    spriteFrame(this);
+    spriteFrame(this, characterCounter);
 
     // drawCollisionShapes(this, shapeGraphics, this.extraObj, coordinates);
     drawCollisionShapes(this, shapeGraphics, this.objectBottom, coordinates);
@@ -151,7 +163,7 @@ class Tutorial extends Phaser.Scene {
 
   update ()
   {
-    movementSprite(this, character, cursors, status);
+    movementSprite(this, character, cursors, characterCounter, status);
       //Inventory
     if (status.library == "end") {
       timerLoseScreenDisplay(this, 5, 0, "", status, musique)

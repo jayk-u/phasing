@@ -1,4 +1,3 @@
-import { Time } from "phaser";
 import { game } from "../channels/game"
 import { debugInteraction } from "../components/debugInteraction"
 import { drawCollisionShapes } from "../components/drawCollision"
@@ -152,9 +151,6 @@ class Play1 extends Phaser.Scene {
     this.objectBottom = this.map.createLayer("bottom", this.tileset, 0, 0);
     this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
     this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
-    // const testRect = this.add.rectangle(460, 323, 50, 100, 0xFFFFFF);
-    // if (character) {character.key = `character${characterCounter}`}
-    // else {character = this.physics.add.sprite(460, 323, `character${characterCounter}`).setSize(15, 2).setOffset(9, 43).setDepth(1);}
     spriteFrame(this, characterCounter);
     character = this.physics.add.sprite(460, 323, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
     this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);

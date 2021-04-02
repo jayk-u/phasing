@@ -11,9 +11,11 @@ const createCutscene = (game, status, nextScene) => {
 
   game.input.keyboard.on('keydown-ENTER', ()  => {
     game.cameras.main.fadeOut(1000)
-    game.scene.stop();
-    game.scene.start(nextScene);
-    intromusic.stop();
+    game.time.delayedCall(1000, () => {
+      game.scene.stop();
+      game.scene.start(nextScene);
+      intromusic.stop();
+    })
   });
 
   game.events.once("finished", () => {

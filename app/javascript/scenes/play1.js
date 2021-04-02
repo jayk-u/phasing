@@ -35,7 +35,6 @@ class Play1 extends Phaser.Scene {
   constructor ()
   {
     super("Play1");
-    this.begin();
   }
 
   begin () {
@@ -60,6 +59,7 @@ class Play1 extends Phaser.Scene {
     status.milli = "";
     status.difference = 0;
     status.actualTime = "";
+    status.countDoor = 0;
     beginningMins = 1;
     beginningSecs = 45;
     coordinates = [];
@@ -128,6 +128,8 @@ class Play1 extends Phaser.Scene {
 
   create()
   {
+    this.begin();
+
     var video = this.add.video(0, 0, "overlay");
     video.setDisplaySize(innerWidth*2, innerHeight*2);
 
@@ -253,11 +255,11 @@ class Play1 extends Phaser.Scene {
     timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen);
 
       //Inventory
-    if (status.computerStatus === 'Unlocked' && countDoor < 1) {
+    if (status.computerStatus === 'Unlocked' && status.countDoor < 1) {
       this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
-      countDoor = 1;
-    } else if (countDoor === 1) {
-      camera(this, this.secretDoor, character);
+      status.countDoor = 1;
+    } else if (status.countDoor === 1) {
+      camera(this, this.secretDoor, character, "end");
     }
 
     if (status.inventory != "" && status.inventory != "none") {

@@ -38,7 +38,7 @@ const minigameDoor = (game, end) => {
       var winscreen = game.add
         .image(
           game.cameras.main.scrollX + innerWidth / 2.35,
-          game.cameras.main.scrollY + innerHeight / 2.6,
+          game.cameras.main.scrollY + innerHeight / 2.9,
           "winscreen"
         )
         .setOrigin(0, 0)

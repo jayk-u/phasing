@@ -24,7 +24,7 @@ class Login extends Phaser.Scene {
     this.load.image("settings", loginAssets.settingsBtn);
     this.load.video("overlay", loginAssets.overlayVid, false, true);
     this.load.image("containersett", loginAssets.containerImg);
-    this.load.image("volume", loginAssets.volumeImg);
+    // this.load.image("volume", loginAssets.volumeImg);
     this.load.audio("music", loginAssets.musicMp3);
     this.load.image("controls", loginAssets.controlsImg);
   }
@@ -114,17 +114,14 @@ class Login extends Phaser.Scene {
 
     localStorage.setItem("status", status.text);
 
-    this.input.keyboard.on("keydown", (event) => {
-      if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.SPACE) {
-        this.scene.stop();
-        this.scene.start("Select");
-      }
-    });
+    const playSelect = ()  => {
+      this.scene.stop();
+      this.scene.start("Select");
+    };
 
-    play.on("pointerup", () => {
-        this.scene.stop();
-        this.scene.start("Select");
-      });
+    this.input.keyboard.on("keydown-SPACE", playSelect)
+
+    play.on("pointerup", playSelect)
 
     perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(230, 420);
 

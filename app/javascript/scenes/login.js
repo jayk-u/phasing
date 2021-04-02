@@ -128,7 +128,7 @@ class Login extends Phaser.Scene {
 
     perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(230, 420);
 
-    leftArrow.on("pointerup", () => {
+    const swipeLeft = () => {
       if (characterCounter <= 1) {
         characterCounter = 2
       } else {
@@ -136,9 +136,9 @@ class Login extends Phaser.Scene {
       }
       perso.destroy();
       perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(230, 420);
-    });
+    };
 
-    rightArrow.on("pointerup", () => {
+    const swipeRight = () => {
       if (characterCounter >= 2) {
         characterCounter = 1
       } else {
@@ -146,7 +146,16 @@ class Login extends Phaser.Scene {
       }
       perso.destroy();
       perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(230, 420);
-    });
+    }
+
+    leftArrow.on("pointerup", swipeLeft)
+
+    this.input.keyboard.on("keydown-LEFT", swipeLeft)
+
+
+    rightArrow.on("pointerup", swipeRight)
+
+    this.input.keyboard.on("keydown-RIGHT", swipeRight)
   }
 }
 

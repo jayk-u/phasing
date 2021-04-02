@@ -8,7 +8,6 @@ const leaveGame = (game, musique) => {
     musique.stop();
     // game.anims.remove();
     game.scene.stop();
-    game.begin();
     game.scene.start('Login');
   });
 }

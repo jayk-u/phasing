@@ -1,18 +1,18 @@
 import { game } from "../channels/game"
+import { createCutscene, updateCutscene } from '../components/cutscenes'
 
-var text;
-var skip;
-var then;
-var wordIndex;
-var letterIndex;
-var lineIndex;
-var line;
-var run;
-var pictureNum;
-var picture;
-var picturecam;
-var incrementexpo;
-var alphaIncrement;
+var status
+var content = [ "Kyoto - October 13th 1997",
+"The city has been in the grip of terror for several months, as a killer chains the victims week after week.",
+"He didn’t follow any pattern, never stopping at anything, killing women, children, the elderly... The victims were all found sliced, cut by what seems to be a large blade, a sword or a saber.",
+"But I had something solid. On several TV reports, a man can be seen in the background, hidden in the crowd.",
+"After 3 weeks of investigation, I did not have further doubt: this is our man.",
+"I have shadowed him ever since, I knew by heart his daily schedule: when he sleeps, when he eats, when he moves.",
+"One night, as he went to pick some cigarettes, I took my chances and sneaked into his apartment.",
+"Suffice to say I might have underestimated the guy... and the door locked securely after my passage.",
+"I felt silly, I felt inadequate. I spent so much time preparing only to fail at the very first step.",
+"No more time to look for evidence, this guy is sick. I must get out of here at all costs before he comes back..."
+]
 
 class Intro1 extends Phaser.Scene {
 
@@ -23,17 +23,17 @@ class Intro1 extends Phaser.Scene {
 
   begin ()
   {
-    then = 0
-    wordIndex = 0;
-    letterIndex = 0;
-    lineIndex = 0;
-    line = "";
-    run = true;
-    pictureNum = 1.58;
-    picture;
-    picturecam;
-    incrementexpo = 0.1;
-    alphaIncrement = 0;
+    status = {
+      then: 0,
+      wordIndex: 0,
+      letterIndex: 0,
+      lineIndex: 0,
+      line: "",
+      run: true,
+      pictureNum: 1.58,
+      incrementexpo: 0.1,
+      alphaIncrement: 0,
+    }
   }
 
 
@@ -61,130 +61,13 @@ class Intro1 extends Phaser.Scene {
 
   create ()
   {
-    this.begin();
-
-    picture = this.add.image(innerWidth/20, innerHeight/6, `picture${Math.trunc(pictureNum)}`).setOrigin(0);
-    picture.setDisplaySize(innerWidth*18/20, innerHeight*4/10);
-    text = this.add.text(innerWidth/20, innerHeight/1.65, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth*18/20 }})
-    skip = this.add.text(innerWidth*16/20, innerHeight*8/9, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
-
-    this.input.keyboard.on('keydown', (event)  => {
-
-      if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER)
-      {
-          this.scene.stop();
-          this.scene.start('Play1');
-          intromusic.stop();
-      }
-
-    })
-
-    // START SETTINGS
-
-    var unmute = this.add.image(innerWidth-230, innerHeight/10.5, "volume").setInteractive();
-    unmute.setDisplaySize(80,80);
-    unmute.setVisible(true);
-    unmute.setDepth(2);
-
-    var mute = this.add.image(innerWidth-230, innerHeight/10.5, "mute").setInteractive();
-    mute.setDisplaySize(80,80);
-    mute.setVisible(false);
-    mute.setDepth(2);
-
-    var status = this.add.text(innerWidth-310, 135, "Controls", {
-      fontSize: '48px',
-      color:'#796356'
-    }).setDepth(2);
-    status.setVisible(false);
-
-    let intromusic = this.sound.add('introMusic');
-    intromusic.setVolume(0.5);
-    intromusic.play();
-
-    unmute.on("pointerup", (event) => {
-      intromusic.pause();
-      mute.setVisible(true);
-      unmute.setVisible(false);
-    });
-
-    mute.on("pointerup", (event) => {
-      intromusic.resume();
-      unmute.setVisible(true);
-      mute.setVisible(false);
-    });
-
-    const exit = this.add.image(innerWidth-110, innerHeight/10.5, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
-    exit.setDisplaySize(80,80);
-
-
-
-
-      localStorage.setItem('status', status.text)
-
-    // END SETTINGS
-
-    exit.on("pointerup", (event) => {
-      this.scene.stop();
-      this.scene.start('Login');
-      intromusic.stop();
-    } );
-
+    this.begin()
+    createCutscene(this, status, 'Play1')
   };
   update ()
   {
-    if (run) {
-      var t = this
-      var content = [ "Kyoto - October 13th 1997",
-      "The city has been in the grip of terror for several months, as a killer chains the victims week after week.",
-      "He didn’t follow any pattern, never stopping at anything, killing women, children, the elderly... The victims were all found sliced, cut by what seems to be a large blade, a sword or a saber.",
-      "But I had something solid. On several TV reports, a man can be seen in the background, hidden in the crowd.",
-      "After 3 weeks of investigation, I did not have further doubt: this is our man.",
-      "I have shadowed him ever since, I knew by heart his daily schedule: when he sleeps, when he eats, when he moves.",
-      "One night, as he went to pick some cigarettes, I took my chances and sneaked into his apartment.",
-      "Suffice to say I might have underestimated the guy... and the door locked securely after my passage.",
-      "I felt silly, I felt inadequate. I spent so much time preparing only to fail at the very first step.",
-      "No more time to look for evidence, this guy is sick. I must get out of here at all costs before he comes back..."
-    ]
-      var word = content[lineIndex].split(" ")
-      var letter = content[lineIndex].split("")
-      var letterDelay = 30;
-      if (letter.length == letterIndex) {
-        letterDelay = 2000;
-      }
-      if (Math.trunc(pictureNum) != Math.min(5,Math.trunc(pictureNum + incrementexpo))) {
-        alphaIncrement += 0.025
-        picture.setAlpha(1 - alphaIncrement)
-      }
-      var now = t.time.now
-      if (lineIndex < content.length) {
-        if ((now - then) > letterDelay) {
-            if (letterIndex == letter.length) {
-              lineIndex++;
-              letterIndex = 0;
-              line = "";
-              incrementexpo += 0.07;
-              pictureNum += incrementexpo;
-              picture = this.add.image(innerWidth/20, innerHeight/6, `picture${Math.min(5,Math.trunc(pictureNum))}`).setOrigin(0);
-              if (Math.trunc(pictureNum) != Math.min(5,Math.trunc(pictureNum - incrementexpo))) {alphaIncrement = 0; picture.setAlpha(alphaIncrement)}
-              picture.setDisplaySize(innerWidth*18/20, innerHeight*4/10);
-            }
-            if (lineIndex == content.length) {run = false; return ;}
-            if (run) { letter = content[lineIndex].split("") }
-            line = line.concat(letter[letterIndex])
-            text.setText(line),
-            letterIndex++
-            then = now
-          }
-      }
-      if (alphaIncrement < 1 && letter.length != letterIndex) {
-        alphaIncrement += 0.025
-        picture.setAlpha(alphaIncrement)
-      }
-    } else {
-      skip.setText("Press Enter").setAlign('right')
-    }
+    updateCutscene(this, content, status)
   }
-
 }
 
 export { Intro1 }

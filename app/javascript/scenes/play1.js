@@ -97,6 +97,21 @@ class Play1 extends Phaser.Scene {
         frameWidth: 32,
         frameHeight: 48,
       });
+    } else if (characterCounter === 3) {
+      this.load.spritesheet("character3", gameAssets.character3Sprite, {
+        frameWidth: 32,
+        frameHeight: 48,
+      });
+    } else if (characterCounter === 4) {
+      this.load.spritesheet("character4", gameAssets.character4Sprite, {
+        frameWidth: 32,
+        frameHeight: 48,
+      });
+    } else if (characterCounter === 5) {
+      this.load.spritesheet("character5", gameAssets.character5Sprite, {
+        frameWidth: 32,
+        frameHeight: 48,
+      });
     }
     //End Sprite
 

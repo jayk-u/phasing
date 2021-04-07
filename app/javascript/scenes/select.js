@@ -42,6 +42,7 @@ class Select extends Phaser.Scene {
       const selectAssets = document.getElementById("selectScreen").dataset;
       this.load.image('map0', selectAssets.map0Img);
       this.load.image('map1', selectAssets.map1Img);
+      this.load.image('map2', selectAssets.map0Img);
 
       const loginAssets = document.getElementById("login").dataset;
 
@@ -57,8 +58,10 @@ class Select extends Phaser.Scene {
   create ()
   {
     nameCounter = 0;
-    box(this, innerWidth/5, innerHeight/3, innerWidth/5, innerHeight/5);
+    box(this, innerWidth/8, innerHeight/3, innerWidth/5, innerHeight/5);
+    box(this, innerWidth/4, innerHeight/3, innerWidth/5, innerHeight/5);
     box(this, innerWidth/2, innerHeight/3, innerWidth/5, innerHeight/5);
+
 
     var video = this.add.video(10, 10, "overlay");
     video.setDisplaySize(innerWidth*2, innerHeight*2);

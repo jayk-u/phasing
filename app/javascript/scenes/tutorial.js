@@ -117,6 +117,8 @@ class Tutorial extends Phaser.Scene {
     this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
     this.tileset = this.map.addTilesetImage("office_tiles", 'tiles');
     this.walls = this.map.createLayer("wall", this.tileset, 0, 0).setDepth(1);
+    this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(1);
+    this.promenadeWalls = this.map.createLayer("promenade_wall", this.tileset, 0, 0).setDepth(1);
     this.layer = this.map.createLayer('floor', this.tileset, 0, 0);
     this.objectBottom = this.map.createLayer("furniture", this.tileset, 0, 0).setDepth(2);
     // this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);

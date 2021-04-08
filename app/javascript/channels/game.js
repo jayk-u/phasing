@@ -6,6 +6,9 @@ import { Tutorial } from "../scenes/tutorial"
 import { Intro1 } from "../scenes/intro1"
 import { Play1 } from "../scenes/play1"
 import { Outro1 } from "../scenes/outro1"
+import { Intro2 } from "../scenes/intro2"
+import { Play2 } from "../scenes/play2"
+import { Outro2 } from "../scenes/outro2"
 
 
 var config = {
@@ -19,7 +22,7 @@ var config = {
         gravity: { y: 0 },
       }
   },
-  scene: [Waiting, Login, Select, Tutorial, Intro1, Play1, Outro1]
+  scene: [Waiting, Login, Select, Tutorial, Intro1, Play1, Outro1, Intro2, Play2, Outro2]
 };
 
 const game = new Phaser.Game(config);

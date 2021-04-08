@@ -35,9 +35,9 @@ const timerLoseScreenDisplay = (game, beginningSecs, beginningMins, status, musi
     } else {
       status.milli = Math.min(Math.trunc(status.ms/10),99)
     }
+    status.time = status.min + ":" + status.sec + ":" + status.milli;
+    status.actualTime.setText(status.time);
   }
-  status.time = status.min + ":" + status.sec + ":" + status.milli;
-  status.actualTime.setText(status.time);
   if ((status.now) >= (status.endTime + status.startTime) && status.timer != "stop") {
     status.actualTime.setText("00:00:00");
     displayLoseScreen(game, status, musique);

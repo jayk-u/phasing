@@ -18,6 +18,8 @@ class Login extends Phaser.Scene {
     this.load.image("logoo", loginAssets.logoImg);
     this.load.image("perso1", loginAssets.perso1Img);
     this.load.image("perso2", loginAssets.perso2Img);
+    this.load.image("perso3", loginAssets.perso3Img);
+    this.load.image("perso4", loginAssets.perso4Img);
     this.load.image("arrowLeft", loginAssets.arrowLeftImg)
     this.load.image("arrowRight", loginAssets.arrowRightImg)
     this.load.image("play", loginAssets.playBtn);
@@ -127,7 +129,7 @@ class Login extends Phaser.Scene {
 
     const swipeLeft = () => {
       if (characterCounter <= 1) {
-        characterCounter = 2
+        characterCounter = 4
       } else {
         characterCounter--
       }
@@ -136,7 +138,7 @@ class Login extends Phaser.Scene {
     };
 
     const swipeRight = () => {
-      if (characterCounter >= 2) {
+      if (characterCounter >= 4) {
         characterCounter = 1
       } else {
         characterCounter++

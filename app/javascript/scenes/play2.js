@@ -147,16 +147,21 @@ class Play2 extends Phaser.Scene {
     this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });  //
     // this.layer = this.map.createLayer('ground');  // set layer name
     // this.layer.resizeWorld();
-    this.tileset = this.map.addTilesetImage("dock", 'tiles');
+    this.tileset = this.map.addTilesetImage("city", 'tiles');
+    this.dock = this.map.createLayer("dock", 'tiles');
+    this.promenade = this.map.createLayer("promenade", 'tiles');
     this.walls = this.map.createLayer("wall", this.tileset, 0, 0);
+    this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(1);
+    this.promenadeWalls = this.map.createLayer("promenade_wall", this.tileset, 0, 0).setDepth(1);
+    this.promenadeShops = this.map.createLayer("promenade_shops", this.tileset, 0, 0).setDepth(1);
     this.layer = this.map.createLayer('floor', this.tileset, 0, 0);
     // this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0);
-    this.objectBottom = this.map.createLayer("bottom", this.tileset, 0, 0);
-    this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
-    this.objectTop = this.map.createLayer("top", this.tileset, 0, 0);
+    this.objectBottom = this.map.createLayer("floor_objects", this.tileset, 0, 0).setDepth(2);
+    this.extraObj = this.map.createLayer("dock_objects", this.tileset, 0, 0);
+    this.objectTop = this.map.createLayer("roof_objects", this.tileset, 0, 0);
     spriteFrame(this, characterCounter);
     character = this.physics.add.sprite(460, 323, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
-    this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
+    // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
     // console.log(testRect);
     // this.collision1 = this.map.createLayer('collision_1', this.tileset, 0, 0);
     // this.collision2 = this.map.createLayer('collision_2', this.tileset, 0, 0);
@@ -177,11 +182,16 @@ class Play2 extends Phaser.Scene {
     // character.body.setSize(15, 1);
     // character.setBounce(0.2);
     // character.setCollideWorldBounds(true);
+    // this.dock.setCollisionFromCollisionGroup();
+    // this.promenade.setCollisionFromCollisionGroup();
     this.walls.setCollisionFromCollisionGroup();
+    this.dockWalls.setCollisionFromCollisionGroup();
+    this.promenadeWalls.setCollisionFromCollisionGroup();
+    this.promenadeShops.setCollisionFromCollisionGroup();
     this.extraObj.setCollisionFromCollisionGroup();
     this.objectBottom.setCollisionFromCollisionGroup();
     this.objectTop.setCollisionFromCollisionGroup();
-    this.transparent.setCollisionFromCollisionGroup();
+    // this.transparent.setCollisionFromCollisionGroup();
     // this.secretDoor.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
 
@@ -194,9 +204,12 @@ class Play2 extends Phaser.Scene {
 
     // this.physics.world.collide(character, this.layer)
     this.physics.add.collider(this.walls, character);
+    this.physics.add.collider(this.dockWalls, character);
+    this.physics.add.collider(this.promenadeWalls, character);
+    this.physics.add.collider(this.promenadeShops, character);
     this.physics.add.collider(this.extraObj, character);
     this.physics.add.collider(this.platforms, character);
-    this.physics.add.collider(this.transparent, character);
+    // this.physics.add.collider(this.transparent, character);
     // this.physics.add.collider(this.secretDoor, character);
     // this.physics.add.collider(character, this.objectTop);
     // this.physics.add.collider(this.objectBottom, character);
@@ -267,11 +280,17 @@ class Play2 extends Phaser.Scene {
       status.inventoryBox.visible = false;
     }
     camera(this, this.walls, character);
+    camera(this, this.dockWalls, character);
+    camera(this, this.promenadeWalls, character);
+    camera(this, this.promenadeShops, character);
+    camera(this, this.walls, character);
+    camera(this, this.dock, character);
+    camera(this, this.promenade, character);
     camera(this, this.objectBottom, character);
     camera(this, this.objectTop, character);
     camera(this, this.extraObj, character);
     camera(this, this.layer, character);
-    camera(this, this.transparent, character);
+    // camera(this, this.transparent, character);
   };
 };
 export { Play2, status, coordinates, musique, character, cursors };

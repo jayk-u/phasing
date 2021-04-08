@@ -59,8 +59,8 @@ class Select extends Phaser.Scene {
   {
     nameCounter = 0;
     box(this, innerWidth/8, innerHeight/3, innerWidth/5, innerHeight/5);
-    box(this, innerWidth/4, innerHeight/3, innerWidth/5, innerHeight/5);
-    box(this, innerWidth/2, innerHeight/3, innerWidth/5, innerHeight/5);
+    box(this, innerWidth/2.5, innerHeight/3, innerWidth/5, innerHeight/5);
+    box(this, innerWidth*2/3, innerHeight/3, innerWidth/5, innerHeight/5);
 
 
     var video = this.add.video(10, 10, "overlay");

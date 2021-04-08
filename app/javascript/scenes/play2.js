@@ -144,23 +144,23 @@ class Play2 extends Phaser.Scene {
     localStorage.setItem('status', status.text);
 
     this.platforms = this.physics.add.staticGroup();
-    this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });  //
+    this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
     // this.layer = this.map.createLayer('ground');  // set layer name
     // this.layer.resizeWorld();
     this.tileset = this.map.addTilesetImage("city", 'tiles');
-    this.dock = this.map.createLayer("dock", 'tiles');
-    this.promenade = this.map.createLayer("promenade", 'tiles');
-    this.walls = this.map.createLayer("wall", this.tileset, 0, 0);
+    this.dock = this.map.createLayer("dock", this.tileset, 0, 0);
+    this.promenade = this.map.createLayer("promenade", this.tileset, 0, 0);
+    this.walls = this.map.createLayer("wall", this.tileset, 0, 0).setDepth(1);
     this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(1);
     this.promenadeWalls = this.map.createLayer("promenade_wall", this.tileset, 0, 0).setDepth(1);
     this.promenadeShops = this.map.createLayer("promenade_shops", this.tileset, 0, 0).setDepth(1);
     this.layer = this.map.createLayer('floor', this.tileset, 0, 0);
     // this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0);
     this.objectBottom = this.map.createLayer("floor_objects", this.tileset, 0, 0).setDepth(2);
-    this.extraObj = this.map.createLayer("dock_objects", this.tileset, 0, 0);
-    this.objectTop = this.map.createLayer("roof_objects", this.tileset, 0, 0);
+    this.extraObj = this.map.createLayer("dock_objects", this.tileset, 0, 0).setDepth(2);
+    this.objectTop = this.map.createLayer("roof_objects", this.tileset, 0, 0).setDepth(1);
     spriteFrame(this, characterCounter);
-    character = this.physics.add.sprite(460, 323, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
+    character = this.physics.add.sprite(450, 450, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
     // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
     // console.log(testRect);
     // this.collision1 = this.map.createLayer('collision_1', this.tileset, 0, 0);
@@ -199,15 +199,13 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.extraObj, coordinates);
     drawCollisionShapes(this, shapeGraphics, this.objectBottom, coordinates);
     drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
-    // drawCollisionShapes(shapeGraphics, this.objectBottom);
-    // drawCollisionShapes(shapeGraphics, this.objectTop);
 
     // this.physics.world.collide(character, this.layer)
     this.physics.add.collider(this.walls, character);
     this.physics.add.collider(this.dockWalls, character);
     this.physics.add.collider(this.promenadeWalls, character);
     this.physics.add.collider(this.promenadeShops, character);
-    this.physics.add.collider(this.extraObj, character);
+    // this.physics.add.collider(this.extraObj, character);
     this.physics.add.collider(this.platforms, character);
     // this.physics.add.collider(this.transparent, character);
     // this.physics.add.collider(this.secretDoor, character);
@@ -226,31 +224,7 @@ class Play2 extends Phaser.Scene {
     //END SETTINGS
 
     const items = [
-      {x: 400, y: 188, name: 'kitchen-tree', minigame: minigameKitchenTree},
-      {x: 400, y: 197, name: 'kitchen-tree', minigame: minigameKitchenTree},
-      {x: 304, y: 101, name: 'stove', minigame: minigameSink},
-      {x: 336, y: 101, name: 'stove', minigame: minigameSink},
-      {x: 400, y: 101, name: 'microwave', minigame: minigameMicrowave},
-      {x: 115, y: 183, name: 'sofa', minigame: minigameSofa},
-      {x: 116, y: 207, name: 'sofa', minigame: minigameSofa},
-      {x: 116, y: 227, name: 'sofa', minigame: minigameSofa},
-      {x: 207, y: 217, name: 'cat-tree', minigame: minigameCattree},
-      {x: 207, y: 229, name: 'cat-tree', minigame: minigameCattree},
-      {x: 40, y: 208, name: 'television', minigame: minigameTV},
-      {x: 111, y: 133, name: 'living-library', minigame: minigameLivingLibrary},
-      {x: 143, y: 132, name: 'living-library', minigame: minigameLivingLibrary},
-      {x: 207, y: 133, name: 'bonsai', minigame: minigameBonsai},
-      {x: 239, y: 101, name: 'fridge', minigame: minigameFreezer},
-      {x: 641, y: 209, name: 'bath-plant', minigame: minigameBathPlant},
-      {x: 722, y: 204, name: 'windbreak', minigame: minigameWindbreak},
-      {x: 816, y: 175, name: 'baththub', minigame: minigameBathtub},
-      {x: 559, y: 133, name: 'computer', minigame: minigameComputer},
-      {x: 527, y: 133, name: 'bookshelf', minigame: minigameRoomLibrary},
-      {x: 431, y: 325, name: 'hallway', minigame: minigameHallway},
-      {x: 461, y: 295, name: 'door', minigame: minigameDoor},
-      {x: 591, y: 249, name: 'aquarium', minigame: minigameFish},
-      {x: 336, y: 148, name: 'kettle', minigame: minigameKettle},
-      {x: 47, y: 147, name: 'saber', minigame: minigameSaber}
+      // {x: 400, y: 188, name: 'kitchen-tree', minigame: minigameKitchenTree},
     ];
     //   character.anims.stop();
     interactionObject(this, items, character, status);
@@ -283,7 +257,6 @@ class Play2 extends Phaser.Scene {
     camera(this, this.dockWalls, character);
     camera(this, this.promenadeWalls, character);
     camera(this, this.promenadeShops, character);
-    camera(this, this.walls, character);
     camera(this, this.dock, character);
     camera(this, this.promenade, character);
     camera(this, this.objectBottom, character);

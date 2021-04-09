@@ -151,6 +151,7 @@ class Play2 extends Phaser.Scene {
     this.dock = this.map.createLayer("dock", this.tileset, 0, 0);
     this.promenade = this.map.createLayer("promenade", this.tileset, 0, 0);
     this.walls = this.map.createLayer("wall", this.tileset, 0, 0).setDepth(1);
+    this.bridge = this.map.createLayer("bridge", this.tileset, 0, 0).setDepth(1);
     this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(1);
     this.promenadeWalls = this.map.createLayer("promenade_wall", this.tileset, 0, 0).setDepth(1);
     this.promenadeShops = this.map.createLayer("promenade_shops", this.tileset, 0, 0).setDepth(1);
@@ -160,6 +161,8 @@ class Play2 extends Phaser.Scene {
     this.objectBottom = this.map.createLayer("floor_objects", this.tileset, 0, 0).setDepth(2);
     this.extraObj = this.map.createLayer("dock_objects", this.tileset, 0, 0).setDepth(2);
     this.objectTop = this.map.createLayer("roof_objects", this.tileset, 0, 0).setDepth(1);
+    this.gameObjects = this.map.getObjectLayer("GameObjects").objects;
+    //this is how we actually render our coin object with coin asset we loaded into our game in the preload function
     spriteFrame(this, characterCounter);
     character = this.physics.add.sprite(450, 450, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
     // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
@@ -255,6 +258,7 @@ class Play2 extends Phaser.Scene {
       status.inventoryBox.visible = false;
     }
     camera(this, this.walls, character);
+    camera(this, this.bridge, character);
     camera(this, this.dockWalls, character);
     camera(this, this.promenadeWalls, character);
     camera(this, this.promenadeShops, character);

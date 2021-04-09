@@ -132,6 +132,8 @@ class Play2 extends Phaser.Scene {
   {
     this.begin();
     this.cameras.main.fadeIn(1000)
+    this.add.rectangle(0, 0, 10000, 10000, 0x000000, 0.3).setDepth(10);
+
 
     // var video = this.add.video(0, 0, "overlay");
     // video.setDisplaySize(innerWidth*2, innerHeight*2);

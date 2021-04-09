@@ -155,6 +155,7 @@ class Play2 extends Phaser.Scene {
     this.promenadeWalls = this.map.createLayer("promenade_wall", this.tileset, 0, 0).setDepth(1);
     this.promenadeShops = this.map.createLayer("promenade_shops", this.tileset, 0, 0).setDepth(1);
     this.layer = this.map.createLayer('floor', this.tileset, 0, 0);
+    // this.layer.resizeWorld();
     // this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0);
     this.objectBottom = this.map.createLayer("floor_objects", this.tileset, 0, 0).setDepth(2);
     this.extraObj = this.map.createLayer("dock_objects", this.tileset, 0, 0).setDepth(2);

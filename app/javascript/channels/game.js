@@ -16,6 +16,12 @@ var config = {
   width: innerWidth * 0.995,
   height: innerHeight * 0.973,
   parent: "phaser-example",
+  scale: {
+    mode: Phaser.Scale.RESIZE,
+    parent: 'phaser-example',
+    width: '100%',
+    height: '100%'
+  },
   physics: {
       default: 'arcade',
       arcade: {

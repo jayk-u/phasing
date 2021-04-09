@@ -101,6 +101,11 @@ class Play2 extends Phaser.Scene {
     }
     //End Sprite
 
+    this.load.spritesheet("character6", gameAssets.character6Sprite, {
+      frameWidth: 32,
+      frameHeight: 48,
+    });
+
     this.load.image('exit', gameAssets.exitImg);
 
     //Endscreen
@@ -170,6 +175,12 @@ class Play2 extends Phaser.Scene {
     //this is how we actually render our coin object with coin asset we loaded into our game in the preload function
     spriteFrame(this, characterCounter);
     character = this.physics.add.sprite(450, 450, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
+
+    //NPC
+    spriteFrame(this, 6);
+    this.agent = this.physics.add.sprite(290, 600, `character6`, 6).setSize(15, 2).setOffset(9, 43).setDepth(1);
+    //End NPC
+
     // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
     // console.log(testRect);
     // this.collision1 = this.map.createLayer('collision_1', this.tileset, 0, 0);
@@ -210,6 +221,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
 
     // this.physics.world.collide(character, this.layer)
+    this.physics.add.collider(this.agent, character);
     this.physics.add.collider(this.walls, character);
     this.physics.add.collider(this.dockWalls, character);
     this.physics.add.collider(this.promenadeWalls, character);
@@ -252,6 +264,32 @@ class Play2 extends Phaser.Scene {
     movementSprite(this, character, cursors, characterCounter, status);
     timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen);
     particles.setPosition(character.x, character.y);
+
+    if (this.agent.x <= 350 && this.agent.y < 670) {
+      //Here X is the upper left corner
+      this.agent.setVelocityX(0);
+      this.agent.setVelocityY(45);
+      this.agent.anims.play(`down6`, true);
+    } else if (this.agent.x >= 490 && this.agent.y >= 670) {
+      // Here X is the lower right corner
+      this.agent.setVelocityX(0);
+      this.agent.setVelocityY(-45);
+      this.agent.anims.play(`up6`, true);
+    } else if (this.agent.y <= 580 && this.agent.x <= 500) {
+      // Here Y is the upper right corner
+      this.agent.setVelocityY(0);
+      this.agent.setVelocityX(-45);
+      this.agent.anims.play(`left6`, true);
+    } else if (this.agent.y >= 670 && this.agent.x < 350) {
+      // Here Y is the lower left corner
+      this.agent.setVelocityY(0);
+      this.agent.setVelocityX(45);
+      this.agent.anims.play(`right6`, true);
+    }
+
+
+
+    
 
       //Inventory
     if (status.computerStatus === 'Unlocked' && status.countDoor < 1) {

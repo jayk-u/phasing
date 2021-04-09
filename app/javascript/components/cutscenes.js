@@ -9,7 +9,7 @@ const createCutscene = (game, status, nextScene) => {
   text = game.add.text(innerWidth/20, innerHeight/1.65, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth*18/20 }})
   skip = game.add.text(innerWidth*16/20, innerHeight*8/9, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
 
-  game.input.keyboard.on('keydown-ENTER', ()  => {
+  game.input.keyboard.once('keydown-ENTER', ()  => {
     game.cameras.main.fadeOut(1000)
     game.time.delayedCall(1000, () => {
       game.scene.stop();

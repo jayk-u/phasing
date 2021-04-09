@@ -15,6 +15,7 @@ import { characterCounter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
+var particles
 var musique;
 var character;
 var cursors;
@@ -123,6 +124,8 @@ class Play2 extends Phaser.Scene {
     this.load.image("mute", introAssets.muteImg);
     //End overlay
 
+    this.load.image("rain", gameAssets.rainParticle)
+
   };
 
   create()
@@ -130,11 +133,11 @@ class Play2 extends Phaser.Scene {
     this.begin();
     this.cameras.main.fadeIn(1000)
 
-    var video = this.add.video(0, 0, "overlay");
-    video.setDisplaySize(innerWidth*2, innerHeight*2);
+    // var video = this.add.video(0, 0, "overlay");
+    // video.setDisplaySize(innerWidth*2, innerHeight*2);
 
-    video.setBlendMode(Phaser.BlendModes.SCREEN);
-    video.play(true);
+    // video.setBlendMode(Phaser.BlendModes.SCREEN);
+    // video.play(true);
     // console.log(counterScene);
     // if (counterScene === 0) {
     //   blankState = this.scene;
@@ -218,6 +221,11 @@ class Play2 extends Phaser.Scene {
     timerBox(this, status);
     borderInventory(this, status);
 
+    // Rain
+    particles = this.add.particles('rain').createEmitter({"active":true,"blendMode":3,"collideBottom":true,"collideLeft":true,"collideRight":true,"collideTop":true,"deathCallback":null,"deathCallbackScope":null,"emitCallback":null,"emitCallbackScope":null,"follow":null,"frequency":0,"gravityX":300,"gravityY":0,"maxParticles":50,"name":"raindrops","on":true,"particleBringToTop":true,"radial":true,"timeScale":1,"trackVisible":false,"visible":true,"accelerationX":0,"accelerationY":0,"angle":{"min":360,"max":0},"alpha":{"start":0.4,"end":1,"ease":"Quad.easeIn"},"bounce":0,"delay":0,"lifespan":200,"maxVelocityX":5000,"maxVelocityY":5000,"moveToX":0,"moveToY":0,"quantity":1,"rotate":0,"tint":16777215,"x":character.x,"y":character.y,"speed":{"min":0,"max":220},"scale":{"start":0,"end":1.3,"ease":"Cubic.easeInOut"}});
+    console.log(particles)
+    //End rain
+
     //SETTINGS
     musique = game.sound.add('music');
     sound(this, musique);
@@ -238,6 +246,7 @@ class Play2 extends Phaser.Scene {
   {
     movementSprite(this, character, cursors, characterCounter, status);
     timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen);
+    particles.setPosition(character.x, character.y);
 
       //Inventory
     if (status.computerStatus === 'Unlocked' && status.countDoor < 1) {

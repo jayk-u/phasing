@@ -222,33 +222,6 @@ class Play2 extends Phaser.Scene {
     borderInventory(this, status);
 
     // Rain
-    // this.rainParticle = new Phaser.Display.Masks.BitmapMask(this, 'rain', 15, 50);
-    // console.log(this.rainParticle)
-    // console.log('rain')
-    // console.log(this.rainParticle.ctx)
-
-
-    // this.rainParticle.ctx.rect(0, 0, 15, 50);
-    // this.rainParticle.ctx.fillStyle = '#9cc9de';
-    // this.rainParticle.ctx.fill();
-
-    // this.emitter = this.game.add.emitter(this.game.world.centerX, -300, 400);
-
-    // this.emitter.width = this.game.world.width;
-    // this.emitter.angle = 10;
-
-    // this.emitter.makeParticles(this.rainParticle);
-
-    // this.emitter.minParticleScale = 0.1;
-    // this.emitter.maxParticleScale = 0.3;
-
-    // this.emitter.setYSpeed(600, 1000);
-    // this.emitter.setXSpeed(-5, 5);
-
-    // this.emitter.minRotation = 0;
-    // this.emitter.maxRotation = 0;
-
-    // this.emitter.start(false, 1600, 5, 0);
     particles = this.add.particles('rain').createEmitter({"active":true,"blendMode":3,"collideBottom":true,"collideLeft":true,"collideRight":true,"collideTop":true,"deathCallback":null,"deathCallbackScope":null,"emitCallback":null,"emitCallbackScope":null,"follow":null,"frequency":0,"gravityX":300,"gravityY":0,"maxParticles":50,"name":"raindrops","on":true,"particleBringToTop":true,"radial":true,"timeScale":1,"trackVisible":false,"visible":true,"accelerationX":0,"accelerationY":0,"angle":{"min":360,"max":0},"alpha":{"start":0.4,"end":1,"ease":"Quad.easeIn"},"bounce":0,"delay":0,"lifespan":200,"maxVelocityX":5000,"maxVelocityY":5000,"moveToX":0,"moveToY":0,"quantity":1,"rotate":0,"tint":16777215,"x":character.x,"y":character.y,"speed":{"min":0,"max":220},"scale":{"start":0,"end":1.3,"ease":"Cubic.easeInOut"}});
     console.log(particles)
     //End rain

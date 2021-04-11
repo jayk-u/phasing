@@ -326,8 +326,7 @@ class Play2 extends Phaser.Scene {
     camera(this, this.objectTop, character);
     camera(this, this.extraObj, character);
     camera(this, this.layer, character);
-    hideNPC(this, this.layer, this.agent.john, character)
-    console.log(this.agent.john.alpha)
+    hideNPC(this, this.layer, agent, character)
     // camera(this, this.transparent, character);
   };
 };

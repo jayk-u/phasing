@@ -81,7 +81,7 @@ const updateCutscene = (game, content, status) => {
     var letter = content[status.lineIndex].split("")
     var letterDelay = 30;
     if (letter.length == status.letterIndex) {
-      letterDelay = 1000 + content[status.lineIndex].split("").length * 10;
+      letterDelay = 2000 + content[status.lineIndex].split("").length * 9;
     }
     if (Math.trunc(status.pictureNum) != Math.min(5,Math.trunc(status.pictureNum + status.incrementexpo))) {
       status.alphaIncrement += 0.025

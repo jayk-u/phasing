@@ -2,16 +2,16 @@ import { game } from "../channels/game"
 import { createCutscene, updateCutscene } from '../components/cutscenes'
 
 var status
-var content = [ "Kyoto - October 13th 1997",
-"The city has been in the grip of terror for several months, as a killer chains the victims week after week.",
-"He didn’t follow any pattern, never stopping at anything, killing women, children, the elderly... The victims were all found sliced, cut by what seems to be a large blade, a sword or a saber.",
-"But I had something solid. On several TV reports, a man can be seen in the background, hidden in the crowd.",
-"After 3 weeks of investigation, I did not have further doubt: this is our man.",
-"I have shadowed him ever since, I knew by heart his daily schedule: when he sleeps, when he eats, when he moves.",
-"One night, as he went to pick some cigarettes, I took my chances and sneaked into his apartment.",
-"Suffice to say I might have underestimated the guy... and the door locked securely after my passage.",
-"I felt silly, I felt inadequate. I spent so much time preparing only to fail at the very first step.",
-"No more time to look for evidence, this guy is sick. I must get out of here at all costs before he comes back..."
+var content = [ "Splash.",
+"Splash.",
+"My feet on the wet ground echoed through the night.",
+"I could hear the agents talking in the distance. In the distance, as in: far behind me.",
+"I won't lie, I was proud of this scheme of mine. Playing with the law enforcers always felt thrilling. Playing them, now, that's what I was living for.",
+"I always loved a good challenge. A mind-buggling puzzle. I always thought life was only ever worth as much as you made it to be.",
+"Ironic, isn't it? I take the lives of others to make mine more satisfying. I'm... stealing value from them. All things considered, am I not more of a thief than a killer?",
+"It always makes me laugh.",
+"And now, vanishing into the depth of the night, I scheme for my return. A great symphony of men and crime, of drama and suspense of plans and actions...",
+"That's monday for me."
 ]
 
 class Outro2 extends Phaser.Scene {

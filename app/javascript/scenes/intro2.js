@@ -3,15 +3,15 @@ import { createCutscene, updateCutscene } from '../components/cutscenes'
 
 var status
 var content = [ "Kyoto - October 13th 1997",
-"The city has been in the grip of terror for several months, as a killer chains the victims week after week.",
-"He didn’t follow any pattern, never stopping at anything, killing women, children, the elderly... The victims were all found sliced, cut by what seems to be a large blade, a sword or a saber.",
-"But I had something solid. On several TV reports, a man can be seen in the background, hidden in the crowd.",
-"After 3 weeks of investigation, I did not have further doubt: this is our man.",
-"I have shadowed him ever since, I knew by heart his daily schedule: when he sleeps, when he eats, when he moves.",
-"One night, as he went to pick some cigarettes, I took my chances and sneaked into his apartment.",
-"Suffice to say I might have underestimated the guy... and the door locked securely after my passage.",
-"I felt silly, I felt inadequate. I spent so much time preparing only to fail at the very first step.",
-"No more time to look for evidence, this guy is sick. I must get out of here at all costs before he comes back..."
+"11:30 p.m.",
+"I was running.",
+"It was a dreary night, the rythmic splashing of the rain only interrupted by the patrolling of police cars everywhere around me.",
+"The rainfall curtain cooled down my skin and obscured the night - I was glad.",
+"This made it easy. I could hide, I could sneak, I could slither my way through the agents without them seeing me.",
+"Then, they would never find me again. I would vanish like a ghost, like a bad story no one would want to hear anymore. I was leaving the city.",
+"I only had to escape the lockdown. Agents stood everywhere in-between me and my goal. If I could manage to get past them and through this bridge...",
+"I would win. That was it. I would play one last round. They'd look for me and I'd escape.",
+"A fitting finale, I guess. I'm a gentleman. I wouldn't leave without one last tango."
 ]
 
 class Intro2 extends Phaser.Scene {

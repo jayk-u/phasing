@@ -10,7 +10,7 @@ import { sound } from "../components/soundSettings"
 import { leaveGame } from "../components/buttonExit"
 import { movementSprite } from "../components/spriteMovement"
 import { spriteFrame } from "../components/spriteFrame"
-import { camera } from "../components/cameraOpacity"
+import { camera, hideNPC } from "../components/cameraOpacity"
 import { characterCounter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
@@ -21,6 +21,7 @@ var character;
 var cursors;
 var shapeGraphics;
 var coordinates;
+var agent
 var countDoor = 0;
 
 var beginningMins;
@@ -178,7 +179,17 @@ class Play2 extends Phaser.Scene {
 
     //NPC
     spriteFrame(this, 6);
-    this.agent = this.physics.add.sprite(290, 600, `character6`, 6).setSize(15, 2).setOffset(9, 43).setDepth(1);
+    // We are creating a default value "agent" for this.agent should we want every single agent to shara a property, we can interfere with agent here
+    agent = this.physics.add.sprite(0, 0, `character6`, 6).setSize(15, 2).setOffset(9, 43).setDepth(1)
+    // the default value function, using a proxy
+    var agentCreator = {
+      get: function(target, name) {
+        return target.hasOwnProperty(name) ? target[name] : agent;
+      }
+    };
+    // We are attributing the new proxy to this.agent so that we can call it with a default value (i.e. this.agent.Nicolas will automatically get assigned the value agent)
+    this.agent = new Proxy({}, agentCreator);
+    this.agent.john.setPosition(290, 600)
     //End NPC
 
     // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
@@ -221,7 +232,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
 
     // this.physics.world.collide(character, this.layer)
-    this.physics.add.collider(this.agent, character);
+    this.physics.add.collider(agent, character);
     this.physics.add.collider(this.walls, character);
     this.physics.add.collider(this.dockWalls, character);
     this.physics.add.collider(this.promenadeWalls, character);
@@ -240,7 +251,6 @@ class Play2 extends Phaser.Scene {
 
     // Rain
     particles = this.add.particles('rain').createEmitter({"active":true,"blendMode":3,"collideBottom":true,"collideLeft":true,"collideRight":true,"collideTop":true,"deathCallback":null,"deathCallbackScope":null,"emitCallback":null,"emitCallbackScope":null,"follow":null,"frequency":0,"gravityX":300,"gravityY":0,"maxParticles":50,"name":"raindrops","on":true,"particleBringToTop":true,"radial":true,"timeScale":1,"trackVisible":false,"visible":true,"accelerationX":0,"accelerationY":0,"angle":{"min":360,"max":0},"alpha":{"start":0.4,"end":1,"ease":"Quad.easeIn"},"bounce":0,"delay":0,"lifespan":200,"maxVelocityX":5000,"maxVelocityY":5000,"moveToX":0,"moveToY":0,"quantity":1,"rotate":0,"tint":16777215,"x":character.x,"y":character.y,"speed":{"min":0,"max":220},"scale":{"start":0,"end":1.3,"ease":"Cubic.easeInOut"}});
-    console.log(particles)
     //End rain
 
     //SETTINGS
@@ -265,28 +275,27 @@ class Play2 extends Phaser.Scene {
     timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen);
     particles.setPosition(character.x, character.y);
 
-    if (this.agent.x <= 350 && this.agent.y < 670) {
+    if (this.agent.john.x <= 350 && this.agent.john.y < 670) {
       //Here X is the upper left corner
-      this.agent.setVelocityX(0);
-      this.agent.setVelocityY(45);
-      this.agent.anims.play(`down6`, true);
-    } else if (this.agent.x >= 490 && this.agent.y >= 670) {
+      this.agent.john.setVelocityX(0);
+      this.agent.john.setVelocityY(45);
+      this.agent.john.anims.play(`down6`, true);
+    } else if (this.agent.john.x >= 490 && this.agent.john.y >= 670) {
       // Here X is the lower right corner
-      this.agent.setVelocityX(0);
-      this.agent.setVelocityY(-45);
-      this.agent.anims.play(`up6`, true);
-    } else if (this.agent.y <= 580 && this.agent.x <= 500) {
+      this.agent.john.setVelocityX(0);
+      this.agent.john.setVelocityY(-45);
+      this.agent.john.anims.play(`up6`, true);
+    } else if (this.agent.john.y <= 580 && this.agent.john.x <= 500) {
       // Here Y is the upper right corner
-      this.agent.setVelocityY(0);
-      this.agent.setVelocityX(-45);
-      this.agent.anims.play(`left6`, true);
-    } else if (this.agent.y >= 670 && this.agent.x < 350) {
+      this.agent.john.setVelocityY(0);
+      this.agent.john.setVelocityX(-45);
+      this.agent.john.anims.play(`left6`, true);
+    } else if (this.agent.john.y >= 670 && this.agent.john.x < 350) {
       // Here Y is the lower left corner
-      this.agent.setVelocityY(0);
-      this.agent.setVelocityX(45);
-      this.agent.anims.play(`right6`, true);
+      this.agent.john.setVelocityY(0);
+      this.agent.john.setVelocityX(45);
+      this.agent.john.anims.play(`right6`, true);
     }
-
 
 
     
@@ -317,6 +326,8 @@ class Play2 extends Phaser.Scene {
     camera(this, this.objectTop, character);
     camera(this, this.extraObj, character);
     camera(this, this.layer, character);
+    hideNPC(this, this.layer, this.agent.john, character)
+    console.log(this.agent.john.alpha)
     // camera(this, this.transparent, character);
   };
 };

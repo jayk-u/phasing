@@ -325,13 +325,26 @@ class Play2 extends Phaser.Scene {
       // Roger the Undetectable
       if (this.agent.roger.anims.currentAnim.key === 'right6end') {
         this.time.delayedCall(3000, () => {
-          if (status.minigame != 'active') this.agent.mike.anims.play('left6end', true);
+          if (status.minigame != 'active') this.agent.roger.anims.play('left6end', true);
           this.agent.roger.anims.stop();
         });
-      } else if (this.agent.mike.anims.currentAnim.key === 'left6end') {
+      } else if (this.agent.roger.anims.currentAnim.key === 'left6end') {
         this.time.delayedCall(3000, () => {
-          if (status.minigame != 'active') this.agent.mike.anims.play('right6end', true);
-          this.agent.mike.anims.stop();
+          if (status.minigame != 'active') this.agent.roger.anims.play('right6end', true);
+          this.agent.roger.anims.stop();
+        });
+      }
+
+      // Bob the Stealthy
+      if (this.agent.bob.anims.currentAnim.key === 'up6end') {
+        this.time.delayedCall(3000, () => {
+          if (status.minigame != 'active') this.agent.bob.anims.play('left6end', true);
+          this.agent.bob.anims.stop();
+        });
+      } else if (this.agent.bob.anims.currentAnim.key === 'left6end') {
+        this.time.delayedCall(3000, () => {
+          if (status.minigame != 'active') this.agent.bob.anims.play('up6end', true);
+          this.agent.bob.anims.stop();
         });
       }
 

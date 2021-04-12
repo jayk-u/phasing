@@ -4,7 +4,7 @@ const detectEvent = (game, npc, loseEvent) => {
   status.minigame = 'active'
   npc.setVelocityX(0);
   npc.setVelocityY(0);
-  npc.anims.play(`${npc.anims.currentAnim.key}end`);
+  if (npc.anims.currentAnim.key.substring(npc.anims.currentAnim.key.length - 3) != "end") npc.anims.play(`${npc.anims.currentAnim.key}end`);
   npc.anims.stop();
 
   var exclamationBorder = game.add.graphics().setDepth(4);

@@ -60,7 +60,7 @@ class Login extends Phaser.Scene {
     rightArrow.setSize(150, 150).setDisplaySize(150, 150);
 
     this.input.on("gameobjectover", (p, object) => {
-      object.setDisplaySize(object.width + 30, object.height + 30)
+      object.setDisplaySize(object.width*1.2, object.height*1.2)
     })
 
     this.input.on("gameobjectout", (p, object) => {

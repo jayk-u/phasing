@@ -185,9 +185,6 @@ class Tutorial extends Phaser.Scene {
     if (status.library == "end") {
       timerLoseScreenDisplay(this, 5, 0, status, musique, fadeToSelectScene)
     }
-    this.cameras.main.on("camerafadeoutcomplete", () => {
-      endingInstructions(this, end)
-    });
     if (status.computerStatus === 'Unlocked' && countDoor < 1) {
       this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
       countDoor = 1;

@@ -72,7 +72,7 @@ class Waiting extends Phaser.Scene {
       })
     })
 
-    this.input.keyboard.on('keydown-ENTER', ()  => {
+    this.input.keyboard.once('keydown-ENTER', ()  => {
       this.cameras.main.fadeOut(2000, 255, 255, 255)
       this.cameras.main.once('camerafadeoutcomplete', () => {
         this.scene.stop();

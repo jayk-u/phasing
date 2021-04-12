@@ -47,22 +47,31 @@ class Login extends Phaser.Scene {
     video.play(true);
 
     lg = this.add.image(125, 80, "logoo");
-    lg.setDisplaySize(225, 125);
+    lg.setDisplaySize(innerWidth/6.3, innerHeight/6);
 
     controls = this.add.image(innerWidth - 200, 150, "controls");
-    controls.setDisplaySize(200, 270);
+    controls.setDisplaySize(innerWidth/6.5, innerHeight/4);
 
     leftArrow = this.add.image(innerWidth / 2 - 130, innerHeight / 2, "arrowLeft")
       .setInteractive();
-    leftArrow.setDisplaySize(150, 150);
+    leftArrow.setSize((innerWidth + innerHeight)/14, (innerWidth + innerHeight)/14).setDisplaySize(leftArrow.width, leftArrow.height);
     rightArrow = this.add.image(innerWidth / 2 + 130 , innerHeight / 2, "arrowRight")
       .setInteractive();
-    rightArrow.setDisplaySize(150, 150);
+    rightArrow.setSize((innerWidth + innerHeight)/14, (innerWidth + innerHeight)/14).setDisplaySize(rightArrow.width, rightArrow.height);
+
+    this.input.on("gameobjectover", (p, object) => {
+      object.setDisplaySize(object.width*1.2, object.height*1.2)
+    })
+
+    this.input.on("gameobjectout", (p, object) => {
+      object.setDisplaySize(object.width, object.height)
+    })
 
     play = this.add
       .image(innerWidth / 2, innerHeight / 3 + 400, "play")
       .setInteractive();
-    play.setDisplaySize(200, 80);
+    play.setSize(innerWidth/6.5, innerHeight/8.5).setDisplaySize(play.width, play.height);
+    console.log(innerWidth, innerHeight)
 
     // SETTINGS
 
@@ -125,7 +134,7 @@ class Login extends Phaser.Scene {
 
     play.on("pointerup", playSelect)
 
-    perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(230, 420);
+    perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(innerWidth/6.5, innerHeight/1.9);
 
     const swipeLeft = () => {
       if (characterCounter <= 1) {
@@ -134,7 +143,7 @@ class Login extends Phaser.Scene {
         characterCounter--
       }
       perso.destroy();
-      perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(230, 420);
+      perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(innerWidth/6.5, innerHeight/1.9);
     };
 
     const swipeRight = () => {
@@ -144,7 +153,7 @@ class Login extends Phaser.Scene {
         characterCounter++
       }
       perso.destroy();
-      perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(230, 420);
+      perso = this.add.image(innerWidth / 2, innerHeight / 2 - 50, `perso${characterCounter}`).setDisplaySize(innerWidth/6.5, innerHeight/1.9);
     }
 
     leftArrow.on("pointerup", swipeLeft)

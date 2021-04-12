@@ -13,15 +13,15 @@ import { Outro2 } from "../scenes/outro2"
 
 var config = {
   type: Phaser.AUTO,
-  width: innerWidth * 0.995,
-  height: innerHeight * 0.973,
+  width: innerWidth * 0.99,
+  height: innerHeight * 0.97,
   parent: "phaser-example",
-  scale: {
-    mode: Phaser.Scale.RESIZE,
-    parent: 'phaser-example',
-    width: '100%',
-    height: '100%'
-  },
+  // scale: {
+  //   mode: Phaser.Scale.RESIZE,
+  //   parent: 'phaser-example',
+  //   width: '98%',
+  //   height: '90%'
+  // },
   physics: {
       default: 'arcade',
       arcade: {

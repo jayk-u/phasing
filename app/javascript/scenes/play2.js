@@ -10,17 +10,19 @@ import { sound } from "../components/soundSettings"
 import { leaveGame } from "../components/buttonExit"
 import { movementSprite } from "../components/spriteMovement"
 import { spriteFrame } from "../components/spriteFrame"
-import { camera } from "../components/cameraOpacity"
+import { camera, hideNPC } from "../components/cameraOpacity"
 import { characterCounter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
+import { detectCharacter } from "../components/characterDetection"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
-var particles
+var rainParticles
 var musique;
 var character;
 var cursors;
 var shapeGraphics;
 var coordinates;
+var agent
 var countDoor = 0;
 
 var beginningMins;
@@ -38,6 +40,7 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.detect = false;
     status.end = false;
     status.start = false;
     status.minigame = "none";
@@ -100,6 +103,11 @@ class Play2 extends Phaser.Scene {
       });
     }
     //End Sprite
+
+    this.load.spritesheet("character6", gameAssets.character6Sprite, {
+      frameWidth: 32,
+      frameHeight: 48,
+    });
 
     this.load.image('exit', gameAssets.exitImg);
 
@@ -170,6 +178,29 @@ class Play2 extends Phaser.Scene {
     //this is how we actually render our coin object with coin asset we loaded into our game in the preload function
     spriteFrame(this, characterCounter);
     character = this.physics.add.sprite(450, 450, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
+
+    //NPC
+    spriteFrame(this, 6);
+    this.agent = {
+      john: this.physics.add.sprite(0, 0, `character6`, 6).setSize(15, 2).setOffset(9, 43).setDepth(1),
+      mike: this.physics.add.sprite(0, 0, `character6`, 6).setSize(15, 2).setOffset(9, 43).setDepth(1),
+      bob: this.physics.add.sprite(0, 0, `character6`, 6).setSize(15, 2).setOffset(9, 43).setDepth(1),
+      tom: this.physics.add.sprite(0, 0, `character6`, 6).setSize(15, 2).setOffset(9, 43).setDepth(1),
+      rob: this.physics.add.sprite(0, 0, `character6`, 6).setSize(15, 2).setOffset(9, 43).setDepth(1),
+      roger: this.physics.add.sprite(0, 0, `character6`, 6).setSize(15, 2).setOffset(9, 43).setDepth(1),
+    }
+    this.agent.john.setPosition(290, 600)
+    this.agent.mike.setPosition(780, 520).anims.play('left6end', true)
+    this.agent.bob.setPosition(465, 775).anims.play('left6end', true)
+    this.agent.tom.setPosition(430, 1240).anims.play('up6end', true).anims.stop();
+    this.agent.rob.setPosition(360, 1240).anims.play('up6end', true).anims.stop();
+    this.agent.roger.setPosition(300, 885).anims.play('right6end', true).anims.stop();
+    //End NPC
+    this.input.keyboard.on('keydown-SPACE', () => {
+      console.log(character.x, character.y)
+      console.log(this.agent.roger)
+    })
+
     // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
     // console.log(testRect);
     // this.collision1 = this.map.createLayer('collision_1', this.tileset, 0, 0);
@@ -210,6 +241,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
 
     // this.physics.world.collide(character, this.layer)
+    Object.values(this.agent).forEach(agent => {this.physics.add.collider(agent, character)});
     this.physics.add.collider(this.walls, character);
     this.physics.add.collider(this.dockWalls, character);
     this.physics.add.collider(this.promenadeWalls, character);
@@ -227,8 +259,7 @@ class Play2 extends Phaser.Scene {
     borderInventory(this, status);
 
     // Rain
-    particles = this.add.particles('rain').createEmitter({"active":true,"blendMode":3,"collideBottom":true,"collideLeft":true,"collideRight":true,"collideTop":true,"deathCallback":null,"deathCallbackScope":null,"emitCallback":null,"emitCallbackScope":null,"follow":null,"frequency":0,"gravityX":300,"gravityY":0,"maxParticles":50,"name":"raindrops","on":true,"particleBringToTop":true,"radial":true,"timeScale":1,"trackVisible":false,"visible":true,"accelerationX":0,"accelerationY":0,"angle":{"min":360,"max":0},"alpha":{"start":0.4,"end":1,"ease":"Quad.easeIn"},"bounce":0,"delay":0,"lifespan":200,"maxVelocityX":5000,"maxVelocityY":5000,"moveToX":0,"moveToY":0,"quantity":1,"rotate":0,"tint":16777215,"x":character.x,"y":character.y,"speed":{"min":0,"max":220},"scale":{"start":0,"end":1.3,"ease":"Cubic.easeInOut"}});
-    console.log(particles)
+    rainParticles = this.add.particles('rain').createEmitter({"active":true,"blendMode":3,"collideBottom":true,"collideLeft":true,"collideRight":true,"collideTop":true,"deathCallback":null,"deathCallbackScope":null,"emitCallback":null,"emitCallbackScope":null,"follow":null,"frequency":0,"gravityX":300,"gravityY":0,"maxParticles":50,"name":"raindrops","on":true,"particleBringToTop":true,"radial":true,"timeScale":1,"trackVisible":false,"visible":true,"accelerationX":0,"accelerationY":0,"angle":{"min":360,"max":0},"alpha":{"start":0.4,"end":1,"ease":"Quad.easeIn"},"bounce":0,"delay":0,"lifespan":200,"maxVelocityX":5000,"maxVelocityY":5000,"moveToX":0,"moveToY":0,"quantity":1,"rotate":0,"tint":16777215,"x":character.x,"y":character.y,"speed":{"min":0,"max":220},"scale":{"start":0,"end":1.3,"ease":"Cubic.easeInOut"}});
     //End rain
 
     //SETTINGS
@@ -251,7 +282,77 @@ class Play2 extends Phaser.Scene {
   {
     movementSprite(this, character, cursors, characterCounter, status);
     timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen);
-    particles.setPosition(character.x, character.y);
+    rainParticles.setPosition(character.x, character.y);
+    
+    if (status.minigame != 'active') {
+
+      // John the Destroyer
+      if (this.agent.john.x <= 350 && this.agent.john.y < 670) {
+        //Here X is the upper left corner
+        this.agent.john.setVelocityX(0);
+        this.agent.john.setVelocityY(45);
+        this.agent.john.anims.play(`down6`, true);
+      } else if (this.agent.john.x >= 490 && this.agent.john.y >= 670) {
+        // Here X is the lower right corner
+        this.agent.john.setVelocityX(0);
+        this.agent.john.setVelocityY(-45);
+        this.agent.john.anims.play(`up6`, true);
+      } else if (this.agent.john.y <= 580 && this.agent.john.x <= 500) {
+        // Here Y is the upper right corner
+        this.agent.john.setVelocityY(0);
+        this.agent.john.setVelocityX(-45);
+        this.agent.john.anims.play(`left6`, true);
+      } else if (this.agent.john.y >= 670 && this.agent.john.x < 350) {
+        // Here Y is the lower left corner
+        this.agent.john.setVelocityY(0);
+        this.agent.john.setVelocityX(45);
+        this.agent.john.anims.play(`right6`, true);
+      }
+
+      // Mike the Egoistic
+      if (this.agent.mike.anims.currentAnim.key === 'down6end') {
+        this.time.delayedCall(3000, () => {
+          if (status.minigame != 'active') this.agent.mike.anims.play('left6end', true);
+          this.agent.mike.anims.stop();
+        });
+      } else if (this.agent.mike.anims.currentAnim.key === 'left6end') {
+        this.time.delayedCall(3000, () => {
+          if (status.minigame != 'active') this.agent.mike.anims.play('down6end', true);
+          this.agent.mike.anims.stop();
+        });
+      }
+
+      // Roger the Undetectable
+      if (this.agent.roger.anims.currentAnim.key === 'right6end') {
+        this.time.delayedCall(3000, () => {
+          if (status.minigame != 'active') this.agent.roger.anims.play('left6end', true);
+          this.agent.roger.anims.stop();
+        });
+      } else if (this.agent.roger.anims.currentAnim.key === 'left6end') {
+        this.time.delayedCall(3000, () => {
+          if (status.minigame != 'active') this.agent.roger.anims.play('right6end', true);
+          this.agent.roger.anims.stop();
+        });
+      }
+
+      // Bob the Stealthy
+      if (this.agent.bob.anims.currentAnim.key === 'up6end') {
+        this.time.delayedCall(3000, () => {
+          if (status.minigame != 'active') this.agent.bob.anims.play('left6end', true);
+          this.agent.bob.anims.stop();
+        });
+      } else if (this.agent.bob.anims.currentAnim.key === 'left6end') {
+        this.time.delayedCall(3000, () => {
+          if (status.minigame != 'active') this.agent.bob.anims.play('up6end', true);
+          this.agent.bob.anims.stop();
+        });
+      }
+
+      Object.values(this.agent).forEach(agent => {detectCharacter(this, this.layer, agent, character, displayLoseScreen)});
+    }
+
+
+    
 
       //Inventory
     if (status.computerStatus === 'Unlocked' && status.countDoor < 1) {
@@ -279,6 +380,7 @@ class Play2 extends Phaser.Scene {
     camera(this, this.objectTop, character);
     camera(this, this.extraObj, character);
     camera(this, this.layer, character);
+    Object.values(this.agent).forEach(agent => {hideNPC(this, this.layer, agent, character)});
     // camera(this, this.transparent, character);
   };
 };

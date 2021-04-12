@@ -101,7 +101,7 @@ const textbox = (game, string, destroy) => {
     next.destroy();
   }
   var content = string;
-  var border = game.add.graphics();
+  var border = game.add.graphics().setDepth(5);
   var textBoxCounter = 0;
 
   border.fillStyle(0xffffff);
@@ -114,7 +114,7 @@ const textbox = (game, string, destroy) => {
 
   var graphics = game.add.graphics();
 
-  graphics.fillStyle(0x000000);
+  graphics.fillStyle(0x000000).setDepth(5);
   graphics.fillRect(
     game.cameras.main.scrollX + innerWidth / 3.27,
     game.cameras.main.scrollY + innerHeight / 1.67,
@@ -130,7 +130,7 @@ const textbox = (game, string, destroy) => {
       font: "12px",
       wordWrap: { width: innerWidth / 2.69, height: 40 },
     }
-  );
+  ).setDepth(5);
   if (string.length != 1) {
     next = game.add.text(
       game.cameras.main.scrollX + innerWidth / 1.505,

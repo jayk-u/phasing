@@ -114,7 +114,7 @@ class Play2 extends Phaser.Scene {
     //Endscreen
     this.load.image('playAgain', gameAssets.playagainPng);
     this.load.image('winscreen', gameAssets.winscreenPng);
-    this.load.image('lostscreen', gameAssets.lostscreenPng);
+    this.load.image('lossScreen', gameAssets.lossscreenPng);
     this.load.audio('door', gameAssets.doorMp3);
     //End endscreen
 
@@ -281,7 +281,7 @@ class Play2 extends Phaser.Scene {
   update ()
   {
     movementSprite(this, character, cursors, characterCounter, status);
-    timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen);
+    timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen, "Lockdown complete! Suspect is around, renforcement incoming!");
     rainParticles.setPosition(character.x, character.y);
     
     if (status.minigame != 'active') {
@@ -348,7 +348,7 @@ class Play2 extends Phaser.Scene {
         });
       }
 
-      Object.values(this.agent).forEach(agent => {detectCharacter(this, this.layer, agent, character, displayLoseScreen)});
+      Object.values(this.agent).forEach(agent => {detectCharacter(this, this.layer, agent, character, displayLoseScreen, "Suspect in sight! Requesting renforcement!")});
     }
 
 

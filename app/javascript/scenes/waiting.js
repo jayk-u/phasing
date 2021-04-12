@@ -65,14 +65,14 @@ class Waiting extends Phaser.Scene {
 
     logo.once('pointerdown', (pointer) => {
       this.cameras.main.fadeOut(2000, 255, 255, 255)
-      this.add.particles('spark').createEmitter({"active":true,"blendMode":1,"collideBottom":true,"collideLeft":true,"collideRight":true,"collideTop":true,"deathCallback":null,"deathCallbackScope":null,"emitCallback":null,"emitCallbackScope":null,"follow":null,"frequency":0,"gravityX":0,"gravityY":300,"maxParticles":0,"name":"sparks","on":true,"particleBringToTop":true,"radial":true,"timeScale":1,"trackVisible":false,"visible":true,"accelerationX":0,"accelerationY":0,"angle":{"min":0,"max":360},"alpha":{"start":0,"end":1,"ease":"Expo.easeOut"},"bounce":0,"delay":0,"lifespan":1000,"maxVelocityX":10000,"maxVelocityY":10000,"moveToX":0,"moveToY":0,"quantity":1,"rotate":360,"tint":16777215,"x":pointer.x,"y":pointer.y,"speed":{"min":300,"max":6000},"scale":{"start":0.1,"end":1.7,"ease":"Linear"}})
+      this.add.particles('spark').createEmitter({"active":true,"blendMode":1,"collideBottom":true,"collideLeft":true,"collideRight":true,"collideTop":true,"deathCallback":null,"deathCallbackScope":null,"emitCallback":null,"emitCallbackScope":null,"follow":null,"frequency":0,"gravityX":0,"gravityY":300,"maxParticles":0,"name":"sparks","on":true,"particleBringToTop":true,"radial":true,"timeScale":1,"trackVisible":false,"visible":true,"accelerationX":0,"accelerationY":0,"angle":{"min":0,"max":360},"alpha":{"start":0,"end":0.5,"ease":"Linear"},"bounce":0,"delay":0,"lifespan":1000,"maxVelocityX":10000,"maxVelocityY":10000,"moveToX":0,"moveToY":0,"quantity":1,"rotate":360,"tint":16777215,"x":pointer.x,"y":pointer.y,"speed":{"min":300,"max":6000},"scale":{"start":0.1,"end":1.7,"ease":"Linear"}})
       this.cameras.main.once('camerafadeoutcomplete', () => {
         this.scene.stop();
         this.scene.start('Login');
       })
     })
 
-    this.input.keyboard.on('keydown-ENTER', ()  => {
+    this.input.keyboard.once('keydown-ENTER', ()  => {
       this.cameras.main.fadeOut(2000, 255, 255, 255)
       this.cameras.main.once('camerafadeoutcomplete', () => {
         this.scene.stop();

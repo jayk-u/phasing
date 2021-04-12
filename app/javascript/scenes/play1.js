@@ -59,8 +59,8 @@ class Play1 extends Phaser.Scene {
     status.difference = 0;
     status.actualTime = "";
     status.countDoor = 0;
-    beginningMins = 1;
-    beginningSecs = 45;
+    beginningMins = 0;
+    beginningSecs = 5;
     coordinates = [];
     this.x = 3;
   }
@@ -120,7 +120,7 @@ class Play1 extends Phaser.Scene {
     //Endscreen
     this.load.image('playAgain', gameAssets.playagainPng);
     this.load.image('winscreen', gameAssets.winscreenPng);
-    this.load.image('lostscreen', gameAssets.lostscreenPng);
+    this.load.image('lossScreen', gameAssets.lossscreenPng);
     this.load.audio('door', gameAssets.doorMp3);
     //End endscreen
 
@@ -264,7 +264,7 @@ class Play1 extends Phaser.Scene {
   update ()
   {
     movementSprite(this, character, cursors, characterCounter, status);
-    timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen);
+    timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen, "Here you are, officer!");
 
       //Inventory
     if (status.computerStatus === 'Unlocked' && status.countDoor < 1) {

@@ -13,6 +13,7 @@ import { spriteFrame } from "../components/spriteFrame"
 import { camera } from "../components/cameraOpacity"
 import { characterCounter } from "../scenes/login"
 import { beginningInstructions, minigameShelves, minigameDoor, endingInstructions } from "../channels/tutorialInteractions";
+import { fadeToSelectScene } from "../components/displayLoseEvent"
 
 var musique;
 var character;
@@ -182,11 +183,8 @@ class Tutorial extends Phaser.Scene {
     movementSprite(this, character, cursors, characterCounter, status);
       //Inventory
     if (status.library == "end") {
-      timerLoseScreenDisplay(this, 5, 0, "", status, musique)
+      timerLoseScreenDisplay(this, 5, 0, status, musique, fadeToSelectScene)
     }
-    this.cameras.main.on("camerafadeoutcomplete", () => {
-      endingInstructions(this, end)
-    });
     if (status.computerStatus === 'Unlocked' && countDoor < 1) {
       this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
       countDoor = 1;

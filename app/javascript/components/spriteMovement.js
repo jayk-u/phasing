@@ -23,32 +23,32 @@ const movementSprite = (game, character, cursors, counter, status) => {
     } else {
       character.setVelocityX(0);
       if (game.x === 1) {
-        character.anims.play(`leftend${counter}`);
+        character.anims.play(`left${counter}end`);
       }
       else if (game.x === 2) {
-        character.anims.play(`rightend${counter}`);
+        character.anims.play(`right${counter}end`);
       }
       else if (game.x === 3) {
-        character.anims.play(`downend${counter}`);
+        character.anims.play(`down${counter}end`);
       }
       else if (game.x === 4) {
-        character.anims.play(`upend${counter}`);
+        character.anims.play(`up${counter}end`);
       }
       //character.anims.play(`turn${counter}`);
       }
   } else {
       character.setVelocityX(0);
       if (game.x === 1) {
-        character.anims.play(`leftend${counter}`);
+        character.anims.play(`left${counter}end`);
       }
       else if (game.x === 2) {
-        character.anims.play(`rightend${counter}`);
+        character.anims.play(`right${counter}end`);
       }
       else if (game.x === 3) {
-        character.anims.play(`downend${counter}`);
+        character.anims.play(`down${counter}end`);
       }
       else if (game.x === 4) {
-        character.anims.play(`upend${counter}`);
+        character.anims.play(`up${counter}end`);
       }
   }
 }

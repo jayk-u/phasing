@@ -34,26 +34,26 @@ const spriteFrame = (game, counter) => {
   });
 
   game.anims.create({
-    key: `upend${counter}`,
-  frames: game.anims.generateFrameNumbers(`character${counter}`, { start: 12 }),
+    key: `up${counter}end`,
+    frames: game.anims.generateFrameNumbers(`character${counter}`, { start: 12 }),
     frameRate: 20,
   });
 
   game.anims.create({
-    key: `downend${counter}`,
-  frames: game.anims.generateFrameNumbers(`character${counter}`, { start: 0 }),
+    key: `down${counter}end`,
+    frames: game.anims.generateFrameNumbers(`character${counter}`, { start: 0 }),
     frameRate: 20,
   });
 
   game.anims.create({
-    key: `leftend${counter}`,
-  frames: game.anims.generateFrameNumbers(`character${counter}`, { start: 4 }),
+    key: `left${counter}end`,
+    frames: game.anims.generateFrameNumbers(`character${counter}`, { start: 4 }),
     frameRate: 20,
   });
 
   game.anims.create({
-    key: `rightend${counter}`,
-  frames: game.anims.generateFrameNumbers(`character${counter}`, { start: 8 }),
+    key: `right${counter}end`,
+    frames: game.anims.generateFrameNumbers(`character${counter}`, { start: 8 }),
     frameRate: 20,
   });
 };

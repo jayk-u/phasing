@@ -1,8 +1,7 @@
-var next;
-
 const textbox = (game, string, destroy) => {
-  if (next) {
-    next.destroy();
+
+  if (game.next) {
+    game.next.destroy();
   }
   var content = string;
   var border = game.add.graphics().setDepth(5);
@@ -36,7 +35,7 @@ const textbox = (game, string, destroy) => {
     }
   ).setDepth(5);
   if (string.length != 1) {
-    next = game.add.text(
+    game.next = game.add.text(
       game.cameras.main.scrollX + innerWidth / 1.505,
       game.cameras.main.scrollY + innerHeight / 1.54,
       "...",
@@ -47,7 +46,7 @@ const textbox = (game, string, destroy) => {
   const incrementCounter = () => {
     textBoxCounter += 1;
     if (textBoxCounter == string.length - 1) {
-      next.destroy();
+      game.next.destroy();
     }
     if (string.length > textBoxCounter) {
       text.setText(string[textBoxCounter]);
@@ -55,8 +54,8 @@ const textbox = (game, string, destroy) => {
       graphics.destroy();
       border.destroy();
       text.destroy();
-      if (next) {
-        next.destroy();
+      if (game.next) {
+        game.next.destroy();
       }
       if (destroy) {
         destroy();
@@ -67,4 +66,4 @@ const textbox = (game, string, destroy) => {
   game.input.keyboard.on("keydown-SPACE", incrementCounter);
 };
 
-export { textbox, next }
+export { textbox }

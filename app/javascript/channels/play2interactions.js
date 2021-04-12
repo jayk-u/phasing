@@ -1,4 +1,4 @@
-import { status } from "../scenes/tutorial";
+import { status } from "../scenes/play2";
 import { textbox } from '../components/textBox';
 
 var key;

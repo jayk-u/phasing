@@ -3,7 +3,6 @@ import { textbox } from '../components/textBox';
 
 
 var key;
-var next;
 const gameAssets = document.getElementById("game-assets").dataset;
 
 

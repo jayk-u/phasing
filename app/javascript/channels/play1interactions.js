@@ -1,5 +1,5 @@
 import { status } from "../scenes/play1";
-import { textbox, next } from '../components/textBox';
+import { textbox } from '../components/textBox';
 
 // var redBtn
 var ring;
@@ -374,7 +374,7 @@ const minigameBonsai = (game, end) => {
   var redBtn;
 
   const destroyMinigame = () => {
-    if (next.scene != game.scene.scene && active == false) {
+    if (game.next.scene != game.scene.scene && active == false) {
       if (redBtn) {
         redBtn.destroy();
       }
@@ -463,7 +463,7 @@ const minigameCattree = (game, end) => {
 
   const destroyMinigame = () => {
     key.destroy();
-    if (next.scene != game.scene.scene) {end()};
+    if (game.next.scene != game.scene.scene) {end()};
   };
 
   if (status.inventory == "Key" || status.library == "Unlocked") {

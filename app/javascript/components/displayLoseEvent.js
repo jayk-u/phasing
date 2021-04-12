@@ -1,4 +1,3 @@
-import { game } from "../channels/game";
 import { endingInstructions } from "../channels/tutorialInteractions";
 
 var endGraphics;
@@ -12,9 +11,7 @@ start = 0;
 again = "";
 
 const displayLoseScreen = (game, status, musique, endContent) => {
-  status.timer = "stop";
   game.cameras.main.fadeOut(3000);
-  status.end = true;
   // Textbox
   if (endContent) {
     endBorder = game.add.graphics();
@@ -24,13 +21,11 @@ const displayLoseScreen = (game, status, musique, endContent) => {
   
     endGraphics = game.add.graphics();
   
-    endGraphics.fillStyle(0x000000);
+    endGraphics.fillStyle(0x000000).setDepth(6);
     endGraphics.fillRect(game.cameras.main.scrollX + innerWidth/3.27, game.cameras.main.scrollY + innerHeight/1.67, innerWidth/2.68, innerHeight/15.08);
-    endText = game.add.text(game.cameras.main.scrollX + innerWidth/3.275 + 6, game.cameras.main.scrollY + innerHeight/1.675 + 6, endContent, {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.69, height: 40 }})
+    endText = game.add.text(game.cameras.main.scrollX + innerWidth/3.275 + 6, game.cameras.main.scrollY + innerHeight/1.675 + 6, endContent, {color: '#FFFFFF', font: "12px", wordWrap: {width: innerWidth/2.69, height: 40 }}).setDepth(6);
   }
   // End Textbox
-
-  status.minigame = "active";
 
   if (status.end) {
     let doorsound = game.sound.add('door');
@@ -51,20 +46,20 @@ const displayLoseScreen = (game, status, musique, endContent) => {
         endGraphics.destroy();
         endText.destroy();
       }
-      game.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
+      game.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(6);
       
-    lossScreen = game.add.image(game.cameras.main.scrollX + innerWidth/2.33, game.cameras.main.scrollY + innerHeight/3,'lossScreen').setOrigin(0,0);
-    lossScreen.setDisplaySize(innerWidth/8, innerHeight/4);
-    lossScreen.setDepth(10);
+      lossScreen = game.add.image(game.cameras.main.scrollX + innerWidth/2.33, game.cameras.main.scrollY + innerHeight/3,'lossScreen').setOrigin(0,0);
+      lossScreen.setDisplaySize(innerWidth/8, innerHeight/4);
+      lossScreen.setDepth(10);
 
-    again = game.add.image(game.cameras.main.scrollX + innerWidth/2.45, game.cameras.main.scrollY + innerHeight/1.95, 'playAgain').setOrigin(0,0).setDepth(11).setInteractive();
-    again.setDisplaySize(innerWidth/6, innerHeight/4);
+      again = game.add.image(game.cameras.main.scrollX + innerWidth/2.45, game.cameras.main.scrollY + innerHeight/1.95, 'playAgain').setOrigin(0,0).setDepth(11).setInteractive();
+      again.setDisplaySize(innerWidth/6, innerHeight/4);
 
-    again.on("pointerup", () => {
-      game.scene.restart();
-      game.begin();
-      musique.destroy();
-    });
+      again.on("pointerup", () => {
+        game.scene.restart();
+        game.begin();
+        musique.destroy();
+      });
 
       game.cameras.main.fadeIn(10);
       status.fade = true;

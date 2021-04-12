@@ -7,7 +7,7 @@ const detectEvent = (game, npc, loseEvent) => {
   npc.anims.play(`${npc.anims.currentAnim.key}end`);
   npc.anims.stop();
 
-  var exclamationBorder = game.add.graphics();
+  var exclamationBorder = game.add.graphics().setDepth(4);
 
   exclamationBorder.fillStyle(0x000000);
   exclamationBorder.fillRect(
@@ -17,7 +17,7 @@ const detectEvent = (game, npc, loseEvent) => {
     innerHeight / 60 + 2
   );
 
-  var exclamation = game.add.graphics();
+  var exclamation = game.add.graphics().setDepth(4);
 
   exclamation.fillStyle(0xFFFFFF);
   exclamation.fillRect(
@@ -27,7 +27,7 @@ const detectEvent = (game, npc, loseEvent) => {
     innerHeight / 60
   );
 
-  var pointBorder = game.add.graphics();
+  var pointBorder = game.add.graphics().setDepth(4);
 
   pointBorder.fillStyle(0x000000);
   pointBorder.fillRect(
@@ -37,7 +37,7 @@ const detectEvent = (game, npc, loseEvent) => {
     innerHeight / 220 + 2
   );
 
-  var point = game.add.graphics();
+  var point = game.add.graphics().setDepth(4);
 
   point.fillStyle(0xFFFFFF);
   point.fillRect(

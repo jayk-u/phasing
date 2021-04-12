@@ -11,6 +11,7 @@ start = 0;
 again = "";
 
 const displayLoseScreen = (game, status, musique, endContent) => {
+  status.timer = 'stop'
   game.cameras.main.fadeOut(3000);
   // Textbox
   if (endContent) {

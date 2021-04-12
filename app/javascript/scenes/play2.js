@@ -208,7 +208,8 @@ class Play2 extends Phaser.Scene {
     this.agent.bob.setPosition(465, 775).anims.play('left6end', true)
     this.agent.tom.setPosition(430, 1240).anims.play('up6end', true).anims.stop();
     this.agent.rob.setPosition(360, 1240).anims.play('up6end', true).anims.stop();
-    this.agent.roger.setPosition(300, 885).anims.play('right6end', true).anims.stop();
+    this.agent.roger.setPosition(170, 885).anims.play('right6end', true).anims.stop();
+    Object.values(this.agent).forEach(agent => {agent.setPushable(false)});
     //End NPC
     this.input.keyboard.on('keydown-SPACE', () => {
       console.log(character.x, character.y)
@@ -284,21 +285,20 @@ class Play2 extends Phaser.Scene {
     //END SETTINGS
 
     const items = [
-      {x: 115, y: 1000, name: 'boat', minigame: minigameBoat,
-      x: 715, y: 845, name: 'buildingDoor', minigame: minigameBuildingDoor,
-      x: 655, y: 990, name: 'container', minigame: minigameContainer,
-      x: 750, y: 975, name: 'docksLadder', minigame: minigameDocksLadder,
-      x: 270, y: 675, name: 'lightPillar', minigame: minigameLightPillar,
-      x: 125, y: 850, name: 'map', minigame: minigameMap,
-      x: 750, y: 495, name: 'officeDoor', minigame: minigameOfficeDoor,
-      x: 525, y: 550, name: 'pillar', minigame: minigamePillar,
-      x: 620, y: 495, name: 'ramenDoor', minigame: minigameRamenDoor,
-      x: 300, y: 615, name: 'roofLadder', minigame: minigameRoofLadder,
-      x: 45, y: 995, name: 'streetLamp', minigame: minigameStreetLamp,
-      x: 580, y: 555, name: 'streetPlants', minigame: minigameStreetPlants,
-      x: 545, y: 875, name: 'supermarketDoor', minigame: minigameSupermarketDoor,
-      x: 210, y: 845, name: 'tourismDoor', minigame: minigameTourismDoor,
-      },
+      {x: 115, y: 1000, name: 'boat', minigame: minigameBoat},
+      {x: 715, y: 845, name: 'buildingDoor', minigame: minigameBuildingDoor},
+      {x: 655, y: 990, name: 'container', minigame: minigameContainer},
+      {x: 750, y: 975, name: 'docksLadder', minigame: minigameDocksLadder},
+      {x: 270, y: 875, name: 'lightPillar', minigame: minigameLightPillar},
+      {x: 125, y: 850, name: 'map', minigame: minigameMap},
+      {x: 750, y: 495, name: 'officeDoor', minigame: minigameOfficeDoor},
+      {x: 525, y: 550, name: 'pillar', minigame: minigamePillar},
+      {x: 620, y: 495, name: 'ramenDoor', minigame: minigameRamenDoor},
+      {x: 300, y: 615, name: 'roofLadder', minigame: minigameRoofLadder},
+      {x: 45, y: 995, name: 'streetLamp', minigame: minigameStreetLamp},
+      {x: 580, y: 555, name: 'streetPlants', minigame: minigameStreetPlants},
+      {x: 545, y: 875, name: 'supermarketDoor', minigame: minigameSupermarketDoor},
+      {x: 210, y: 845, name: 'tourismDoor', minigame: minigameTourismDoor},
     ];
     //   character.anims.stop();
     interactionObject(this, items, character, status);
@@ -314,12 +314,12 @@ class Play2 extends Phaser.Scene {
     rainParticles.setPosition(character.x, character.y);
 
     // Bridge walls behavior - used because depth changes depending on location
-    if (character.y >= 831 && character.y <= 832.2 && character.x > 295 && character.x < 315 && character.frame.name >= 13 && character.frame.name <= 15) {
+    if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 13 && character.frame.name <= 15) {
       this.bridge.setDepth(1);
       this.layer.setDepth(0);
       this.walls.setDepth(1);
-      bridgeCollision = this.physics.add.collider(this.bridge, character)
-    } else if (character.y >= 851 && character.y <= 852.2 && character.x > 295 && character.x < 315 && character.frame.name >= 1 && character.frame.name <= 3) {
+      this.physics.world.colliders.add(bridgeCollision);
+    } else if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 1 && character.frame.name <= 3) {
       this.bridge.setDepth(2);
       this.layer.setDepth(2);
       this.walls.setDepth(2);
@@ -396,7 +396,7 @@ class Play2 extends Phaser.Scene {
 
     
 
-      //Inventory
+    //Inventory
     if (status.computerStatus === 'Unlocked' && status.countDoor < 1) {
       this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
       status.countDoor = 1;

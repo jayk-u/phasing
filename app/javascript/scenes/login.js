@@ -50,7 +50,7 @@ class Login extends Phaser.Scene {
     lg.setDisplaySize(innerWidth/6.3, innerHeight/6);
 
     controls = this.add.image(innerWidth - 200, 150, "controls");
-    controls.setDisplaySize(innerWidth/6.5, innerHeight/4);
+    controls.setDisplaySize(innerWidth/6.5, innerHeight/3.5);
 
     leftArrow = this.add.image(innerWidth / 2 - 130, innerHeight / 2, "arrowLeft")
       .setInteractive();
@@ -71,7 +71,6 @@ class Login extends Phaser.Scene {
       .image(innerWidth / 2, innerHeight / 3 + 400, "play")
       .setInteractive();
     play.setSize(innerWidth/6.5, innerHeight/8.5).setDisplaySize(play.width, play.height);
-    console.log(innerWidth, innerHeight)
 
     // SETTINGS
 

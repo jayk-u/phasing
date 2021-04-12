@@ -1,4 +1,4 @@
-const timerLoseScreenDisplay = (game, beginningSecs, beginningMins, status, musique, displayLoseScreen) => {
+const timerLoseScreenDisplay = (game, beginningSecs, beginningMins, status, musique, loseEvent, endContent) => {
   if (status.timer != "stop") {
     status.now = game.time.now;
     if (!status.startTime) {
@@ -36,11 +36,11 @@ const timerLoseScreenDisplay = (game, beginningSecs, beginningMins, status, musi
       status.milli = Math.min(Math.trunc(status.ms/10),99)
     }
     status.time = status.min + ":" + status.sec + ":" + status.milli;
-    status.actualTime.setText(status.time);
+    if (status.timer != "stop") status.actualTime.setText(status.time);
   }
   if ((status.now) >= (status.endTime + status.startTime) && status.timer != "stop") {
     status.actualTime.setText("00:00:00");
-    displayLoseScreen(game, status, musique);
+    loseEvent(game, status, musique, endContent);
     // status.timer = "stop";
     // game.cameras.main.fadeOut(3000);
     // status.end = true;

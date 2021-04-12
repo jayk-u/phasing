@@ -1,6 +1,6 @@
 import { status, musique } from "../scenes/play2"
 
-const detectEvent = (game, npc, loseEvent) => {
+const detectEvent = (game, npc, loseEvent, endContent) => {
   status.minigame = 'active'
   npc.setVelocityX(0);
   npc.setVelocityY(0);
@@ -47,10 +47,10 @@ const detectEvent = (game, npc, loseEvent) => {
     innerHeight / 220
   );
 
-  loseEvent(game, status, musique);
+  loseEvent(game, status, musique, endContent);
 }
 
-const detectCharacter = (game, layout, npc, character, loseEvent) => {
+const detectCharacter = (game, layout, npc, character, loseEvent, endContent) => {
 
   game.origin = layout.getTileAtWorldXY(character.x, character.y) || game.origin
   game.npcOrigin = layout.getTileAtWorldXY(npc.x, npc.y)
@@ -66,7 +66,7 @@ const detectCharacter = (game, layout, npc, character, loseEvent) => {
     || (game.origin.x < game.npcOrigin.x && npc.frame.name >= 4 && npc.frame.name <= 7)
     || (game.origin.y > game.npcOrigin.y && npc.frame.name >= 0 && npc.frame.name <= 3)
     || (game.origin.y < game.npcOrigin.y && npc.frame.name >= 12 && npc.frame.name <= 15)) {
-      detectEvent(game, npc, loseEvent)
+      detectEvent(game, npc, loseEvent, endContent)
     }
   };
 };

@@ -14,7 +14,6 @@ import { camera, hideNPC } from "../components/cameraOpacity"
 import { characterCounter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
 import { detectCharacter } from "../components/characterDetection"
-import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
 
 var rainParticles
 var musique;
@@ -22,7 +21,6 @@ var character;
 var cursors;
 var shapeGraphics;
 var coordinates;
-var agent
 var countDoor = 0;
 
 var beginningMins;

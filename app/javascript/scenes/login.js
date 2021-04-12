@@ -54,15 +54,31 @@ class Login extends Phaser.Scene {
 
     leftArrow = this.add.image(innerWidth / 2 - 130, innerHeight / 2, "arrowLeft")
       .setInteractive();
-    leftArrow.setDisplaySize(150, 150);
+    leftArrow.setSize(150, 150).setDisplaySize(150, 150);
     rightArrow = this.add.image(innerWidth / 2 + 130 , innerHeight / 2, "arrowRight")
       .setInteractive();
-    rightArrow.setDisplaySize(150, 150);
+    rightArrow.setSize(150, 150).setDisplaySize(150, 150);
+
+    this.input.on("gameobjectover", (p, object) => {
+      object.setDisplaySize(object.width + 30, object.height + 30)
+    })
+
+    this.input.on("gameobjectout", (p, object) => {
+      object.setDisplaySize(object.width, object.height)
+    })
+
+    // rightArrow.on("pointerover", () => {
+    //   rightArrow.setDisplaySize(180,180)
+    // })
+
+    // rightArrow.on("pointerout", () => {
+    //   rightArrow.setDisplaySize(150,150)
+    // })
 
     play = this.add
       .image(innerWidth / 2, innerHeight / 3 + 400, "play")
       .setInteractive();
-    play.setDisplaySize(200, 80);
+    play.setSize(200, 80).setDisplaySize(200, 80);
 
     // SETTINGS
 

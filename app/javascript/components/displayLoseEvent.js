@@ -53,7 +53,17 @@ const displayLoseScreen = (game, status, musique, endContent) => {
       lossScreen.setDepth(10);
 
       again = game.add.image(game.cameras.main.scrollX + innerWidth/2.45, game.cameras.main.scrollY + innerHeight/1.95, 'playAgain').setOrigin(0,0).setDepth(11).setInteractive();
-      again.setDisplaySize(innerWidth/6, innerHeight/4);
+      again.setSize(innerWidth/6, innerHeight/4).setDisplaySize(again.width, again.height);
+
+      again.on("pointerover", () => {
+        again.setPosition(again.x - 10, again.y - 6)
+        again.setDisplaySize(again.width + 20, again.height + 12)
+      })
+
+      again.on("pointerout", () => {
+        again.setPosition(again.x + 10, again.y + 6)
+        again.setDisplaySize(again.width, again.height)
+      })
 
       again.on("pointerup", () => {
         game.scene.restart();

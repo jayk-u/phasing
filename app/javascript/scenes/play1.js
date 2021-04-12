@@ -80,8 +80,8 @@ class Play1 extends Phaser.Scene {
     //end minigames
 
     //Map
-    this.load.tilemapTiledJSON('map', gameAssets.map1Json);
-    this.load.image('tiles', gameAssets.map1Png);
+    this.load.tilemapTiledJSON('map1', gameAssets.map1Json);
+    this.load.image('tiles1', gameAssets.map1Png);
     //End map
 
     // this.load.image('ground', gameAssets.platformPng);
@@ -159,10 +159,10 @@ class Play1 extends Phaser.Scene {
     localStorage.setItem('status', status.text);
 
     this.platforms = this.physics.add.staticGroup();
-    this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });  //
+    this.map = this.make.tilemap({ key: 'map1', tileWidth: 16, tileHeight: 16 });  //
     // this.layer = this.map.createLayer('ground');  // set layer name
     // this.layer.resizeWorld();
-    this.tileset = this.map.addTilesetImage("MainTileMap", 'tiles');
+    this.tileset = this.map.addTilesetImage("MainTileMap", 'tiles1');
     this.walls = this.map.createLayer("Walls", this.tileset, 0, 0);
     this.layer = this.map.createLayer('Main Map', this.tileset, 0, 0);
     // this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0);

@@ -14,6 +14,21 @@ import { camera, hideNPC } from "../components/cameraOpacity"
 import { characterCounter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
 import { detectCharacter } from "../components/characterDetection"
+import { minigameBoat,
+  minigameBuildingDoor,
+  minigameContainer,
+  minigameDocksLadder,
+  minigameLightPillar,
+  minigameMap,
+  minigameOfficeDoor,
+  minigamePillar,
+  minigameRamenDoor,
+  minigameRoofLadder,
+  minigameStreetLamp,
+  minigameStreetPlants,
+  minigameSupermarketDoor,
+  minigameTourismDoor,
+} from "../channels/play2interactions"
 
 var rainParticles
 var musique;
@@ -83,8 +98,8 @@ class Play2 extends Phaser.Scene {
     //end minigames
 
     //Map
-    this.load.tilemapTiledJSON('map', gameAssets.map2Json);
-    this.load.image('tiles', gameAssets.map2Png);
+    this.load.tilemapTiledJSON('map2', gameAssets.map2Json);
+    this.load.image('tiles2', gameAssets.map2Png);
     //End map
 
     // this.load.image('ground', gameAssets.platformPng);
@@ -139,7 +154,7 @@ class Play2 extends Phaser.Scene {
   {
     this.begin();
     this.cameras.main.fadeIn(1000)
-    this.add.rectangle(0, 0, 10000, 10000, 0x000000, 0.3).setDepth(10);
+    this.add.rectangle(0, 0, 10000, 10000, 0x000000, 0.2).setDepth(10);
 
 
     // var video = this.add.video(0, 0, "overlay");
@@ -156,10 +171,10 @@ class Play2 extends Phaser.Scene {
     localStorage.setItem('status', status.text);
 
     this.platforms = this.physics.add.staticGroup();
-    this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
+    this.map = this.make.tilemap({ key: 'map2', tileWidth: 16, tileHeight: 16 });
     // this.layer = this.map.createLayer('ground');  // set layer name
     // this.layer.resizeWorld();
-    this.tileset = this.map.addTilesetImage("city", 'tiles');
+    this.tileset = this.map.addTilesetImage("city", 'tiles2');
     this.dock = this.map.createLayer("dock", this.tileset, 0, 0);
     this.promenade = this.map.createLayer("promenade", this.tileset, 0, 0);
     this.walls = this.map.createLayer("wall", this.tileset, 0, 0).setDepth(1);
@@ -197,7 +212,6 @@ class Play2 extends Phaser.Scene {
     //End NPC
     this.input.keyboard.on('keydown-SPACE', () => {
       console.log(character.x, character.y)
-      console.log(this.agent.roger)
     })
 
     // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
@@ -270,12 +284,26 @@ class Play2 extends Phaser.Scene {
     //END SETTINGS
 
     const items = [
-      // {x: 400, y: 188, name: 'kitchen-tree', minigame: minigameKitchenTree},
+      {x: 115, y: 1000, name: 'boat', minigame: minigameBoat,
+      x: 715, y: 845, name: 'buildingDoor', minigame: minigameBuildingDoor,
+      x: 655, y: 990, name: 'container', minigame: minigameContainer,
+      x: 750, y: 975, name: 'docksLadder', minigame: minigameDocksLadder,
+      x: 270, y: 675, name: 'lightPillar', minigame: minigameLightPillar,
+      x: 125, y: 850, name: 'map', minigame: minigameMap,
+      x: 750, y: 495, name: 'officeDoor', minigame: minigameOfficeDoor,
+      x: 525, y: 550, name: 'pillar', minigame: minigamePillar,
+      x: 620, y: 495, name: 'ramenDoor', minigame: minigameRamenDoor,
+      x: 300, y: 615, name: 'roofLadder', minigame: minigameRoofLadder,
+      x: 45, y: 995, name: 'streetLamp', minigame: minigameStreetLamp,
+      x: 580, y: 555, name: 'streetPlants', minigame: minigameStreetPlants,
+      x: 545, y: 875, name: 'supermarketDoor', minigame: minigameSupermarketDoor,
+      x: 210, y: 845, name: 'tourismDoor', minigame: minigameTourismDoor,
+      },
     ];
     //   character.anims.stop();
     interactionObject(this, items, character, status);
     // debugInteraction(this, this.objectTop, character);
-    // debugInteraction(this.objectBottom);
+    // debugInteraction(this, this.objectBottom, character);
     // debugInteraction(this.secretDoor);
   }
 
@@ -287,12 +315,14 @@ class Play2 extends Phaser.Scene {
 
     // Bridge walls behavior - used because depth changes depending on location
     if (character.y >= 831 && character.y <= 832.2 && character.x > 295 && character.x < 315 && character.frame.name >= 13 && character.frame.name <= 15) {
-      this.bridge.setDepth(0)
-      this.layer.setDepth(0)
+      this.bridge.setDepth(1);
+      this.layer.setDepth(0);
+      this.walls.setDepth(1);
       bridgeCollision = this.physics.add.collider(this.bridge, character)
     } else if (character.y >= 851 && character.y <= 852.2 && character.x > 295 && character.x < 315 && character.frame.name >= 1 && character.frame.name <= 3) {
       this.bridge.setDepth(2);
       this.layer.setDepth(2);
+      this.walls.setDepth(2);
       this.physics.world.removeCollider(bridgeCollision);
     }
     

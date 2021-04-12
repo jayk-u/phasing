@@ -1,11 +1,13 @@
 const textbox = (game, string, destroy) => {
-
+  // if (game.input.keyboard.listenerCount("keydown-SPACE", incrementCounter) > 1) { game.input.keyboard.removeAllListeners("keydown-SPACE", incrementCounter)};
   if (game.next) {
     game.next.destroy();
   }
-  var content = string;
-  var border = game.add.graphics().setDepth(5);
-  var textBoxCounter = 0;
+  if (graphics) {graphics.destroy()};
+  if (border) {border.destroy()};
+  if (text) {text.destroy()};
+  var border = game.add.graphics();
+  let textBoxCounter = 0;
 
   border.fillStyle(0xffffff);
   border.fillRect(
@@ -17,7 +19,7 @@ const textbox = (game, string, destroy) => {
 
   var graphics = game.add.graphics();
 
-  graphics.fillStyle(0x000000).setDepth(5);
+  graphics.fillStyle(0x000000);
   graphics.fillRect(
     game.cameras.main.scrollX + innerWidth / 3.27,
     game.cameras.main.scrollY + innerHeight / 1.67,
@@ -33,17 +35,18 @@ const textbox = (game, string, destroy) => {
       font: "12px",
       wordWrap: { width: innerWidth / 2.69, height: 40 },
     }
-  ).setDepth(5);
+  );
   if (string.length != 1) {
     game.next = game.add.text(
       game.cameras.main.scrollX + innerWidth / 1.505,
       game.cameras.main.scrollY + innerHeight / 1.54,
       "...",
       { color: "#FFFFFF", font: "6px" }
-    ).setDepth(5);
+    );
   }
 
   const incrementCounter = () => {
+    game.active = false
     textBoxCounter += 1;
     if (textBoxCounter == string.length - 1) {
       game.next.destroy();
@@ -58,6 +61,7 @@ const textbox = (game, string, destroy) => {
         game.next.destroy();
       }
       if (destroy) {
+        if (game.input.keyboard.listenerCount("keydown-SPACE", incrementCounter) > 2) {game.active = true}
         destroy();
       }
       game.input.keyboard.off("keydown-SPACE", incrementCounter);

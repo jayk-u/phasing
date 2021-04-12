@@ -4,8 +4,6 @@ import { textbox } from '../components/textBox';
 // var redBtn
 var ring;
 var key;
-var content;
-var active;
 
 const gameAssets = document.getElementById("game-assets").dataset;
 
@@ -374,7 +372,7 @@ const minigameBonsai = (game, end) => {
   var redBtn;
 
   const destroyMinigame = () => {
-    if (game.next.scene != game.scene.scene) {
+    if (game.next.scene != game.scene.scene && game.active == false) {
       if (redBtn) {
         redBtn.destroy();
       }
@@ -565,14 +563,14 @@ const minigameComputer = (game, end) => {
   }
 
   const destroyMinigame = () => {
-    // if (active == false) {
+    if (game.active == false) {
       if (inputText) {
         inputText.visible = false;
       }
       computer.destroy();
       game.input.keyboard.off("keyup", (inputComputer));
       end();
-    // }
+    }
   };
   var computer = game.add
     .image(

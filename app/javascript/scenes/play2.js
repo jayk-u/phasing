@@ -21,6 +21,7 @@ var character;
 var cursors;
 var shapeGraphics;
 var coordinates;
+var bridgeCollision;
 var countDoor = 0;
 
 var beginningMins;
@@ -28,7 +29,6 @@ var beginningSecs;
 
 //Status
 var status = {};
-
 
 class Play2 extends Phaser.Scene {
 
@@ -38,6 +38,7 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.bridge = ""
     status.detect = false;
     status.end = false;
     status.start = false;
@@ -61,8 +62,8 @@ class Play2 extends Phaser.Scene {
     status.difference = 0;
     status.actualTime = "";
     status.countDoor = 0;
-    beginningMins = 1;
-    beginningSecs = 45;
+    beginningMins = 3;
+    beginningSecs = 30;
     coordinates = [];
     this.x = 3;
   }
@@ -221,7 +222,8 @@ class Play2 extends Phaser.Scene {
     // character.setBounce(0.2);
     // character.setCollideWorldBounds(true);
     // this.dock.setCollisionFromCollisionGroup();
-    // this.promenade.setCollisionFromCollisionGroup();
+    // this.promenade.setCollisionFromCollisionGroup()
+    this.bridge.setCollisionFromCollisionGroup();
     this.walls.setCollisionFromCollisionGroup();
     this.dockWalls.setCollisionFromCollisionGroup();
     this.promenadeWalls.setCollisionFromCollisionGroup();
@@ -241,6 +243,7 @@ class Play2 extends Phaser.Scene {
     // this.physics.world.collide(character, this.layer)
     Object.values(this.agent).forEach(agent => {this.physics.add.collider(agent, character)});
     this.physics.add.collider(this.walls, character);
+    bridgeCollision = this.physics.add.collider(this.bridge, character);
     this.physics.add.collider(this.dockWalls, character);
     this.physics.add.collider(this.promenadeWalls, character);
     this.physics.add.collider(this.promenadeShops, character);
@@ -281,6 +284,17 @@ class Play2 extends Phaser.Scene {
     movementSprite(this, character, cursors, characterCounter, status);
     timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen, "Lockdown complete! Suspect is around, renforcement incoming!");
     rainParticles.setPosition(character.x, character.y);
+
+    // Bridge walls behavior - used because depth changes depending on location
+    if (character.y >= 831 && character.y <= 832.2 && character.x > 295 && character.x < 315 && character.frame.name >= 13 && character.frame.name <= 15) {
+      this.bridge.setDepth(0)
+      this.layer.setDepth(0)
+      bridgeCollision = this.physics.add.collider(this.bridge, character)
+    } else if (character.y >= 851 && character.y <= 852.2 && character.x > 295 && character.x < 315 && character.frame.name >= 1 && character.frame.name <= 3) {
+      this.bridge.setDepth(2);
+      this.layer.setDepth(2);
+      this.physics.world.removeCollider(bridgeCollision);
+    }
     
     if (status.minigame != 'active') {
 

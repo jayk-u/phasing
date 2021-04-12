@@ -4,6 +4,10 @@ import { textbox } from '../components/textBox';
 var key;
 var next;
 
+minigameMap = () => {
+  
+}
+
 export {
   beginningInstructions,
   minigameShelves,

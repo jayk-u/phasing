@@ -59,8 +59,8 @@ class Play1 extends Phaser.Scene {
     status.difference = 0;
     status.actualTime = "";
     status.countDoor = 0;
-    beginningMins = 0;
-    beginningSecs = 5;
+    beginningMins = 1;
+    beginningSecs = 45;
     coordinates = [];
     this.x = 3;
   }

@@ -180,7 +180,8 @@ class Play2 extends Phaser.Scene {
     //NPC
     spriteFrame(this, 6);
     // We are creating a default value "agent" for this.agent should we want every single agent to shara a property, we can interfere with agent here
-    agent = this.physics.add.sprite(0, 0, `character6`, 6).setSize(15, 2).setOffset(9, 43).setDepth(1)
+    agent = this.physics.add.sprite(0, 0, `character6`, 6).setSize(15, 2).setOffset(9, 43).setDepth(1);
+    console.log(agent)
     // the default value function, using a proxy
     var agentCreator = {
       get: function(target, name) {

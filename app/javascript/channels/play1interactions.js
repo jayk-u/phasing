@@ -1,10 +1,9 @@
 import { status } from "../scenes/play1";
+import { textbox } from '../components/textBox';
+
 // var redBtn
-var next;
 var ring;
 var key;
-var content;
-var active;
 
 const gameAssets = document.getElementById("game-assets").dataset;
 
@@ -373,7 +372,7 @@ const minigameBonsai = (game, end) => {
   var redBtn;
 
   const destroyMinigame = () => {
-    if (next.scene != game.scene.scene && active == false) {
+    if (game.next.scene != game.scene.scene && game.active == false) {
       if (redBtn) {
         redBtn.destroy();
       }
@@ -462,7 +461,7 @@ const minigameCattree = (game, end) => {
 
   const destroyMinigame = () => {
     key.destroy();
-    if (next.scene != game.scene.scene) {end()};
+    if (game.next.scene != game.scene.scene) {end()};
   };
 
   if (status.inventory == "Key" || status.library == "Unlocked") {
@@ -564,7 +563,7 @@ const minigameComputer = (game, end) => {
   }
 
   const destroyMinigame = () => {
-    if (active == false) {
+    if (game.active == false) {
       if (inputText) {
         inputText.visible = false;
       }
@@ -688,79 +687,6 @@ const minigameSaber = (game, end) => {
     ],
     end
   );
-};
-
-const textbox = (game, string, destroy) => {
-  // if (game.input.keyboard.listenerCount("keydown-SPACE", incrementCounter) > 1) { game.input.keyboard.removeAllListeners("keydown-SPACE", incrementCounter)};
-  if (next) {
-    next.destroy();
-  }
-  if (graphics) {graphics.destroy()};
-  if (border) {border.destroy()};
-  if (text) {text.destroy()};
-  content = string;
-  var border = game.add.graphics();
-  let textBoxCounter = 0;
-
-  border.fillStyle(0xffffff);
-  border.fillRect(
-    game.cameras.main.scrollX + (innerWidth / 3.27 - 3.0),
-    game.cameras.main.scrollY + (innerHeight / 1.67 - 3.0),
-    innerWidth / 2.68 + 6.0,
-    innerHeight / 15.08 + 6.0
-  );
-
-  var graphics = game.add.graphics();
-
-  graphics.fillStyle(0x000000);
-  graphics.fillRect(
-    game.cameras.main.scrollX + innerWidth / 3.27,
-    game.cameras.main.scrollY + innerHeight / 1.67,
-    innerWidth / 2.68,
-    innerHeight / 15.08
-  );
-  var text = game.add.text(
-    game.cameras.main.scrollX + innerWidth / 3.275 + 6,
-    game.cameras.main.scrollY + innerHeight / 1.675 + 6,
-    string[0],
-    {
-      color: "#FFFFFF",
-      font: "12px",
-      wordWrap: { width: innerWidth / 2.69, height: 40 },
-    }
-  );
-  if (string.length != 1) {
-    next = game.add.text(
-      game.cameras.main.scrollX + innerWidth / 1.505,
-      game.cameras.main.scrollY + innerHeight / 1.54,
-      "...",
-      { color: "#FFFFFF", font: "6px" }
-    );
-  }
-
-  const incrementCounter = () => {
-    active = false
-    textBoxCounter += 1;
-    if (textBoxCounter == string.length - 1) {
-      next.destroy();
-    }
-    if (string.length > textBoxCounter) {
-      text.setText(string[textBoxCounter]);
-    } else {
-      graphics.destroy();
-      border.destroy();
-      text.destroy();
-      if (next) {
-        next.destroy();
-      }
-      if (destroy) {
-        if (game.input.keyboard.listenerCount("keydown-SPACE", incrementCounter) > 2) {active = true}
-        destroy();
-      }
-      game.input.keyboard.off("keydown-SPACE", incrementCounter);
-    }
-  };
-  game.input.keyboard.on("keydown-SPACE", incrementCounter);
 };
 
 export {

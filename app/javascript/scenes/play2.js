@@ -14,7 +14,21 @@ import { camera, hideNPC } from "../components/cameraOpacity"
 import { characterCounter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
 import { detectCharacter } from "../components/characterDetection"
-import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/interactions";
+import { minigameBoat,
+  minigameBuildingDoor,
+  minigameContainer,
+  minigameDocksLadder,
+  minigameLightPillar,
+  minigameMap,
+  minigameOfficeDoor,
+  minigamePillar,
+  minigameRamenDoor,
+  minigameRoofLadder,
+  minigameStreetLamp,
+  minigameStreetPlants,
+  minigameSupermarketDoor,
+  minigameTourismDoor,
+} from "../channels/play2interactions"
 
 var rainParticles
 var musique;
@@ -22,7 +36,7 @@ var character;
 var cursors;
 var shapeGraphics;
 var coordinates;
-var agent
+var bridgeCollision;
 var countDoor = 0;
 
 var beginningMins;
@@ -30,7 +44,6 @@ var beginningSecs;
 
 //Status
 var status = {};
-
 
 class Play2 extends Phaser.Scene {
 
@@ -40,6 +53,7 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.bridge = ""
     status.detect = false;
     status.end = false;
     status.start = false;
@@ -63,8 +77,8 @@ class Play2 extends Phaser.Scene {
     status.difference = 0;
     status.actualTime = "";
     status.countDoor = 0;
-    beginningMins = 1;
-    beginningSecs = 45;
+    beginningMins = 3;
+    beginningSecs = 30;
     coordinates = [];
     this.x = 3;
   }
@@ -84,8 +98,8 @@ class Play2 extends Phaser.Scene {
     //end minigames
 
     //Map
-    this.load.tilemapTiledJSON('map', gameAssets.map2Json);
-    this.load.image('tiles', gameAssets.map2Png);
+    this.load.tilemapTiledJSON('map2', gameAssets.map2Json);
+    this.load.image('tiles2', gameAssets.map2Png);
     //End map
 
     // this.load.image('ground', gameAssets.platformPng);
@@ -140,7 +154,7 @@ class Play2 extends Phaser.Scene {
   {
     this.begin();
     this.cameras.main.fadeIn(1000)
-    this.add.rectangle(0, 0, 10000, 10000, 0x000000, 0.3).setDepth(10);
+    this.add.rectangle(0, 0, 10000, 10000, 0x000000, 0.2).setDepth(10);
 
 
     // var video = this.add.video(0, 0, "overlay");
@@ -157,10 +171,10 @@ class Play2 extends Phaser.Scene {
     localStorage.setItem('status', status.text);
 
     this.platforms = this.physics.add.staticGroup();
-    this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
+    this.map = this.make.tilemap({ key: 'map2', tileWidth: 16, tileHeight: 16 });
     // this.layer = this.map.createLayer('ground');  // set layer name
     // this.layer.resizeWorld();
-    this.tileset = this.map.addTilesetImage("city", 'tiles');
+    this.tileset = this.map.addTilesetImage("city", 'tiles2');
     this.dock = this.map.createLayer("dock", this.tileset, 0, 0);
     this.promenade = this.map.createLayer("promenade", this.tileset, 0, 0);
     this.walls = this.map.createLayer("wall", this.tileset, 0, 0).setDepth(1);
@@ -194,11 +208,11 @@ class Play2 extends Phaser.Scene {
     this.agent.bob.setPosition(465, 775).anims.play('left6end', true)
     this.agent.tom.setPosition(430, 1240).anims.play('up6end', true).anims.stop();
     this.agent.rob.setPosition(360, 1240).anims.play('up6end', true).anims.stop();
-    this.agent.roger.setPosition(300, 885).anims.play('right6end', true).anims.stop();
+    this.agent.roger.setPosition(170, 885).anims.play('right6end', true).anims.stop();
+    Object.values(this.agent).forEach(agent => {agent.setPushable(false)});
     //End NPC
     this.input.keyboard.on('keydown-SPACE', () => {
       console.log(character.x, character.y)
-      console.log(this.agent.roger)
     })
 
     // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
@@ -223,7 +237,8 @@ class Play2 extends Phaser.Scene {
     // character.setBounce(0.2);
     // character.setCollideWorldBounds(true);
     // this.dock.setCollisionFromCollisionGroup();
-    // this.promenade.setCollisionFromCollisionGroup();
+    // this.promenade.setCollisionFromCollisionGroup()
+    this.bridge.setCollisionFromCollisionGroup();
     this.walls.setCollisionFromCollisionGroup();
     this.dockWalls.setCollisionFromCollisionGroup();
     this.promenadeWalls.setCollisionFromCollisionGroup();
@@ -243,6 +258,7 @@ class Play2 extends Phaser.Scene {
     // this.physics.world.collide(character, this.layer)
     Object.values(this.agent).forEach(agent => {this.physics.add.collider(agent, character)});
     this.physics.add.collider(this.walls, character);
+    bridgeCollision = this.physics.add.collider(this.bridge, character);
     this.physics.add.collider(this.dockWalls, character);
     this.physics.add.collider(this.promenadeWalls, character);
     this.physics.add.collider(this.promenadeShops, character);
@@ -269,12 +285,25 @@ class Play2 extends Phaser.Scene {
     //END SETTINGS
 
     const items = [
-      // {x: 400, y: 188, name: 'kitchen-tree', minigame: minigameKitchenTree},
+      {x: 115, y: 1000, name: 'boat', minigame: minigameBoat},
+      {x: 715, y: 845, name: 'buildingDoor', minigame: minigameBuildingDoor},
+      {x: 655, y: 990, name: 'container', minigame: minigameContainer},
+      {x: 750, y: 975, name: 'docksLadder', minigame: minigameDocksLadder},
+      {x: 270, y: 875, name: 'lightPillar', minigame: minigameLightPillar},
+      {x: 125, y: 850, name: 'map', minigame: minigameMap},
+      {x: 750, y: 495, name: 'officeDoor', minigame: minigameOfficeDoor},
+      {x: 525, y: 550, name: 'pillar', minigame: minigamePillar},
+      {x: 620, y: 495, name: 'ramenDoor', minigame: minigameRamenDoor},
+      {x: 300, y: 615, name: 'roofLadder', minigame: minigameRoofLadder},
+      {x: 45, y: 995, name: 'streetLamp', minigame: minigameStreetLamp},
+      {x: 580, y: 555, name: 'streetPlants', minigame: minigameStreetPlants},
+      {x: 545, y: 875, name: 'supermarketDoor', minigame: minigameSupermarketDoor},
+      {x: 210, y: 845, name: 'tourismDoor', minigame: minigameTourismDoor},
     ];
     //   character.anims.stop();
     interactionObject(this, items, character, status);
     // debugInteraction(this, this.objectTop, character);
-    // debugInteraction(this.objectBottom);
+    // debugInteraction(this, this.objectBottom, character);
     // debugInteraction(this.secretDoor);
   }
 
@@ -283,6 +312,19 @@ class Play2 extends Phaser.Scene {
     movementSprite(this, character, cursors, characterCounter, status);
     timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen, "Lockdown complete! Suspect is around, renforcement incoming!");
     rainParticles.setPosition(character.x, character.y);
+
+    // Bridge walls behavior - used because depth changes depending on location
+    if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 13 && character.frame.name <= 15) {
+      this.bridge.setDepth(1);
+      this.layer.setDepth(0);
+      this.walls.setDepth(1);
+      this.physics.world.colliders.add(bridgeCollision);
+    } else if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 1 && character.frame.name <= 3) {
+      this.bridge.setDepth(2);
+      this.layer.setDepth(2);
+      this.walls.setDepth(2);
+      this.physics.world.removeCollider(bridgeCollision);
+    }
     
     if (status.minigame != 'active') {
 
@@ -354,7 +396,7 @@ class Play2 extends Phaser.Scene {
 
     
 
-      //Inventory
+    //Inventory
     if (status.computerStatus === 'Unlocked' && status.countDoor < 1) {
       this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
       status.countDoor = 1;

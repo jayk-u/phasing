@@ -132,7 +132,8 @@ class Tutorial extends Phaser.Scene {
     this.platforms = this.physics.add.staticGroup();
     this.map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
     this.tileset = this.map.addTilesetImage("office_tiles", 'tiles');
-    this.walls = this.map.createLayer("wall", this.tileset, 0, 0).setDepth(1);
+    this.walls = this.map.createLayer("walls", this.tileset, 0, 0).setDepth(1);
+    this.bottom_walls = this.map.createLayer("bottom_walls", this.tileset, 0, 0).setDepth(4);
     this.layer = this.map.createLayer('floor', this.tileset, 0, 0);
     this.objectBottom = this.map.createLayer("furniture", this.tileset, 0, 0).setDepth(2);
     // this.extraObj = this.map.createLayer("extra_obj", this.tileset, 0, 0);
@@ -152,6 +153,7 @@ class Tutorial extends Phaser.Scene {
     // drawCollisionShapes(this, shapeGraphics, this.extraObj, coordinates);
     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
     drawCollisionShapes(this, shapeGraphics, this.walls)
+    drawCollisionShapes(this, shapeGraphics, this.bottom_walls);
     // drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
 
     // this.physics.add.collider(this.walls, character);
@@ -202,6 +204,7 @@ class Tutorial extends Phaser.Scene {
     }
     camera(this, this.walls, character);
     camera(this, this.objectBottom, character);
+    camera(this, this.bottom_walls, character);
     // camera(this, this.objectTop, character);
     // camera(this, this.extraObj, character);
     camera(this, this.layer, character);

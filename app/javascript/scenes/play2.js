@@ -178,6 +178,7 @@ class Play2 extends Phaser.Scene {
     this.tileset = this.map.addTilesetImage("city", 'tiles2');
     this.dock = this.map.createLayer("dock", this.tileset, 0, 0);
     this.promenade = this.map.createLayer("promenade", this.tileset, 0, 0);
+    this.hidden = this.map.createLayer("hidden", this.tileset, 0, 0).setDepth(0).setVisible(false);
     this.walls = this.map.createLayer("wall", this.tileset, 0, 0).setDepth(1);
     this.bridge = this.map.createLayer("bridge", this.tileset, 0, 0).setDepth(1);
     this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(1);
@@ -239,6 +240,7 @@ class Play2 extends Phaser.Scene {
     // character.setCollideWorldBounds(true);
     // this.dock.setCollisionFromCollisionGroup();
     // this.promenade.setCollisionFromCollisionGroup()
+    this.hidden.setCollisionFromCollisionGroup();
     this.bridge.setCollisionFromCollisionGroup();
     this.walls.setCollisionFromCollisionGroup();
     this.dockWalls.setCollisionFromCollisionGroup();
@@ -253,6 +255,7 @@ class Play2 extends Phaser.Scene {
 
     // drawCollisionShapes(shapeGraphics, this.secretDoor);
     drawCollisionShapes(this, shapeGraphics, this.extraObj);
+    drawCollisionShapes(this, shapeGraphics, this.hidden);
     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
     drawCollisionShapes(this, shapeGraphics, this.objectTop);
     drawCollisionShapes(this, shapeGraphics, this.dockWalls);

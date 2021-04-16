@@ -65,6 +65,7 @@ const minigameContainer = (game, end) => {
     while (containers.getChildren()[0]) containers.getChildren()[0].destroy()
     end();
   }
+  var containerNumber = 0;
   var containers = game.add.group({ key: 'container', repeat: 20, setScale: { x: 0.09, y: 0.08 } });
   Phaser.Actions.GridAlign(containers.getChildren(), {
     width: 5,
@@ -74,9 +75,11 @@ const minigameContainer = (game, end) => {
     x: game.cameras.main.scrollX + innerWidth / 3.6,
     y: game.cameras.main.scrollY - innerHeight / 20,
   });
-  containers.getChildren()[1].setScale(0.1, 0.09)
+  containers.getChildren()[0].setScale(0.1, 0.09)
   game.input.keyboard.on('keydown-RIGHT', () => {
-    containers.getChildren()[5].destroy();
+    containers.getChildren()[containerNumber].setScale(0.09, 0.08);
+    containerNumber ++
+    containers.getChildren()[containerNumber].setScale(0.1, 0.09).setTint();
     // containers.children.iterate(child => {
     //   child.setX(child.x + 5)
     //   console.log(child)

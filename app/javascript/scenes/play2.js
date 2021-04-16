@@ -252,17 +252,29 @@ class Play2 extends Phaser.Scene {
     shapeGraphics = this.add.graphics();
 
     // drawCollisionShapes(shapeGraphics, this.secretDoor);
-    drawCollisionShapes(this, shapeGraphics, this.extraObj, coordinates);
-    drawCollisionShapes(this, shapeGraphics, this.objectBottom, coordinates);
-    drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
+    drawCollisionShapes(this, shapeGraphics, this.extraObj);
+    drawCollisionShapes(this, shapeGraphics, this.objectBottom);
+    drawCollisionShapes(this, shapeGraphics, this.objectTop);
+    drawCollisionShapes(this, shapeGraphics, this.dockWalls);
+    drawCollisionShapes(this, shapeGraphics, this.promenadeWalls);
+    drawCollisionShapes(this, shapeGraphics, this.promenadeShops);
+    drawCollisionShapes(this, shapeGraphics, this.walls);
+    // this.physics.add.collider(this.dockWalls, character);
+    // this.physics.add.collider(this.promenadeWalls, character);
+    // this.physics.add.collider(this.promenadeShops, character);
 
+    this.worldBounds = this.physics.world.setBounds(0, 0, 800, 1280, true, true, true, true);
+    character.setCollideWorldBounds(true)
+    
     // this.physics.world.collide(character, this.layer)
     Object.values(this.agent).forEach(agent => {this.physics.add.collider(agent, character)});
-    this.physics.add.collider(this.walls, character);
+    // this.physics.add.collider(this.walls, character);
     bridgeCollision = this.physics.add.collider(this.bridge, character);
-    this.physics.add.collider(this.dockWalls, character);
-    this.physics.add.collider(this.promenadeWalls, character);
-    this.physics.add.collider(this.promenadeShops, character);
+    console.log(this.bridge)
+    console.log(this.walls)
+    // this.physics.add.collider(this.dockWalls, character);
+    // this.physics.add.collider(this.promenadeWalls, character);
+    // this.physics.add.collider(this.promenadeShops, character);
     // this.physics.add.collider(this.extraObj, character);
     this.physics.add.collider(this.platforms, character);
     // this.physics.add.collider(this.transparent, character);

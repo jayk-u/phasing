@@ -91,7 +91,7 @@ class Play2 extends Phaser.Scene {
 
     // Minigames
     this.load.image("tv", gameAssets.tvImg);
-    this.load.image("redBtn", gameAssets.redbtnImg);
+    this.load.image("fuel", gameAssets.fuelImg);
     this.load.image("computer", gameAssets.computerImg);
     this.load.image("ring", gameAssets.ringImg);
     this.load.image("keylock", gameAssets.keylockImg);
@@ -217,9 +217,6 @@ class Play2 extends Phaser.Scene {
     this.agent.roger.setPosition(170, 885).anims.play('right6end', true).anims.stop();
     Object.values(this.agent).forEach(agent => {agent.setPushable(false)});
     //End NPC
-    this.input.keyboard.on('keydown-SPACE', () => {
-      console.log(character.x, character.y)
-    })
 
     // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
     // console.log(testRect);

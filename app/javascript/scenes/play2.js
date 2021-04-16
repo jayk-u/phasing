@@ -95,6 +95,7 @@ class Play2 extends Phaser.Scene {
     this.load.image("ring", gameAssets.ringImg);
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
+    this.load.image("container", gameAssets.containerImg);
     //end minigames
 
     //Map

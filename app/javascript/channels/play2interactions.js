@@ -61,7 +61,52 @@ const minigameDocksLadder = (game, end) => {
 
 const minigameContainer = (game, end) => {
   // 655x 990y
-  textbox(game, ["I wonder what's inside...?"], end);
+  const destroyMinigame = () => {
+    while (containers.getChildren()[0]) containers.getChildren()[0].destroy()
+    end();
+  }
+  var containers = game.add.group({ key: 'container', repeat: 20, setScale: { x: 0.09, y: 0.08 } });
+  Phaser.Actions.GridAlign(containers.getChildren(), {
+    width: 5,
+    height: 4,
+    cellWidth: 47,
+    cellHeight: 52,
+    x: game.cameras.main.scrollX + innerWidth / 3.6,
+    y: game.cameras.main.scrollY - innerHeight / 20,
+  });
+  game.input.keyboard.on('keydown-RIGHT', () => {
+    containers.getChildren()[5].destroy();
+    // containers.children.iterate(child => {
+    //   child.setX(child.x + 5)
+    //   console.log(child)
+    // })
+  })
+  // var i = 0;
+
+  //   containers.children.iterate(function (child) {
+
+  //       game.tweens.add({
+  //           targets: child,
+  //           scaleX: 1,
+  //           scaleY: 1,
+  //           ease: 'Sine.easeInOut',
+  //           duration: 300,
+  //           delay: i * 50,
+  //           repeat: -1,
+  //           yoyo: true
+  //       });
+
+  //       i++;
+
+  //       if (i % 12 === 0)
+  //       {
+  //           i = 0;
+  //       }
+
+  //   }, game);
+  console.log(containers.children)
+  // container = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, 'container')
+  textbox(game, ["I wonder what's inside...?"], destroyMinigame);
 }
 
 const minigameStreetLamp = (game, end) => {

@@ -1,4 +1,4 @@
-const drawCollisionShapes = (game, graph, object) => {
+const drawCollisionShapes = (game, graph, object, name = platforms) => {
   graph.clear();
   // Loop over each tile and visualize its collision shape (if it has one)
   object.forEachTile((tile) => {
@@ -19,7 +19,7 @@ const drawCollisionShapes = (game, graph, object) => {
           // When objects are parsed by Phaser, they will be guaranteed to have one of the
           // following properties if they are a rectangle/ellipse/polygon/polyline.
           if (object.rectangle) {
-              game.platforms.create(objectX, objectY, "ground").setSize(object.width, object.height).setOffset(16, 16).visible = false;
+              game.name.create(objectX, objectY, "ground").setSize(object.width, object.height).setOffset(16, 16).visible = false;
               // coordinates.push({ x:objectX, y:objectY, w:object.width, h:object.height });
           } else if (object.ellipse) {
               // Ellipses in Tiled have a top-left origin, while ellipses in Phaser have a center

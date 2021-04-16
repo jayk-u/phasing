@@ -74,6 +74,7 @@ const minigameContainer = (game, end) => {
     x: game.cameras.main.scrollX + innerWidth / 3.6,
     y: game.cameras.main.scrollY - innerHeight / 20,
   });
+  containers.getChildren()[1].setScale(0.1, 0.09)
   game.input.keyboard.on('keydown-RIGHT', () => {
     containers.getChildren()[5].destroy();
     // containers.children.iterate(child => {

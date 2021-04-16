@@ -150,10 +150,11 @@ class Tutorial extends Phaser.Scene {
     spriteFrame(this, characterCounter);
 
     // drawCollisionShapes(this, shapeGraphics, this.extraObj, coordinates);
-    drawCollisionShapes(this, shapeGraphics, this.objectBottom, coordinates);
+    drawCollisionShapes(this, shapeGraphics, this.objectBottom);
+    drawCollisionShapes(this, shapeGraphics, this.walls)
     // drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
 
-    this.physics.add.collider(this.walls, character);
+    // this.physics.add.collider(this.walls, character);
     // this.physics.add.collider(this.extraObj, character);
     this.physics.add.collider(this.platforms, character);
     // this.physics.add.collider(this.transparent, character);

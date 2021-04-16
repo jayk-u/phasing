@@ -201,9 +201,9 @@ class Play1 extends Phaser.Scene {
     shapeGraphics = this.add.graphics();
 
     // drawCollisionShapes(shapeGraphics, this.secretDoor);
-    drawCollisionShapes(this, shapeGraphics, this.extraObj, coordinates);
-    drawCollisionShapes(this, shapeGraphics, this.objectBottom, coordinates);
-    drawCollisionShapes(this, shapeGraphics, this.objectTop, coordinates);
+    drawCollisionShapes(this, shapeGraphics, this.extraObj);
+    drawCollisionShapes(this, shapeGraphics, this.objectBottom);
+    drawCollisionShapes(this, shapeGraphics, this.objectTop);
     // drawCollisionShapes(shapeGraphics, this.objectBottom);
     // drawCollisionShapes(shapeGraphics, this.objectTop);
 

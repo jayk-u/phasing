@@ -42,7 +42,7 @@ class Select extends Phaser.Scene {
       const selectAssets = document.getElementById("selectScreen").dataset;
       this.load.image('map0', selectAssets.map0Img);
       this.load.image('map1', selectAssets.map1Img);
-      this.load.image('map2', selectAssets.map0Img);
+      this.load.image('map2', selectAssets.map2Img);
 
       const loginAssets = document.getElementById("login").dataset;
 

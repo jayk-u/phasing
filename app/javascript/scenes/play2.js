@@ -37,7 +37,8 @@ var cursors;
 var shapeGraphics;
 var coordinates;
 var bridgeCollision;
-var hidden;
+// var hidden;
+var hiddenCollision;
 var countDoor = 0;
 
 var beginningMins;
@@ -91,7 +92,7 @@ class Play2 extends Phaser.Scene {
 
     // Minigames
     this.load.image("tv", gameAssets.tvImg);
-    this.load.image("redBtn", gameAssets.redbtnImg);
+    this.load.image("fuel", gameAssets.fuelImg);
     this.load.image("computer", gameAssets.computerImg);
     this.load.image("ring", gameAssets.ringImg);
     this.load.image("keylock", gameAssets.keylockImg);
@@ -173,6 +174,9 @@ class Play2 extends Phaser.Scene {
     localStorage.setItem('status', status.text);
 
     this.platforms = this.physics.add.staticGroup();
+    this.visibleWalls = this.physics.add.staticGroup();
+    this.hiddenWalls = this.physics.add.staticGroup();
+
     this.map = this.make.tilemap({ key: 'map2', tileWidth: 16, tileHeight: 16 });
     // this.layer = this.map.createLayer('ground');  // set layer name
     // this.layer.resizeWorld();
@@ -220,9 +224,6 @@ class Play2 extends Phaser.Scene {
     this.agent.roger.setPosition(170, 885).anims.play('right6end', true).anims.stop();
     Object.values(this.agent).forEach(agent => {agent.setPushable(false)});
     //End NPC
-    this.input.keyboard.on('keydown-SPACE', () => {
-      console.log(character.x, character.y)
-    })
 
     // this.transparent = this.map.createLayer("transparent", this.tileset, 0, 0).setDepth(2);
     // console.log(testRect);
@@ -261,6 +262,15 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.building);
     drawCollisionShapes(this, shapeGraphics, this.dockWalls);
     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
+//     drawCollisionShapes(this, shapeGraphics, this.extraObj);
+//     drawCollisionShapes(this, shapeGraphics, this.hidden, "hidden");
+//     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
+//     drawCollisionShapes(this, shapeGraphics, this.objectTop);
+//     drawCollisionShapes(this, shapeGraphics, this.dockWalls);
+//     drawCollisionShapes(this, shapeGraphics, this.promenadeWalls);
+//     drawCollisionShapes(this, shapeGraphics, this.promenadeShops);
+//     drawCollisionShapes(this, shapeGraphics, this.walls);
+//     drawCollisionShapes(this, shapeGraphics, this.bridge, "visible");
     // this.physics.add.collider(this.dockWalls, character);
     // this.physics.add.collider(this.promenadeWalls, character);
     // this.physics.add.collider(this.promenadeShops, character);
@@ -271,13 +281,15 @@ class Play2 extends Phaser.Scene {
     // this.physics.world.collide(character, this.layer)
     Object.values(this.agent).forEach(agent => {this.physics.add.collider(agent, character)});
     // this.physics.add.collider(this.walls, character);
-    drawCollisionShapes(this, shapeGraphics, this.bridge);
-    console.log(this.walls)
+//     drawCollisionShapes(this, shapeGraphics, this.bridge);
+//     console.log(this.walls)
+    // bridgeCollision = this.physics.add.collider(this.bridge, character);
     // this.physics.add.collider(this.dockWalls, character);
+    this.physics.add.collider(this.platforms, character);
+    bridgeCollision = this.physics.add.collider(this.visibleWalls, character);
     // this.physics.add.collider(this.promenadeWalls, character);
     // this.physics.add.collider(this.promenadeShops, character);
     // this.physics.add.collider(this.extraObj, character);
-    this.physics.add.collider(this.platforms, character);
     // this.physics.add.collider(this.transparent, character);
     // this.physics.add.collider(this.secretDoor, character);
     // this.physics.add.collider(character, this.objectTop);
@@ -333,14 +345,25 @@ class Play2 extends Phaser.Scene {
       this.bridge.setDepth(1);
       this.floorBridge.setDepth(0);
       this.walls.setDepth(1);
-      this.physics.world.colliders.add(this.bridge);
-      console.log("Hello");
+//       this.physics.world.colliders.add(this.bridge);
+//       console.log("Hello");
+      if (!bridgeCollision.active) {
+        this.physics.world.colliders.add(bridgeCollision);
+        bridgeCollision.active = true
+        this.physics.world.removeCollider(hiddenCollision);
+      }
     } else if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 1 && character.frame.name <= 3) {
       this.bridge.setDepth(2);
       this.floorBridge.setDepth(2);
       this.walls.setDepth(2);
-      this.physics.world.removeCollider(this.bridge);
-      console.log("Salut");
+//       this.physics.world.removeCollider(this.bridge);
+//       console.log("Salut");
+      if (bridgeCollision.active) {
+        this.physics.world.removeCollider(bridgeCollision);
+        bridgeCollision.active = false
+        if (!hiddenCollision) hiddenCollision = this.physics.add.collider(this.hiddenWalls, character);
+        else this.physics.world.colliders.add(hiddenCollision);
+      }
     }
     
     if (status.minigame != 'active') {

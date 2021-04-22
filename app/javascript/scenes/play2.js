@@ -37,6 +37,7 @@ var cursors;
 var shapeGraphics;
 var coordinates;
 var bridgeCollision;
+var hidden;
 var countDoor = 0;
 
 var beginningMins;
@@ -176,20 +177,26 @@ class Play2 extends Phaser.Scene {
     // this.layer = this.map.createLayer('ground');  // set layer name
     // this.layer.resizeWorld();
     this.tileset = this.map.addTilesetImage("city", 'tiles2');
-    this.dock = this.map.createLayer("dock", this.tileset, 0, 0);
-    this.promenade = this.map.createLayer("promenade", this.tileset, 0, 0);
+    this.layer = this.map.createLayer('floor', this.tileset, 0, 0).setDepth(0);
+    this.floorBridge = this.map.createLayer('floor_bridge', this.tileset, 0, 0);
+    this.redBoat = this.map.createLayer("red_boat", this.tileset, 0, 0).setDepth(3);
     this.hidden = this.map.createLayer("hidden", this.tileset, 0, 0).setDepth(0).setVisible(false);
-    this.walls = this.map.createLayer("wall", this.tileset, 0, 0).setDepth(1);
-    this.bridge = this.map.createLayer("bridge", this.tileset, 0, 0).setDepth(1);
-    this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(1);
-    this.promenadeWalls = this.map.createLayer("promenade_wall", this.tileset, 0, 0).setDepth(1);
-    this.promenadeShops = this.map.createLayer("promenade_shops", this.tileset, 0, 0).setDepth(1);
-    this.layer = this.map.createLayer('floor', this.tileset, 0, 0);
     // this.layer.resizeWorld();
     // this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0);
-    this.objectBottom = this.map.createLayer("floor_objects", this.tileset, 0, 0).setDepth(2);
-    this.extraObj = this.map.createLayer("dock_objects", this.tileset, 0, 0).setDepth(2);
-    this.objectTop = this.map.createLayer("roof_objects", this.tileset, 0, 0).setDepth(1);
+    this.building = this.map.createLayer("building", this.tileset, 0, 0).setDepth(0);
+    this.decorationBuilding = this.map.createLayer("decoration_building", this.tileset, 0, 0).setDepth(0);
+    this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(0);
+    this.floorObjects = this.map.createLayer("floor_objects", this.tileset, 0, 0).setDepth(0);
+    this.plant = this.map.createLayer("plant", this.tileset, 0, 0).setDepth(0);
+    this.bridge = this.map.createLayer("bridge_walls", this.tileset, 0, 0).setDepth(2);
+    this.objectBottom = this.map.createLayer("object_bottom", this.tileset, 0, 0).setDepth(2);
+    this.ladder = this.map.createLayer("ladder", this.tileset, 0, 2);
+    this.dockObjects = this.map.createLayer("dock_objects", this.tileset, 0, 0).setDepth(2);
+    this.manHole = this.map.createLayer("man_hole", this.tileset, 0, 0).setDepth(1);
+    this.shadow = this.map.createLayer("shadow", this.tileset, 0, 0).setDepth(0);
+    this.walls = this.map.createLayer("walls", this.tileset, 0, 0).setDepth(2);
+    this.overheadBuilding = this.map.createLayer("overhead_building", this.tileset, 0, 0).setDepth(2);
+    this.overheadBuildingDecoration = this.map.createLayer("overhead_building_decoration", this.tileset, 0, 0).setDepth(2);
     this.gameObjects = this.map.getObjectLayer("GameObjects").objects;
     //this is how we actually render our coin object with coin asset we loaded into our game in the preload function
     spriteFrame(this, characterCounter);
@@ -240,28 +247,20 @@ class Play2 extends Phaser.Scene {
     // character.setCollideWorldBounds(true);
     // this.dock.setCollisionFromCollisionGroup();
     // this.promenade.setCollisionFromCollisionGroup()
-    this.hidden.setCollisionFromCollisionGroup();
-    this.bridge.setCollisionFromCollisionGroup();
     this.walls.setCollisionFromCollisionGroup();
     this.dockWalls.setCollisionFromCollisionGroup();
-    this.promenadeWalls.setCollisionFromCollisionGroup();
-    this.promenadeShops.setCollisionFromCollisionGroup();
-    this.extraObj.setCollisionFromCollisionGroup();
+    this.floorObjects.setCollisionFromCollisionGroup();
     this.objectBottom.setCollisionFromCollisionGroup();
-    this.objectTop.setCollisionFromCollisionGroup();
     // this.transparent.setCollisionFromCollisionGroup();
     // this.secretDoor.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
 
     // drawCollisionShapes(shapeGraphics, this.secretDoor);
-    drawCollisionShapes(this, shapeGraphics, this.extraObj);
-    drawCollisionShapes(this, shapeGraphics, this.hidden);
-    drawCollisionShapes(this, shapeGraphics, this.objectBottom);
-    drawCollisionShapes(this, shapeGraphics, this.objectTop);
-    drawCollisionShapes(this, shapeGraphics, this.dockWalls);
-    drawCollisionShapes(this, shapeGraphics, this.promenadeWalls);
-    drawCollisionShapes(this, shapeGraphics, this.promenadeShops);
+    // drawCollisionShapes(this, shapeGraphics, this.dockWalls);
     drawCollisionShapes(this, shapeGraphics, this.walls);
+    drawCollisionShapes(this, shapeGraphics, this.building);
+    drawCollisionShapes(this, shapeGraphics, this.dockWalls);
+    drawCollisionShapes(this, shapeGraphics, this.objectBottom);
     // this.physics.add.collider(this.dockWalls, character);
     // this.physics.add.collider(this.promenadeWalls, character);
     // this.physics.add.collider(this.promenadeShops, character);
@@ -272,8 +271,7 @@ class Play2 extends Phaser.Scene {
     // this.physics.world.collide(character, this.layer)
     Object.values(this.agent).forEach(agent => {this.physics.add.collider(agent, character)});
     // this.physics.add.collider(this.walls, character);
-    bridgeCollision = this.physics.add.collider(this.bridge, character);
-    console.log(this.bridge)
+    drawCollisionShapes(this, shapeGraphics, this.bridge);
     console.log(this.walls)
     // this.physics.add.collider(this.dockWalls, character);
     // this.physics.add.collider(this.promenadeWalls, character);
@@ -329,17 +327,20 @@ class Play2 extends Phaser.Scene {
     timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen, "Lockdown complete! Suspect is around, renforcement incoming!");
     rainParticles.setPosition(character.x, character.y);
 
+
     // Bridge walls behavior - used because depth changes depending on location
     if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 13 && character.frame.name <= 15) {
       this.bridge.setDepth(1);
-      this.layer.setDepth(0);
+      this.floorBridge.setDepth(0);
       this.walls.setDepth(1);
-      this.physics.world.colliders.add(bridgeCollision);
+      this.physics.world.colliders.add(this.bridge);
+      console.log("Hello");
     } else if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 1 && character.frame.name <= 3) {
       this.bridge.setDepth(2);
-      this.layer.setDepth(2);
+      this.floorBridge.setDepth(2);
       this.walls.setDepth(2);
-      this.physics.world.removeCollider(bridgeCollision);
+      this.physics.world.removeCollider(this.bridge);
+      console.log("Salut");
     }
     
     if (status.minigame != 'active') {
@@ -430,14 +431,20 @@ class Play2 extends Phaser.Scene {
     camera(this, this.walls, character);
     camera(this, this.bridge, character);
     camera(this, this.dockWalls, character);
-    camera(this, this.promenadeWalls, character);
-    camera(this, this.promenadeShops, character);
-    camera(this, this.dock, character);
-    camera(this, this.promenade, character);
-    camera(this, this.objectBottom, character);
-    camera(this, this.objectTop, character);
-    camera(this, this.extraObj, character);
     camera(this, this.layer, character);
+    camera(this, this.building, character);
+    camera(this, this.decorationBuilding, character);
+    camera(this, this.overheadBuilding, character);
+    camera(this, this.overheadBuildingDecoration, character);
+    camera(this, this.objectBottom, character);
+    camera(this, this.shadow, character);
+    camera(this, this.manHole, character);
+    camera(this, this.plant, character);
+    camera(this, this.floorObjects, character);
+    camera(this, this.floorBridge, character);
+    camera(this, this.dockWalls, character);
+    camera(this, this.redBoat, character);
+    camera(this, this.dockObjects, character);
     Object.values(this.agent).forEach(agent => {hideNPC(this, this.layer, agent, character)});
     // camera(this, this.transparent, character);
   };

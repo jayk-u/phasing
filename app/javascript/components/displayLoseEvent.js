@@ -59,18 +59,22 @@ const displayLoseScreen = (game, status, musique, endContent) => {
       again.on("pointerover", () => {
         again.setPosition(again.x - 10, again.y - 6)
         again.setDisplaySize(again.width + 20, again.height + 12)
-      })
+      });
 
       again.on("pointerout", () => {
         again.setPosition(again.x + 10, again.y + 6)
         again.setDisplaySize(again.width, again.height)
-      })
+      });
 
-      again.on("pointerup", () => {
+      const restart = () => {
         game.scene.restart();
         game.begin();
         musique.destroy();
-      });
+      }
+
+      again.on("pointerup", restart);
+
+      game.input.keyboard.on("keydown-SPACE", restart);
 
       game.cameras.main.fadeIn(10);
       status.fade = true;

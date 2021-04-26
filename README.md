@@ -4,6 +4,8 @@ Hey guys.
 
 This is Breaking Out!'s team.
 
+Breaking Out! is a 2-dimensional, third-person-viewpoint escape game in which you'll have to escape several levels before your timer reaches 0.
+
 This game was originally a two-weeks long end-of-bootcamp project.
 The code might not be the most seamless, but it works so oh-well.
 

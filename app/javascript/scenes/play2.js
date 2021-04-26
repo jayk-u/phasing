@@ -38,7 +38,6 @@ var shapeGraphics;
 var coordinates;
 var bridgeCollision;
 // var hidden;
-var hiddenCollision;
 var countDoor = 0;
 
 var beginningMins;
@@ -55,7 +54,8 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
-    status.bridge = ""
+    status.hiddenCollision = false;
+    status.bridge = "";
     status.detect = false;
     status.end = false;
     status.start = false;
@@ -263,14 +263,14 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.dockWalls);
     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
 //     drawCollisionShapes(this, shapeGraphics, this.extraObj);
-//     drawCollisionShapes(this, shapeGraphics, this.hidden, "hidden");
+    drawCollisionShapes(this, shapeGraphics, this.hidden, "hidden");
 //     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
 //     drawCollisionShapes(this, shapeGraphics, this.objectTop);
 //     drawCollisionShapes(this, shapeGraphics, this.dockWalls);
 //     drawCollisionShapes(this, shapeGraphics, this.promenadeWalls);
 //     drawCollisionShapes(this, shapeGraphics, this.promenadeShops);
 //     drawCollisionShapes(this, shapeGraphics, this.walls);
-//     drawCollisionShapes(this, shapeGraphics, this.bridge, "visible");
+    drawCollisionShapes(this, shapeGraphics, this.bridge, "visible");
     // this.physics.add.collider(this.dockWalls, character);
     // this.physics.add.collider(this.promenadeWalls, character);
     // this.physics.add.collider(this.promenadeShops, character);
@@ -301,7 +301,9 @@ class Play2 extends Phaser.Scene {
     borderInventory(this, status);
 
     // Rain
-    rainParticles = this.add.particles('rain').createEmitter({"active":true,"blendMode":3,"collideBottom":true,"collideLeft":true,"collideRight":true,"collideTop":true,"deathCallback":null,"deathCallbackScope":null,"emitCallback":null,"emitCallbackScope":null,"follow":null,"frequency":0,"gravityX":300,"gravityY":0,"maxParticles":50,"name":"raindrops","on":true,"particleBringToTop":true,"radial":true,"timeScale":1,"trackVisible":false,"visible":true,"accelerationX":0,"accelerationY":0,"angle":{"min":360,"max":0},"alpha":{"start":0.4,"end":1,"ease":"Quad.easeIn"},"bounce":0,"delay":0,"lifespan":200,"maxVelocityX":5000,"maxVelocityY":5000,"moveToX":0,"moveToY":0,"quantity":1,"rotate":0,"tint":16777215,"x":character.x,"y":character.y,"speed":{"min":0,"max":220},"scale":{"start":0,"end":1.3,"ease":"Cubic.easeInOut"}});
+    var rainParticle = this.add.particles('rain')
+    rainParticles = rainParticle.createEmitter({"active":true,"blendMode":3,"collideBottom":true,"collideLeft":true,"collideRight":true,"collideTop":true,"deathCallback":null,"deathCallbackScope":null,"emitCallback":null,"emitCallbackScope":null,"follow":null,"frequency":0,"gravityX":300,"gravityY":0,"maxParticles":50,"name":"raindrops","on":true,"particleBringToTop":true,"radial":true,"timeScale":1,"trackVisible":false,"visible":true,"accelerationX":0,"accelerationY":0,"angle":{"min":360,"max":0},"alpha":{"start":0.4,"end":1,"ease":"Quad.easeIn"},"bounce":0,"delay":0,"lifespan":200,"maxVelocityX":5000,"maxVelocityY":5000,"moveToX":0,"moveToY":0,"quantity":1,"rotate":0,"tint":16777215,"x":character.x,"y":character.y,"speed":{"min":0,"max":220},"scale":{"start":0,"end":1.3,"ease":"Cubic.easeInOut"}});
+    rainParticle.setDepth(4);
     //End rain
 
     //SETTINGS
@@ -350,7 +352,7 @@ class Play2 extends Phaser.Scene {
       if (!bridgeCollision.active) {
         this.physics.world.colliders.add(bridgeCollision);
         bridgeCollision.active = true
-        this.physics.world.removeCollider(hiddenCollision);
+        this.physics.world.removeCollider(status.hiddenCollision);
       }
     } else if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 1 && character.frame.name <= 3) {
       this.bridge.setDepth(2);
@@ -361,8 +363,8 @@ class Play2 extends Phaser.Scene {
       if (bridgeCollision.active) {
         this.physics.world.removeCollider(bridgeCollision);
         bridgeCollision.active = false
-        if (!hiddenCollision) hiddenCollision = this.physics.add.collider(this.hiddenWalls, character);
-        else this.physics.world.colliders.add(hiddenCollision);
+        if (!status.hiddenCollision) status.hiddenCollision = this.physics.add.collider(this.hiddenWalls, character);
+        else this.physics.world.colliders.add(status.hiddenCollision);
       }
     }
     
@@ -468,6 +470,7 @@ class Play2 extends Phaser.Scene {
     camera(this, this.dockWalls, character);
     camera(this, this.redBoat, character);
     camera(this, this.dockObjects, character);
+    camera(this, this.ladder, character);
     Object.values(this.agent).forEach(agent => {hideNPC(this, this.layer, agent, character)});
     // camera(this, this.transparent, character);
   };

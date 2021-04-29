@@ -216,7 +216,8 @@ class Play2 extends Phaser.Scene {
     // this.layer.resizeWorld();
     // this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0);
     this.building = this.map.createLayer("building", this.tileset, 0, 0).setDepth(0);
-    this.decorationBuilding = this.map.createLayer("decoration_building", this.tileset, 0, 0).setDepth(0.5);
+    this.decorationBuilding = this.map.createLayer("decoration_building", this.tileset, 0, 0).setDepth(0);
+    this.decorationRooftop = this.map.createLayer("rooftop_decoration", this.tileset, 0, 0).setDepth(0.5);
     this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(0);
     this.floorObjects = this.map.createDynamicLayer("floor_objects", this.tileset, 0, 0).setDepth(0.5);
     this.plant = this.map.createLayer("plant", this.tileset, 0, 0).setDepth(1);
@@ -302,6 +303,8 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.railing);
     drawCollisionShapes(this, shapeGraphics, this.railing2);
     drawCollisionShapes(this, shapeGraphics, this.decorationBuilding);
+    drawCollisionShapes(this, shapeGraphics, this.decorationRooftop);
+
 //     drawCollisionShapes(this, shapeGraphics, this.extraObj);
     drawCollisionShapes(this, shapeGraphics, this.hidden, "hidden");
 //     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
@@ -516,7 +519,7 @@ class Play2 extends Phaser.Scene {
     }
 
     sortDepth(this.floorObjects, character);
-    sortDepth(this.decorationBuilding, character);
+    sortDepth(this.decorationRooftop, character);
 
     camera(this, this.walls, character);
     camera(this, this.bridge, character);
@@ -524,6 +527,7 @@ class Play2 extends Phaser.Scene {
     camera(this, this.layer, character);
     camera(this, this.building, character);
     camera(this, this.decorationBuilding, character);
+    camera(this, this.decorationRooftop, character);
     camera(this, this.overheadBuilding, character);
     camera(this, this.overheadBuildingDecoration, character);
     camera(this, this.objectBottom, character);

@@ -31,6 +31,7 @@ import { minigameBoat,
   minigameTourismDoor,
   minigameManHole,
   minigameBridgeEnd,
+  minigameGenerator
 } from "../channels/play2interactions"
 
 var rainParticles
@@ -79,6 +80,7 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.electricity = false;
     status.bridgeCollision;
     status.roofLadderCount = 0;
     status.manhole = "";
@@ -126,6 +128,8 @@ class Play2 extends Phaser.Scene {
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
     this.load.image("container", gameAssets.containerImg);
+    this.load.image("generator", gameAssets.generatorImg);
+    this.load.image("electricity", gameAssets.electricityImg);
     //end minigames
 
     //Map
@@ -383,6 +387,7 @@ class Play2 extends Phaser.Scene {
       {x: 210, y: 845, name: 'tourismDoor', minigame: minigameTourismDoor},
       {x: 120, y: 550, name: 'manHole', minigame: minigameManHole},
       {x: 780, y: 890, name: 'manHole', minigame: minigameManHole},
+      {x: 40, y: 430, name: 'generator', minigame: minigameGenerator},
       {x: 400, y: 1260, name: 'bridgeEnd', minigame: minigameBridgeEnd},
     ];
     //   character.anims.stop();
@@ -393,9 +398,9 @@ class Play2 extends Phaser.Scene {
     this.input.keyboard.on("keydown-E", () => {
       console.log(character.x, character.y)
     })
-    this.decorationBuilding.forEachTile(tile => {
-      if (tile.getCollisionGroup()) console.log(tile.pixelY)
-    })
+    // this.decorationBuilding.forEachTile(tile => {
+    //   if (tile.getCollisionGroup()) console.log(tile.pixelY)
+    // })
   }
 
   update ()

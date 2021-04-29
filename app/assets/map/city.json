@@ -914,31 +914,6 @@
                     }
                 }, 
                 {
-                 "id":250,
-                 "objectgroup":
-                    {
-                     "draworder":"index",
-                     "name":"",
-                     "objects":[
-                            {
-                             "height":1.49318113946311,
-                             "id":1,
-                             "name":"",
-                             "rotation":0,
-                             "type":"",
-                             "visible":true,
-                             "width":22.8954441384345,
-                             "x":4.64545243388526,
-                             "y":30.3613498357501
-                            }],
-                     "opacity":1,
-                     "type":"objectgroup",
-                     "visible":true,
-                     "x":0,
-                     "y":0
-                    }
-                }, 
-                {
                  "id":251,
                  "objectgroup":
                     {

@@ -409,6 +409,12 @@ class Play2 extends Phaser.Scene {
     } else if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 1 && character.frame.name <= 3) {
       downBridge(this);
     }
+
+    if (character.y >= 935 && character.y <= 960 && character.x > 160 && character.x < 190 && character.frame.name >= 13 && character.frame.name <= 15) {
+      if (this.objectBottom.depth === 0) {this.objectBottom.setDepth(2)};
+    } else if (character.y >= 935 && character.y <= 960 && character.x > 160 && character.x < 190 && character.frame.name >= 1 && character.frame.name <= 3) {
+      if (this.objectBottom.depth === 2) {this.objectBottom.setDepth(0)};
+    }
     
     if (status.minigame != 'active') {
 

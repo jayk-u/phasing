@@ -10,12 +10,10 @@ const sortDepth = (layer, character) => {
       );
       var counter = 0;
       if (character.y >= tile.pixelY && distBetween <= 50 && counter === 0) {
-        console.log(tile.pixelY)
         character.setDepth(1.5)
         counter = 1;
-      } else if (character.y < tile.pixelY && distBetween <= 40 && counter === 0) {
-        console.log("up")
-        character.setDepth(0)
+      } else if (character.y < tile.pixelY && distBetween <= 35 && counter === 0) {
+        character.setDepth(0.1)
         counter = 1;
       }
     }

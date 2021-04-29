@@ -222,12 +222,14 @@ class Play2 extends Phaser.Scene {
     this.floorObjects = this.map.createDynamicLayer("floor_objects", this.tileset, 0, 0).setDepth(0.5);
     this.plant = this.map.createLayer("plant", this.tileset, 0, 0).setDepth(1);
     this.bridge = this.map.createLayer("bridge_walls", this.tileset, 0, 0).setDepth(2);
+    this.docksTop = this.map.createLayer("docks_top", this.tileset, 0, 0).setDepth(2);
     this.objectBottom = this.map.createLayer("object_bottom", this.tileset, 0, 0).setDepth(2);
     this.rooftopUpperWalls = this.map.createLayer("rooftop_upperwalls", this.tileset, 0, 0).setDepth(2);
     this.hiddenRooftop = this.map.createLayer("hidden_rooftop_collisions", this.tileset, 0, 0).setDepth(0);
     this.railing = this.map.createLayer("railing", this.tileset, 0, 0).setDepth(0);
     this.railing2 = this.map.createLayer("railing2", this.tileset, 0, 0).setDepth(0);
-    this.ladder = this.map.createLayer("ladder", this.tileset, 0, 2);
+    this.ladder = this.map.createLayer("ladder_bottom", this.tileset, 0, 2);
+    this.ladderTop = this.map.createLayer("ladder_top", this.tileset, 0, 2).setDepth(2);
     this.dockObjects = this.map.createLayer("dock_objects", this.tileset, 0, 0).setDepth(2);
     this.manHole = this.map.createLayer("man_hole", this.tileset, 0, 0).setDepth(0);
     this.shadow = this.map.createLayer("shadow", this.tileset, 0, 0).setDepth(0);
@@ -297,6 +299,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.building);
     drawCollisionShapes(this, shapeGraphics, this.dockWalls);
     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
+    drawCollisionShapes(this, shapeGraphics, this.docksTop);
     drawCollisionShapes(this, shapeGraphics, this.rooftopUpperWalls, "hidden");
     drawCollisionShapes(this, shapeGraphics, this.overheadBuilding);
     drawCollisionShapes(this, shapeGraphics, this.floorObjects);
@@ -411,9 +414,9 @@ class Play2 extends Phaser.Scene {
     }
 
     if (character.y >= 935 && character.y <= 960 && character.x > 160 && character.x < 190 && character.frame.name >= 13 && character.frame.name <= 15) {
-      if (this.objectBottom.depth === 0) {this.objectBottom.setDepth(2)};
+      if (this.docksTop.depth === 0) {this.docksTop.setDepth(2), this.ladderTop.setDepth(2)};
     } else if (character.y >= 935 && character.y <= 960 && character.x > 160 && character.x < 190 && character.frame.name >= 1 && character.frame.name <= 3) {
-      if (this.objectBottom.depth === 2) {this.objectBottom.setDepth(0)};
+      if (this.docksTop.depth === 2) {this.docksTop.setDepth(0), this.ladderTop.setDepth(0)};
     }
     
     if (status.minigame != 'active') {
@@ -537,6 +540,7 @@ class Play2 extends Phaser.Scene {
     camera(this, this.overheadBuilding, character);
     camera(this, this.overheadBuildingDecoration, character);
     camera(this, this.objectBottom, character);
+    camera(this, this.docksTop, character);
     camera(this, this.rooftopUpperWalls, character);
     camera(this, this.railing, character);
     camera(this, this.railing2, character);
@@ -549,6 +553,7 @@ class Play2 extends Phaser.Scene {
     camera(this, this.redBoat, character);
     camera(this, this.dockObjects, character);
     camera(this, this.ladder, character);
+    camera(this, this.ladderTop, character);
     Object.values(this.agent).forEach(agent => {hideNPC(this, this.layer, agent, character)});
     // camera(this, this.transparent, character);
   };

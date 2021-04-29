@@ -14,6 +14,7 @@ import { camera, hideNPC } from "../components/cameraOpacity"
 import { characterCounter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
 import { detectCharacter } from "../components/characterDetection"
+import { sortDepth } from "../components/characterDepth"
 import { minigameBoat,
   minigameBuildingDoor,
   minigameContainer,
@@ -215,10 +216,10 @@ class Play2 extends Phaser.Scene {
     // this.layer.resizeWorld();
     // this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0);
     this.building = this.map.createLayer("building", this.tileset, 0, 0).setDepth(0);
-    this.decorationBuilding = this.map.createLayer("decoration_building", this.tileset, 0, 0).setDepth(0);
+    this.decorationBuilding = this.map.createLayer("decoration_building", this.tileset, 0, 0).setDepth(0.5);
     this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(0);
-    this.floorObjects = this.map.createDynamicLayer("floor_objects", this.tileset, 0, 0).setDepth(0);
-    this.plant = this.map.createLayer("plant", this.tileset, 0, 0).setDepth(0);
+    this.floorObjects = this.map.createDynamicLayer("floor_objects", this.tileset, 0, 0).setDepth(0.5);
+    this.plant = this.map.createLayer("plant", this.tileset, 0, 0).setDepth(1);
     this.bridge = this.map.createLayer("bridge_walls", this.tileset, 0, 0).setDepth(2);
     this.objectBottom = this.map.createLayer("object_bottom", this.tileset, 0, 0).setDepth(2);
     this.rooftopUpperWalls = this.map.createLayer("rooftop_upperwalls", this.tileset, 0, 0).setDepth(2);
@@ -317,7 +318,7 @@ class Play2 extends Phaser.Scene {
     // this.physics.add.collider(this.promenadeShops, character);
 
     this.worldBounds = this.physics.world.setBounds(0, 0, 800, 1280, true, true, true, true);
-    character.setCollideWorldBounds(true)
+    character.setCollideWorldBounds(true);
     
     // this.physics.world.collide(character, this.layer)
     Object.values(this.agent).forEach(agent => {this.physics.add.collider(agent, character)});
@@ -380,7 +381,6 @@ class Play2 extends Phaser.Scene {
       {x: 120, y: 550, name: 'manHole', minigame: minigameManHole},
       {x: 780, y: 890, name: 'manHole', minigame: minigameManHole},
       {x: 400, y: 1260, name: 'bridgeEnd', minigame: minigameBridgeEnd},
-
     ];
     //   character.anims.stop();
     interactionObject(this, items, character, status);
@@ -389,6 +389,9 @@ class Play2 extends Phaser.Scene {
     // debugInteraction(this.secretDoor);
     this.input.keyboard.on("keydown-E", () => {
       console.log(character.x, character.y)
+    })
+    this.decorationBuilding.forEachTile(tile => {
+      if (tile.getCollisionGroup()) console.log(tile.pixelY)
     })
   }
 
@@ -511,6 +514,10 @@ class Play2 extends Phaser.Scene {
       status.borderBox.visible = false;
       status.inventoryBox.visible = false;
     }
+
+    sortDepth(this.floorObjects, character);
+    sortDepth(this.decorationBuilding, character);
+
     camera(this, this.walls, character);
     camera(this, this.bridge, character);
     camera(this, this.dockWalls, character);

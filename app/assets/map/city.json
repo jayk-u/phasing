@@ -29,7 +29,7 @@
          "name":"hidden_rooftop_collisions",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":25,
          "x":0,
          "y":0
@@ -137,7 +137,7 @@
          "name":"rooftop_upperwalls",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":25,
          "x":0,
          "y":0
@@ -197,7 +197,7 @@
          "name":"floor_objects",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":25,
          "x":0,
          "y":0
@@ -221,7 +221,7 @@
          "name":"decoration_building",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":25,
          "x":0,
          "y":0
@@ -930,6 +930,32 @@
                              "width":22.8954441384345,
                              "x":4.64545243388526,
                              "y":30.3613498357501
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    }
+                }, 
+                {
+                 "id":251,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":2,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":4.81136144938116,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":9.95454092975412,
+                             "x":11.4477220692172,
+                             "y":24.3886252778976
                             }],
                      "opacity":1,
                      "type":"objectgroup",
@@ -2786,6 +2812,7 @@
                  "objectgroup":
                     {
                      "draworder":"index",
+                     "id":2,
                      "name":"",
                      "objects":[
                             {
@@ -2796,8 +2823,8 @@
                              "type":"",
                              "visible":true,
                              "width":31.0249858977337,
-                             "x":0.497727046487706,
-                             "y":3.98181637190165
+                             "x":0.331818030991804,
+                             "y":6.96817865082789
                             }],
                      "opacity":1,
                      "type":"objectgroup",
@@ -3058,7 +3085,6 @@
                  "objectgroup":
                     {
                      "draworder":"index",
-                     "id":2,
                      "name":"",
                      "objects":[
                             {

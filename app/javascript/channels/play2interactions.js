@@ -105,7 +105,7 @@ const minigameDocksLadder = (game, end) => {
   const fade = () => {
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
-      character.y <= 940? (character.setPosition(755, 980), game.objectBottom.setDepth(0)) : (character.setPosition(755, 930), game.objectBottom.setDepth(2));
+      character.y <= 940? (character.setPosition(755, 980), game.docksTop.setDepth(0), game.ladderTop.setDepth(0)) : (character.setPosition(755, 930), game.docksTop.setDepth(2), game.ladderTop.setDepth(2));
       game.cameras.main.fadeIn(1000);
       game.cameras.main.once("camerafadeincomplete", () => {
         textbox(game, ["Parkour!"], end)

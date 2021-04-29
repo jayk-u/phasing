@@ -32,7 +32,6 @@ const minigameRoofLadder = (game, end) => {
         game.physics.world.removeCollider(status.hiddenCollision);
       } else {
         character.setPosition(270, 615);
-        console.log("yo")
         game.rooftopUpperWalls.setDepth(0);
         game.physics.world.removeCollider(status.bridgeCollision);
         if (!status.hiddenCollision) status.hiddenCollision = game.physics.add.collider(game.hiddenWalls, character);

@@ -28,13 +28,13 @@ const minigameRoofLadder = (game, end) => {
       if (character.x <= 285) {
         character.setPosition(310, 615);
         game.rooftopUpperWalls.setDepth(2);
-        game.physics.world.colliders.add(bridgeCollision);
+        game.physics.world.colliders.add(status.bridgeCollision);
         game.physics.world.removeCollider(status.hiddenCollision);
       } else {
         character.setPosition(270, 615);
         console.log("yo")
         game.rooftopUpperWalls.setDepth(0);
-        game.physics.world.removeCollider(bridgeCollision);
+        game.physics.world.removeCollider(status.bridgeCollision);
         if (!status.hiddenCollision) status.hiddenCollision = game.physics.add.collider(game.hiddenWalls, character);
         else game.physics.world.colliders.add(status.hiddenCollision);
       }

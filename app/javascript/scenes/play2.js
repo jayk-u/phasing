@@ -295,6 +295,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.floorObjects);
     drawCollisionShapes(this, shapeGraphics, this.railing);
     drawCollisionShapes(this, shapeGraphics, this.railing2);
+    drawCollisionShapes(this, shapeGraphics, this.decorationBuilding);
 //     drawCollisionShapes(this, shapeGraphics, this.extraObj);
     drawCollisionShapes(this, shapeGraphics, this.hidden, "hidden");
 //     drawCollisionShapes(this, shapeGraphics, this.objectBottom);

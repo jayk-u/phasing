@@ -62,10 +62,10 @@ const detectCharacter = (game, layout, npc, character, loseEvent, endContent) =>
       game.npcOrigin.y,
   );
   if (dist < 2) {
-    if ((game.origin.x >= game.npcOrigin.x && npc.frame.name >= 8 && npc.frame.name <= 11)
-    || (game.origin.x <= game.npcOrigin.x && npc.frame.name >= 4 && npc.frame.name <= 7)
-    || (game.origin.y >= game.npcOrigin.y && npc.frame.name >= 0 && npc.frame.name <= 3)
-    || (game.origin.y <= game.npcOrigin.y && npc.frame.name >= 12 && npc.frame.name <= 15)) {
+    if ((game.origin.x > game.npcOrigin.x && npc.frame.name >= 8 && npc.frame.name <= 11)
+    || (game.origin.x < game.npcOrigin.x && npc.frame.name >= 4 && npc.frame.name <= 7)
+    || (game.origin.y > game.npcOrigin.y && npc.frame.name >= 0 && npc.frame.name <= 3)
+    || (game.origin.y < game.npcOrigin.y && npc.frame.name >= 12 && npc.frame.name <= 15)) {
       detectEvent(game, npc, loseEvent, endContent)
     }
   };

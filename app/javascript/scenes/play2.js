@@ -38,7 +38,6 @@ var character;
 var cursors;
 var shapeGraphics;
 var coordinates;
-var bridgeCollision;
 // var hidden;
 var countDoor = 0;
 
@@ -53,9 +52,9 @@ const upBridge = (game) => {
   game.bridge.setDepth(1);
   game.floorBridge.setDepth(0);
   game.walls.setDepth(1);
-  if (!bridgeCollision.active) {
-    game.physics.world.colliders.add(bridgeCollision);
-    bridgeCollision.active = true
+  if (!status.bridgeCollision.active) {
+    game.physics.world.colliders.add(status.bridgeCollision);
+    status.bridgeCollision.active = true
     game.physics.world.removeCollider(status.hiddenCollision);
   }
 };
@@ -63,9 +62,9 @@ const downBridge = (game) => {
   game.bridge.setDepth(2);
   game.floorBridge.setDepth(2);
   game.walls.setDepth(2);
-  if (bridgeCollision.active) {
-    game.physics.world.removeCollider(bridgeCollision);
-    bridgeCollision.active = false
+  if (status.bridgeCollision.active) {
+    game.physics.world.removeCollider(status.bridgeCollision);
+    status.bridgeCollision.active = false
     if (!status.hiddenCollision) status.hiddenCollision = game.physics.add.collider(game.hiddenWalls, character);
     else game.physics.world.colliders.add(status.hiddenCollision);
   }
@@ -79,6 +78,7 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.bridgeCollision;
     status.roofLadderCount = 0;
     status.manhole = "";
     status.hiddenCollision = false;
@@ -222,6 +222,7 @@ class Play2 extends Phaser.Scene {
     this.bridge = this.map.createLayer("bridge_walls", this.tileset, 0, 0).setDepth(2);
     this.objectBottom = this.map.createLayer("object_bottom", this.tileset, 0, 0).setDepth(2);
     this.rooftopUpperWalls = this.map.createLayer("rooftop_upperwalls", this.tileset, 0, 0).setDepth(2);
+    this.hiddenRooftop = this.map.createLayer("hidden_rooftop_collisions", this.tileset, 0, 0).setDepth(0);
     this.railing = this.map.createLayer("railing", this.tileset, 0, 0).setDepth(0);
     this.railing2 = this.map.createLayer("railing2", this.tileset, 0, 0).setDepth(0);
     this.ladder = this.map.createLayer("ladder", this.tileset, 0, 2);
@@ -282,6 +283,8 @@ class Play2 extends Phaser.Scene {
     this.dockWalls.setCollisionFromCollisionGroup();
     this.floorObjects.setCollisionFromCollisionGroup();
     this.objectBottom.setCollisionFromCollisionGroup();
+    this.rooftopUpperWalls.setCollisionFromCollisionGroup();
+
     // this.transparent.setCollisionFromCollisionGroup();
     // this.secretDoor.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();
@@ -297,6 +300,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.floorObjects);
     drawCollisionShapes(this, shapeGraphics, this.railing);
     drawCollisionShapes(this, shapeGraphics, this.railing2);
+    drawCollisionShapes(this, shapeGraphics, this.decorationBuilding);
 //     drawCollisionShapes(this, shapeGraphics, this.extraObj);
     drawCollisionShapes(this, shapeGraphics, this.hidden, "hidden");
 //     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
@@ -306,6 +310,7 @@ class Play2 extends Phaser.Scene {
 //     drawCollisionShapes(this, shapeGraphics, this.promenadeShops);
 //     drawCollisionShapes(this, shapeGraphics, this.walls);
     drawCollisionShapes(this, shapeGraphics, this.bridge, "visible");
+    drawCollisionShapes(this, shapeGraphics, this.hiddenRooftop, "visible");
     drawCollisionShapes(this, shapeGraphics, this.overheadBuilding);
     // this.physics.add.collider(this.dockWalls, character);
     // this.physics.add.collider(this.promenadeWalls, character);
@@ -319,10 +324,10 @@ class Play2 extends Phaser.Scene {
     // this.physics.add.collider(this.walls, character);
 //     drawCollisionShapes(this, shapeGraphics, this.bridge);
 //     console.log(this.walls)
-    // bridgeCollision = this.physics.add.collider(this.bridge, character);
+    // status.bridgeCollision = this.physics.add.collider(this.bridge, character);
     // this.physics.add.collider(this.dockWalls, character);
     this.physics.add.collider(this.platforms, character);
-    bridgeCollision = this.physics.add.collider(this.visibleWalls, character);
+    status.bridgeCollision = this.physics.add.collider(this.visibleWalls, character);
     // this.physics.add.collider(this.promenadeWalls, character);
     // this.physics.add.collider(this.promenadeShops, character);
     // this.physics.add.collider(this.extraObj, character);

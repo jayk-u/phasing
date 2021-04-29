@@ -25,10 +25,22 @@ const minigameRoofLadder = (game, end) => {
   const fade = () => {
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
-      character.x <= 285? character.setPosition(310, 615) : character.setPosition(270, 615)
+      if (character.x <= 285) {
+        character.setPosition(310, 615);
+        game.rooftopUpperWalls.setDepth(2);
+        game.physics.world.colliders.add(status.bridgeCollision);
+        game.physics.world.removeCollider(status.hiddenCollision);
+      } else {
+        character.setPosition(270, 615);
+        game.rooftopUpperWalls.setDepth(0);
+        game.physics.world.removeCollider(status.bridgeCollision);
+        if (!status.hiddenCollision) status.hiddenCollision = game.physics.add.collider(game.hiddenWalls, character);
+        else game.physics.world.colliders.add(status.hiddenCollision);
+      }
+        
       game.cameras.main.fadeIn(1000);
       game.cameras.main.once("camerafadeincomplete", () => {
-        if (status.roofLadderCount === 2) {textbox(game, ["For the record, people are usually very impressed with my parkouring skills"], end)}
+        if (status.roofLadderCount === 2) {textbox(game, ["For the record, people are usually very impressed with my parkouring skills."], end)}
         else if (status.roofLadderCount === 3) {textbox(game, ["I almost wish those policemen saw me."], end)}
       });
     });

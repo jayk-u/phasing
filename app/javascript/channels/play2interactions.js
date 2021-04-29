@@ -21,8 +21,32 @@ const minigameMap = (game, end) => {
 
 const minigameRoofLadder = (game, end) => {
   // 300x 615y
-  textbox(game, ["A ladder.", "I don't have time to go parkouring.", "Fucking policemen."], end);
-}
+
+  const fade = () => {
+    game.cameras.main.fadeOut(1000)
+    game.cameras.main.once("camerafadeoutcomplete", () => {
+      character.x <= 285? character.setPosition(310, 615) : character.setPosition(270, 615)
+      game.cameras.main.fadeIn(1000);
+      game.cameras.main.once("camerafadeincomplete", () => {
+        if (status.roofLadderCount === 2) {textbox(game, ["For the record, people are usually very impressed with my parkouring skills"], end)}
+        else if (status.roofLadderCount === 3) {textbox(game, ["I almost wish those policemen saw me."], end)}
+      });
+    });
+  }
+
+  if (status.roofLadderCount === 0) {
+    textbox(game, ["A ladder.", "I don't have time to go parkouring.", "Fucking policemen."], end);
+    status.roofLadderCount ++;
+  } else if (status.roofLadderCount === 1) {
+    textbox(game, ["I swear I don't have time!"], end);
+    status.roofLadderCount ++;
+  } else if (status.roofLadderCount === 2) {
+    textbox(game, ["...Alright, if anyone asks, I'm on duty."], fade)
+    status.roofLadderCount ++;
+  } else if (status.roofLadderCount === 3) {
+    textbox(game, ["It's parkour time!"], fade)
+  };
+};
 
 const minigamePillar = (game, end) => {
   // 525x 555y

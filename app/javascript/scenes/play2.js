@@ -79,6 +79,7 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.roofLadderCount = 0;
     status.manhole = "";
     status.hiddenCollision = false;
     status.bridge = "";
@@ -351,6 +352,7 @@ class Play2 extends Phaser.Scene {
       {x: 525, y: 550, name: 'pillar', minigame: minigamePillar},
       {x: 620, y: 495, name: 'ramenDoor', minigame: minigameRamenDoor},
       {x: 300, y: 615, name: 'roofLadder', minigame: minigameRoofLadder},
+      {x: 280, y: 615, name: 'roofLadder', minigame: minigameRoofLadder},
       {x: 45, y: 995, name: 'streetLamp', minigame: minigameStreetLamp},
       {x: 275, y: 995, name: 'streetLamp', minigame: minigameStreetLamp},
       {x: 560, y: 995, name: 'streetLamp', minigame: minigameStreetLamp},
@@ -372,6 +374,9 @@ class Play2 extends Phaser.Scene {
     // debugInteraction(this, this.objectTop, character);
     // debugInteraction(this, this.objectBottom, character);
     // debugInteraction(this.secretDoor);
+    this.input.keyboard.on("keydown-E", () => {
+      console.log(character.x, character.y)
+    })
   }
 
   update ()
@@ -396,7 +401,7 @@ class Play2 extends Phaser.Scene {
         this.agent.john.setVelocityX(0);
         this.agent.john.setVelocityY(45);
         this.agent.john.anims.play(`down6`, true);
-      } else if (this.agent.john.x >= 490 && this.agent.john.y >= 670) {
+      } else if (this.agent.john.x >= 490 && this.agent.john.y >= 550) {
         // Here X is the lower right corner
         this.agent.john.setVelocityX(0);
         this.agent.john.setVelocityY(-45);
@@ -406,7 +411,7 @@ class Play2 extends Phaser.Scene {
         this.agent.john.setVelocityY(0);
         this.agent.john.setVelocityX(-45);
         this.agent.john.anims.play(`left6`, true);
-      } else if (this.agent.john.y >= 670 && this.agent.john.x < 350) {
+      } else if (this.agent.john.y >= 670 && this.agent.john.x < 500) {
         // Here Y is the lower left corner
         this.agent.john.setVelocityY(0);
         this.agent.john.setVelocityX(45);
@@ -480,6 +485,11 @@ class Play2 extends Phaser.Scene {
       }
 
       Object.values(this.agent).forEach(agent => {detectCharacter(this, this.layer, agent, character, displayLoseScreen, "Suspect in sight! Requesting renforcement!")});
+    } else {
+      Object.values(this.agent).forEach(agent => {
+        agent.setVelocity(0, 0)
+        if (agent.anims.currentAnim.key.substring(agent.anims.currentAnim.key.length - 3) != "end") agent.anims.play(`${agent.anims.currentAnim.key}end`).anims.stop()
+      });
     }
 
 

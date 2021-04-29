@@ -194,6 +194,7 @@ class Play2 extends Phaser.Scene {
     this.plant = this.map.createLayer("plant", this.tileset, 0, 0).setDepth(0);
     this.bridge = this.map.createLayer("bridge_walls", this.tileset, 0, 0).setDepth(2);
     this.objectBottom = this.map.createLayer("object_bottom", this.tileset, 0, 0).setDepth(2);
+    this.rooftopUpperWalls = this.map.createLayer("rooftop_upper_walls", this.tileset, 0, 0).setDepth(2);
     this.railing = this.map.createLayer("railing", this.tileset, 0, 0).setDepth(0);
     this.railing2 = this.map.createLayer("railing2", this.tileset, 0, 0).setDepth(0);
     this.ladder = this.map.createLayer("ladder", this.tileset, 0, 2);
@@ -264,6 +265,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.building);
     drawCollisionShapes(this, shapeGraphics, this.dockWalls);
     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
+    drawCollisionShapes(this, shapeGraphics, this.rooftopUpperWalls, "hidden");
     drawCollisionShapes(this, shapeGraphics, this.floorObjects);
     drawCollisionShapes(this, shapeGraphics, this.railing);
     drawCollisionShapes(this, shapeGraphics, this.railing2);
@@ -439,16 +441,7 @@ class Play2 extends Phaser.Scene {
       Object.values(this.agent).forEach(agent => {detectCharacter(this, this.layer, agent, character, displayLoseScreen, "Suspect in sight! Requesting renforcement!")});
     }
 
-
-    
-
     //Inventory
-    if (status.computerStatus === 'Unlocked' && status.countDoor < 1) {
-      this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
-      status.countDoor = 1;
-    } else if (status.countDoor === 1) {
-      camera(this, this.secretDoor, character);
-    }
 
     if (status.inventory != "" && status.inventory != "none") {
       status.borderBox.visible = true;
@@ -466,6 +459,7 @@ class Play2 extends Phaser.Scene {
     camera(this, this.overheadBuilding, character);
     camera(this, this.overheadBuildingDecoration, character);
     camera(this, this.objectBottom, character);
+    camera(this, this.rooftopUpperWalls, character);
     camera(this, this.railing, character);
     camera(this, this.railing2, character);
     camera(this, this.shadow, character);

@@ -221,7 +221,7 @@ class Play2 extends Phaser.Scene {
     this.plant = this.map.createLayer("plant", this.tileset, 0, 0).setDepth(0);
     this.bridge = this.map.createLayer("bridge_walls", this.tileset, 0, 0).setDepth(2);
     this.objectBottom = this.map.createLayer("object_bottom", this.tileset, 0, 0).setDepth(2);
-    this.rooftopUpperWalls = this.map.createLayer("rooftop_upper_walls", this.tileset, 0, 0).setDepth(2);
+    this.rooftopUpperWalls = this.map.createLayer("rooftop_upperwalls", this.tileset, 0, 0).setDepth(2);
     this.railing = this.map.createLayer("railing", this.tileset, 0, 0).setDepth(0);
     this.railing2 = this.map.createLayer("railing2", this.tileset, 0, 0).setDepth(0);
     this.ladder = this.map.createLayer("ladder", this.tileset, 0, 2);
@@ -282,6 +282,8 @@ class Play2 extends Phaser.Scene {
     this.dockWalls.setCollisionFromCollisionGroup();
     this.floorObjects.setCollisionFromCollisionGroup();
     this.objectBottom.setCollisionFromCollisionGroup();
+    this.rooftopUpperWalls.setCollisionFromCollisionGroup();
+
     // this.transparent.setCollisionFromCollisionGroup();
     // this.secretDoor.setCollisionFromCollisionGroup();
     shapeGraphics = this.add.graphics();

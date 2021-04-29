@@ -27,13 +27,16 @@ const minigameRoofLadder = (game, end) => {
     game.cameras.main.once("camerafadeoutcomplete", () => {
       if (character.x <= 285) {
         character.setPosition(310, 615);
-        game.objectBottom.setDepth(0);
-        if (!status.hiddenCollision) status.hiddenCollision = game.physics.add.collider(game.hiddenWalls, character);
-        else game.physics.world.colliders.add(status.hiddenCollision);
+        game.rooftopUpperWalls.setDepth(2);
+        game.physics.world.colliders.add(bridgeCollision);
+        game.physics.world.removeCollider(status.hiddenCollision);
       } else {
         character.setPosition(270, 615);
-        game.objectBottom.setDepth(2);
-        game.physics.world.removeCollider(status.hiddenCollision);
+        console.log("yo")
+        game.rooftopUpperWalls.setDepth(0);
+        game.physics.world.removeCollider(bridgeCollision);
+        if (!status.hiddenCollision) status.hiddenCollision = game.physics.add.collider(game.hiddenWalls, character);
+        else game.physics.world.colliders.add(status.hiddenCollision);
       }
         
       game.cameras.main.fadeIn(1000);

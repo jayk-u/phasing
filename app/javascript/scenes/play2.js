@@ -339,6 +339,12 @@ class Play2 extends Phaser.Scene {
     // debugInteraction(this, this.objectTop, character);
     // debugInteraction(this, this.objectBottom, character);
     // debugInteraction(this.secretDoor);
+    // this.floorObjects.forEachTile((tile) => {
+    //   if (tile.getCollisionGroup()) {
+    //     console.log(tile);
+    //     tile.setVisible(false);
+    //   }
+    // });
   }
 
   update ()
@@ -439,17 +445,7 @@ class Play2 extends Phaser.Scene {
       Object.values(this.agent).forEach(agent => {detectCharacter(this, this.layer, agent, character, displayLoseScreen, "Suspect in sight! Requesting renforcement!")});
     }
 
-
-    
-
     //Inventory
-    if (status.computerStatus === 'Unlocked' && status.countDoor < 1) {
-      this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
-      status.countDoor = 1;
-    } else if (status.countDoor === 1) {
-      camera(this, this.secretDoor, character);
-    }
-
     if (status.inventory != "" && status.inventory != "none") {
       status.borderBox.visible = true;
       status.inventoryBox.visible = true;

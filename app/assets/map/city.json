@@ -197,7 +197,7 @@
          "name":"floor_objects",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":25,
          "x":0,
          "y":0
@@ -919,10 +919,11 @@
                  "objectgroup":
                     {
                      "draworder":"index",
+                     "id":2,
                      "name":"",
                      "objects":[
                             {
-                             "height":4.81136144938116,
+                             "height":10.4522679762418,
                              "id":1,
                              "name":"",
                              "rotation":0,
@@ -930,7 +931,7 @@
                              "visible":true,
                              "width":9.95454092975412,
                              "x":11.4477220692172,
-                             "y":24.3886252778976
+                             "y":21.2363539834755
                             }],
                      "opacity":1,
                      "type":"objectgroup",

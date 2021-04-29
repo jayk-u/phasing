@@ -217,13 +217,15 @@ class Play2 extends Phaser.Scene {
     this.building = this.map.createLayer("building", this.tileset, 0, 0).setDepth(0);
     this.decorationBuilding = this.map.createLayer("decoration_building", this.tileset, 0, 0).setDepth(0);
     this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(0);
-    this.floorObjects = this.map.createLayer("floor_objects", this.tileset, 0, 0).setDepth(0);
+    this.floorObjects = this.map.createDynamicLayer("floor_objects", this.tileset, 0, 0).setDepth(0);
     this.plant = this.map.createLayer("plant", this.tileset, 0, 0).setDepth(0);
     this.bridge = this.map.createLayer("bridge_walls", this.tileset, 0, 0).setDepth(2);
     this.objectBottom = this.map.createLayer("object_bottom", this.tileset, 0, 0).setDepth(2);
+    this.railing = this.map.createLayer("railing", this.tileset, 0, 0).setDepth(0);
+    this.railing2 = this.map.createLayer("railing2", this.tileset, 0, 0).setDepth(0);
     this.ladder = this.map.createLayer("ladder", this.tileset, 0, 2);
     this.dockObjects = this.map.createLayer("dock_objects", this.tileset, 0, 0).setDepth(2);
-    this.manHole = this.map.createLayer("man_hole", this.tileset, 0, 0).setDepth(1);
+    this.manHole = this.map.createLayer("man_hole", this.tileset, 0, 0).setDepth(0);
     this.shadow = this.map.createLayer("shadow", this.tileset, 0, 0).setDepth(0);
     this.walls = this.map.createLayer("walls", this.tileset, 0, 0).setDepth(2);
     this.overheadBuilding = this.map.createLayer("overhead_building", this.tileset, 0, 0).setDepth(2);
@@ -290,6 +292,9 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.dockWalls);
     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
     drawCollisionShapes(this, shapeGraphics, this.overheadBuilding);
+    drawCollisionShapes(this, shapeGraphics, this.floorObjects);
+    drawCollisionShapes(this, shapeGraphics, this.railing);
+    drawCollisionShapes(this, shapeGraphics, this.railing2);
 //     drawCollisionShapes(this, shapeGraphics, this.extraObj);
     drawCollisionShapes(this, shapeGraphics, this.hidden, "hidden");
 //     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
@@ -299,6 +304,7 @@ class Play2 extends Phaser.Scene {
 //     drawCollisionShapes(this, shapeGraphics, this.promenadeShops);
 //     drawCollisionShapes(this, shapeGraphics, this.walls);
     drawCollisionShapes(this, shapeGraphics, this.bridge, "visible");
+    drawCollisionShapes(this, shapeGraphics, this.overheadBuilding);
     // this.physics.add.collider(this.dockWalls, character);
     // this.physics.add.collider(this.promenadeWalls, character);
     // this.physics.add.collider(this.promenadeShops, character);
@@ -384,8 +390,6 @@ class Play2 extends Phaser.Scene {
     movementSprite(this, character, cursors, characterCounter, status);
     timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen, "Lockdown complete! Suspect is around, renforcement incoming!");
     rainParticles.setPosition(character.x, character.y);
-
-
     // Bridge walls behavior - used because depth changes depending on location
     if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 13 && character.frame.name <= 15) {
       upBridge(this);
@@ -492,17 +496,7 @@ class Play2 extends Phaser.Scene {
       });
     }
 
-
-    
-
     //Inventory
-    if (status.computerStatus === 'Unlocked' && status.countDoor < 1) {
-      this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
-      status.countDoor = 1;
-    } else if (status.countDoor === 1) {
-      camera(this, this.secretDoor, character);
-    }
-
     if (status.inventory != "" && status.inventory != "none") {
       status.borderBox.visible = true;
       status.inventoryBox.visible = true;
@@ -519,6 +513,8 @@ class Play2 extends Phaser.Scene {
     camera(this, this.overheadBuilding, character);
     camera(this, this.overheadBuildingDecoration, character);
     camera(this, this.objectBottom, character);
+    camera(this, this.railing, character);
+    camera(this, this.railing2, character);
     camera(this, this.shadow, character);
     camera(this, this.manHole, character);
     camera(this, this.plant, character);

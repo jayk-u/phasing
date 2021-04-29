@@ -28,6 +28,8 @@ import { minigameBoat,
   minigameStreetPlants,
   minigameSupermarketDoor,
   minigameTourismDoor,
+  minigameManHole,
+  minigameBridgeEnd,
 } from "../channels/play2interactions"
 
 var rainParticles
@@ -46,6 +48,29 @@ var beginningSecs;
 //Status
 var status = {};
 
+//Bridge
+const upBridge = (game) => {
+  game.bridge.setDepth(1);
+  game.floorBridge.setDepth(0);
+  game.walls.setDepth(1);
+  if (!bridgeCollision.active) {
+    game.physics.world.colliders.add(bridgeCollision);
+    bridgeCollision.active = true
+    game.physics.world.removeCollider(status.hiddenCollision);
+  }
+};
+const downBridge = (game) => {
+  game.bridge.setDepth(2);
+  game.floorBridge.setDepth(2);
+  game.walls.setDepth(2);
+  if (bridgeCollision.active) {
+    game.physics.world.removeCollider(bridgeCollision);
+    bridgeCollision.active = false
+    if (!status.hiddenCollision) status.hiddenCollision = game.physics.add.collider(game.hiddenWalls, character);
+    else game.physics.world.colliders.add(status.hiddenCollision);
+  }
+};
+
 class Play2 extends Phaser.Scene {
 
   constructor ()
@@ -54,6 +79,8 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.roofLadderCount = 0;
+    status.manhole = "";
     status.hiddenCollision = false;
     status.bridge = "";
     status.detect = false;
@@ -207,7 +234,7 @@ class Play2 extends Phaser.Scene {
     this.gameObjects = this.map.getObjectLayer("GameObjects").objects;
     //this is how we actually render our coin object with coin asset we loaded into our game in the preload function
     spriteFrame(this, characterCounter);
-    character = this.physics.add.sprite(450, 450, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
+    character = this.physics.add.sprite(430, 480, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
 
     //NPC
     spriteFrame(this, 6);
@@ -224,7 +251,7 @@ class Play2 extends Phaser.Scene {
     this.agent.bob.setPosition(465, 775).anims.play('left6end', true)
     this.agent.tom.setPosition(430, 1240).anims.play('up6end', true).anims.stop();
     this.agent.rob.setPosition(360, 1240).anims.play('up6end', true).anims.stop();
-    this.agent.roger.setPosition(170, 885).anims.play('right6end', true).anims.stop();
+    this.agent.roger.setPosition(150, 885).anims.play('right6end', true).anims.stop();
     Object.values(this.agent).forEach(agent => {agent.setPushable(false)});
     //End NPC
 
@@ -266,6 +293,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.dockWalls);
     drawCollisionShapes(this, shapeGraphics, this.objectBottom);
     drawCollisionShapes(this, shapeGraphics, this.rooftopUpperWalls, "hidden");
+    drawCollisionShapes(this, shapeGraphics, this.overheadBuilding);
     drawCollisionShapes(this, shapeGraphics, this.floorObjects);
     drawCollisionShapes(this, shapeGraphics, this.railing);
     drawCollisionShapes(this, shapeGraphics, this.railing2);
@@ -325,22 +353,38 @@ class Play2 extends Phaser.Scene {
       {x: 715, y: 845, name: 'buildingDoor', minigame: minigameBuildingDoor},
       {x: 655, y: 990, name: 'container', minigame: minigameContainer},
       {x: 750, y: 975, name: 'docksLadder', minigame: minigameDocksLadder},
+      {x: 750, y: 935, name: 'docksLadder', minigame: minigameDocksLadder},
       {x: 270, y: 875, name: 'lightPillar', minigame: minigameLightPillar},
       {x: 125, y: 850, name: 'map', minigame: minigameMap},
       {x: 750, y: 495, name: 'officeDoor', minigame: minigameOfficeDoor},
       {x: 525, y: 550, name: 'pillar', minigame: minigamePillar},
       {x: 620, y: 495, name: 'ramenDoor', minigame: minigameRamenDoor},
       {x: 300, y: 615, name: 'roofLadder', minigame: minigameRoofLadder},
+      {x: 280, y: 615, name: 'roofLadder', minigame: minigameRoofLadder},
       {x: 45, y: 995, name: 'streetLamp', minigame: minigameStreetLamp},
+      {x: 275, y: 995, name: 'streetLamp', minigame: minigameStreetLamp},
+      {x: 560, y: 995, name: 'streetLamp', minigame: minigameStreetLamp},
+      {x: 720, y: 995, name: 'streetLamp', minigame: minigameStreetLamp},
       {x: 580, y: 555, name: 'streetPlants', minigame: minigameStreetPlants},
+      {x: 715, y: 555, name: 'streetPlants', minigame: minigameStreetPlants},
+      {x: 530, y: 650, name: 'streetPlants', minigame: minigameStreetPlants},
+      {x: 50, y: 875, name: 'streetPlants', minigame: minigameStreetPlants},
+      {x: 680, y: 875, name: 'streetPlants', minigame: minigameStreetPlants},
       {x: 545, y: 875, name: 'supermarketDoor', minigame: minigameSupermarketDoor},
       {x: 210, y: 845, name: 'tourismDoor', minigame: minigameTourismDoor},
+      {x: 120, y: 550, name: 'manHole', minigame: minigameManHole},
+      {x: 780, y: 890, name: 'manHole', minigame: minigameManHole},
+      {x: 400, y: 1260, name: 'bridgeEnd', minigame: minigameBridgeEnd},
+
     ];
     //   character.anims.stop();
     interactionObject(this, items, character, status);
     // debugInteraction(this, this.objectTop, character);
     // debugInteraction(this, this.objectBottom, character);
     // debugInteraction(this.secretDoor);
+    this.input.keyboard.on("keydown-E", () => {
+      console.log(character.x, character.y)
+    })
   }
 
   update ()
@@ -350,28 +394,9 @@ class Play2 extends Phaser.Scene {
     rainParticles.setPosition(character.x, character.y);
     // Bridge walls behavior - used because depth changes depending on location
     if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 13 && character.frame.name <= 15) {
-      this.bridge.setDepth(1);
-      this.floorBridge.setDepth(0);
-      this.walls.setDepth(1);
-//       this.physics.world.colliders.add(this.bridge);
-//       console.log("Hello");
-      if (!bridgeCollision.active) {
-        this.physics.world.colliders.add(bridgeCollision);
-        bridgeCollision.active = true
-        this.physics.world.removeCollider(status.hiddenCollision);
-      }
+      upBridge(this);
     } else if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 1 && character.frame.name <= 3) {
-      this.bridge.setDepth(2);
-      this.floorBridge.setDepth(2);
-      this.walls.setDepth(2);
-//       this.physics.world.removeCollider(this.bridge);
-//       console.log("Salut");
-      if (bridgeCollision.active) {
-        this.physics.world.removeCollider(bridgeCollision);
-        bridgeCollision.active = false
-        if (!status.hiddenCollision) status.hiddenCollision = this.physics.add.collider(this.hiddenWalls, character);
-        else this.physics.world.colliders.add(status.hiddenCollision);
-      }
+      downBridge(this);
     }
     
     if (status.minigame != 'active') {
@@ -382,7 +407,7 @@ class Play2 extends Phaser.Scene {
         this.agent.john.setVelocityX(0);
         this.agent.john.setVelocityY(45);
         this.agent.john.anims.play(`down6`, true);
-      } else if (this.agent.john.x >= 490 && this.agent.john.y >= 670) {
+      } else if (this.agent.john.x >= 490 && this.agent.john.y >= 550) {
         // Here X is the lower right corner
         this.agent.john.setVelocityX(0);
         this.agent.john.setVelocityY(-45);
@@ -392,11 +417,38 @@ class Play2 extends Phaser.Scene {
         this.agent.john.setVelocityY(0);
         this.agent.john.setVelocityX(-45);
         this.agent.john.anims.play(`left6`, true);
-      } else if (this.agent.john.y >= 670 && this.agent.john.x < 350) {
+      } else if (this.agent.john.y >= 670 && this.agent.john.x < 500) {
         // Here Y is the lower left corner
         this.agent.john.setVelocityY(0);
         this.agent.john.setVelocityX(45);
         this.agent.john.anims.play(`right6`, true);
+      }
+
+      // Rob the Inevitable
+      if (this.agent.rob.x <= 310 && this.agent.rob.y >= 740 && this.agent.rob.y <= 900) {
+        //Here X is the upper left corner
+        this.agent.rob.setVelocityX(0);
+        this.agent.rob.setVelocityY(45);
+        this.agent.rob.anims.play(`down6`, true);
+      } else if (this.agent.rob.x >= 180 && this.agent.rob.y >= 900 && this.agent.rob.x <= 310) {
+        // Here X is the lower right corner
+        this.agent.rob.setVelocityX(-45);
+        this.agent.rob.setVelocityY(0);
+        this.agent.rob.anims.play(`left6`, true);
+      } else if (this.agent.rob.y <= 760 && this.agent.rob.x >= 310) {
+        // Here Y is the upper right corner
+        this.agent.rob.setVelocityY(0);
+        this.agent.rob.setVelocityX(-45);
+        this.agent.rob.anims.play(`left6`, true);
+      } else if (this.agent.rob.x <= 190 && this.agent.rob.y <= 1010) {
+        // Here Y is the lower left corner
+        this.agent.rob.setVelocityY(45);
+        this.agent.rob.setVelocityX(0);
+        this.agent.rob.anims.play(`down6`, true);
+      } else if (this.agent.rob.x <= 190 && this.agent.rob.y >=1010) {
+        this.agent.rob.setVelocityY(0);
+        this.agent.rob.setVelocityX(0);
+        this.agent.rob.anims.play(`down6end`, true).anims.stop();
       }
 
       // Mike the Egoistic
@@ -439,10 +491,14 @@ class Play2 extends Phaser.Scene {
       }
 
       Object.values(this.agent).forEach(agent => {detectCharacter(this, this.layer, agent, character, displayLoseScreen, "Suspect in sight! Requesting renforcement!")});
+    } else {
+      Object.values(this.agent).forEach(agent => {
+        agent.setVelocity(0, 0)
+        if (agent.anims.currentAnim.key.substring(agent.anims.currentAnim.key.length - 3) != "end") agent.anims.play(`${agent.anims.currentAnim.key}end`).anims.stop()
+      });
     }
 
     //Inventory
-
     if (status.inventory != "" && status.inventory != "none") {
       status.borderBox.visible = true;
       status.inventoryBox.visible = true;
@@ -475,4 +531,4 @@ class Play2 extends Phaser.Scene {
     // camera(this, this.transparent, character);
   };
 };
-export { Play2, status, coordinates, musique, character, cursors };
+export { Play2, status, coordinates, musique, character, cursors, upBridge, downBridge };

@@ -1,21 +1,52 @@
 import { status } from "../scenes/play2";
 import { textbox } from '../components/textBox';
+import { character, upBridge, downBridge } from "../scenes/play2";
 
 var key;
 var next;
+var map
 var fuel
 var containers;
 var containerNumber;
 
 const minigameMap = (game, end) => {
   // 125x 850y
-  textbox(game, ["A map of the docks.", "Perhaps I should study this carefully...", "...", "Who am I kidding?", "I didn't become a criminal to study."], end);
+  const destroyMinigame = () => {
+    map.destroy();
+    end();
+  }
+  map = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "map2").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+  textbox(game, ["A map of the docks.", "Perhaps I should study this carefully...", "...", "Who am I kidding?", "I didn't become a criminal to study."], destroyMinigame);
 }
 
 const minigameRoofLadder = (game, end) => {
   // 300x 615y
-  textbox(game, ["A ladder.", "I don't have time to go parkouring.", "Fucking policemen."], end);
-}
+
+  const fade = () => {
+    game.cameras.main.fadeOut(1000)
+    game.cameras.main.once("camerafadeoutcomplete", () => {
+      character.x <= 285? character.setPosition(310, 615) : character.setPosition(270, 615)
+      game.cameras.main.fadeIn(1000);
+      game.cameras.main.once("camerafadeincomplete", () => {
+        if (status.roofLadderCount === 2) {textbox(game, ["For the record, people are usually very impressed with my parkouring skills"], end)}
+        else if (status.roofLadderCount === 3) {textbox(game, ["I almost wish those policemen saw me."], end)}
+      });
+    });
+  }
+
+  if (status.roofLadderCount === 0) {
+    textbox(game, ["A ladder.", "I don't have time to go parkouring.", "Fucking policemen."], end);
+    status.roofLadderCount ++;
+  } else if (status.roofLadderCount === 1) {
+    textbox(game, ["I swear I don't have time!"], end);
+    status.roofLadderCount ++;
+  } else if (status.roofLadderCount === 2) {
+    textbox(game, ["...Alright, if anyone asks, I'm on duty."], fade)
+    status.roofLadderCount ++;
+  } else if (status.roofLadderCount === 3) {
+    textbox(game, ["It's parkour time!"], fade)
+  };
+};
 
 const minigamePillar = (game, end) => {
   // 525x 555y
@@ -59,12 +90,32 @@ const minigameBuildingDoor = (game, end) => {
 
 const minigameDocksLadder = (game, end) => {
   // 750x 975y
-  textbox(game, ["I'm not touching this.", "Even criminals have pride."], end);
+  const fade = () => {
+    game.cameras.main.fadeOut(1000)
+    game.cameras.main.once("camerafadeoutcomplete", () => {
+      character.y <= 940? character.setPosition(755, 980) : character.setPosition(755, 930)
+      game.cameras.main.fadeIn(1000);
+      game.cameras.main.once("camerafadeincomplete", () => {
+        textbox(game, ["Parkour!"], end)
+      });
+    });
+  }
+  textbox(game, ["I'm not touching this.", "Even criminals have pride.", "...", "Who am I kidding?"], fade);
 }
 
 const minigameContainer = (game, end) => {
   // 655x 990y
   var i = 0;
+
+  const pointFuel = () => {
+    fuel.x = innerWidth / 3.15;
+    fuel.y = innerHeight / 3;
+    fuel.setDisplaySize(40, 40);
+    fuel.ignoreDestroy = true;
+    fuel.setScrollFactor(0);
+    status.inventory = "Fuel";
+  }
+
   const destroyMinigame = () => {
     if (game.active === false) {
       while (containers.getChildren()[0]) containers.getChildren()[0].destroy()
@@ -73,7 +124,7 @@ const minigameContainer = (game, end) => {
       game.input.keyboard.off('keydown-DOWN')
       game.input.keyboard.off('keydown-UP')
       game.input.keyboard.off('keydown-ENTER')
-      if (fuel) fuel.destroy(), fuel = false;
+      if (fuel) fuel.off("pointerdown", pointFuel), fuel.destroy();
       end();
     }
   }
@@ -135,15 +186,8 @@ const minigameContainer = (game, end) => {
       if (status.inventory === "Fuel") {textbox(game, ["I already completed this heist!"], destroyMinigame)}
       else {
         textbox(game, ["Looks like fuel.", "Reminds me of the good old days..."], destroyMinigame)
-        if (!fuel) fuel = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "fuel").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
-        fuel.on('pointerdown', () => {
-          fuel.x = innerWidth / 3.15;
-          fuel.y = innerHeight / 3;
-          fuel.setDisplaySize(40, 40);
-          fuel.ignoreDestroy = true;
-          fuel.setScrollFactor(0);
-          status.inventory = "Fuel";
-        })
+        if (status.inventory != "Fuel") fuel = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "fuel").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+        fuel.on('pointerdown', pointFuel)
       }
     }
     else if (containerNumber == 3) {
@@ -173,8 +217,106 @@ const minigameStreetLamp = (game, end) => {
 
 const minigameBoat = (game, end) => {
   //115x 1000y
-  textbox(game, ["I wish I could boat-ride my way out of this", "It'd probably make too much noise though...", "Would be funny.", "...At first."], end);
+  const fadeIn = () => {
+    game.cameras.main.fadeIn(1000);
+  };
+  const fadeOut = () => {
+    game.cameras.main.fadeOut(1000);
+  };
+  const destroyMinigame = () => {
+    if (!game.active) {end()}
+  }
+  if (status.inventory === "Fuel") {
+    textbox(game, ["Time for some good old-fashioned fireworks!"], destroyMinigame)
+    fuel.on("pointerdown", () => {
+      fuel.ignoreDestroy = false;
+      fuel.destroy();
+      textbox(game, ["Yeeeeehaw!"], fadeOut)
+      game.cameras.main.once("camerafadeoutcomplete", () => {
+        game.redBoat.setVisible(false);
+        var blackRect = game.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
+        fadeIn();
+        game.cameras.main.once("camerafadeincomplete", () => {
+          textbox(game, ["BOOM!"], fadeOut, 5);
+          game.cameras.main.once("camerafadeoutcomplete", () => {
+            blackRect.destroy();
+            character.setPosition(400, 1260).setVisible(false);
+            fadeIn()
+            game.cameras.main.once("camerafadeincomplete", () => {
+              textbox(game, ["Hey! What was that?", "Let's check it out!"], fadeOut)
+              game.cameras.main.once("camerafadeoutcomplete", () => {
+                console.log(game.agent.rob)
+                game.agent.rob.setVelocityY(-40).anims.play("up6");
+                game.agent.tom.setPosition(340, 1240).anims.play("left6end").anims.stop();
+                character.setPosition(115, 995).setVisible(true);
+                fadeIn()
+                game.cameras.main.once("camerafadeincomplete", () => {
+                  textbox(game, ["Haha, boat goes BOOM!", "I love blowing things up.", "No time to lose though, let's get going!"], end)
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  } else {
+    textbox(game, ["I wish I could boat-ride my way out of this.", "It'd probably make too much noise though...", "Would be funny.", "...At first."], end);
+  }
 }
+
+const minigameManHole = (game, end) => {
+  //120x 550y || 780x 890y
+  const fade = () => {
+    game.cameras.main.fadeOut(1000)
+    game.cameras.main.once("camerafadeoutcomplete", () => {
+      character.x <= 150 && character.x >= 100 ? (character.setPosition(780, 890), downBridge(game)) : (character.setPosition(120, 550), upBridge(game));
+      game.cameras.main.fadeIn(1000);
+      game.cameras.main.once("camerafadeincomplete", () => {
+        if (status.manhole === "used") {
+          textbox(game, ["Urgh, smells nasty."], end)
+        } else {
+          textbox(game, ["Where am I?", "Ah, still inside the lockdown...", "Can't blame a man for hoping."], end)
+          status.manhole = "used"
+        }
+      });
+    });
+  };
+  if (status.manhole === "used") {
+    textbox(game, ["This is getting pretty handy."], fade)
+  } else {
+    textbox(game, ["Hey, who would leave that open?", "Criminals nowadays don't even have to try.", "Let's try this out."], fade);
+  }
+}
+
+const minigameBridgeEnd = (game, end) => {
+  status.timer = "stop";
+
+  textbox(game, ["So long, nerds!"]);
+  game.cameras.main.fadeOut(4000, 255, 255, 255);
+  game.cameras.main.once("camerafadeoutcomplete", () => {
+    var graph = game.add.graphics();
+    graph.fillStyle(0);
+    graph.fillRect(0, 0, 10000, 10000);
+    game.cameras.main.fadeIn(4000, 255, 255, 255);
+    var winscreen = game.add
+      .image(
+        game.cameras.main.scrollX + innerWidth / 2.35,
+        game.cameras.main.scrollY + innerHeight / 2.9,
+        "winscreen"
+      )
+      .setOrigin(0, 0)
+      .setDepth(99);
+    winscreen.setDisplaySize(
+      (innerWidth + innerHeight) / 12,
+      (innerWidth + innerHeight) / 10.5
+    );
+    game.cameras.main.fadeOut(4000, 0, 0, 0);
+    game.cameras.main.once("camerafadeoutcomplete", () => {
+      game.scene.stop();
+      game.scene.start('Outro2');
+    });
+  })
+};
 
 export {
   minigameBoat,
@@ -191,4 +333,6 @@ export {
   minigameStreetPlants,
   minigameSupermarketDoor,
   minigameTourismDoor,
+  minigameManHole,
+  minigameBridgeEnd,
 };

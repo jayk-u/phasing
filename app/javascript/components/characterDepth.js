@@ -1,4 +1,5 @@
 const sortDepth = (layer, character) => {
+  var counter = 0;
 
   layer.forEachTile ((tile) => {
     if (tile.getCollisionGroup()) {
@@ -8,11 +9,10 @@ const sortDepth = (layer, character) => {
         tile.pixelX,
         tile.pixelY
       );
-      var counter = 0;
       if (character.y >= tile.pixelY && distBetween <= 50 && counter === 0) {
         character.setDepth(1.5)
         counter = 1;
-      } else if (character.y < tile.pixelY && distBetween <= 35 && counter === 0) {
+      } else if (character.y < tile.pixelY && distBetween <= 50 && counter === 0) {
         character.setDepth(0.1)
         counter = 1;
       }

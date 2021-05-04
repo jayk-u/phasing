@@ -1,17 +1,41 @@
 var nameCounter;
-var level
-var activerect
-
+var level;
 
 const box = (game, x, y, width, height) => {
-  game.add.graphics().fillStyle(0xFFFFFF).fillRect(x - 5, y - 5, width + 10, height + 10);
+  var white;
+
+  var toggle = true
+  var i = 10
+  var timedEvent
+  var stopEvent = false;
+
+  const onEvent = () => {
+    toggle ? i++ : i--;
+    if (i>=20 || stopEvent) {toggle = false}
+    else if (i<=10) {toggle = true}
+    if (white) white.destroy();
+    white = game.add.graphics().fillStyle(0xFFFFFF).fillRect(x - Math.max(i/2, 5), y - Math.max(i/2, 5), width + Math.max(10, i), height + Math.max(10, i)).setDepth(-1);
+    if (stopEvent && i<=10) {timedEvent.destroy()}
+    console.log(timedEvent)
+  }
+
+  white = game.add.graphics().fillStyle(0xFFFFFF).fillRect(x - 5, y - 5, width + 10, height + 10);
   game.add.graphics().fillStyle(0x000000).fillRect(x - 2.5, y - 2.5, width + 5, height + 5);
   level = game.add.image(x, y, `map${nameCounter}`).setOrigin(0).setDisplaySize(width, height).setInteractive();
   level.on("pointerover", () => {
-    activerect = game.add.graphics().fillStyle(0xFFFFFF).fillRect(x - 10, y - 10, width + 20, height + 20).setDepth(-1);
+    stopEvent = false;
+    // activerect.setDisplaySize(width + i, height + i)
+    timedEvent = game.time.addEvent({
+      delay: 30,
+      callback: onEvent, 
+      callbackScope: game, 
+      loop: true 
+    });
+
 })
   level.on("pointerout", () => {
-    activerect.destroy();
+    stopEvent = true
+    // activerect.destroy();
   })
   if (nameCounter == 0) {
     game.add.text(x + width/3, y + height + 10, `Tutorial`, {font: `${width/13}px`, color:"#FFFFFF", align: 'center', wordWrap: {width: width}})

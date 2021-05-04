@@ -162,9 +162,9 @@ const minigameContainer = (game, end) => {
     yoyo: true
     });
 
-    i++;
+  i++;
 
-    if (i % 12 === 0) i = 0;
+  if (i % 12 === 0) i = 0;
   
   const zoomMove = (cases) => {
     tween.remove();
@@ -184,9 +184,9 @@ const minigameContainer = (game, end) => {
       yoyo: true
     })
 
-  i++;
+    i++;
 
-  if (i % 12 === 0) i = 0;
+    if (i % 12 === 0) i = 0;
   };
   
   game.input.keyboard.on('keydown-RIGHT', () => {zoomMove(1)})

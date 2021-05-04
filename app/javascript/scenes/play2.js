@@ -396,9 +396,9 @@ class Play2 extends Phaser.Scene {
     this.input.keyboard.on("keydown-E", () => {
       console.log(character.x, character.y)
     })
-    this.decorationBuilding.forEachTile(tile => {
-      if (tile.getCollisionGroup()) console.log(tile.pixelY)
-    })
+    // this.decorationBuilding.forEachTile(tile => {
+    //   if (tile.getCollisionGroup()) console.log(tile.pixelY)
+    // })
   }
 
   update ()

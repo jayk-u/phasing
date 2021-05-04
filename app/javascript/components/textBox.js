@@ -1,4 +1,4 @@
-const textbox = (game, string, destroy, depth = 0) => {
+const textbox = (game, string, destroy, depth = 2) => {
   // if (game.input.keyboard.listenerCount("keydown-SPACE", incrementCounter) > 1) { game.input.keyboard.removeAllListeners("keydown-SPACE", incrementCounter)};
   if (game.next) {
     game.next.destroy();
@@ -44,12 +44,10 @@ const textbox = (game, string, destroy, depth = 0) => {
       { color: "#FFFFFF", font: "6px" }
     );
   }
-  if (depth) {
-    text.setDepth(depth)
-    border.setDepth(depth)
-    graphics.setDepth(depth)
-    if (game.next) game.next.setDepth(depth)
-  };
+  text.setDepth(depth)
+  border.setDepth(depth)
+  graphics.setDepth(depth)
+  if (game.next) game.next.setDepth(depth)
 
   const incrementCounter = () => {
     game.active = false

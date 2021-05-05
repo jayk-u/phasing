@@ -3,8 +3,9 @@ var skip;
 var picture;
 
 const createCutscene = (game, status, nextScene) => {
+  console.log(`picture${Math.trunc(status.pictureNum)}${game.scene.key.substring(0, 1)}${game.scene.key.substring(game.scene.key.length - 1)}`)
   game.cameras.main.fadeIn(200)
-  picture = game.add.image(innerWidth/20, innerHeight/6, `picture${Math.trunc(status.pictureNum)}`).setOrigin(0);
+  picture = game.add.image(innerWidth/20, innerHeight/6, `picture${Math.trunc(status.pictureNum)}${game.scene.key.substring(0, 1)}${game.scene.key.substring(game.scene.key.length - 1)}`).setOrigin(0);
   picture.setDisplaySize(innerWidth*18/20, innerHeight*4/10);
   text = game.add.text(innerWidth/20, innerHeight/1.65, "", {color: '#FFFFFF', font: "32px", wordWrap: {width: innerWidth*18/20 }})
   skip = game.add.text(innerWidth*16/20, innerHeight*8/9, "Press Enter to skip...", {color: '#FFFFFF', font: "16px"})
@@ -96,7 +97,7 @@ const updateCutscene = (game, content, status) => {
             status.line = "";
             status.incrementexpo += 0.07;
             status.pictureNum += status.incrementexpo;
-            picture = game.add.image(innerWidth/20, innerHeight/6, `picture${Math.min(5,Math.trunc(status.pictureNum))}`).setOrigin(0);
+            picture = game.add.image(innerWidth/20, innerHeight/6, `picture${Math.min(5,Math.trunc(status.pictureNum))}${game.scene.key.substring(0, 1)}${game.scene.key.substring(game.scene.key.length - 1)}`).setOrigin(0);
             if (Math.trunc(status.pictureNum) != Math.min(5,Math.trunc(status.pictureNum - status.incrementexpo))) {status.alphaIncrement = 0; picture.setAlpha(status.alphaIncrement)}
             picture.setDisplaySize(innerWidth*18/20, innerHeight*4/10);
           }

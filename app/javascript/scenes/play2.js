@@ -80,13 +80,9 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
-<<<<<<< HEAD
     status.read = false;
     status.bridgeCollision = false;
-=======
     status.electricity = false;
-    status.bridgeCollision;
->>>>>>> c3f9189fc03b2692604e9f453f28656466b6924a
     status.roofLadderCount = 0;
     status.manhole = "";
     status.hiddenCollision = false;
@@ -133,13 +129,10 @@ class Play2 extends Phaser.Scene {
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
     this.load.image("container", gameAssets.containerImg);
-<<<<<<< HEAD
     this.load.image("note", gameAssets.blanknoteImg);
     this.load.image("clueMap", gameAssets.dockscluemapImg);
-=======
     this.load.image("generator", gameAssets.generatorImg);
     this.load.image("electricity", gameAssets.electricityImg);
->>>>>>> c3f9189fc03b2692604e9f453f28656466b6924a
     //end minigames
 
     //Map

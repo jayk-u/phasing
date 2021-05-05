@@ -31,6 +31,7 @@ import { minigameBoat,
   minigameTourismDoor,
   minigameManHole,
   minigameBridgeEnd,
+  minigameGenerator
 } from "../channels/play2interactions"
 
 var rainParticles
@@ -81,6 +82,7 @@ class Play2 extends Phaser.Scene {
   begin () {
     status.read = false;
     status.bridgeCollision = false;
+    status.electricity = false;
     status.roofLadderCount = 0;
     status.manhole = "";
     status.hiddenCollision = false;
@@ -129,6 +131,8 @@ class Play2 extends Phaser.Scene {
     this.load.image("container", gameAssets.containerImg);
     this.load.image("note", gameAssets.blanknoteImg);
     this.load.image("clueMap", gameAssets.dockscluemapImg);
+    this.load.image("generator", gameAssets.generatorImg);
+    this.load.image("electricity", gameAssets.electricityImg);
     //end minigames
 
     //Map
@@ -389,6 +393,7 @@ class Play2 extends Phaser.Scene {
       {x: 210, y: 845, name: 'tourismDoor', minigame: minigameTourismDoor},
       {x: 120, y: 550, name: 'manHole', minigame: minigameManHole},
       {x: 780, y: 890, name: 'manHole', minigame: minigameManHole},
+      {x: 40, y: 430, name: 'generator', minigame: minigameGenerator},
       {x: 400, y: 1260, name: 'bridgeEnd', minigame: minigameBridgeEnd},
     ];
     //   character.anims.stop();

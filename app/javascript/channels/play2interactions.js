@@ -4,6 +4,8 @@ import { character, upBridge, downBridge } from "../scenes/play2";
 
 var key;
 var next;
+var electricity;
+var generator
 var map
 var fuel
 var containers;
@@ -201,11 +203,11 @@ const minigameContainer = (game, end) => {
     x: game.cameras.main.scrollX + innerWidth / 3.6,
     y: game.cameras.main.scrollY - innerHeight / 14,
   });
-  containers.getChildren()[0].setScale(0.1, 0.09)
+  containers.getChildren()[0].setScale(0.1, 0.08).setDepth(6)
   var tween = game.tweens.add({
     targets: containers.getChildren()[containerNumber],
-    scaleX: 0.15,
-    scaleY: 0.13,
+    scaleX: 0.12,
+    scaleY: 0.1,
     ease: 'Sine.easeInOut',
     duration: 300,
     delay: i * 50,
@@ -381,6 +383,62 @@ const minigameBridgeEnd = (game, end) => {
   })
 };
 
+const minigameGenerator = (game, end) => {
+  // 40x 430y
+
+  const pointGenerator = () => {
+    generator.x = innerWidth / 3.15;
+    generator.y = innerHeight / 3;
+    generator.setDisplaySize(40, 40);
+    generator.ignoreDestroy = true;
+    generator.setScrollFactor(0);
+    status.inventory = "generator";
+  };
+
+  const pathing = (direction) => {
+    if (electricity.alpha != 0.99) {
+      if (direction === `Arrow${combination[combinationIndex]}`) {
+        alphaIncrement += 0.018
+        alpha += alphaIncrement;
+        combinationIndex ++;
+      } else {
+        alphaIncrement = 0;
+        alpha = 0;
+        combinationIndex = 0;
+      }
+      electricity.setAlpha(alpha);
+    }
+    if (electricity.alpha === 0.99 && !status.electricity) {
+      textbox(game, ["That's it!", "Should I ever get bored of the criminal life...", "I'd always have work as an electrician, ah!"], destroyMinigame);
+      status.electricity = true;
+    }
+  }
+
+  const destroyMinigame = () => {
+    if (!game.active) {
+      generator.destroy();
+      if (electricity) electricity.destroy();
+      end();
+    }
+  };
+
+  if (status.electricity) {
+    textbox(game, ["That was... electrifying."], end)
+  } else {
+    textbox(game, ["Uh?", "Power is out...", "No wonder I couldn't charge my phone."], destroyMinigame)
+
+    generator = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "generator").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6);
+    electricity = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "electricity").setDisplaySize(innerWidth/6, innerHeight/6).setDepth(6).setAlpha(0);
+    var alpha = 0;
+    var combination = ["Right", "Up", "Down", "Up", "Down", "Up", "Down", "Up", "Down", "Right"];
+    var combinationIndex = 0;
+    var alphaIncrement = 0;
+    game.input.keyboard.on("keydown", (event) => {
+      pathing(event.key)
+    });
+  }
+}
+
 export {
   minigameBoat,
   minigameBuildingDoor,
@@ -398,4 +456,5 @@ export {
   minigameTourismDoor,
   minigameManHole,
   minigameBridgeEnd,
+  minigameGenerator,
 };

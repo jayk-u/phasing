@@ -26,8 +26,8 @@ const minigameMap = (game, end) => {
   graphics.fillRect(
     game.cameras.main.scrollX + innerWidth / 3.2,
     game.cameras.main.scrollY + innerHeight / 2.8,
-    (innerWidth + innerHeight) / 5,
-    (innerWidth + innerHeight) / 12.5
+    innerWidth / 1.5,
+    innerHeight / 5
   );
 
   var mask = new Phaser.Display.Masks.GeometryMask(game, graphics);
@@ -35,13 +35,12 @@ const minigameMap = (game, end) => {
   map.setMask(mask)
   
   game.input.keyboard.on("keydown-UP", () => {
-    console.log(map.y)
-    map.y += -10;
+    map.y += 20;
     map.y = Phaser.Math.Clamp(map.y, 700, 950);
   });
 
   game.input.keyboard.on("keydown-DOWN", () => {
-    map.y += 10;
+    map.y += -20;
     map.y = Phaser.Math.Clamp(map.y, 700, 950);
   });
 }

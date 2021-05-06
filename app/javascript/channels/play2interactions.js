@@ -58,21 +58,23 @@ const minigameWareHouse = (game, end) => {
       end();
     }
   };
-  if (status.electricity === true) {
+  if (status.electricity) {
     textbox(game, ["What happened ? It seems that the door opened when I turned on the electricity", "A key "], destroyMinigame);
     warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6);
-    rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.545, game.cameras.main.scrollY + innerHeight / 3.43, innerWidth/6, innerHeight/3.5).setDepth(6);
+    rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.545, game.cameras.main.scrollY + innerHeight / 3.43, innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
     for (var y = 0; y < 2; y++)
     {
       for (var x = 0; x < 2; x++)
       {
         rt.draw('scratchticket', x * 512, y * 512);
       }
-    }
-    brush = game.add.circle(0, 0, 5, 0xffffff).setVisible(false);
-    game.input.on('pointermove', function (pointer) {
-      if (pointer.isDown) rt.erase(brush, game.input.mousePointer.x, game.input.mousePointer.y);
-    }, game);
+    };
+    brush = game.add.circle(0, 0, 5, 0xffffff);
+    rt.on('pointermove', (pointer, x, y) => {
+      if (pointer.isDown) {
+        rt.erase(brush, x, y)
+      } 
+    })
   } else {
     textbox(game, ["The warehouse door is closed..."], end);
   }
@@ -453,7 +455,7 @@ const minigameGenerator = (game, end) => {
     }
   };
 
-  if (status.electricity === true) {
+  if (status.electricity) {
     textbox(game, ["That was... electrifying."], end)
   } else {
     textbox(game, ["Uh?", "Power is out...", "No wonder I couldn't charge my phone."], destroyMinigame)

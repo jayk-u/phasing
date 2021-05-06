@@ -16,7 +16,6 @@ const box = (game, x, y, width, height) => {
     if (white) white.destroy();
     white = game.add.graphics().fillStyle(0xFFFFFF).fillRect(x - Math.max(i/2, 5), y - Math.max(i/2, 5), width + Math.max(10, i), height + Math.max(10, i)).setDepth(-1);
     if (stopEvent && i<=10) {timedEvent.destroy()}
-    console.log(timedEvent)
   }
 
   white = game.add.graphics().fillStyle(0xFFFFFF).fillRect(x - 5, y - 5, width + 10, height + 10);

@@ -17,8 +17,32 @@ const minigameMap = (game, end) => {
     map.destroy();
     end();
   }
-  map = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "map2").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+  map = game.add.image(game.cameras.main.scrollX + innerWidth / 2, game.cameras.main.scrollY + innerHeight / 2.3, "clueMap").setDisplaySize(innerWidth/3, innerHeight/2).setDepth(6).setInteractive();
   textbox(game, ["A map of the docks.", "Perhaps I should study this carefully...", "...", "Who am I kidding?", "I didn't become a criminal to study."], destroyMinigame);
+  
+
+  var graphics = game.make.graphics();
+
+  graphics.fillRect(
+    game.cameras.main.scrollX + innerWidth / 3.2,
+    game.cameras.main.scrollY + innerHeight / 2.8,
+    innerWidth / 1.5,
+    innerHeight / 5
+  );
+
+  var mask = new Phaser.Display.Masks.GeometryMask(game, graphics);
+
+  map.setMask(mask)
+  
+  game.input.keyboard.on("keydown-UP", () => {
+    map.y += 20;
+    map.y = Phaser.Math.Clamp(map.y, 700, 950);
+  });
+
+  game.input.keyboard.on("keydown-DOWN", () => {
+    map.y += -20;
+    map.y = Phaser.Math.Clamp(map.y, 700, 950);
+  });
 }
 
 const minigameRoofLadder = (game, end) => {
@@ -69,7 +93,33 @@ const minigamePillar = (game, end) => {
 
 const minigameStreetPlants = (game, end) => {
   // 580x 555y && 715x 555y && 530x 650y && 50x 875y && 683x 875y
-  textbox(game, ["This plant has known brighter nights."], end);
+
+  const destroyMinigame = () => {
+    note.destroy()
+    noteText.destroy()
+    end();
+  }
+
+  if (character.x <= 80) {
+    var note = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "note").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(5);
+    var noteText = game.add.text(
+      game.cameras.main.scrollX + innerWidth / 2.3,
+      game.cameras.main.scrollY + innerHeight / 2.85,
+      "Hey.\nRound - Diamond - Pentagon - Square - Explosion.\nIf you're half as good as you're made to be, you'll understand.",
+      {
+        fontFamily: "Arial",
+        color: "#000000",
+        font: "11px",
+        wordWrap: { width: 110 },
+      }
+    )
+    .setOrigin(0)
+    .setDepth(6);
+    if (!status.read) {textbox(game, ["That's something else alright.", "Who...?", "Nevermind, I've got to get my game face on.", "It would hurt me to disappoint a fan."], destroyMinigame), status.read = true;}
+    else textbox(game, ["What kind of code is this..."], destroyMinigame);
+  } else {
+    textbox(game, ["This plant has known brighter nights."], end);
+  }
 }
 
 const minigameRamenDoor = (game, end) => {

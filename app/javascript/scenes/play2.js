@@ -31,7 +31,8 @@ import { minigameBoat,
   minigameTourismDoor,
   minigameManHole,
   minigameBridgeEnd,
-  minigameGenerator
+  minigameWareHouse,
+  minigameGenerator,
 } from "../channels/play2interactions"
 
 var rainParticles
@@ -395,6 +396,7 @@ class Play2 extends Phaser.Scene {
       {x: 780, y: 890, name: 'manHole', minigame: minigameManHole},
       {x: 40, y: 430, name: 'generator', minigame: minigameGenerator},
       {x: 400, y: 1260, name: 'bridgeEnd', minigame: minigameBridgeEnd},
+      {x: 622, y: 876, name: 'warehouse', minigame: minigameWareHouse},
     ];
     //   character.anims.stop();
     interactionObject(this, items, character, status);

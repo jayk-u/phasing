@@ -5,9 +5,9 @@ import { character, upBridge, downBridge } from "../scenes/play2";
 var key;
 var next;
 var electricity;
-var generator
-var map
-var fuel
+var generator;
+var map;
+var fuel;
 var containers;
 var containerNumber;
 
@@ -45,6 +45,9 @@ const minigameMap = (game, end) => {
   });
 }
 
+const minigameWareHouse = (game, end) => {
+  textbox(game, ["Hola Chica"], end);
+}
 const minigameRoofLadder = (game, end) => {
   // 300x 615y
 
@@ -455,5 +458,6 @@ export {
   minigameTourismDoor,
   minigameManHole,
   minigameBridgeEnd,
+  minigameWareHouse,
   minigameGenerator,
 };

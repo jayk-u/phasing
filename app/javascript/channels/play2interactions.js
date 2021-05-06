@@ -4,6 +4,8 @@ import { character, upBridge, downBridge } from "../scenes/play2";
 
 var key;
 var next;
+var electricity;
+var generator;
 var map;
 var fuel;
 var containers;
@@ -15,8 +17,32 @@ const minigameMap = (game, end) => {
     map.destroy();
     end();
   }
-  map = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "map2").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+  map = game.add.image(game.cameras.main.scrollX + innerWidth / 2, game.cameras.main.scrollY + innerHeight / 2.3, "clueMap").setDisplaySize(innerWidth/3, innerHeight/2).setDepth(6).setInteractive();
   textbox(game, ["A map of the docks.", "Perhaps I should study this carefully...", "...", "Who am I kidding?", "I didn't become a criminal to study."], destroyMinigame);
+  
+
+  var graphics = game.make.graphics();
+
+  graphics.fillRect(
+    game.cameras.main.scrollX + innerWidth / 3.2,
+    game.cameras.main.scrollY + innerHeight / 2.8,
+    innerWidth / 1.5,
+    innerHeight / 5
+  );
+
+  var mask = new Phaser.Display.Masks.GeometryMask(game, graphics);
+
+  map.setMask(mask)
+  
+  game.input.keyboard.on("keydown-UP", () => {
+    map.y += 20;
+    map.y = Phaser.Math.Clamp(map.y, 700, 950);
+  });
+
+  game.input.keyboard.on("keydown-DOWN", () => {
+    map.y += -20;
+    map.y = Phaser.Math.Clamp(map.y, 700, 950);
+  });
 }
 
 const minigameWareHouse = (game, end) => {
@@ -70,7 +96,33 @@ const minigamePillar = (game, end) => {
 
 const minigameStreetPlants = (game, end) => {
   // 580x 555y && 715x 555y && 530x 650y && 50x 875y && 683x 875y
-  textbox(game, ["This plant has known brighter nights."], end);
+
+  const destroyMinigame = () => {
+    note.destroy()
+    noteText.destroy()
+    end();
+  }
+
+  if (character.x <= 80) {
+    var note = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "note").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(5);
+    var noteText = game.add.text(
+      game.cameras.main.scrollX + innerWidth / 2.3,
+      game.cameras.main.scrollY + innerHeight / 2.85,
+      "Hey.\nRound - Diamond - Pentagon - Square - Explosion.\nIf you're half as good as you're made to be, you'll understand.",
+      {
+        fontFamily: "Arial",
+        color: "#000000",
+        font: "11px",
+        wordWrap: { width: 110 },
+      }
+    )
+    .setOrigin(0)
+    .setDepth(6);
+    if (!status.read) {textbox(game, ["That's something else alright.", "Who...?", "Nevermind, I've got to get my game face on.", "It would hurt me to disappoint a fan."], destroyMinigame), status.read = true;}
+    else textbox(game, ["What kind of code is this..."], destroyMinigame);
+  } else {
+    textbox(game, ["This plant has known brighter nights."], end);
+  }
 }
 
 const minigameRamenDoor = (game, end) => {
@@ -153,11 +205,11 @@ const minigameContainer = (game, end) => {
     x: game.cameras.main.scrollX + innerWidth / 3.6,
     y: game.cameras.main.scrollY - innerHeight / 14,
   });
-  containers.getChildren()[0].setScale(0.1, 0.09)
+  containers.getChildren()[0].setScale(0.1, 0.08).setDepth(6)
   var tween = game.tweens.add({
     targets: containers.getChildren()[containerNumber],
-    scaleX: 0.15,
-    scaleY: 0.13,
+    scaleX: 0.12,
+    scaleY: 0.1,
     ease: 'Sine.easeInOut',
     duration: 300,
     delay: i * 50,
@@ -165,9 +217,9 @@ const minigameContainer = (game, end) => {
     yoyo: true
     });
 
-    i++;
+  i++;
 
-    if (i % 12 === 0) i = 0;
+  if (i % 12 === 0) i = 0;
   
   const zoomMove = (cases) => {
     tween.remove();
@@ -187,9 +239,9 @@ const minigameContainer = (game, end) => {
       yoyo: true
     })
 
-  i++;
+    i++;
 
-  if (i % 12 === 0) i = 0;
+    if (i % 12 === 0) i = 0;
   };
   
   game.input.keyboard.on('keydown-RIGHT', () => {zoomMove(1)})
@@ -333,6 +385,62 @@ const minigameBridgeEnd = (game, end) => {
   })
 };
 
+const minigameGenerator = (game, end) => {
+  // 40x 430y
+
+  const pointGenerator = () => {
+    generator.x = innerWidth / 3.15;
+    generator.y = innerHeight / 3;
+    generator.setDisplaySize(40, 40);
+    generator.ignoreDestroy = true;
+    generator.setScrollFactor(0);
+    status.inventory = "generator";
+  };
+
+  const pathing = (direction) => {
+    if (electricity.alpha != 0.99) {
+      if (direction === `Arrow${combination[combinationIndex]}`) {
+        alphaIncrement += 0.018
+        alpha += alphaIncrement;
+        combinationIndex ++;
+      } else {
+        alphaIncrement = 0;
+        alpha = 0;
+        combinationIndex = 0;
+      }
+      electricity.setAlpha(alpha);
+    }
+    if (electricity.alpha === 0.99 && !status.electricity) {
+      textbox(game, ["That's it!", "Should I ever get bored of the criminal life...", "I'd always have work as an electrician, ah!"], destroyMinigame);
+      status.electricity = true;
+    }
+  }
+
+  const destroyMinigame = () => {
+    if (!game.active) {
+      generator.destroy();
+      if (electricity) electricity.destroy();
+      end();
+    }
+  };
+
+  if (status.electricity) {
+    textbox(game, ["That was... electrifying."], end)
+  } else {
+    textbox(game, ["Uh?", "Power is out...", "No wonder I couldn't charge my phone."], destroyMinigame)
+
+    generator = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "generator").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6);
+    electricity = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "electricity").setDisplaySize(innerWidth/6, innerHeight/6).setDepth(6).setAlpha(0);
+    var alpha = 0;
+    var combination = ["Right", "Up", "Down", "Up", "Down", "Up", "Down", "Up", "Down", "Right"];
+    var combinationIndex = 0;
+    var alphaIncrement = 0;
+    game.input.keyboard.on("keydown", (event) => {
+      pathing(event.key)
+    });
+  }
+}
+
 export {
   minigameBoat,
   minigameBuildingDoor,
@@ -350,5 +458,6 @@ export {
   minigameTourismDoor,
   minigameManHole,
   minigameBridgeEnd,
-  minigameWareHouse
+  minigameWareHouse,
+  minigameGenerator,
 };

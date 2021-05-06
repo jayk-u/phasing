@@ -83,7 +83,7 @@ class Play2 extends Phaser.Scene {
   begin () {
     status.read = false;
     status.bridgeCollision = false;
-    status.electricity = false;
+    status.electricity = true;
     status.roofLadderCount = 0;
     status.manhole = "";
     status.hiddenCollision = false;
@@ -134,6 +134,8 @@ class Play2 extends Phaser.Scene {
     this.load.image("clueMap", gameAssets.dockscluemapImg);
     this.load.image("generator", gameAssets.generatorImg);
     this.load.image("electricity", gameAssets.electricityImg);
+    this.load.image("warehouse", gameAssets.warehouseImg);
+    this.load.image("scratchticket", gameAssets.scratchticketImg);
     //end minigames
 
     //Map
@@ -151,6 +153,16 @@ class Play2 extends Phaser.Scene {
     });
     } else if (characterCounter === 2) {
       this.load.spritesheet("character2", gameAssets.character2Sprite, {
+        frameWidth: 32,
+        frameHeight: 48,
+      });
+    } else if (characterCounter === 3) {
+      this.load.spritesheet("character3", gameAssets.character7Sprite, {
+        frameWidth: 32,
+        frameHeight: 48,
+      });
+    } else if (characterCounter === 4) {
+      this.load.spritesheet("character2", gameAssets.character8Sprite, {
         frameWidth: 32,
         frameHeight: 48,
       });
@@ -247,8 +259,8 @@ class Play2 extends Phaser.Scene {
     this.gameObjects = this.map.getObjectLayer("GameObjects").objects;
     //this is how we actually render our coin object with coin asset we loaded into our game in the preload function
     spriteFrame(this, characterCounter);
-    character = this.physics.add.sprite(430, 480, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
-
+    character = this.physics.add.sprite(622, 876, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
+    // 430, 480
     //NPC
     spriteFrame(this, 6);
     this.agent = {

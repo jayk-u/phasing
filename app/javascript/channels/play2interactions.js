@@ -4,8 +4,8 @@ import { character, upBridge, downBridge } from "../scenes/play2";
 
 var key;
 var next;
-var map
-var fuel
+var map;
+var fuel;
 var containers;
 var containerNumber;
 
@@ -19,6 +19,9 @@ const minigameMap = (game, end) => {
   textbox(game, ["A map of the docks.", "Perhaps I should study this carefully...", "...", "Who am I kidding?", "I didn't become a criminal to study."], destroyMinigame);
 }
 
+const minigameWareHouse = (game, end) => {
+  textbox(game, ["Hola Chica"], end);
+}
 const minigameRoofLadder = (game, end) => {
   // 300x 615y
 
@@ -347,4 +350,5 @@ export {
   minigameTourismDoor,
   minigameManHole,
   minigameBridgeEnd,
+  minigameWareHouse
 };

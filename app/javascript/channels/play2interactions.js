@@ -9,6 +9,8 @@ var generator;
 var warehouse;
 var scratchticket;
 var brush;
+var blanknote;
+var noteText;
 var rt;
 var map;
 var fuel;
@@ -55,13 +57,32 @@ const minigameWareHouse = (game, end) => {
       warehouse.destroy();
       if (rt) { rt.destroy() };
       if (brush) { brush.destroy() };
+      if (blanknote) { blanknote.destroy() };
+      if (noteText) { noteText.destroy() };
       end();
     }
   };
   if (status.electricity === true) {
     textbox(game, ["What happened ? It seems that the door opened when I turned on the electricity", "A key "], destroyMinigame);
-    warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6);
-    rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.545, game.cameras.main.scrollY + innerHeight / 3.43, innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+    warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+    warehouse.on('pointerdown', (pointer, x, y) => {
+      if (x > 570 && x < 707 && y > 418 && y < 571) {
+        blanknote = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "blanknote").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(7);
+        noteText = game.add.text(
+          game.cameras.main.scrollX + innerWidth / 2.2,
+          game.cameras.main.scrollY + innerHeight / 2.4,
+          "1836",
+          {
+            fontFamily: "Arial",
+            color: "#000000",
+            font: "25px",
+            wordWrap: { width: 110 },
+          }
+        )
+        .setOrigin(0)
+        .setDepth(7);
+      }
+    rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.43, game.cameras.main.scrollY + innerHeight / 3, innerWidth/7.7, innerHeight/5).setDepth(8).setInteractive();
     for (var y = 0; y < 2; y++)
     {
       for (var x = 0; x < 2; x++)
@@ -75,6 +96,7 @@ const minigameWareHouse = (game, end) => {
         rt.erase(brush, x, y);
       } 
     })
+    });
   } else {
     textbox(game, ["The warehouse door is closed..."], end);
   }
@@ -444,6 +466,8 @@ const minigameGenerator = (game, end) => {
     if (electricity.alpha === 0.99 && !status.electricity) {
       textbox(game, ["That's it!", "Should I ever get bored of the criminal life...", "I'd always have work as an electrician, ah!"], destroyMinigame);
       status.electricity = true;
+      game.warehouseOpened.setVisible(true);
+      game.warehouseClosed.setVisible(false);
     }
   }
 

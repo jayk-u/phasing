@@ -81,9 +81,10 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.inevitable = false;
     status.read = false;
     status.bridgeCollision = false;
-    status.electricity = true;
+    status.electricity = false;
     status.roofLadderCount = 0;
     status.manhole = "";
     status.hiddenCollision = false;
@@ -491,6 +492,9 @@ class Play2 extends Phaser.Scene {
         this.agent.rob.setVelocityY(0);
         this.agent.rob.setVelocityX(0);
         this.agent.rob.anims.play(`down6end`, true).anims.stop();
+      } else if (status.inevitable) {
+        this.agent.rob.setVelocityY(-40);
+        this.agent.rob.anims.play(`up6`, true);
       }
 
       // Mike the Egoistic

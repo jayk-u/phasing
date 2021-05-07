@@ -137,6 +137,7 @@ class Play2 extends Phaser.Scene {
     this.load.image("electricity", gameAssets.electricityImg);
     this.load.image("warehouse", gameAssets.warehouseImg);
     this.load.image("scratchticket", gameAssets.scratchticketImg);
+    this.load.image("blanknote", gameAssets.blanknoteImg)
     //end minigames
 
     //Map
@@ -237,6 +238,8 @@ class Play2 extends Phaser.Scene {
     // this.layer.resizeWorld();
     // this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0);
     this.building = this.map.createLayer("building", this.tileset, 0, 0).setDepth(0);
+    this.warehouseClosed = this.map.createLayer("warehouse_closed", this.tileset, 0, 0).setDepth(0);
+    this.warehouseOpened = this.map.createLayer("warehouse_open", this.tileset, 0, 0).setDepth(0).setVisible(false);
     this.decorationBuilding = this.map.createLayer("decoration_building", this.tileset, 0, 0).setDepth(0);
     this.decorationRooftop = this.map.createLayer("rooftop_decoration", this.tileset, 0, 0).setDepth(0.5);
     this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(0);
@@ -260,7 +263,7 @@ class Play2 extends Phaser.Scene {
     this.gameObjects = this.map.getObjectLayer("GameObjects").objects;
     //this is how we actually render our coin object with coin asset we loaded into our game in the preload function
     spriteFrame(this, characterCounter);
-    character = this.physics.add.sprite(622, 876, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
+    character = this.physics.add.sprite(430, 480, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
     // 430, 480
     //NPC
     spriteFrame(this, 6);
@@ -328,6 +331,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.railing2);
     drawCollisionShapes(this, shapeGraphics, this.decorationBuilding);
     drawCollisionShapes(this, shapeGraphics, this.decorationRooftop);
+    drawCollisionShapes(this, shapeGraphics, this.warehouseClosed);
 
 //     drawCollisionShapes(this, shapeGraphics, this.extraObj);
     drawCollisionShapes(this, shapeGraphics, this.hidden, "hidden");
@@ -561,6 +565,8 @@ class Play2 extends Phaser.Scene {
     camera(this, this.dockWalls, character);
     camera(this, this.layer, character);
     camera(this, this.building, character);
+    camera(this, this.warehouseClosed, character);
+    camera(this, this.warehouseOpened, character);
     camera(this, this.decorationBuilding, character);
     camera(this, this.decorationRooftop, character);
     camera(this, this.overheadBuilding, character);

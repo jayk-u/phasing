@@ -15,6 +15,7 @@ import { characterCounter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
 import { detectCharacter } from "../components/characterDetection"
 import { sortDepth } from "../components/characterDepth"
+import { objectDetection } from "../components/objectDetection"
 import { minigameBoat,
   minigameBuildingDoor,
   minigameContainer,
@@ -38,6 +39,7 @@ import { minigameBoat,
 var rainParticles
 var musique;
 var character;
+var items;
 var cursors;
 var shapeGraphics;
 var coordinates;
@@ -385,7 +387,7 @@ class Play2 extends Phaser.Scene {
     leaveGame(this, musique);
     //END SETTINGS
 
-    const items = [
+    items = [
       {x: 115, y: 1000, name: 'boat', minigame: minigameBoat},
       {x: 715, y: 845, name: 'buildingDoor', minigame: minigameBuildingDoor},
       {x: 655, y: 990, name: 'container', minigame: minigameContainer},
@@ -417,6 +419,7 @@ class Play2 extends Phaser.Scene {
     ];
     //   character.anims.stop();
     interactionObject(this, items, character, status);
+
     // debugInteraction(this, this.objectTop, character);
     // debugInteraction(this, this.objectBottom, character);
     // debugInteraction(this.secretDoor);
@@ -556,6 +559,8 @@ class Play2 extends Phaser.Scene {
       status.borderBox.visible = false;
       status.inventoryBox.visible = false;
     }
+
+    objectDetection(this, character, items, status);
 
     sortDepth(this.floorObjects, character);
     sortDepth(this.decorationRooftop, character);

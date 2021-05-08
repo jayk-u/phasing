@@ -73,6 +73,15 @@ const downBridge = (game) => {
   }
 };
 
+//Walking SFX
+var steps;
+
+const randomProperty = (obj) => {
+  var keys = Object.keys(obj);
+  return obj[keys[ keys.length * Math.random() << 0]];
+};
+
+
 class Play2 extends Phaser.Scene {
 
   constructor ()
@@ -200,6 +209,7 @@ class Play2 extends Phaser.Scene {
     //End overlay
 
     this.load.image("rain", gameAssets.rainParticle)
+    this.load.audio("steps", gameAssets.waterstepsMp3);
 
   };
 
@@ -208,6 +218,65 @@ class Play2 extends Phaser.Scene {
     this.begin();
     this.cameras.main.fadeIn(1000)
     this.add.rectangle(0, 0, 10000, 10000, 0x000000, 0.2).setDepth(10);
+
+    //Walking SFX
+    steps = this.sound.add('steps', {
+      mute: false,
+      volume: 0.5,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: false,
+      delay: 0
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'firstStep',
+      start: 0,
+      duration: 0.28,
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'secondStep',
+      start: 0.6,
+      duration: 0.28,
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'thirdStep',
+      start: 1.1,
+      duration: 0.28,
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'fourthStep',
+      start: 1.6,
+      duration: 0.28,
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'fifthStep',
+      start: 2.2,
+      duration: 0.28,
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'sixthStep',
+      start: 2.7,
+      duration: 0.28,
+    })
 
 
     // var video = this.add.video(0, 0, "overlay");
@@ -380,7 +449,7 @@ class Play2 extends Phaser.Scene {
     //End rain
 
     //SETTINGS
-    musique = game.sound.add('music');
+    musique = this.sound.add('music');
     sound(this, musique);
     leaveGame(this, musique);
     //END SETTINGS
@@ -433,6 +502,13 @@ class Play2 extends Phaser.Scene {
     movementSprite(this, character, cursors, characterCounter, status);
     timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen, "Lockdown complete! Suspect is around, renforcement incoming!");
     rainParticles.setPosition(character.x, character.y);
+
+    //Walking SFX
+    if (character.body.speed != 0 && !steps.isPlaying) {
+      steps.play(randomProperty(steps.markers).name);
+    }
+
+
     // Bridge walls behavior - used because depth changes depending on location
     if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 13 && character.frame.name <= 15) {
       upBridge(this);

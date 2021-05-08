@@ -365,7 +365,6 @@ const minigameBoat = (game, end) => {
             game.cameras.main.once("camerafadeincomplete", () => {
               textbox(game, ["Hey! What was that?", "Let's check it out!"], fadeOut)
               game.cameras.main.once("camerafadeoutcomplete", () => {
-                console.log(game.agent.rob)
                 status.inevitable = true;
                 game.agent.tom.setPosition(340, 1240).anims.play("left6end").anims.stop();
                 character.setPosition(115, 995).setVisible(true);

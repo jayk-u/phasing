@@ -18,6 +18,7 @@ var map;
 var fuel;
 var containers;
 var containerNumber;
+var random = Math.round(Math.random() * 10000);
 
 const minigameMap = (game, end) => {
   // 125x 850y
@@ -57,48 +58,60 @@ const minigameWareHouse = (game, end) => {
   const destroyMinigame = () => {
     if (!game.active) {
       warehouse.destroy();
-      if (rt) { rt.destroy() };
+      if (rt) rt.setVisible(false);
       if (brush) { brush.destroy() };
-      if (blanknote) { blanknote.destroy() };
-      if (noteText) { noteText.destroy() };
+      if (blanknote) blanknote.setVisible(false);
+      if (noteText) noteText.setVisible(false);
       end();
     }
   };
-  if (status.electricity) {
-    textbox(game, ["What happened ? It seems that the door opened when I turned on the electricity", "A key "], destroyMinigame);
-    warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
-    warehouse.on('pointerdown', (pointer, x, y) => {
-      if (x > 570 && x < 707 && y > 418 && y < 571) {
-        blanknote = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "blanknote").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(7);
-        noteText = game.add.text(
-          game.cameras.main.scrollX + innerWidth / 2.2,
-          game.cameras.main.scrollY + innerHeight / 2.4,
-          "1836",
+  if (status.unlockedContainer) {
+    textbox(game, ["Now, what do we have here...?"], end)
+  } else if (status.electricity) {
+      textbox(game, ["What happened ? It seems that the door opened when I turned on the electricity", "A key "], destroyMinigame);
+      warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+      warehouse.on('pointerdown', (pointer, x, y) => {
+        if (x > 570 && x < 707 && y > 418 && y < 571) {
+          if (blanknote && noteText && status.scratchticket === true) {
+            blanknote.setVisible(true);
+            noteText.setVisible(true);
+          } else {
+          status.scratchticket = true;
+          blanknote = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "blanknote").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(7);
+          noteText = game.add.text(
+            game.cameras.main.scrollX + innerWidth / 2.2,
+            game.cameras.main.scrollY + innerHeight / 2.4,
+            random,
+            {
+              fontFamily: "Arial",
+              color: "#000000",
+              font: "25px",
+              wordWrap: { width: 110 },
+            }
+          )
+          .setOrigin(0)
+          .setDepth(7);
+        }
+      }
+      if (rt && status.rt === true) rt.setVisible(true);
+      else {
+        status.rt = true;
+        rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.43, game.cameras.main.scrollY + innerHeight / 3, innerWidth/7.7, innerHeight/5).setDepth(8).setInteractive();
+        for (var y = 0; y < 2; y++)
+        {
+          for (var x = 0; x < 2; x++)
           {
-            fontFamily: "Arial",
-            color: "#000000",
-            font: "25px",
-            wordWrap: { width: 110 },
+            rt.draw('scratchticket', x * 512, y * 512);
           }
-        )
-        .setOrigin(0)
-        .setDepth(7);
+        }
       }
-    rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.43, game.cameras.main.scrollY + innerHeight / 3, innerWidth/7.7, innerHeight/5).setDepth(8).setInteractive();
-    for (var y = 0; y < 2; y++)
-    {
-      for (var x = 0; x < 2; x++)
-      {
-        rt.draw('scratchticket', x * 512, y * 512);
-      }
-    }
-    brush = game.add.circle(0, 0, 5, 0xffffff).setVisible(false);
-    rt.on('pointermove', (pointer, x, y) => {
-      if (pointer.isDown) {
-        rt.erase(brush, x, y);
-      } 
-    })
-    });
+      brush = game.add.circle(0, 0, 5, 0xffffff).setVisible(false);
+      rt.on('pointermove', (pointer, x, y) => {
+        if (pointer.isDown) {
+          rt.erase(brush, x, y);
+        } 
+      })
+      });
   } else {
     textbox(game, ["The warehouse door is closed..."], end);
   }
@@ -242,13 +255,15 @@ const minigameContainer = (game, end) => {
 
   const destroyMinigame = () => {
     if (game.active === false) {
-      if (containers) {
-        while (containers.getChildren()[0]) containers.getChildren()[0].destroy()
+      if (status.containers) {
+        if (containers.getChildren()) while (containers.getChildren()[0]) containers.getChildren()[0].destroy()
         game.input.keyboard.off('keydown-RIGHT')
         game.input.keyboard.off('keydown-LEFT')
         game.input.keyboard.off('keydown-DOWN')
         game.input.keyboard.off('keydown-UP')
         game.input.keyboard.off('keydown-ENTER')
+        containers.destroy();
+        status.containers = false;
       }
       if (fuel) fuel.off("pointerdown", pointFuel), fuel.destroy();
       if (digicode) digicode.destroy();
@@ -306,9 +321,14 @@ const minigameContainer = (game, end) => {
       } else if (x > 193 && x < 287 && y > 534 && y < 605) {
         status.password += "0"
       }
-      if (status.password === "1836" ) {
+      if (status.password === random.toString()) {
         status.unlockedContainer = true;
         status.password = "Unlocked";
+        blanknote.destroy();
+        noteText.destroy();
+        rt.destroy();
+        status.scratchticket = false;
+        status.rt = false;
         inputNumber.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
       }
       else if (status.password.length > 3) {
@@ -323,6 +343,7 @@ const minigameContainer = (game, end) => {
     })
   } else {
     containerNumber = 0;
+    status.containers = true;
     containers = game.add.group({ key: 'container', repeat: 25, setScale: { x: 0.09, y: 0.07 }, setDepth: {value: 5 } });
     Phaser.Actions.GridAlign(containers.getChildren(), {
       width: 5,

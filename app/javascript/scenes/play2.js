@@ -314,7 +314,7 @@ class Play2 extends Phaser.Scene {
     this.decorationBuilding = this.map.createLayer("decoration_building", this.tileset, 0, 0).setDepth(0);
     this.decorationRooftop = this.map.createLayer("rooftop_decoration", this.tileset, 0, 0).setDepth(0.5);
     this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(0);
-    this.floorObjects = this.map.createDynamicLayer("floor_objects", this.tileset, 0, 0).setDepth(0.5);
+    this.floorObjects = this.map.createLayer("floor_objects", this.tileset, 0, 0).setDepth(0.5);
     this.plant = this.map.createLayer("plant", this.tileset, 0, 0).setDepth(1);
     this.bridge = this.map.createLayer("bridge_walls", this.tileset, 0, 0).setDepth(2);
     this.docksTop = this.map.createLayer("docks_top", this.tileset, 0, 0).setDepth(2);

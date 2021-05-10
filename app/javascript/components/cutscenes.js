@@ -7,7 +7,7 @@ var hardtyping;
 
 
 const createCutscene = (game, status, nextScene) => {
-  console.log(`picture${Math.trunc(status.pictureNum)}${game.scene.key.substring(0, 1)}${game.scene.key.substring(game.scene.key.length - 1)}`)
+  // console.log(`picture${Math.trunc(status.pictureNum)}${game.scene.key.substring(0, 1)}${game.scene.key.substring(game.scene.key.length - 1)}`)
   game.cameras.main.fadeIn(200)
   picture = game.add.image(innerWidth/20, innerHeight/6, `picture${Math.trunc(status.pictureNum)}${game.scene.key.substring(0, 1)}${game.scene.key.substring(game.scene.key.length - 1)}`).setOrigin(0);
   picture.setDisplaySize(innerWidth*18/20, innerHeight*4/10);

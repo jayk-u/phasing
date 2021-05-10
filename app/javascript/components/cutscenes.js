@@ -1,6 +1,10 @@
 var text;
 var skip;
 var picture;
+var typing;
+var softtyping;
+var hardtyping;
+
 
 const createCutscene = (game, status, nextScene) => {
   console.log(`picture${Math.trunc(status.pictureNum)}${game.scene.key.substring(0, 1)}${game.scene.key.substring(game.scene.key.length - 1)}`)
@@ -74,6 +78,63 @@ const createCutscene = (game, status, nextScene) => {
     game.scene.start('Login');
     intromusic.stop();
   });
+
+  // TYPING SFX
+
+  hardtyping = game.sound.add('hardtypewriting', {
+    mute: false,
+    volume: 0.5,
+    rate: 1,
+    detune: 0,
+    seek: 0,
+    loop: false,
+    delay: 0
+  })
+  hardtyping.addMarker({
+    config: {
+      volume: 0.05,
+    },
+    name: 'keypress',
+    start: 0.1,
+    duration: 0.1,
+  })
+
+  softtyping = game.sound.add('softtypewriting', {
+    mute: false,
+    volume: 0.5,
+    rate: 1,
+    detune: 0,
+    seek: 0,
+    loop: false,
+    delay: 0
+  })
+  softtyping.addMarker({
+    config: {
+      volume: 0.05,
+    },
+    name: 'keypress',
+    start: 0.1,
+    duration: 0.1,
+  })
+
+  typing = game.sound.add('typewriting', {
+    mute: false,
+    volume: 0.5,
+    rate: 1,
+    detune: 0,
+    seek: 0,
+    loop: false,
+    delay: 0
+  })
+  typing.addMarker({
+    config: {
+      volume: 0.05,
+    },
+    name: 'keypress',
+    start: 0,
+    duration: 0.1,
+  })
+  //END SFX
 }
 
 const updateCutscene = (game, content, status) => {
@@ -104,7 +165,10 @@ const updateCutscene = (game, content, status) => {
           if (status.lineIndex == content.length) {status.run = false; return ;}
           if (status.run) { letter = content[status.lineIndex].split("") }
           status.line = status.line.concat(letter[status.letterIndex])
-          text.setText(status.line),
+          text.setText(status.line);
+          if (!hardtyping.isPlaying && !softtyping.isPlaying && !typing.isPlaying) {
+            [typing, softtyping, hardtyping][Math.floor(Math.random() * 3)].play("keypress");
+          }
           status.letterIndex++
           status.then = now
         }

@@ -62,7 +62,7 @@ const minigameWareHouse = (game, end) => {
       end();
     }
   };
-  if (status.electricity === true) {
+  if (status.electricity) {
     textbox(game, ["What happened ? It seems that the door opened when I turned on the electricity", "A key "], destroyMinigame);
     warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
     warehouse.on('pointerdown', (pointer, x, y) => {
@@ -478,7 +478,7 @@ const minigameGenerator = (game, end) => {
     }
   };
 
-  if (status.electricity === true) {
+  if (status.electricity) {
     textbox(game, ["That was... electrifying."], end)
   } else {
     textbox(game, ["Uh?", "Power is out...", "No wonder I couldn't charge my phone."], destroyMinigame)

@@ -92,6 +92,10 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.password = "";
+    status.roofTop = false;
+    status.unlockedContainer = false;
+    status.fuel = false;
     status.inevitable = false;
     status.read = false;
     status.bridgeCollision = false;
@@ -148,7 +152,8 @@ class Play2 extends Phaser.Scene {
     this.load.image("electricity", gameAssets.electricityImg);
     this.load.image("warehouse", gameAssets.warehouseImg);
     this.load.image("scratchticket", gameAssets.scratchticketImg);
-    this.load.image("blanknote", gameAssets.blanknoteImg)
+    this.load.image("blanknote", gameAssets.blanknoteImg);
+    this.load.image("digicode", gameAssets.digicodeImg)
     //end minigames
 
     //Map

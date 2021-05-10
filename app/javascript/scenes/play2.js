@@ -92,7 +92,10 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.scratchticket = false;
+    status.rt = false;
     status.password = "";
+    status.containers = false;
     status.roofTop = false;
     status.unlockedContainer = false;
     status.fuel = false;

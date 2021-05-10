@@ -53,6 +53,11 @@ class Intro1 extends Phaser.Scene {
     this.load.image("picture4I1", introAssets.picture4i1Img);
     this.load.image("picture5I1", introAssets.picture5i1Img);
     this.load.audio("introMusic", introAssets.introMp3);
+    this.load.audio("typewriting", introAssets.typewritingMp3);
+    this.load.audio("softtypewriting", introAssets.softtypewritingMp3);
+    this.load.audio("hardtypewriting", introAssets.hardtypewritingMp3);
+
+
 
 
     const gameAssets = document.getElementById("game-assets").dataset;

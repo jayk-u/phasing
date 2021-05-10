@@ -173,7 +173,7 @@ class Play2 extends Phaser.Scene {
         frameHeight: 48,
       });
     } else if (characterCounter === 4) {
-      this.load.spritesheet("character2", gameAssets.character8Sprite, {
+      this.load.spritesheet("character4", gameAssets.character8Sprite, {
         frameWidth: 32,
         frameHeight: 48,
       });
@@ -222,7 +222,7 @@ class Play2 extends Phaser.Scene {
     //Walking SFX
     steps = this.sound.add('steps', {
       mute: false,
-      volume: 0.5,
+      volume: 0.1,
       rate: 1,
       detune: 0,
       seek: 0,
@@ -231,7 +231,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'firstStep',
       start: 0,
@@ -239,7 +239,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'secondStep',
       start: 0.6,
@@ -247,7 +247,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'thirdStep',
       start: 1.1,
@@ -255,7 +255,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'fourthStep',
       start: 1.6,
@@ -263,7 +263,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'fifthStep',
       start: 2.2,
@@ -271,7 +271,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'sixthStep',
       start: 2.7,
@@ -401,6 +401,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.decorationBuilding);
     drawCollisionShapes(this, shapeGraphics, this.decorationRooftop);
     drawCollisionShapes(this, shapeGraphics, this.warehouseClosed);
+    drawCollisionShapes(this, shapeGraphics, this.manHole);
 
 //     drawCollisionShapes(this, shapeGraphics, this.extraObj);
     drawCollisionShapes(this, shapeGraphics, this.hidden, "hidden");

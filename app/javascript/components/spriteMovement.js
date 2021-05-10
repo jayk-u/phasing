@@ -7,12 +7,10 @@ const movementSprite = (game, character, cursors, counter, status) => {
       game.x = 1;
     } else if (cursors.right.isDown) {
       character.setVelocityX(90);
-
       character.anims.play(`right${counter}`, true);
       game.x = 2;
     } else if (cursors.down.isDown) {
       character.setVelocityY(90);
-
       character.anims.play(`down${counter}`, true);
       game.x = 3;
     } else if (cursors.up.isDown) // && character.body.touching.down 

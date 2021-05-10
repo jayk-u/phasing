@@ -47,12 +47,16 @@ class Outro1 extends Phaser.Scene {
 
     const introAssets = document.getElementById("intro").dataset;
     this.load.image("mute", introAssets.muteImg);
-    this.load.image("picture1", introAssets.picture1o1Img);
-    this.load.image("picture2", introAssets.picture2o1Img);
-    this.load.image("picture3", introAssets.picture3o1Img);
-    this.load.image("picture4", introAssets.picture4o1Img);
-    this.load.image("picture5", introAssets.picture5o1Img);
+    this.load.image("picture1O1", introAssets.picture1Img);
+    this.load.image("picture2O1", introAssets.picture2Img);
+    this.load.image("picture3O1", introAssets.picture3Img);
+    this.load.image("picture4O1", introAssets.picture4Img);
+    this.load.image("picture5O1", introAssets.picture5Img);
     this.load.audio("introMusic", introAssets.introMp3);
+    this.load.audio("typewriting", introAssets.typewritingMp3);
+    this.load.audio("softtypewriting", introAssets.softtypewritingMp3);
+    this.load.audio("hardtypewriting", introAssets.hardtypewritingMp3);
+
 
 
     const gameAssets = document.getElementById("game-assets").dataset;

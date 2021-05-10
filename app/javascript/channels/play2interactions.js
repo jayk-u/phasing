@@ -4,10 +4,18 @@ import { character, upBridge, downBridge } from "../scenes/play2";
 
 var key;
 var next;
+var digicode;
+var inputNumber;
 var electricity;
-var generator
-var map
-var fuel
+var generator;
+var warehouse;
+var scratchticket;
+var brush;
+var blanknote;
+var noteText;
+var rt;
+var map;
+var fuel;
 var containers;
 var containerNumber;
 
@@ -17,10 +25,84 @@ const minigameMap = (game, end) => {
     map.destroy();
     end();
   }
-  map = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "map2").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+  map = game.add.image(game.cameras.main.scrollX + innerWidth / 2, game.cameras.main.scrollY + innerHeight / 2.3, "clueMap").setDisplaySize(innerWidth/3, innerHeight/2).setDepth(6).setInteractive();
   textbox(game, ["A map of the docks.", "Perhaps I should study this carefully...", "...", "Who am I kidding?", "I didn't become a criminal to study."], destroyMinigame);
+  
+
+  var graphics = game.make.graphics();
+
+  graphics.fillRect(
+    game.cameras.main.scrollX + innerWidth / 3.2,
+    game.cameras.main.scrollY + innerHeight / 2.8,
+    innerWidth / 1.5,
+    innerHeight / 5
+  );
+
+  var mask = new Phaser.Display.Masks.GeometryMask(game, graphics);
+
+  map.setMask(mask)
+  
+  game.input.keyboard.on("keydown-UP", () => {
+    map.y += 20;
+    map.y = Phaser.Math.Clamp(map.y, 700, 950);
+  });
+
+  game.input.keyboard.on("keydown-DOWN", () => {
+    map.y += -20;
+    map.y = Phaser.Math.Clamp(map.y, 700, 950);
+  });
 }
 
+const minigameWareHouse = (game, end) => {
+  const destroyMinigame = () => {
+    if (!game.active) {
+      warehouse.destroy();
+      if (rt) { rt.destroy() };
+      if (brush) { brush.destroy() };
+      if (blanknote) { blanknote.destroy() };
+      if (noteText) { noteText.destroy() };
+      end();
+    }
+  };
+  if (status.electricity) {
+    textbox(game, ["What happened ? It seems that the door opened when I turned on the electricity", "A key "], destroyMinigame);
+    warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+    warehouse.on('pointerdown', (pointer, x, y) => {
+      if (x > 570 && x < 707 && y > 418 && y < 571) {
+        blanknote = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "blanknote").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(7);
+        noteText = game.add.text(
+          game.cameras.main.scrollX + innerWidth / 2.2,
+          game.cameras.main.scrollY + innerHeight / 2.4,
+          "1836",
+          {
+            fontFamily: "Arial",
+            color: "#000000",
+            font: "25px",
+            wordWrap: { width: 110 },
+          }
+        )
+        .setOrigin(0)
+        .setDepth(7);
+      }
+    rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.43, game.cameras.main.scrollY + innerHeight / 3, innerWidth/7.7, innerHeight/5).setDepth(8).setInteractive();
+    for (var y = 0; y < 2; y++)
+    {
+      for (var x = 0; x < 2; x++)
+      {
+        rt.draw('scratchticket', x * 512, y * 512);
+      }
+    }
+    brush = game.add.circle(0, 0, 5, 0xffffff).setVisible(false);
+    rt.on('pointermove', (pointer, x, y) => {
+      if (pointer.isDown) {
+        rt.erase(brush, x, y);
+      } 
+    })
+    });
+  } else {
+    textbox(game, ["The warehouse door is closed..."], end);
+  }
+}
 const minigameRoofLadder = (game, end) => {
   // 300x 615y
 
@@ -29,11 +111,13 @@ const minigameRoofLadder = (game, end) => {
     game.cameras.main.once("camerafadeoutcomplete", () => {
       if (character.x <= 285) {
         character.setPosition(310, 615);
+        status.roofTop = false;
         game.rooftopUpperWalls.setDepth(2);
         game.physics.world.colliders.add(status.bridgeCollision);
         game.physics.world.removeCollider(status.hiddenCollision);
       } else {
         character.setPosition(270, 615);
+        status.roofTop = true;
         game.rooftopUpperWalls.setDepth(0);
         game.physics.world.removeCollider(status.bridgeCollision);
         if (!status.hiddenCollision) status.hiddenCollision = game.physics.add.collider(game.hiddenWalls, character);
@@ -69,7 +153,33 @@ const minigamePillar = (game, end) => {
 
 const minigameStreetPlants = (game, end) => {
   // 580x 555y && 715x 555y && 530x 650y && 50x 875y && 683x 875y
-  textbox(game, ["This plant has known brighter nights."], end);
+
+  const destroyMinigame = () => {
+    note.destroy()
+    noteText.destroy()
+    end();
+  }
+
+  if (character.x <= 80) {
+    var note = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "note").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(5);
+    var noteText = game.add.text(
+      game.cameras.main.scrollX + innerWidth / 2.3,
+      game.cameras.main.scrollY + innerHeight / 2.85,
+      "Hey.\nRound - Diamond - Pentagon - Square - Explosion.\nIf you're half as good as you're made to be, you'll understand.",
+      {
+        fontFamily: "Arial",
+        color: "#000000",
+        font: "11px",
+        wordWrap: { width: 110 },
+      }
+    )
+    .setOrigin(0)
+    .setDepth(6);
+    if (!status.read) {textbox(game, ["That's something else alright.", "Who...?", "Nevermind, I've got to get my game face on.", "It would hurt me to disappoint a fan."], destroyMinigame), status.read = true;}
+    else textbox(game, ["What kind of code is this..."], destroyMinigame);
+  } else {
+    textbox(game, ["This plant has known brighter nights."], end);
+  }
 }
 
 const minigameRamenDoor = (game, end) => {
@@ -132,50 +242,98 @@ const minigameContainer = (game, end) => {
 
   const destroyMinigame = () => {
     if (game.active === false) {
-      while (containers.getChildren()[0]) containers.getChildren()[0].destroy()
-      game.input.keyboard.off('keydown-RIGHT')
-      game.input.keyboard.off('keydown-LEFT')
-      game.input.keyboard.off('keydown-DOWN')
-      game.input.keyboard.off('keydown-UP')
-      game.input.keyboard.off('keydown-ENTER')
+      if (containers) {
+        while (containers.getChildren()[0]) containers.getChildren()[0].destroy()
+        game.input.keyboard.off('keydown-RIGHT')
+        game.input.keyboard.off('keydown-LEFT')
+        game.input.keyboard.off('keydown-DOWN')
+        game.input.keyboard.off('keydown-UP')
+        game.input.keyboard.off('keydown-ENTER')
+      }
       if (fuel) fuel.off("pointerdown", pointFuel), fuel.destroy();
+      if (digicode) digicode.destroy();
+      if (inputNumber) inputNumber.destroy();
+      status.fuel = false;
       end();
     }
   }
-  containerNumber = 0;
-  containers = game.add.group({ key: 'container', repeat: 25, setScale: { x: 0.09, y: 0.07 }, setDepth: {value: 5 } });
-  Phaser.Actions.GridAlign(containers.getChildren(), {
-    width: 5,
-    height: 5,
-    cellWidth: 47,
-    cellHeight: 45.2,
-    x: game.cameras.main.scrollX + innerWidth / 3.6,
-    y: game.cameras.main.scrollY - innerHeight / 14,
-  });
-  containers.getChildren()[0].setScale(0.1, 0.08).setDepth(6)
-  var tween = game.tweens.add({
-    targets: containers.getChildren()[containerNumber],
-    scaleX: 0.12,
-    scaleY: 0.1,
-    ease: 'Sine.easeInOut',
-    duration: 300,
-    delay: i * 50,
-    repeat: -1,
-    yoyo: true
+  if (status.unlockedContainer === false) {
+    textbox(game, ["Enter code:"], destroyMinigame)
+    digicode = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "digicode").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+    inputNumber = game.add.text(
+      game.cameras.main.scrollX + innerWidth / 2.1 - 70,
+      game.cameras.main.scrollY + innerHeight / 2.3 - 100,
+      "",
+      {
+        fontFamily: "Arial",
+        color: "#FFFFFF",
+        font: "25px",
+        stroke: "#000000",
+        strokeThickness: 3,
+        wordWrap: { width: 110 },
+      }
+    )
+    .setOrigin(0)
+    .setDepth(10);
+    game.input.keyboard.on("keyup-BACKSPACE", () => {
+      if (status.password === "") {
+        status.password = "";
+      } else if (status.password.length > 0) {
+        status.password = status.password.substring(0, status.password.length - 1);
+      }
+      inputNumber.setText(status.password);
+    })
+    digicode.on("pointerdown", (pointer, x, y) => {
+      inputNumber.setTint(0xFFFFFF);
+      if (x > 57 && x < 146 && y > 196 && y < 269) {
+        status.password += "1"
+      } else if (x > 193 && x < 287 && y > 196 && y < 269) {
+        status.password += "2"
+      } else if (x > 334 && x < 424 && y > 196 && y < 269) {
+        status.password += "3"
+      } else if (x > 57 && x < 146 && y > 314 && y < 389) {
+        status.password += "4"
+      } else if (x > 193 && x < 287 && y > 314 && y < 389) {
+        status.password += "5"
+      } else if (x > 334 && x < 424 && y > 314 && y < 389) {
+        status.password += "6"
+      } else if (x > 57 && x < 146 && y > 434 && y < 505) {
+        status.password += "7"
+      } else if (x > 193 && x < 287 && y > 434 && y < 505) {
+        status.password += "8"
+      } else if (x > 334 && x < 424 && y > 434 && y < 505) {
+        status.password += "9"
+      } else if (x > 193 && x < 287 && y > 534 && y < 605) {
+        status.password += "0"
+      }
+      if (status.password === "1836" ) {
+        status.unlockedContainer = true;
+        status.password = "Unlocked";
+        inputNumber.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
+      }
+      else if (status.password.length > 3) {
+        status.password = "ERROR";
+        inputNumber.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000)
+        game.time.delayedCall(1000, () => {
+          status.password = "";
+        })
+      }
+      inputNumber.setText(status.password);
+
+    })
+  } else {
+    containerNumber = 0;
+    containers = game.add.group({ key: 'container', repeat: 25, setScale: { x: 0.09, y: 0.07 }, setDepth: {value: 5 } });
+    Phaser.Actions.GridAlign(containers.getChildren(), {
+      width: 5,
+      height: 5,
+      cellWidth: 47,
+      cellHeight: 45.2,
+      x: game.cameras.main.scrollX + innerWidth / 3.6,
+      y: game.cameras.main.scrollY - innerHeight / 14,
     });
-
-  i++;
-
-  if (i % 12 === 0) i = 0;
-  
-  const zoomMove = (cases) => {
-    tween.remove();
-    i = 0;
-    containers.getChildren()[containerNumber].setScale(0.09, 0.07).setDepth(5);
-    containerNumber += cases
-    if (containerNumber > 24 || containerNumber < 0) containerNumber -=5*cases
-    containers.getChildren()[containerNumber].setScale(0.1, 0.08).setDepth(6);
-    tween = game.tweens.add({
+    containers.getChildren()[0].setScale(0.1, 0.08).setDepth(6)
+    var tween = game.tweens.add({
       targets: containers.getChildren()[containerNumber],
       scaleX: 0.12,
       scaleY: 0.1,
@@ -184,44 +342,69 @@ const minigameContainer = (game, end) => {
       delay: i * 50,
       repeat: -1,
       yoyo: true
-    })
+      });
 
     i++;
 
     if (i % 12 === 0) i = 0;
-  };
-  
-  game.input.keyboard.on('keydown-RIGHT', () => {zoomMove(1)})
-  game.input.keyboard.on('keydown-LEFT', () => {zoomMove(-1)})
-  game.input.keyboard.on('keydown-DOWN', () => {zoomMove(5)})
-  game.input.keyboard.on('keydown-UP', () => {zoomMove(-5)})
-  game.input.keyboard.on('keydown-ENTER', () => {
-    if (containerNumber == 13) {
-      if (status.inventory === "Fuel") {textbox(game, ["I already completed this heist!"], destroyMinigame)}
-      else {
-        textbox(game, ["Looks like fuel.", "Reminds me of the good old days..."], destroyMinigame)
-        if (status.inventory != "Fuel") fuel = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "fuel").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
-        fuel.on('pointerdown', pointFuel)
+    
+    const zoomMove = (cases) => {
+      tween.remove();
+      i = 0;
+      containers.getChildren()[containerNumber].setScale(0.09, 0.07).setDepth(5);
+      containerNumber += cases
+      if (containerNumber > 24 || containerNumber < 0) containerNumber -=5*cases
+      containers.getChildren()[containerNumber].setScale(0.1, 0.08).setDepth(6);
+      tween = game.tweens.add({
+        targets: containers.getChildren()[containerNumber],
+        scaleX: 0.12,
+        scaleY: 0.1,
+        ease: 'Sine.easeInOut',
+        duration: 300,
+        delay: i * 50,
+        repeat: -1,
+        yoyo: true
+      })
+
+      i++;
+
+      if (i % 12 === 0) i = 0;
+    };
+    game.input.keyboard.on('keydown-RIGHT', () => {zoomMove(1)})
+    game.input.keyboard.on('keydown-LEFT', () => {zoomMove(-1)})
+    game.input.keyboard.on('keydown-DOWN', () => {zoomMove(5)})
+    game.input.keyboard.on('keydown-UP', () => {zoomMove(-5)})
+    game.input.keyboard.on('keydown-ENTER', () => {
+      if (containerNumber == 13) {
+        if (status.inventory === "Fuel") {textbox(game, ["I already completed this heist!"], destroyMinigame)}
+        else {
+          textbox(game, ["Looks like fuel.", "Reminds me of the good old days..."], destroyMinigame)
+          if (status.inventory != "Fuel" && status.fuel === false ) {
+            fuel = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "fuel").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+            status.fuel = true;
+          }
+          fuel.on('pointerdown', pointFuel)
+        }
       }
-    }
-    else if (containerNumber == 3) {
-      textbox(game, ["I wish my mother could see this.", "Those containers are so neatly stacked.", "Would have made up for all those times I did not clean my room."], destroyMinigame)
-    }
-    else if (containerNumber == 5) {
-      textbox(game, ["I wonder if any docker forgot their lunch here.", "I'm hungry."], destroyMinigame)
-    }
-    else if (containerNumber == 10) {
-      textbox(game, ["An hungry criminal is a dangerous criminal.", "Therefore, the state should collect criminal sustainment funds from the citizens.", "Safer streets, safer life.", "I would have made a great politician."], destroyMinigame)
-    }
-    else if (containerNumber == 17) {
-      textbox(game, ["OH MY GOD WHAT IS THIS?!", "...", "Sike."], destroyMinigame)
-    }
-    else if (containerNumber == 24) {
-      textbox(game, ["It's not empty.", "There's a note on the inside.", '"Your princess is in another castle."', "...", "Just kidding.", "It's empty."], destroyMinigame)
-    }
-    else textbox(game, ["It's empty."], destroyMinigame)
-  })
-  textbox(game, ["I wonder what's inside...?"], destroyMinigame);
+      else if (containerNumber == 3) {
+        textbox(game, ["I wish my mother could see this.", "Those containers are so neatly stacked.", "Would have made up for all those times I did not clean my room."], destroyMinigame)
+      }
+      else if (containerNumber == 5) {
+        textbox(game, ["I wonder if any docker forgot their lunch here.", "I'm hungry."], destroyMinigame)
+      }
+      else if (containerNumber == 10) {
+        textbox(game, ["An hungry criminal is a dangerous criminal.", "Therefore, the state should collect criminal sustainment funds from the citizens.", "Safer streets, safer life.", "I would have made a great politician."], destroyMinigame)
+      }
+      else if (containerNumber == 17) {
+        textbox(game, ["OH MY GOD WHAT IS THIS?!", "...", "Sike."], destroyMinigame)
+      }
+      else if (containerNumber == 24) {
+        textbox(game, ["It's not empty.", "There's a note on the inside.", '"Your princess is in another castle."', "...", "Just kidding.", "It's empty."], destroyMinigame)
+      }
+      else textbox(game, ["It's empty."], destroyMinigame)
+    })
+    textbox(game, ["I wonder what's inside...?"], destroyMinigame);
+  }
 }
 
 const minigameStreetLamp = (game, end) => {
@@ -259,8 +442,7 @@ const minigameBoat = (game, end) => {
             game.cameras.main.once("camerafadeincomplete", () => {
               textbox(game, ["Hey! What was that?", "Let's check it out!"], fadeOut)
               game.cameras.main.once("camerafadeoutcomplete", () => {
-                console.log(game.agent.rob)
-                game.agent.rob.setVelocityY(-40).anims.play("up6");
+                status.inevitable = true;
                 game.agent.tom.setPosition(340, 1240).anims.play("left6end").anims.stop();
                 character.setPosition(115, 995).setVisible(true);
                 fadeIn()
@@ -297,8 +479,10 @@ const minigameManHole = (game, end) => {
   };
   if (status.manhole === "used") {
     textbox(game, ["This is getting pretty handy."], fade)
-  } else {
+  } else if (status.roofTop === false){
     textbox(game, ["Hey, who would leave that open?", "Criminals nowadays don't even have to try.", "Let's try this out."], fade);
+  } else {
+    textbox(game, ["I'm not jumping from there."], end);
   }
 }
 
@@ -360,6 +544,8 @@ const minigameGenerator = (game, end) => {
     if (electricity.alpha === 0.99 && !status.electricity) {
       textbox(game, ["That's it!", "Should I ever get bored of the criminal life...", "I'd always have work as an electrician, ah!"], destroyMinigame);
       status.electricity = true;
+      game.warehouseOpened.setVisible(true);
+      game.warehouseClosed.setVisible(false);
     }
   }
 
@@ -405,5 +591,6 @@ export {
   minigameTourismDoor,
   minigameManHole,
   minigameBridgeEnd,
+  minigameWareHouse,
   minigameGenerator,
 };

@@ -11,14 +11,14 @@ const sound = (game, musique) => {
   mute.setVisible(false);
   musique.setVolume(0.3);
   musique.play();
-  unmute.on("pointerup", (event) => {
+  unmute.on("pointerup", () => {
     musique.pause();
     mute.setVisible(true);
     unmute.setVisible(false);
   });
 
 
-  mute.on("pointerup", (event) => {
+  mute.on("pointerup", () => {
     unmute.setVisible(true);
     mute.setVisible(false);
     musique.resume();

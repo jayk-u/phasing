@@ -5,9 +5,15 @@ import { character, upBridge, downBridge } from "../scenes/play2";
 var key;
 var next;
 var electricity;
-var generator
-var map
-var fuel
+var generator;
+var warehouse;
+var scratchticket;
+var brush;
+var blanknote;
+var noteText;
+var rt;
+var map;
+var fuel;
 var containers;
 var containerNumber;
 
@@ -17,10 +23,84 @@ const minigameMap = (game, end) => {
     map.destroy();
     end();
   }
-  map = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "map2").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+  map = game.add.image(game.cameras.main.scrollX + innerWidth / 2, game.cameras.main.scrollY + innerHeight / 2.3, "clueMap").setDisplaySize(innerWidth/3, innerHeight/2).setDepth(6).setInteractive();
   textbox(game, ["A map of the docks.", "Perhaps I should study this carefully...", "...", "Who am I kidding?", "I didn't become a criminal to study."], destroyMinigame);
+  
+
+  var graphics = game.make.graphics();
+
+  graphics.fillRect(
+    game.cameras.main.scrollX + innerWidth / 3.2,
+    game.cameras.main.scrollY + innerHeight / 2.8,
+    innerWidth / 1.5,
+    innerHeight / 5
+  );
+
+  var mask = new Phaser.Display.Masks.GeometryMask(game, graphics);
+
+  map.setMask(mask)
+  
+  game.input.keyboard.on("keydown-UP", () => {
+    map.y += 20;
+    map.y = Phaser.Math.Clamp(map.y, 700, 950);
+  });
+
+  game.input.keyboard.on("keydown-DOWN", () => {
+    map.y += -20;
+    map.y = Phaser.Math.Clamp(map.y, 700, 950);
+  });
 }
 
+const minigameWareHouse = (game, end) => {
+  const destroyMinigame = () => {
+    if (!game.active) {
+      warehouse.destroy();
+      if (rt) { rt.destroy() };
+      if (brush) { brush.destroy() };
+      if (blanknote) { blanknote.destroy() };
+      if (noteText) { noteText.destroy() };
+      end();
+    }
+  };
+  if (status.electricity) {
+    textbox(game, ["What happened ? It seems that the door opened when I turned on the electricity", "A key "], destroyMinigame);
+    warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+    warehouse.on('pointerdown', (pointer, x, y) => {
+      if (x > 570 && x < 707 && y > 418 && y < 571) {
+        blanknote = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "blanknote").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(7);
+        noteText = game.add.text(
+          game.cameras.main.scrollX + innerWidth / 2.2,
+          game.cameras.main.scrollY + innerHeight / 2.4,
+          "1836",
+          {
+            fontFamily: "Arial",
+            color: "#000000",
+            font: "25px",
+            wordWrap: { width: 110 },
+          }
+        )
+        .setOrigin(0)
+        .setDepth(7);
+      }
+    rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.43, game.cameras.main.scrollY + innerHeight / 3, innerWidth/7.7, innerHeight/5).setDepth(8).setInteractive();
+    for (var y = 0; y < 2; y++)
+    {
+      for (var x = 0; x < 2; x++)
+      {
+        rt.draw('scratchticket', x * 512, y * 512);
+      }
+    }
+    brush = game.add.circle(0, 0, 5, 0xffffff).setVisible(false);
+    rt.on('pointermove', (pointer, x, y) => {
+      if (pointer.isDown) {
+        rt.erase(brush, x, y);
+      } 
+    })
+    });
+  } else {
+    textbox(game, ["The warehouse door is closed..."], end);
+  }
+}
 const minigameRoofLadder = (game, end) => {
   // 300x 615y
 
@@ -69,7 +149,33 @@ const minigamePillar = (game, end) => {
 
 const minigameStreetPlants = (game, end) => {
   // 580x 555y && 715x 555y && 530x 650y && 50x 875y && 683x 875y
-  textbox(game, ["This plant has known brighter nights."], end);
+
+  const destroyMinigame = () => {
+    note.destroy()
+    noteText.destroy()
+    end();
+  }
+
+  if (character.x <= 80) {
+    var note = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "note").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(5);
+    var noteText = game.add.text(
+      game.cameras.main.scrollX + innerWidth / 2.3,
+      game.cameras.main.scrollY + innerHeight / 2.85,
+      "Hey.\nRound - Diamond - Pentagon - Square - Explosion.\nIf you're half as good as you're made to be, you'll understand.",
+      {
+        fontFamily: "Arial",
+        color: "#000000",
+        font: "11px",
+        wordWrap: { width: 110 },
+      }
+    )
+    .setOrigin(0)
+    .setDepth(6);
+    if (!status.read) {textbox(game, ["That's something else alright.", "Who...?", "Nevermind, I've got to get my game face on.", "It would hurt me to disappoint a fan."], destroyMinigame), status.read = true;}
+    else textbox(game, ["What kind of code is this..."], destroyMinigame);
+  } else {
+    textbox(game, ["This plant has known brighter nights."], end);
+  }
 }
 
 const minigameRamenDoor = (game, end) => {
@@ -259,8 +365,7 @@ const minigameBoat = (game, end) => {
             game.cameras.main.once("camerafadeincomplete", () => {
               textbox(game, ["Hey! What was that?", "Let's check it out!"], fadeOut)
               game.cameras.main.once("camerafadeoutcomplete", () => {
-                console.log(game.agent.rob)
-                game.agent.rob.setVelocityY(-40).anims.play("up6");
+                status.inevitable = true;
                 game.agent.tom.setPosition(340, 1240).anims.play("left6end").anims.stop();
                 character.setPosition(115, 995).setVisible(true);
                 fadeIn()
@@ -360,6 +465,8 @@ const minigameGenerator = (game, end) => {
     if (electricity.alpha === 0.99 && !status.electricity) {
       textbox(game, ["That's it!", "Should I ever get bored of the criminal life...", "I'd always have work as an electrician, ah!"], destroyMinigame);
       status.electricity = true;
+      game.warehouseOpened.setVisible(true);
+      game.warehouseClosed.setVisible(false);
     }
   }
 
@@ -405,5 +512,6 @@ export {
   minigameTourismDoor,
   minigameManHole,
   minigameBridgeEnd,
+  minigameWareHouse,
   minigameGenerator,
 };

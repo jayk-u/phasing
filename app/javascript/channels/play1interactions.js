@@ -141,12 +141,12 @@ const minigameTV = (game, end) => {
 
   text.setMask(mask);
 
-  game.input.keyboard.on("keydown-UP", (event) => {
+  game.input.keyboard.on("keydown-UP", () => {
     text.y += -10;
     text.y = Phaser.Math.Clamp(text.y, -400, 300);
   });
 
-  game.input.keyboard.on("keydown-DOWN", (event) => {
+  game.input.keyboard.on("keydown-DOWN", () => {
     text.y += 10;
     text.y = Phaser.Math.Clamp(text.y, -400, 300);
   });

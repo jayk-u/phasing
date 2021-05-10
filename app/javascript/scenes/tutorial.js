@@ -1,4 +1,3 @@
-import { game } from "../channels/game"
 import { debugInteraction } from "../components/debugInteraction"
 import { drawCollisionShapes } from "../components/drawCollision"
 import { timerBox } from "../components/timerBox"

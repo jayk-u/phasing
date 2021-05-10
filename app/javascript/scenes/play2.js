@@ -203,7 +203,7 @@ class Play2 extends Phaser.Scene {
     this.load.video("overlay", loginAssets.overlayVid, false, true);
     this.load.image("containersett", loginAssets.containerImg);
     this.load.image("volume", loginAssets.volumeImg);
-    this.load.audio("music", loginAssets.musicMp3);
+    this.load.audio("play2Music", gameAssets.play2Mp3);
 
     const introAssets = document.getElementById("intro").dataset;
 
@@ -451,8 +451,8 @@ class Play2 extends Phaser.Scene {
     //End rain
 
     //SETTINGS
-    musique = this.sound.add('music');
-    sound(this, musique);
+    musique = this.sound.add('play2Music');
+    sound(this, innerWidth/1.5 - 47, innerHeight/3.05, 35, 35, musique);
     leaveGame(this, musique);
     //END SETTINGS
 

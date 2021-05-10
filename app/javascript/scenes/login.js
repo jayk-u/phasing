@@ -29,6 +29,11 @@ class Login extends Phaser.Scene {
     this.load.image("volume", loginAssets.volumeImg);
     this.load.audio("music", loginAssets.musicMp3);
     this.load.image("controls", loginAssets.controlsImg);
+
+    const introAssets = document.getElementById("intro").dataset;
+    this.load.image("emptyBar", introAssets.emptybarImg);
+
+
   }
 
   create() {

@@ -31,6 +31,6 @@ var config = {
   scene: [Waiting, Login, Select, Tutorial, Intro1, Play1, Outro1, Intro2, Play2, Outro2]
 };
 
-const game = new Phaser.Game(config);
+const phaser = new Phaser.Game(config);
 
-export { game }
+export { phaser }

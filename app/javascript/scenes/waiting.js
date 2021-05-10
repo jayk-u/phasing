@@ -1,3 +1,5 @@
+import { game } from "../channels/game";
+
 var skip
 var particles
 
@@ -15,6 +17,7 @@ class Waiting extends Phaser.Scene {
       this.load.image('logo', loginAssets.logoImg);
       this.load.image('spark', loginAssets.sparkParticle);
       this.load.video("overlay", loginAssets.overlayVid, 'loadeddata', false, true);
+
   }
 
   create ()
@@ -54,6 +57,7 @@ class Waiting extends Phaser.Scene {
     //   // text.setCollideWorldBounds(true);
 
     //   emitter.startFollow(logo);
+
 
     var logo = this.add.image(innerWidth/2, innerHeight/2 - 100, "logo");
     logo.setDisplaySize(810, 420);

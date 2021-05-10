@@ -15,6 +15,7 @@ import { characterCounter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
 import { detectCharacter } from "../components/characterDetection"
 import { sortDepth } from "../components/characterDepth"
+import { objectDetection } from "../components/objectDetection"
 import { minigameBoat,
   minigameBuildingDoor,
   minigameContainer,
@@ -38,6 +39,7 @@ import { minigameBoat,
 var rainParticles
 var musique;
 var character;
+var items;
 var cursors;
 var shapeGraphics;
 var coordinates;
@@ -73,6 +75,15 @@ const downBridge = (game) => {
   }
 };
 
+//Walking SFX
+var steps;
+
+const randomProperty = (obj) => {
+  var keys = Object.keys(obj);
+  return obj[keys[ keys.length * Math.random() << 0]];
+};
+
+
 class Play2 extends Phaser.Scene {
 
   constructor ()
@@ -81,9 +92,10 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.inevitable = false;
     status.read = false;
     status.bridgeCollision = false;
-    status.electricity = true;
+    status.electricity = false;
     status.roofLadderCount = 0;
     status.manhole = "";
     status.hiddenCollision = false;
@@ -136,6 +148,7 @@ class Play2 extends Phaser.Scene {
     this.load.image("electricity", gameAssets.electricityImg);
     this.load.image("warehouse", gameAssets.warehouseImg);
     this.load.image("scratchticket", gameAssets.scratchticketImg);
+    this.load.image("blanknote", gameAssets.blanknoteImg)
     //end minigames
 
     //Map
@@ -198,6 +211,7 @@ class Play2 extends Phaser.Scene {
     //End overlay
 
     this.load.image("rain", gameAssets.rainParticle)
+    this.load.audio("steps", gameAssets.waterstepsMp3);
 
   };
 
@@ -206,6 +220,65 @@ class Play2 extends Phaser.Scene {
     this.begin();
     this.cameras.main.fadeIn(1000)
     this.add.rectangle(0, 0, 10000, 10000, 0x000000, 0.2).setDepth(10);
+
+    //Walking SFX
+    steps = this.sound.add('steps', {
+      mute: false,
+      volume: 0.5,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: false,
+      delay: 0
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'firstStep',
+      start: 0,
+      duration: 0.28,
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'secondStep',
+      start: 0.6,
+      duration: 0.28,
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'thirdStep',
+      start: 1.1,
+      duration: 0.28,
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'fourthStep',
+      start: 1.6,
+      duration: 0.28,
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'fifthStep',
+      start: 2.2,
+      duration: 0.28,
+    })
+    steps.addMarker({
+      config: {
+        volume: 0.3,
+      },
+      name: 'sixthStep',
+      start: 2.7,
+      duration: 0.28,
+    })
 
 
     // var video = this.add.video(0, 0, "overlay");
@@ -236,6 +309,8 @@ class Play2 extends Phaser.Scene {
     // this.layer.resizeWorld();
     // this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0);
     this.building = this.map.createLayer("building", this.tileset, 0, 0).setDepth(0);
+    this.warehouseClosed = this.map.createLayer("warehouse_closed", this.tileset, 0, 0).setDepth(0);
+    this.warehouseOpened = this.map.createLayer("warehouse_open", this.tileset, 0, 0).setDepth(0).setVisible(false);
     this.decorationBuilding = this.map.createLayer("decoration_building", this.tileset, 0, 0).setDepth(0);
     this.decorationRooftop = this.map.createLayer("rooftop_decoration", this.tileset, 0, 0).setDepth(0.5);
     this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(0);
@@ -259,7 +334,7 @@ class Play2 extends Phaser.Scene {
     this.gameObjects = this.map.getObjectLayer("GameObjects").objects;
     //this is how we actually render our coin object with coin asset we loaded into our game in the preload function
     spriteFrame(this, characterCounter);
-    character = this.physics.add.sprite(622, 876, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
+    character = this.physics.add.sprite(430, 480, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
     // 430, 480
     //NPC
     spriteFrame(this, 6);
@@ -327,6 +402,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.railing2);
     drawCollisionShapes(this, shapeGraphics, this.decorationBuilding);
     drawCollisionShapes(this, shapeGraphics, this.decorationRooftop);
+    drawCollisionShapes(this, shapeGraphics, this.warehouseClosed);
 
 //     drawCollisionShapes(this, shapeGraphics, this.extraObj);
     drawCollisionShapes(this, shapeGraphics, this.hidden, "hidden");
@@ -375,12 +451,12 @@ class Play2 extends Phaser.Scene {
     //End rain
 
     //SETTINGS
-    musique = game.sound.add('music');
+    musique = this.sound.add('music');
     sound(this, musique);
     leaveGame(this, musique);
     //END SETTINGS
 
-    const items = [
+    items = [
       {x: 115, y: 1000, name: 'boat', minigame: minigameBoat},
       {x: 715, y: 845, name: 'buildingDoor', minigame: minigameBuildingDoor},
       {x: 655, y: 990, name: 'container', minigame: minigameContainer},
@@ -412,6 +488,7 @@ class Play2 extends Phaser.Scene {
     ];
     //   character.anims.stop();
     interactionObject(this, items, character, status);
+
     // debugInteraction(this, this.objectTop, character);
     // debugInteraction(this, this.objectBottom, character);
     // debugInteraction(this.secretDoor);
@@ -428,6 +505,13 @@ class Play2 extends Phaser.Scene {
     movementSprite(this, character, cursors, characterCounter, status);
     timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen, "Lockdown complete! Suspect is around, renforcement incoming!");
     rainParticles.setPosition(character.x, character.y);
+
+    //Walking SFX
+    if (character.body.speed != 0 && !steps.isPlaying) {
+      steps.play(randomProperty(steps.markers).name);
+    }
+
+
     // Bridge walls behavior - used because depth changes depending on location
     if (character.y >= 831 && character.y <= 833 && character.x > 295 && character.x < 315 && character.frame.name >= 13 && character.frame.name <= 15) {
       upBridge(this);
@@ -491,6 +575,9 @@ class Play2 extends Phaser.Scene {
         this.agent.rob.setVelocityY(0);
         this.agent.rob.setVelocityX(0);
         this.agent.rob.anims.play(`down6end`, true).anims.stop();
+      } else if (status.inevitable) {
+        this.agent.rob.setVelocityY(-40);
+        this.agent.rob.anims.play(`up6`, true);
       }
 
       // Mike the Egoistic
@@ -549,6 +636,8 @@ class Play2 extends Phaser.Scene {
       status.inventoryBox.visible = false;
     }
 
+    objectDetection(this, character, items, status);
+
     sortDepth(this.floorObjects, character);
     sortDepth(this.decorationRooftop, character);
 
@@ -557,6 +646,8 @@ class Play2 extends Phaser.Scene {
     camera(this, this.dockWalls, character);
     camera(this, this.layer, character);
     camera(this, this.building, character);
+    camera(this, this.warehouseClosed, character);
+    camera(this, this.warehouseOpened, character);
     camera(this, this.decorationBuilding, character);
     camera(this, this.decorationRooftop, character);
     camera(this, this.overheadBuilding, character);

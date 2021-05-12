@@ -218,8 +218,8 @@ class Play1 extends Phaser.Scene {
     borderInventory(this, status);
 
     //SETTINGS
-    musique = game.sound.add('music');
-    sound(this, musique);
+    musique = this.sound.add('music');
+    sound(this, innerWidth/1.5 - 47, innerHeight/3.05, 35, 35, musique);
     leaveGame(this, musique);
     //END SETTINGS
 

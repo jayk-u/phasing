@@ -1,3 +1,6 @@
+import { sound } from './soundSettings'
+import { phaser } from "../channels/game"
+
 var text;
 var skip;
 var picture;
@@ -34,15 +37,15 @@ const createCutscene = (game, status, nextScene) => {
 
   // START SETTINGS
 
-  var unmute = game.add.image(innerWidth-230, innerHeight/10.5, "volume").setInteractive();
-  unmute.setDisplaySize(80,80);
-  unmute.setVisible(true);
-  unmute.setDepth(2);
+  // var unmute = game.add.image(innerWidth-230, innerHeight/10.5, "volume").setInteractive();
+  // unmute.setDisplaySize(80,80);
+  // unmute.setVisible(true);
+  // unmute.setDepth(2);
 
-  var mute = game.add.image(innerWidth-230, innerHeight/10.5, "mute").setInteractive();
-  mute.setDisplaySize(80,80);
-  mute.setVisible(false);
-  mute.setDepth(2);
+  // var mute = game.add.image(innerWidth-230, innerHeight/10.5, "mute").setInteractive();
+  // mute.setDisplaySize(80,80);
+  // mute.setVisible(false);
+  // mute.setDepth(2);
 
   // var status = game.add.text(innerWidth-310, 135, "Controls", {
   //   fontSize: '48px',
@@ -51,20 +54,21 @@ const createCutscene = (game, status, nextScene) => {
   // status.setVisible(false);
 
   let intromusic = game.sound.add('introMusic');
-  intromusic.setVolume(0.5);
-  intromusic.play();
+  sound(game, innerWidth-230, innerHeight/10.5, 80, 80, intromusic, false)
+  // intromusic.setVolume(0.5);
+  // intromusic.play();
 
-  unmute.on("pointerup", () => {
-    intromusic.pause();
-    mute.setVisible(true);
-    unmute.setVisible(false);
-  });
+  // unmute.on("pointerup", () => {
+  //   intromusic.pause();
+  //   mute.setVisible(true);
+  //   unmute.setVisible(false);
+  // });
 
-  mute.on("pointerup", () => {
-    intromusic.resume();
-    unmute.setVisible(true);
-    mute.setVisible(false);
-  });
+  // mute.on("pointerup", () => {
+  //   intromusic.resume();
+  //   unmute.setVisible(true);
+  //   mute.setVisible(false);
+  // });
 
   const exit = game.add.image(innerWidth-110, innerHeight/10.5, 'exit').setInteractive().setDepth(2).setScrollFactor(0);
   exit.setDisplaySize(80,80);
@@ -73,11 +77,11 @@ const createCutscene = (game, status, nextScene) => {
 
   // END SETTINGS
 
-  exit.on("pointerup", () => {
-    game.scene.stop();
-    game.scene.start('Login');
-    intromusic.stop();
-  });
+  // exit.on("pointerup", () => {
+  //   game.scene.stop();
+  //   game.scene.start('Login');
+  //   intromusic.stop();
+  // });
 
   // TYPING SFX
 

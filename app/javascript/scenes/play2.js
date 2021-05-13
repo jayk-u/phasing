@@ -148,7 +148,18 @@ class Play2 extends Phaser.Scene {
     this.load.image("electricity", gameAssets.electricityImg);
     this.load.image("warehouse", gameAssets.warehouseImg);
     this.load.image("scratchticket", gameAssets.scratchticketImg);
-    this.load.image("blanknote", gameAssets.blanknoteImg)
+    this.load.image("blanknote", gameAssets.blanknoteImg);
+    this.load.audio('engine', gameAssets.engineMp3);
+    this.load.audio('boatExplosion', gameAssets.boatexplosionMp3);
+    this.load.audio('manhole', gameAssets.manholeMp3);
+    this.load.audio('ladder', gameAssets.ladderMp3);
+    this.load.audio('hey', gameAssets.heyMp3);
+    this.load.audio('handcuffs', gameAssets.handcuffsMp3);
+
+
+
+
+
     //end minigames
 
     //Map

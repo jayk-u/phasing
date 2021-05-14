@@ -92,6 +92,13 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.scratchticket = false;
+    status.rt = false;
+    status.password = "";
+    status.containers = false;
+    status.roofTop = false;
+    status.unlockedContainer = false;
+    status.fuel = false;
     status.inevitable = false;
     status.read = false;
     status.bridgeCollision = false;
@@ -155,11 +162,7 @@ class Play2 extends Phaser.Scene {
     this.load.audio('ladder', gameAssets.ladderMp3);
     this.load.audio('hey', gameAssets.heyMp3);
     this.load.audio('handcuffs', gameAssets.handcuffsMp3);
-
-
-
-
-
+    this.load.image("digicode", gameAssets.digicodeImg)
     //end minigames
 
     //Map
@@ -186,7 +189,7 @@ class Play2 extends Phaser.Scene {
         frameHeight: 48,
       });
     } else if (characterCounter === 4) {
-      this.load.spritesheet("character2", gameAssets.character8Sprite, {
+      this.load.spritesheet("character4", gameAssets.character8Sprite, {
         frameWidth: 32,
         frameHeight: 48,
       });
@@ -235,7 +238,7 @@ class Play2 extends Phaser.Scene {
     //Walking SFX
     steps = this.sound.add('steps', {
       mute: false,
-      volume: 0.5,
+      volume: 0.1,
       rate: 1,
       detune: 0,
       seek: 0,
@@ -244,7 +247,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'firstStep',
       start: 0,
@@ -252,7 +255,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'secondStep',
       start: 0.6,
@@ -260,7 +263,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'thirdStep',
       start: 1.1,
@@ -268,7 +271,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'fourthStep',
       start: 1.6,
@@ -276,7 +279,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'fifthStep',
       start: 2.2,
@@ -284,7 +287,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.3,
+        volume: 0.05,
       },
       name: 'sixthStep',
       start: 2.7,
@@ -325,7 +328,7 @@ class Play2 extends Phaser.Scene {
     this.decorationBuilding = this.map.createLayer("decoration_building", this.tileset, 0, 0).setDepth(0);
     this.decorationRooftop = this.map.createLayer("rooftop_decoration", this.tileset, 0, 0).setDepth(0.5);
     this.dockWalls = this.map.createLayer("dock_wall", this.tileset, 0, 0).setDepth(0);
-    this.floorObjects = this.map.createDynamicLayer("floor_objects", this.tileset, 0, 0).setDepth(0.5);
+    this.floorObjects = this.map.createLayer("floor_objects", this.tileset, 0, 0).setDepth(0.5);
     this.plant = this.map.createLayer("plant", this.tileset, 0, 0).setDepth(1);
     this.bridge = this.map.createLayer("bridge_walls", this.tileset, 0, 0).setDepth(2);
     this.docksTop = this.map.createLayer("docks_top", this.tileset, 0, 0).setDepth(2);
@@ -414,6 +417,7 @@ class Play2 extends Phaser.Scene {
     drawCollisionShapes(this, shapeGraphics, this.decorationBuilding);
     drawCollisionShapes(this, shapeGraphics, this.decorationRooftop);
     drawCollisionShapes(this, shapeGraphics, this.warehouseClosed);
+    drawCollisionShapes(this, shapeGraphics, this.manHole);
 
 //     drawCollisionShapes(this, shapeGraphics, this.extraObj);
     drawCollisionShapes(this, shapeGraphics, this.hidden, "hidden");

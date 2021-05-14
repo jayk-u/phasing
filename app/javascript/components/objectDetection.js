@@ -22,6 +22,8 @@ const objectDetection = (game, character, items, status) => {
           fontFamily: "Arial",
           color: "#E0BBA6",
           font: "15px",
+          stroke: "#000000",
+          strokeThickness: 3,
           wordWrap: { width: 110 },
         }
       )

@@ -39,6 +39,7 @@ const box = (game, x, y, width, height) => {
   if (nameCounter == 0) {
     game.add.text(x + width/3, y + height + 10, `Tutorial`, {font: `${width/13}px`, color:"#FFFFFF", align: 'center', wordWrap: {width: width}})
     level.on("pointerdown", () => {
+      game.sound.play("selectLevel");
       game.scene.stop();
       game.scene.start("Tutorial");
     });
@@ -46,6 +47,7 @@ const box = (game, x, y, width, height) => {
     game.add.text(x + width/3, y + height + 10, `Level ${nameCounter}`, {font: `${width/12.2}px`, color:"#FFFFFF"}).setAlign('center')
     var sceneName = `Intro${nameCounter}`;
     level.on("pointerdown", () => {
+      game.sound.play("selectLevel");
       game.scene.stop();
       game.scene.start(sceneName);
     });
@@ -66,6 +68,7 @@ class Select extends Phaser.Scene {
       this.load.image('map0', selectAssets.map0Img);
       this.load.image('map1', selectAssets.map1Img);
       this.load.image('map2', selectAssets.map2Img);
+      this.load.audio("selectLevel", selectAssets.selectlevelMp3);
 
       const loginAssets = document.getElementById("login").dataset;
 

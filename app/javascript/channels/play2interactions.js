@@ -65,6 +65,7 @@ const minigameWareHouse = (game, end) => {
       end();
     }
   };
+
   if (status.unlockedContainer) {
     textbox(game, ["Now, what do we have here...?"], end)
   } else if (status.electricity) {
@@ -113,13 +114,14 @@ const minigameWareHouse = (game, end) => {
       })
       });
   } else {
-    textbox(game, ["The warehouse door is closed..."], end);
+    textbox(game, ["My less-than-lawful instincts are tingling.", "I need some thievery done."], end);
   }
 }
 const minigameRoofLadder = (game, end) => {
   // 300x 615y
 
   const fade = () => {
+    game.sound.play("ladder", {duration: 0.9})
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
       if (character.x <= 285) {
@@ -228,6 +230,7 @@ const minigameBuildingDoor = (game, end) => {
 const minigameDocksLadder = (game, end) => {
   // 750x 975y
   const fade = () => {
+    game.sound.play("ladder", {duration: 0.9})
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
       character.y <= 940? (character.setPosition(755, 980), game.docksTop.setDepth(0), game.ladderTop.setDepth(0)) : (character.setPosition(755, 930), game.docksTop.setDepth(2), game.ladderTop.setDepth(2));
@@ -444,17 +447,24 @@ const minigameBoat = (game, end) => {
   const destroyMinigame = () => {
     if (!game.active) {end()}
   }
-  if (status.inventory === "Fuel") {
+  if (status.inevitable === true) {
+    textbox(game, ["I love the smell of napalm in the evening."], destroyMinigame)
+  }
+  else if (status.inventory === "Fuel") {
     textbox(game, ["Time for some good old-fashioned fireworks!"], destroyMinigame)
     fuel.on("pointerdown", () => {
       fuel.ignoreDestroy = false;
       fuel.destroy();
+      var engine = game.sound.add("engine", {config: {loop: true}})
+      engine.play();
       textbox(game, ["Yeeeeehaw!"], fadeOut)
       game.cameras.main.once("camerafadeoutcomplete", () => {
         game.redBoat.setVisible(false);
         var blackRect = game.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
         fadeIn();
         game.cameras.main.once("camerafadeincomplete", () => {
+          engine.stop();
+          game.sound.play("boatExplosion", {config: {volume: 10}});
           textbox(game, ["BOOM!"], fadeOut, 5);
           game.cameras.main.once("camerafadeoutcomplete", () => {
             blackRect.destroy();
@@ -484,6 +494,7 @@ const minigameBoat = (game, end) => {
 const minigameManHole = (game, end) => {
   //120x 550y || 780x 890y
   const fade = () => {
+    game.sound.play("manhole");
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
       character.x <= 150 && character.x >= 100 ? (character.setPosition(780, 890), downBridge(game)) : (character.setPosition(120, 550), upBridge(game));

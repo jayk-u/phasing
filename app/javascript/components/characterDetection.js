@@ -1,6 +1,12 @@
 import { status, musique } from "../scenes/play2"
 
 const detectEvent = (game, npc, loseEvent, endContent) => {
+  var hey = game.sound.add("hey")
+  hey.addMarker({name: "voice", duration:0.5, start: 0, config: {volume: 2}})
+  hey.play("voice");
+  hey.once("complete", () => {
+    game.sound.play("handcuffs", {volume: 10});
+  })
   status.minigame = 'active'
   npc.setVelocityX(0);
   npc.setVelocityY(0);

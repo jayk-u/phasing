@@ -18,6 +18,8 @@ var map;
 var fuel;
 var containers;
 var containerNumber;
+var buzz;
+var statics;
 var random = Math.round(Math.random() * 10000);
 
 const minigameMap = (game, end) => {
@@ -180,7 +182,7 @@ const minigameStreetPlants = (game, end) => {
     var noteText = game.add.text(
       game.cameras.main.scrollX + innerWidth / 2.3,
       game.cameras.main.scrollY + innerHeight / 2.85,
-      "Hey.\nRound - Diamond - Pentagon - Square - Explosion.\nIf you're half as good as you're made to be, you'll understand.",
+      "Hey.\nRound - Diamond - Star - Rectangle - Explosion.\nIf you're half as good as you're made to be, you'll understand.",
       {
         fontFamily: "Arial",
         color: "#000000",
@@ -551,14 +553,12 @@ const minigameBridgeEnd = (game, end) => {
 const minigameGenerator = (game, end) => {
   // 40x 430y
 
-  const pointGenerator = () => {
-    generator.x = innerWidth / 3.15;
-    generator.y = innerHeight / 3;
-    generator.setDisplaySize(40, 40);
-    generator.ignoreDestroy = true;
-    generator.setScrollFactor(0);
-    status.inventory = "generator";
-  };
+  if (status.electricity) {
+    buzz.play()
+  } else {
+    if (!statics) statics = game.sound.add("static", {loop: true});
+    statics.play()
+  }
 
   const pathing = (direction) => {
     if (electricity.alpha != 0.99) {
@@ -574,6 +574,9 @@ const minigameGenerator = (game, end) => {
       electricity.setAlpha(alpha);
     }
     if (electricity.alpha === 0.99 && !status.electricity) {
+      statics.stop();
+      buzz = game.sound.add("buzz")
+      buzz.play();
       textbox(game, ["That's it!", "Should I ever get bored of the criminal life...", "I'd always have work as an electrician, ah!"], destroyMinigame);
       status.electricity = true;
       game.warehouseOpened.setVisible(true);
@@ -585,6 +588,8 @@ const minigameGenerator = (game, end) => {
     if (!game.active) {
       generator.destroy();
       if (electricity) electricity.destroy();
+      if (buzz) buzz.stop();
+      if (statics) statics.stop();
       end();
     }
   };

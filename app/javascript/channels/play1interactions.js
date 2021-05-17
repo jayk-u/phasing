@@ -322,9 +322,10 @@ const minigameBonsai = (game, end) => {
     // if (next.scene != game.scene.scene) {
       if (status.computerStatus != "On" && status.computerStatus != "Unlocked") {
         status.computerStatus = "On";
+        game.sound.play("click");
         textbox(
           game,
-          ["*click*", "I can hear a small whir close to me.", "Let's hurry!"],
+          ["I push on the red button.", "I can hear a small whir close to me.", "Let's hurry!"],
           destroyMinigame
         );
       }
@@ -527,6 +528,7 @@ const minigameComputer = (game, end) => {
   game.load.image("computer", gameAssets.computerImg);
 
   const inputComputer = (event) => {
+    if (status.computerStatus != "Unlocked") {
     // if (next.scene != game.scene.scene) {
       if (
         ( event.keyCode <= 90 &&
@@ -536,6 +538,7 @@ const minigameComputer = (game, end) => {
         if (event.key == "Backspace") {
           input = "Enter password: ";
         } else if (input.length > 23) {
+          game.sound.play("digitalLock")
           input = "Enter password: ERROR";
           inputText.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000);
           // game.input.keyboard.once("keydown-SPACE", () => {
@@ -546,6 +549,7 @@ const minigameComputer = (game, end) => {
         }
         inputText.setText(input);
         if (input == "Enter password: ASTERIX") {
+          game.sound.play("digitalUnlock")
           status.computerStatus = "Unlocked";
           inputText.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
           textbox(
@@ -559,7 +563,7 @@ const minigameComputer = (game, end) => {
           );
         }
       }
-    // }
+    }
   }
 
   const destroyMinigame = () => {

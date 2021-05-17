@@ -31,7 +31,7 @@ const sound = (game, x, y, width, height, musique, play = true) => {
   SFXSettingsBar.fillStyle(0x000000).fillRoundedRect(x - width/2.8, y + height/1.42, width*2.2, height/3.5, 4).setVisible(false).setDepth(2);
   if (play) {SFXSettingsBar.setScrollFactor(0);}
   SFXMask = game.add.graphics();
-  SFXMask.fillStyle(0x796356).fillRoundedRect(x - width/2.8, y + height/1.42, width*2.2, height/3.5, 4).setVisible(false).setDepth(2);
+  SFXMask.fillStyle(0x796356).fillRoundedRect(x - width/2.8, y + height/1.42, width*1.1, height/3.5, 4).setVisible(false).setDepth(2);
   if (play) {SFXMask.setScrollFactor(0);}
   SFXText = game.add.text(
     x + width/2,

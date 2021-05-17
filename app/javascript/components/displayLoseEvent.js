@@ -43,7 +43,6 @@ const displayLoseScreen = (game, status, musique, endContent = false, videoLoseE
 
   game.cameras.main.once("camerafadeoutcomplete", () => {
     alpha = 0;
-    console.log(videoLoseEvent);
     musique.stop();
     var video = game.add.video(innerWidth / 2, innerHeight / 2, videoLoseEvent);
     video.on('play', () => {

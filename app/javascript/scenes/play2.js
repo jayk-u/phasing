@@ -92,6 +92,7 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.won = false;
     status.scratchticket = false;
     status.rt = false;
     status.password = "";
@@ -654,6 +655,10 @@ class Play2 extends Phaser.Scene {
     } else {
       status.borderBox.visible = false;
       status.inventoryBox.visible = false;
+    }
+
+    if(status.won === true) {
+      musique.stop();
     }
 
     objectDetection(this, character, items, status);

@@ -162,6 +162,10 @@ class Play2 extends Phaser.Scene {
     this.load.audio('ladder', gameAssets.ladderMp3);
     this.load.audio('hey', gameAssets.heyMp3);
     this.load.audio('handcuffs', gameAssets.handcuffsMp3);
+    this.load.audio('digitallock', gameAssets.digitallockMp3);
+    this.load.audio('digitalunlock', gameAssets.digitalunlockMp3);
+    this.load.audio('static', gameAssets.staticMp3);
+    this.load.audio('buzz', gameAssets.buzzMp3);
     this.load.image("digicode", gameAssets.digicodeImg)
     this.load.video("loseEvent2", gameAssets.lossScreenLevel2Vid, 'loadeddata', false);
     //end minigames
@@ -248,7 +252,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.05,
+        volume: 0.5,
       },
       name: 'firstStep',
       start: 0,
@@ -256,7 +260,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.05,
+        volume: 0.5,
       },
       name: 'secondStep',
       start: 0.6,
@@ -264,7 +268,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.05,
+        volume: 0.5,
       },
       name: 'thirdStep',
       start: 1.1,
@@ -272,7 +276,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.05,
+        volume: 0.5,
       },
       name: 'fourthStep',
       start: 1.6,
@@ -280,7 +284,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.05,
+        volume: 0.5,
       },
       name: 'fifthStep',
       start: 2.2,
@@ -288,7 +292,7 @@ class Play2 extends Phaser.Scene {
     })
     steps.addMarker({
       config: {
-        volume: 0.05,
+        volume: 0.5,
       },
       name: 'sixthStep',
       start: 2.7,

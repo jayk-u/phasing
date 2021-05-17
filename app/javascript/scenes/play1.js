@@ -78,6 +78,9 @@ class Play1 extends Phaser.Scene {
     this.load.image("keylock", gameAssets.keylockImg);
     this.load.image("key", gameAssets.keyImg);
     this.load.video("loseEvent1", gameAssets.lossScreenLevel1Vid, 'loadeddata', false);
+    this.load.audio("digitalLock", gameAssets.digitallockMp3);
+    this.load.audio("digitalUnlock", gameAssets.digitalunlockMp3);
+    this.load.audio("click", gameAssets.clickMp3);
     //end minigames
 
     //Map

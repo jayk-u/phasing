@@ -17,6 +17,7 @@ class Waiting extends Phaser.Scene {
     this.load.image('logo', loginAssets.logoImg);
     this.load.image('spark', loginAssets.sparkParticle);
     this.load.video('logobo', loginAssets.logoBreakingOutVid, 'loadeddata', false);
+    this.load.audio('tone', loginAssets.toneMp3);
     // this.load.video('overlay', loginAssets.overlayVid, 'loadeddata', false, true);
   }
 
@@ -75,6 +76,7 @@ class Waiting extends Phaser.Scene {
     video.once('pointerdown', (pointer) => {
       this.add.particles('spark').createEmitter({"active":true,"blendMode":1,"collideBottom":true,"collideLeft":true,"collideRight":true,"collideTop":true,"deathCallback":null,"deathCallbackScope":null,"emitCallback":null,"emitCallbackScope":null,"follow":null,"frequency":0,"gravityX":0,"gravityY":300,"maxParticles":0,"name":"sparks","on":true,"particleBringToTop":true,"radial":true,"timeScale":1,"trackVisible":false,"visible":true,"accelerationX":0,"accelerationY":0,"angle":{"min":0,"max":360},"alpha":{"start":0,"end":0.5,"ease":"Linear"},"bounce":0,"delay":0,"lifespan":1000,"maxVelocityX":10000,"maxVelocityY":10000,"moveToX":0,"moveToY":0,"quantity":1,"rotate":360,"tint":16777215,"x":pointer.x,"y":pointer.y,"speed":{"min":300,"max":6000},"scale":{"start":0.1,"end":1.7,"ease":"Linear"}})
       if (this.cameras.main._eventsCount < 1) {
+        this.sound.play("tone", {rate: 0.2})
         this.cameras.main.fadeOut(2000, 255, 255, 255)
         this.cameras.main.once('camerafadeoutcomplete', () => {
           this.scene.stop();
@@ -132,6 +134,7 @@ class Waiting extends Phaser.Scene {
 
     this.input.keyboard.once('keydown-ENTER', ()  => {
       if (this.cameras.main._eventsCount < 1) {
+        this.sound.play("tone", {rate: 0.2})
         this.cameras.main.fadeOut(2000, 255, 255, 255)
         this.cameras.main.once('camerafadeoutcomplete', () => {
           this.scene.stop();

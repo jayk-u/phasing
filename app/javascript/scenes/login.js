@@ -130,6 +130,7 @@ class Login extends Phaser.Scene {
     localStorage.setItem("status", status.text);
 
     const playSelect = ()  => {
+      this.sound.play("tone", {rate: 0.4})
       this.scene.stop();
       this.scene.start("Select");
     };

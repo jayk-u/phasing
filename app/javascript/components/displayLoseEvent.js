@@ -5,6 +5,7 @@ var endText;
 var endBorder;
 var start;
 var again;
+var alpha;
 var lossScreen;
 
 start = 0;
@@ -41,18 +42,33 @@ const displayLoseScreen = (game, status, musique, endContent = false, videoLoseE
   }
 
   game.cameras.main.once("camerafadeoutcomplete", () => {
+    alpha = 0;
     musique.stop();
     var video = game.add.video(innerWidth / 2, innerHeight / 2, videoLoseEvent);
-    video.play();
+    video.on('play', () => {
+      video.setPaused(false)
+      const onBegin = () => {
+        video.setAlpha(alpha)
+        alpha += 0.1
+        if (alpha >= 1) beginEvent.destroy()
+      }
+      var beginEvent = game.time.addEvent({
+        delay: 100,
+        callback: onBegin, 
+        callbackScope: game, 
+        loop: true
+      });
+    })
+    video.play().setAlpha(0);
     video.setInteractive();
     video.setDisplaySize(innerWidth / 2, innerHeight / 2.5).setDepth(10);
     video.setScrollFactor(0);
     video.on('pointerdown', (pointer) => {
       console.log(pointer.x, pointer.y);
-      if (pointer.x > 577 && pointer.x < 742 && pointer.y > 511 && pointer.y < 559 && videoLoseEvent === "loseEvent1") {
+      if (pointer.x > 830 && pointer.x < 1060 && pointer.y > 480 && pointer.y < 559 && videoLoseEvent === "loseEvent1") {
         game.scene.restart();
         game.begin();
-      } else if (pointer.x > 154 && pointer.x < 261 && pointer.y > 614 && pointer.y < 688 && videoLoseEvent === "loseEvent2") {
+      } else if (pointer.x > 120 && pointer.x < 400 && pointer.y > 614 && pointer.y < 700 && videoLoseEvent === "loseEvent2") {
         game.scene.restart();
         game.begin();
       }

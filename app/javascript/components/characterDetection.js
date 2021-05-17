@@ -58,7 +58,7 @@ const detectEvent = (game, npc, loseEvent, videoLoseEvent ,endContent) => {
   loseEvent(game, status, musique, endContent, videoLoseEvent);
 }
 
-const detectCharacter = (game, layout, npc, character, loseEvent, endContent) => {
+const detectCharacter = (game, layout, npc, character, loseEvent, videoLoseEvent , endContent) => {
 
   game.origin = layout.getTileAtWorldXY(character.x, character.y) || game.origin
   game.npcOrigin = layout.getTileAtWorldXY(npc.x, npc.y)
@@ -74,7 +74,7 @@ const detectCharacter = (game, layout, npc, character, loseEvent, endContent) =>
     || (game.origin.x < game.npcOrigin.x && npc.frame.name >= 4 && npc.frame.name <= 7)
     || (game.origin.y > game.npcOrigin.y && npc.frame.name >= 0 && npc.frame.name <= 3)
     || (game.origin.y < game.npcOrigin.y && npc.frame.name >= 12 && npc.frame.name <= 15)) {
-      detectEvent(game, npc, loseEvent, endContent)
+      detectEvent(game, npc, loseEvent, videoLoseEvent, endContent)
     }
   };
 };

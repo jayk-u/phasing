@@ -69,9 +69,9 @@ const minigameWareHouse = (game, end) => {
   };
 
   if (status.unlockedContainer) {
-    textbox(game, ["Now, what do we have here...?"], end)
+    textbox(game, ["Seems like criminals do come back to the crime scene."], end)
   } else if (status.electricity) {
-      textbox(game, ["What happened ? It seems that the door opened when I turned on the electricity", "A key "], destroyMinigame);
+      textbox(game, ["Now, what do we have here...?"], destroyMinigame);
       warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
       warehouse.on('pointerdown', (pointer, x, y) => {
         if (x > 570 && x < 707 && y > 418 && y < 571) {
@@ -259,7 +259,7 @@ const minigameContainer = (game, end) => {
   }
 
   const destroyMinigame = () => {
-    if (game.active === false) {
+    if (!game.active) {
       if (status.containers) {
         if (containers.getChildren()) while (containers.getChildren()[0]) containers.getChildren()[0].destroy()
         game.input.keyboard.off('keydown-RIGHT')
@@ -277,8 +277,8 @@ const minigameContainer = (game, end) => {
       end();
     }
   }
-  if (status.unlockedContainer === false) {
-    textbox(game, ["Enter code:"], destroyMinigame)
+  if (!status.unlockedContainer) {
+    textbox(game, ["90% of dockmen passwords start and end with 00."], destroyMinigame)
     digicode = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "digicode").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
     inputNumber = game.add.text(
       game.cameras.main.scrollX + innerWidth / 2.1 - 70,
@@ -335,6 +335,9 @@ const minigameContainer = (game, end) => {
         status.scratchticket = false;
         status.rt = false;
         inputNumber.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
+      }
+      else if (status.password === "0000") {
+        textbox(game, ["...", "Looks like I'm up against an expert."], destroyMinigame)
       }
       else if (status.password.length > 3) {
         status.password = "ERROR";

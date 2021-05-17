@@ -167,6 +167,7 @@ class Play2 extends Phaser.Scene {
     this.load.audio('static', gameAssets.staticMp3);
     this.load.audio('buzz', gameAssets.buzzMp3);
     this.load.image("digicode", gameAssets.digicodeImg)
+    this.load.video("loseEvent2", gameAssets.lossScreenLevel2Vid, 'loadeddata', false);
     //end minigames
 
     //Map
@@ -522,7 +523,7 @@ class Play2 extends Phaser.Scene {
   update ()
   {
     movementSprite(this, character, cursors, characterCounter, status);
-    timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen, "Lockdown complete! Suspect is around, renforcement incoming!");
+    timerLoseScreenDisplay(this, beginningSecs, beginningMins, status, musique, displayLoseScreen, "loseEvent2","Lockdown complete! Suspect is around, renforcement incoming!");
     rainParticles.setPosition(character.x, character.y);
 
     //Walking SFX
@@ -638,7 +639,7 @@ class Play2 extends Phaser.Scene {
         });
       }
 
-      Object.values(this.agent).forEach(agent => {detectCharacter(this, this.layer, agent, character, displayLoseScreen, "Suspect in sight! Requesting renforcement!")});
+      Object.values(this.agent).forEach(agent => {detectCharacter(this, this.layer, agent, character, displayLoseScreen, "loseEvent2" ,"Suspect in sight! Requesting renforcement!")});
     } else {
       Object.values(this.agent).forEach(agent => {
         agent.setVelocity(0, 0)

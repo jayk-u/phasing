@@ -1,8 +1,8 @@
 import { game } from "../channels/game";
 
-var skip
-var particles
-var alpha = 0
+var skip;
+var particles;
+var alpha = 0;
 
 class Waiting extends Phaser.Scene {
 
@@ -26,7 +26,7 @@ class Waiting extends Phaser.Scene {
     skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to play...", {color: '#FFFFFF', font: "16px"}).setDepth(2)
 
     var video = this.add.video(innerWidth / 2, innerHeight / 2, 'logobo');
-    video.play(false)    
+    video.play(false).setInteractive();   
     // video.addMarker('endLoop', 12, 19)
     // video.playMarker('endLoop', true)
     // this.time.delayedCall(12000, () => {
@@ -68,7 +68,6 @@ class Waiting extends Phaser.Scene {
 
 
     //video.setBlendMode(Phaser.BlendModes.SCREEN);
-    video.setInteractive();
 
     video.on('pointermove', (pointer) => {
       this.add.particles('spark').createEmitter({"active":true,"blendMode":1,"collideBottom":true,"collideLeft":true,"collideRight":true,"collideTop":true,"deathCallback":null,"deathCallbackScope":null,"emitCallback":null,"emitCallbackScope":null,"follow":null,"frequency":0,"gravityX":0,"gravityY":300,"maxParticles":1,"name":"sparks","on":true,"particleBringToTop":true,"radial":true,"timeScale":1,"trackVisible":false,"visible":true,"accelerationX":0,"accelerationY":0,"angle":{"min":0,"max":360},"alpha":{"start":0.1,"end":0,"ease":"Expo.easeOut"},"bounce":0,"delay":0,"lifespan":5000,"maxVelocityX":10000,"maxVelocityY":10000,"moveToX":0,"moveToY":0,"quantity":1,"rotate":0,"tint":16777215,"x":pointer.x,"y":pointer.y,"speed":{"min":600,"max":600},"scale":{"start":0.25,"end":0,"ease":"Circ.easeInOut"}})

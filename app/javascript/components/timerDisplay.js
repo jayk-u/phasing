@@ -1,4 +1,4 @@
-const timerLoseScreenDisplay = (game, beginningSecs, beginningMins, status, musique, loseEvent, endContent) => {
+const timerLoseScreenDisplay = (game, beginningSecs, beginningMins, status, musique, loseEvent, videoLoseEvent, endContent) => {
   if (status.timer != "stop") {
     status.now = game.time.now;
     if (!status.startTime) {
@@ -43,7 +43,7 @@ const timerLoseScreenDisplay = (game, beginningSecs, beginningMins, status, musi
     status.timer = "stop";
     status.end = true;
     status.minigame = "active";
-    loseEvent(game, status, musique, endContent);
+    loseEvent(game, status, musique, endContent, videoLoseEvent);
   }
 }
 

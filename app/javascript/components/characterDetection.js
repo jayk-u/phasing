@@ -1,6 +1,6 @@
 import { status, musique } from "../scenes/play2"
 
-const detectEvent = (game, npc, loseEvent, endContent) => {
+const detectEvent = (game, npc, loseEvent, videoLoseEvent ,endContent) => {
   var hey = game.sound.add("hey")
   hey.addMarker({name: "voice", duration:0.5, start: 0, config: {volume: 2}})
   hey.play("voice");
@@ -53,7 +53,7 @@ const detectEvent = (game, npc, loseEvent, endContent) => {
     innerHeight / 220
   );
 
-  loseEvent(game, status, musique, endContent);
+  loseEvent(game, status, musique, endContent, videoLoseEvent);
 }
 
 const detectCharacter = (game, layout, npc, character, loseEvent, endContent) => {

@@ -10,7 +10,7 @@ var lossScreen;
 start = 0;
 again = "";
 
-const displayLoseScreen = (game, status, musique, endContent) => {
+const displayLoseScreen = (game, status, musique, endContent = false, videoLoseEvent) => {
   status.timer = 'stop'
   game.cameras.main.fadeOut(3000);
   // Textbox
@@ -41,6 +41,22 @@ const displayLoseScreen = (game, status, musique, endContent) => {
   }
 
   game.cameras.main.once("camerafadeoutcomplete", () => {
+    musique.stop();
+    var video = game.add.video(innerWidth / 2, innerHeight / 2, videoLoseEvent);
+    video.play();
+    video.setInteractive();
+    video.setDisplaySize(innerWidth / 2, innerHeight / 2.5).setDepth(10);
+    video.setScrollFactor(0);
+    video.on('pointerdown', (pointer) => {
+      console.log(pointer.x, pointer.y);
+      if (pointer.x > 577 && pointer.x < 742 && pointer.y > 511 && pointer.y < 559 && videoLoseEvent === "loseEvent1") {
+        game.scene.restart();
+        game.begin();
+      } else if (pointer.x > 154 && pointer.x < 261 && pointer.y > 614 && pointer.y < 688 && videoLoseEvent === "loseEvent2") {
+        game.scene.restart();
+        game.begin();
+      }
+    })
     if (!status.fade) {
       if (endContent) {
         endBorder.destroy();
@@ -48,23 +64,23 @@ const displayLoseScreen = (game, status, musique, endContent) => {
         endText.destroy();
       }
       game.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(6);
-      
-      lossScreen = game.add.image(game.cameras.main.scrollX + innerWidth/2.33, game.cameras.main.scrollY + innerHeight/3,'lossScreen').setOrigin(0,0);
-      lossScreen.setDisplaySize(innerWidth/8, innerHeight/4);
-      lossScreen.setDepth(10);
+   
+    //   lossScreen = game.add.image(game.cameras.main.scrollX + innerWidth/2.33, game.cameras.main.scrollY + innerHeight/3,'lossScreen').setOrigin(0,0);
+    //   lossScreen.setDisplaySize(innerWidth/8, innerHeight/4);
+    //   lossScreen.setDepth(10);
 
-      again = game.add.image(game.cameras.main.scrollX + innerWidth/2.45, game.cameras.main.scrollY + innerHeight/1.95, 'playAgain').setOrigin(0,0).setDepth(11).setInteractive();
-      again.setSize(innerWidth/6, innerHeight/4).setDisplaySize(again.width, again.height);
+    //   again = game.add.image(game.cameras.main.scrollX + innerWidth/2.45, game.cameras.main.scrollY + innerHeight/1.95, 'playAgain').setOrigin(0,0).setDepth(11).setInteractive();
+    //   again.setSize(innerWidth/6, innerHeight/4).setDisplaySize(again.width, again.height);
 
-      again.on("pointerover", () => {
-        again.setPosition(again.x - 10, again.y - 6)
-        again.setDisplaySize(again.width + 20, again.height + 12)
-      });
+    //   again.on("pointerover", () => {
+    //     again.setPosition(again.x - 10, again.y - 6)
+    //     again.setDisplaySize(again.width + 20, again.height + 12)
+    //   });
 
-      again.on("pointerout", () => {
-        again.setPosition(again.x + 10, again.y + 6)
-        again.setDisplaySize(again.width, again.height)
-      });
+    //   again.on("pointerout", () => {
+    //     again.setPosition(again.x + 10, again.y + 6)
+    //     again.setDisplaySize(again.width, again.height)
+    //   });
 
       const restart = () => {
         game.scene.restart();
@@ -72,15 +88,21 @@ const displayLoseScreen = (game, status, musique, endContent) => {
         musique.destroy();
       }
 
-      again.on("pointerup", restart);
+    //   again.on("pointerup", restart);
 
       game.input.keyboard.on("keydown-SPACE", restart);
 
       game.cameras.main.fadeIn(10);
       status.fade = true;
     }
+    video.on('complete', () => {
+      game.scene.stop();
+      game.scene.start("Login");
+      musique.destroy();
+    })
   });
 }
+
 
 const fadeToSelectScene = (game, status) => {
   status.timer = "stop";

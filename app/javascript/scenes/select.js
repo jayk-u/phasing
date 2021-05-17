@@ -39,7 +39,7 @@ const box = (game, x, y, width, height) => {
   if (nameCounter == 0) {
     game.add.text(x + width/3, y + height + 10, `Tutorial`, {font: `${width/13}px`, color:"#FFFFFF", align: 'center', wordWrap: {width: width}})
     level.on("pointerdown", () => {
-      game.sound.play("selectLevel");
+      game.sound.play("tone", {rate: 0.6})
       game.scene.stop();
       game.scene.start("Tutorial");
     });
@@ -47,7 +47,7 @@ const box = (game, x, y, width, height) => {
     game.add.text(x + width/3, y + height + 10, `Level ${nameCounter}`, {font: `${width/12.2}px`, color:"#FFFFFF"}).setAlign('center')
     var sceneName = `Intro${nameCounter}`;
     level.on("pointerdown", () => {
-      game.sound.play("selectLevel");
+      game.sound.play("tone", {rate: 0.6})
       game.scene.stop();
       game.scene.start(sceneName);
     });

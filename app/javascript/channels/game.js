@@ -22,6 +22,8 @@ var config = {
   //   width: '98%',
   //   height: '90%'
   // },
+  pixelArt: true,
+  inputTouch: false,
   physics: {
       default: 'arcade',
       arcade: {

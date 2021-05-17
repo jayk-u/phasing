@@ -1,6 +1,7 @@
 import { status } from "../scenes/play2";
 import { textbox } from '../components/textBox';
 import { character, upBridge, downBridge } from "../scenes/play2";
+import { musique } from "../scenes/play1";
 
 var key;
 var next;
@@ -75,9 +76,10 @@ const minigameWareHouse = (game, end) => {
       warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
       warehouse.on('pointerdown', (pointer, x, y) => {
         if (x > 570 && x < 707 && y > 418 && y < 571) {
-          if (blanknote && noteText && status.scratchticket === true) {
+          if (blanknote && noteText && status.scratchticket === true && rt) {
             blanknote.setVisible(true);
             noteText.setVisible(true);
+            rt.setVisible(true);
           } else {
           status.scratchticket = true;
           blanknote = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "blanknote").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(7);
@@ -94,17 +96,14 @@ const minigameWareHouse = (game, end) => {
           )
           .setOrigin(0)
           .setDepth(7);
-        }
-      }
-      if (rt && status.rt === true) rt.setVisible(true);
-      else {
-        status.rt = true;
-        rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.43, game.cameras.main.scrollY + innerHeight / 3, innerWidth/7.7, innerHeight/5).setDepth(8).setInteractive();
-        for (var y = 0; y < 2; y++)
-        {
-          for (var x = 0; x < 2; x++)
+          status.rt = true;
+          rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.43, game.cameras.main.scrollY + innerHeight / 3, innerWidth/7.7, innerHeight/5).setDepth(8).setInteractive();
+          for (var y = 0; y < 2; y++)
           {
-            rt.draw('scratchticket', x * 512, y * 512);
+            for (var x = 0; x < 2; x++)
+            {
+              rt.draw('scratchticket', x * 512, y * 512);
+            }
           }
         }
       }
@@ -460,6 +459,7 @@ const minigameBoat = (game, end) => {
     fuel.on("pointerdown", () => {
       fuel.ignoreDestroy = false;
       fuel.destroy();
+      status.inventory = "";
       var engine = game.sound.add("engine", {config: {loop: true}})
       engine.play();
       textbox(game, ["Yeeeeehaw!"], fadeOut)
@@ -527,6 +527,7 @@ const minigameBridgeEnd = (game, end) => {
   status.timer = "stop";
 
   textbox(game, ["So long, nerds!"]);
+  status.won = true;
   game.cameras.main.fadeOut(4000, 255, 255, 255);
   game.cameras.main.once("camerafadeoutcomplete", () => {
     var graph = game.add.graphics();

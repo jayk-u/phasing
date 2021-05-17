@@ -28,7 +28,7 @@ const box = (game, x, y, width, height) => {
       delay: 30,
       callback: onEvent, 
       callbackScope: game, 
-      loop: true 
+      loop: true
     });
 
 })

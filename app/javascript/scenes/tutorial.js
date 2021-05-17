@@ -90,17 +90,12 @@ class Tutorial extends Phaser.Scene {
         frameHeight: 48,
       });
     } else if (characterCounter === 3) {
-      this.load.spritesheet("character3", gameAssets.character3Sprite, {
+      this.load.spritesheet("character3", gameAssets.character7Sprite, {
         frameWidth: 32,
         frameHeight: 48,
       });
     } else if (characterCounter === 4) {
-      this.load.spritesheet("character4", gameAssets.character4Sprite, {
-        frameWidth: 32,
-        frameHeight: 48,
-      });
-    } else if (characterCounter === 5) {
-      this.load.spritesheet("character5", gameAssets.character5Sprite, {
+      this.load.spritesheet("character2", gameAssets.character8Sprite, {
         frameWidth: 32,
         frameHeight: 48,
       });
@@ -167,8 +162,8 @@ class Tutorial extends Phaser.Scene {
     borderInventory(this, status);
     //SETTINGS
     cameraSettings(this, character);
-    musique = game.sound.add('music');
-    sound(this, musique);
+    musique = this.sound.add('music');
+    sound(this, innerWidth/1.5 - 47, innerHeight/3.05, 35, 35, musique);
     leaveGame(this, musique);
     //END SETTINGS
 
@@ -187,13 +182,6 @@ class Tutorial extends Phaser.Scene {
     if (status.library == "end") {
       timerLoseScreenDisplay(this, 5, 0, status, musique, fadeToSelectScene)
     }
-    if (status.computerStatus === 'Unlocked' && countDoor < 1) {
-      this.secretDoor = this.map.createLayer("Secret Door", this.tileset, 0, 0).setDepth(0);
-      countDoor = 1;
-    } else if (countDoor === 1) {
-      camera(this, this.secretDoor, character);
-    }
-
     if (status.inventory != "" && status.inventory != "none") {
       status.borderBox.visible = true;
       status.inventoryBox.visible = true;

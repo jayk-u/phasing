@@ -77,11 +77,11 @@ const createCutscene = (game, status, nextScene) => {
 
   // END SETTINGS
 
-  // exit.on("pointerup", () => {
-  //   game.scene.stop();
-  //   game.scene.start('Login');
-  //   intromusic.stop();
-  // });
+  exit.on("pointerup", () => {
+    game.scene.stop();
+    game.scene.start('Login');
+    intromusic.stop();
+  });
 
   // TYPING SFX
 

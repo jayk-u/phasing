@@ -37,6 +37,7 @@ class Play1 extends Phaser.Scene {
   }
 
   begin () {
+    status.won = false;
     status.end = false;
     status.start = false;
     status.minigame = "none";
@@ -282,6 +283,8 @@ class Play1 extends Phaser.Scene {
       status.borderBox.visible = false;
       status.inventoryBox.visible = false;
     }
+
+    if (status.won === true) musique.stop();
     camera(this, this.walls, character);
     camera(this, this.objectBottom, character);
     camera(this, this.objectTop, character);

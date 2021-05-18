@@ -31,6 +31,7 @@ const minigameDoor = (game, end) => {
     textbox(game, ["It's open!", "Let's go!"]);
     game.cameras.main.fadeOut(4000, 255, 255, 255);
     game.cameras.main.once("camerafadeoutcomplete", () => {
+      status.won = true;
       alpha = 0;
       game.cameras.main.fadeIn(4000, 255, 255, 255);
       var video = game.add.video(innerWidth / 2, innerHeight / 2, "wonEvent");

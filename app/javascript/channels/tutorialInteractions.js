@@ -87,6 +87,7 @@ const minigameDoor = (game, end) => {
     keylock.setVisible(false)
     textbox(game, ["There's nothing beyond this", "Only one way to leave tutorial..."], destroyMinigame);
     status.library = "end";
+    status.finished = true;
   } else {
     textbox(game, ["A lock.", "Nothing interesting here.", "...", "I swear!", "...", "Just move on already okay?"], destroyMinigame)
   }

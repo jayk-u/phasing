@@ -40,6 +40,7 @@ class Tutorial extends Phaser.Scene {
   }
 
   begin () {
+    status.finished = false;
     status.end = false;
     status.start = false;
     status.minigame = "none";
@@ -177,6 +178,11 @@ class Tutorial extends Phaser.Scene {
 
   update ()
   {
+    if (status.finished === true) {
+      this.time.delayedCall(5000, () => {
+        musique.stop();
+      })
+    }
     movementSprite(this, character, cursors, characterCounter, status);
       //Inventory
     if (status.library == "end") {

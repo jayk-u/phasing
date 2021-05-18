@@ -37,13 +37,13 @@ const sound = (game, x, y, width, height, musique, play = true) => {
   mute.setDisplaySize(width, height);
   mute.setVisible(false);
 
-  SFXSettings = game.add.image(x + width/1.35, y + height/1.2, "emptyBar").setDisplaySize(width*2.3, height/3, 4).setVisible(false).setDepth(2).setInteractive();
+  SFXSettings = game.add.image(x + width/1.35, y + height/1.2, "emptyBar").setDisplaySize(width*2.3, height/3, 1).setVisible(false).setDepth(2).setInteractive();
   if (play) {SFXSettings.setScrollFactor(0);}
   // SFXSettingsBar = game.add.graphics()
-  // SFXSettingsBar.fillStyle(0x000000).fillRoundedRect(x - width/2.8, y + height/1.42, width*2.2, height/3.5, 4).setVisible(false).setDepth(2);
+  // SFXSettingsBar.fillStyle(0x000000).fillRoundedRect(x - width/2.6, y + height/1.42, width*2.2, height/3.5, 1).setVisible(false).setDepth(2);
   // if (play) {SFXSettingsBar.setScrollFactor(0);}
   SFXMask = game.add.graphics();
-  SFXMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.8, y + height/1.42, width*1.1, height/3.5, 4).setVisible(false).setDepth(2);
+  SFXMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.6, y + height/1.42, width*1.1, height/3.5, 1).setVisible(false).setDepth(2);
   if (play) {SFXMask.setScrollFactor(0);}
   SFXText = game.add.text(
     x + width/2,
@@ -63,10 +63,10 @@ const sound = (game, x, y, width, height, musique, play = true) => {
   musicSettings = game.add.image(x + width/1.35, y + height*1.2, "emptyBar").setDisplaySize(width*2.3, height/3, 4).setVisible(false).setDepth(2).setInteractive();
   if (play) {musicSettings.setScrollFactor(0);}
   // musicSettingsBar = game.add.graphics()
-  // musicSettingsBar.fillStyle(0x000000).fillRoundedRect(x - width/2.8, y + height*1.08, width*2.2, height/3.5, 4).setVisible(false).setDepth(2);
+  // musicSettingsBar.fillStyle(0x000000).fillRoundedRect(x - width/2.6, y + height*1.05, width*2.2, height/3.5, 1).setVisible(false).setDepth(2);
   // if (play) {musicSettingsBar.setScrollFactor(0);}
   musicMask = game.add.graphics();
-  musicMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.8, y + height*1.08, width*2.2, height/3.5, 4).setVisible(false).setDepth(2);
+  musicMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.6, y + height*1.05, width*2.2, height/3.5, 1).setVisible(false).setDepth(2);
   if (play) {musicMask.setScrollFactor(0);}
   musicText = game.add.text(
     x + width/2.8,
@@ -90,10 +90,10 @@ const sound = (game, x, y, width, height, musique, play = true) => {
 
   SFXSettings.on("pointerdown", (pointer, positionX) => {
     SFXMask.destroy();
-    if (positionX > 30) {
+    if (positionX > 15) {
       SFXMask = game.add.graphics();
-      if (play) {SFXMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.8, y + height/1.42, positionX/4.5, height/3.5, 4).setDepth(2).setScrollFactor(0);}
-      else SFXMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.8, y + height/1.42, positionX/1.9, height/3.5, 4).setDepth(2);
+      if (play) {SFXMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.6, y + height/1.42, positionX/4.1, height/3.5, 1).setDepth(2).setScrollFactor(0);}
+      else SFXMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.6, y + height/1.42, positionX/1.8, height/3.5, 1).setDepth(2);
       phaser.SFXVolume = positionX/300
     } else {
       phaser.SFXVolume = 0
@@ -112,10 +112,10 @@ const sound = (game, x, y, width, height, musique, play = true) => {
 
   musicSettings.on("pointerdown", (pointer, positionX) => {
     musicMask.destroy();
-    if (positionX > 30) {
+    if (positionX > 15) {
       musicMask = game.add.graphics();
-      if (play) {musicMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.8, y + height*1.08, positionX/4.5, height/3.5, 4).setDepth(2).setScrollFactor(0);}
-      else musicMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.8, y + height*1.08, positionX/1.9, height/3.5, 4).setDepth(2);
+      if (play) {musicMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.6, y + height*1.05, positionX/4.1, height/3.5, 1).setDepth(2).setScrollFactor(0);}
+      else musicMask.fillStyle(0xFFFCBB).fillRoundedRect(x - width/2.6, y + height*1.05, positionX/1.8, height/3.5, 1).setDepth(2);
       musique.setVolume(positionX/300)
     } else {
       musique.setVolume(0)
@@ -124,15 +124,15 @@ const sound = (game, x, y, width, height, musique, play = true) => {
 
   // game.input.on("pointerdown", (pointer, z, w, a, b) => {
   //   console.log(pointer)
-  //   console.log(pointer.downX, x - width/2.8)
-  //   if (pointer.downX > (x - width/2.8) && pointer.downX < (x - width/2.8 + width*2.2) && pointer.downY > y + height/1.42 && pointer.downY < y + height/1.42 + height/3.5) {
+  //   console.log(pointer.downX, x - width/2.6)
+  //   if (pointer.downX > (x - width/2.6) && pointer.downX < (x - width/2.6 + width*2.2) && pointer.downY > y + height/1.42 && pointer.downY < y + height/1.42 + height/3.5) {
   //     SFXMask.destroy();
-  //     if (pointer.downX - (x - width/2.8) > 10) {
+  //     if (pointer.downX - (x - width/2.6) > 10) {
   //       SFXMask = game.add.graphics();
-  //       SFXMask.fillStyle(0x034037).fillRoundedRect(x - width/2.8, y + height/1.42, pointer.downX - (x - width/2.8), height/3.5, 6).setDepth(4);
+  //       SFXMask.fillStyle(0x034037).fillRoundedRect(x - width/2.6, y + height/1.42, pointer.downX - (x - wi1th/2.8), height/3.5, 6).setDepth(4);
   //       if (play) {SFXMask.setScrollFactor(0);}
   //     }
-  //     phaser.SFXVolume = (pointer.downX - (x - width/2.8))/175
+  //     phaser.SFXVolume = (pointer.downX - (x - width/2.6))/175
   //     phaser.sound.sounds.forEach(SFX => {SFX.currentConfig.volume = (phaser.SFXVolume.toFixed(3))})
   //     console.log(phaser)
 

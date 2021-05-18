@@ -282,7 +282,7 @@ const minigameContainer = (game, end) => {
     digicode = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "digicode").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
     inputNumber = game.add.text(
       game.cameras.main.scrollX + innerWidth / 2.1 - 70,
-      game.cameras.main.scrollY + innerHeight / 2.3 - 100,
+      game.cameras.main.scrollY + innerHeight / 2.3 - 70,
       "",
       {
         fontFamily: "Arial",
@@ -305,25 +305,26 @@ const minigameContainer = (game, end) => {
     })
     digicode.on("pointerdown", (pointer, x, y) => {
       inputNumber.setTint(0xFFFFFF);
-      if (x > 57 && x < 146 && y > 196 && y < 269) {
+      console.log(x,y);
+      if (x > 98 && x < 173 && y > 256 && y < 332) {
         status.password += "1"
-      } else if (x > 193 && x < 287 && y > 196 && y < 269) {
+      } else if (x > 173 && x < 256 && y > 256 && y < 332) {
         status.password += "2"
-      } else if (x > 334 && x < 424 && y > 196 && y < 269) {
+      } else if (x > 256 && x < 335 && y > 256 && y < 332) {
         status.password += "3"
-      } else if (x > 57 && x < 146 && y > 314 && y < 389) {
+      } else if (x > 98 && x < 173 && y > 338 && y < 412) {
         status.password += "4"
-      } else if (x > 193 && x < 287 && y > 314 && y < 389) {
+      } else if (x > 173 && x < 256 && y > 338 && y < 412) {
         status.password += "5"
-      } else if (x > 334 && x < 424 && y > 314 && y < 389) {
+      } else if (x > 256 && x < 335 && y > 338 && y < 412) {
         status.password += "6"
-      } else if (x > 57 && x < 146 && y > 434 && y < 505) {
+      } else if (x > 98 && x < 173 && y > 412 && y < 500) {
         status.password += "7"
-      } else if (x > 193 && x < 287 && y > 434 && y < 505) {
+      } else if (x > 173 && x < 256 && y > 412 && y < 500) {
         status.password += "8"
-      } else if (x > 334 && x < 424 && y > 434 && y < 505) {
+      } else if (x > 256 && x < 335 && y > 412 && y < 500) {
         status.password += "9"
-      } else if (x > 193 && x < 287 && y > 534 && y < 605) {
+      } else if (x > 173 && x < 256 && y > 500 && y < 587) {
         status.password += "0"
       }
       if (status.password === random.toString()) {

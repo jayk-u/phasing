@@ -5,6 +5,7 @@ import { musique } from "../scenes/play1";
 
 var key;
 var next;
+var alpha;
 var digicode;
 var inputNumber;
 var electricity;
@@ -530,23 +531,30 @@ const minigameBridgeEnd = (game, end) => {
   status.won = true;
   game.cameras.main.fadeOut(4000, 255, 255, 255);
   game.cameras.main.once("camerafadeoutcomplete", () => {
-    var graph = game.add.graphics();
-    graph.fillStyle(0);
-    graph.fillRect(0, 0, 10000, 10000);
+    alpha = 0;
     game.cameras.main.fadeIn(4000, 255, 255, 255);
-    var winscreen = game.add
-      .image(
-        game.cameras.main.scrollX + innerWidth / 2.35,
-        game.cameras.main.scrollY + innerHeight / 2.9,
-        "winscreen"
-      )
-      .setOrigin(0, 0)
-      .setDepth(99);
-    winscreen.setDisplaySize(
-      (innerWidth + innerHeight) / 12,
-      (innerWidth + innerHeight) / 10.5
-    );
-    game.cameras.main.fadeOut(4000, 0, 0, 0);
+    var video = game.add.video(innerWidth / 2, innerHeight / 2, "wonEvent");
+    video.on('play', () => {
+      video.setPaused(false)
+      const onBegin = () => {
+        video.setAlpha(alpha)
+        alpha += 0.1
+        if (alpha >= 1) beginEvent.destroy()
+      }
+      var beginEvent = game.time.addEvent({
+        delay: 100,
+        callback: onBegin, 
+        callbackScope: game, 
+        loop: true
+      });
+    })
+    video.play(false, 0, 5).setAlpha(0);
+    video.setInteractive();
+    video.setDisplaySize(innerWidth / 2, innerHeight / 2.5).setDepth(10);
+      video.setScrollFactor(0);
+      video.on('complete', () => {
+        game.cameras.main.fadeOut(4000, 0, 0, 0);
+      })
     game.cameras.main.once("camerafadeoutcomplete", () => {
       game.scene.stop();
       game.scene.start('Outro2');

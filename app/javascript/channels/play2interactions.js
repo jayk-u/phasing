@@ -609,7 +609,7 @@ const minigameGenerator = (game, end) => {
   if (status.electricity) {
     textbox(game, ["That was... electrifying."], end)
   } else {
-    textbox(game, ["Uh?", "Power is out...", "No wonder I couldn't charge my phone."], destroyMinigame)
+    textbox(game, ["Uh?", "Power is out...", "No wonder I couldn't charge my phone.", "If I remember correctly I just need to connect the green line..."], destroyMinigame)
 
     generator = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "generator").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6);
     electricity = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "electricity").setDisplaySize(innerWidth/6, innerHeight/6).setDepth(6).setAlpha(0);

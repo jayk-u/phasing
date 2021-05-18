@@ -96,11 +96,17 @@ class Tutorial extends Phaser.Scene {
         frameHeight: 48,
       });
     } else if (characterCounter === 4) {
-      this.load.spritesheet("character2", gameAssets.character8Sprite, {
+      this.load.spritesheet("character4", gameAssets.character8Sprite, {
         frameWidth: 32,
         frameHeight: 48,
       });
     }
+    //End Sprite
+
+    this.load.spritesheet("character6", gameAssets.character6Sprite, {
+      frameWidth: 32,
+      frameHeight: 48,
+    });
     //End Sprite
     this.load.audio('door', gameAssets.doorMp3);
 

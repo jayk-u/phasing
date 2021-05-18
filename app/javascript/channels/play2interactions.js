@@ -106,14 +106,14 @@ const minigameWareHouse = (game, end) => {
               rt.draw('scratchticket', x * 512, y * 512);
             }
           }
+          brush = game.add.circle(0, 0, 5, 0xffffff).setVisible(false);
+          rt.on('pointermove', (pointer, x, y) => {
+            if (pointer.isDown) {
+              rt.erase(brush, x, y);
+            } 
+          })
         }
       }
-      brush = game.add.circle(0, 0, 5, 0xffffff).setVisible(false);
-      rt.on('pointermove', (pointer, x, y) => {
-        if (pointer.isDown) {
-          rt.erase(brush, x, y);
-        } 
-      })
       });
   } else {
     textbox(game, ["My less-than-lawful instincts are tingling.", "I need some thievery done."], end);

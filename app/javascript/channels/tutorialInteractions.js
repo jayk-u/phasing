@@ -95,7 +95,7 @@ const minigameDoor = (game, end) => {
 }
 
 const endingInstructions = (game, end) => {
-  textbox(game, ["You didn't see that coming, uh?", "It's as you've seen: you've got a timer so complete the levels before it reaches 0...\nIf you can!"], end)
+  textbox(game, ["You didn't see that coming, uh?", "It's as you've seen: you've got a timer so complete the levels before it reaches 0...\nIf you can!"], end, 5)
 }
 
 export {

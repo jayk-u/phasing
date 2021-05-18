@@ -211,9 +211,9 @@ class Play2 extends Phaser.Scene {
     this.load.image('exit', gameAssets.exitImg);
 
     //Endscreen
-    this.load.image('playAgain', gameAssets.playagainPng);
-    this.load.image('winscreen', gameAssets.winscreenPng);
-    this.load.image('lossScreen', gameAssets.lossscreenPng);
+    // this.load.image('playAgain', gameAssets.playagainPng);
+    // this.load.image('winscreen', gameAssets.winscreenPng);
+    // this.load.image('lossScreen', gameAssets.lossscreenPng);
     this.load.audio('door', gameAssets.doorMp3);
     //End endscreen
 
@@ -221,7 +221,6 @@ class Play2 extends Phaser.Scene {
     const loginAssets = document.getElementById("login").dataset;
 
     this.load.image("settings", loginAssets.settingsBtn);
-    this.load.video("overlay", loginAssets.overlayVid, false, true);
     this.load.image("containersett", loginAssets.containerImg);
     this.load.image("volume", loginAssets.volumeImg);
     this.load.audio("play2Music", gameAssets.play2Mp3);

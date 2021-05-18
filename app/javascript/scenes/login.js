@@ -47,7 +47,7 @@ class Login extends Phaser.Scene {
     var rightArrow;
 
     video = this.add.video(0, 0, "background");
-    video.setDisplaySize(innerWidth * 2, innerHeight * 2);
+    video.setDisplaySize(innerWidth * 2, innerHeight * 2).setPaused(false);
 
     // video.setBlendMode(Phaser.BlendModes.SCREEN);
     video.play(true);

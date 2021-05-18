@@ -74,7 +74,8 @@ class Select extends Phaser.Scene {
 
       this.load.image("logoo", loginAssets.logoImg);
       this.load.image("settings", loginAssets.settingsBtn);
-      this.load.video("overlay", loginAssets.overlayVid, false, true);
+      // this.load.video("overlay", loginAssets.overlayVid, false, true);
+      this.load.video("background", loginAssets.backgroundVid, 'loadeddata', false, true);
       this.load.image("containersett", loginAssets.containerImg);
       this.load.image("volumeSettings", loginAssets.volumesettingsImg);
       this.load.image("volume", loginAssets.volumeImg);
@@ -91,8 +92,8 @@ class Select extends Phaser.Scene {
     box(this, innerWidth*2/3, innerHeight/3, innerWidth/5, innerHeight/5);
 
 
-    var video = this.add.video(10, 10, "overlay");
-    video.setDisplaySize(innerWidth*2, innerHeight*2);
+    var video = this.add.video(0, 0, "background");
+    video.setDisplaySize(innerWidth*2, innerHeight*2).setPaused(false);
 
     video.setBlendMode(Phaser.BlendModes.SCREEN);
     video.play(true);

@@ -73,7 +73,7 @@ const minigameWareHouse = (game, end) => {
   if (status.unlockedContainer) {
     textbox(game, ["Seems like criminals do come back to the crime scene."], end)
   } else if (status.electricity) {
-      textbox(game, ["Now, what do we have here...?"], destroyMinigame);
+      textbox(game, ["Now, what do we have here...?", "Those papers look pretty dusty.", "Another man's forgetfulness is my blessing - or so goes the saying."], destroyMinigame);
       warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
       warehouse.on('pointerdown', (pointer, x, y) => {
         if (x > 570 && x < 707 && y > 418 && y < 571) {

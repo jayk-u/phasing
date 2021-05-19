@@ -143,12 +143,7 @@ class Play2 extends Phaser.Scene {
     const gameAssets = document.getElementById("game-assets").dataset;
 
     // Minigames
-    this.load.image("tv", gameAssets.tvImg);
     this.load.image("fuel", gameAssets.fuelImg);
-    this.load.image("computer", gameAssets.computerImg);
-    this.load.image("ring", gameAssets.ringImg);
-    this.load.image("keylock", gameAssets.keylockImg);
-    this.load.image("key", gameAssets.keyImg);
     this.load.image("container", gameAssets.containerImg);
     this.load.image("note", gameAssets.blanknoteImg);
     this.load.image("clueMap", gameAssets.dockscluemapImg);
@@ -208,30 +203,24 @@ class Play2 extends Phaser.Scene {
       frameHeight: 48,
     });
 
-    this.load.image('exit', gameAssets.exitImg);
-
     //Endscreen
     // this.load.image('playAgain', gameAssets.playagainPng);
     // this.load.image('winscreen', gameAssets.winscreenPng);
     // this.load.image('lossScreen', gameAssets.lossscreenPng);
-    this.load.audio('door', gameAssets.doorMp3);
     //End endscreen
 
     // Overlay
-    const loginAssets = document.getElementById("login").dataset;
 
-    this.load.image("settings", loginAssets.settingsBtn);
-    this.load.image("containersett", loginAssets.containerImg);
-    this.load.image("volume", loginAssets.volumeImg);
     this.load.audio("play2Music", gameAssets.play2Mp3);
 
-    const introAssets = document.getElementById("intro").dataset;
-
-    this.load.image("mute", introAssets.muteImg);
     //End overlay
 
     this.load.image("rain", gameAssets.rainParticle)
     this.load.audio("steps", gameAssets.waterstepsMp3);
+
+    // Test
+    // this.load.on(Phaser.Loader.Events.FILE_COMPLETE, (key, type, data) => { console.log(`FILE_COMPLETE: key:`, key, `, type:`, type, `, ${this.load.totalComplete} COMPLETE / ${this.load.totalToLoad} TOTAL (${this.load.totalFailed} FAILED)`), console.log(`inflight:`, this.load.inflight) })
+
 
   };
 

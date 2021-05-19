@@ -298,12 +298,10 @@ const minigameContainer = (game, end) => {
     if (status.password != "") status.password = "";
     game.input.keyboard.on("keyup-BACKSPACE", () => {
       status.backspaceDigicode = false;
-      console.log(status.password.length);
       if (status.password === "") {
         status.password = "";
       } else if (status.password.length > 0 && status.password != "UNLOCKED" && status.password != "ERROR" && status.backspaceDigicode != true) {
         status.password = status.password.substring(0, status.password.length - 1);
-        console.log('yo');
         status.backspaceDigicode = true;
       }
       inputNumber.setText(status.password);
@@ -332,8 +330,6 @@ const minigameContainer = (game, end) => {
       } else if (x > 173 && x < 256 && y > 500 && y < 587) {
         status.password += "0"
       }
-      console.log(random.toString());
-      console.log(status.password);
       if (status.password === random.toString()) {
         status.unlockedContainer = true;
         inputNumber.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
@@ -349,7 +345,6 @@ const minigameContainer = (game, end) => {
           inputNumber.destroy();
           Container(game, end, destroyMinigame);
           status.minigame = "active";
-          console.log("Youhouuu");
           status.password = "";
         })
       }

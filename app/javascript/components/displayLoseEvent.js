@@ -30,9 +30,9 @@ const displayLoseScreen = (game, status, musique, endContent = false, videoLoseE
   // End Textbox
 
   if (status.end) {
-    let doorsound = game.sound.add('door');
-    doorsound.setVolume(0.5);
-    doorsound.play();
+    // let doorsound = game.sound.add('door');
+    // doorsound.setVolume(0.5);
+    // doorsound.play();
     start = game.time.now;
     status.start = true;
   }

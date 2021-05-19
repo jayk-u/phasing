@@ -295,17 +295,18 @@ const minigameContainer = (game, end) => {
     )
     .setOrigin(0)
     .setDepth(10);
+    if (status.password != "") status.password = "";
     game.input.keyboard.on("keyup-BACKSPACE", () => {
       if (status.password === "") {
         status.password = "";
-      } else if (status.password.length > 0) {
+      } else if (status.password.length > 0 && status.password != "UNLOCKED" && status.password != "ERROR") {
         status.password = status.password.substring(0, status.password.length - 1);
       }
       inputNumber.setText(status.password);
     })
+
     digicode.on("pointerdown", (pointer, x, y) => {
-      inputNumber.setTint(0xFFFFFF);
-      console.log(x,y);
+      inputNumber.setTint(0xFFFFFF).setDepth(9);
       if (x > 98 && x < 173 && y > 256 && y < 332) {
         status.password += "1"
       } else if (x > 173 && x < 256 && y > 256 && y < 332) {
@@ -327,20 +328,26 @@ const minigameContainer = (game, end) => {
       } else if (x > 173 && x < 256 && y > 500 && y < 587) {
         status.password += "0"
       }
+      console.log(random.toString());
+      console.log(status.password);
       if (status.password === random.toString()) {
         status.unlockedContainer = true;
-        status.password = "Unlocked";
-        blanknote.destroy();
-        noteText.destroy();
-        rt.destroy();
+        inputNumber.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
+        status.password = "UNLOCKED";
+        if (blanknote) blanknote.destroy();
+        if (noteText) noteText.destroy();
+        if (rt) rt.destroy();
         status.scratchticket = false;
         status.rt = false;
-        inputNumber.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
+        game.time.delayedCall(1000, () => {
+          digicode.destroy();
+          inputNumber.destroy();
+        })
       }
       else if (status.password === "0000") {
         textbox(game, ["...", "Looks like I'm up against an expert."], destroyMinigame)
       }
-      else if (status.password.length > 3) {
+      else if (status.password.length > 3 && !status.unlockedContainer) {
         status.password = "ERROR";
         inputNumber.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000)
         game.time.delayedCall(1000, () => {

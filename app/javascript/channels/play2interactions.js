@@ -1,7 +1,6 @@
 import { status } from "../scenes/play2";
 import { textbox } from '../components/textBox';
 import { character, upBridge, downBridge } from "../scenes/play2";
-import { musique } from "../scenes/play1";
 
 var key;
 var next;
@@ -247,7 +246,6 @@ const minigameDocksLadder = (game, end) => {
 
 const minigameContainer = (game, end) => {
   // 655x 990y
-  var i = 0;
 
   const pointFuel = () => {
     fuel.x = innerWidth / 3.15;
@@ -270,6 +268,7 @@ const minigameContainer = (game, end) => {
         containers.destroy();
         status.containers = false;
       }
+      game.input.keyboard.off("keyup-BACKSPACE")
       if (fuel) fuel.off("pointerdown", pointFuel), fuel.destroy();
       if (digicode) digicode.destroy();
       if (inputNumber) inputNumber.destroy();
@@ -295,17 +294,20 @@ const minigameContainer = (game, end) => {
     )
     .setOrigin(0)
     .setDepth(10);
+    if (status.password != "") status.password = "";
     game.input.keyboard.on("keyup-BACKSPACE", () => {
+      status.backspaceDigicode = false;
       if (status.password === "") {
         status.password = "";
-      } else if (status.password.length > 0) {
+      } else if (status.password.length > 0 && status.password != "UNLOCKED" && status.password != "ERROR" && status.backspaceDigicode != true) {
         status.password = status.password.substring(0, status.password.length - 1);
+        status.backspaceDigicode = true;
       }
       inputNumber.setText(status.password);
     })
+
     digicode.on("pointerdown", (pointer, x, y) => {
-      inputNumber.setTint(0xFFFFFF);
-      console.log(x,y);
+      inputNumber.setTint(0xFFFFFF).setDepth(9);
       if (x > 98 && x < 173 && y > 256 && y < 332) {
         status.password += "1"
       } else if (x > 173 && x < 256 && y > 256 && y < 332) {
@@ -329,19 +331,34 @@ const minigameContainer = (game, end) => {
       }
       if (status.password === random.toString()) {
         status.unlockedContainer = true;
-        status.password = "Unlocked";
-        blanknote.destroy();
-        noteText.destroy();
-        rt.destroy();
+        inputNumber.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
+        status.password = "UNLOCKED";
+        if (blanknote) blanknote.destroy();
+        if (noteText) noteText.destroy();
+        if (rt) rt.destroy();
         status.scratchticket = false;
         status.rt = false;
-        inputNumber.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
+        game.sound.play("digitalUnlock")
+        game.time.delayedCall(1000, () => {
+          digicode.destroy();
+          inputNumber.destroy();
+          Container(game, end, destroyMinigame);
+          status.minigame = "active";
+          status.password = "";
+        })
       }
       else if (status.password === "0000") {
+        status.password = "ERROR";
+        game.sound.play("digitalLock")
+        inputNumber.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000)
+        game.time.delayedCall(1000, () => {
+          status.password = "";
+        })
         textbox(game, ["...", "Looks like I'm up against an expert."], destroyMinigame)
       }
-      else if (status.password.length > 3) {
+      else if (status.password.length > 3 && !status.unlockedContainer) {
         status.password = "ERROR";
+        game.sound.play("digitalLock")
         inputNumber.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000)
         game.time.delayedCall(1000, () => {
           status.password = "";
@@ -351,19 +368,47 @@ const minigameContainer = (game, end) => {
 
     })
   } else {
-    containerNumber = 0;
-    status.containers = true;
-    containers = game.add.group({ key: 'container', repeat: 25, setScale: { x: 0.09, y: 0.07 }, setDepth: {value: 5 } });
-    Phaser.Actions.GridAlign(containers.getChildren(), {
-      width: 5,
-      height: 5,
-      cellWidth: 47,
-      cellHeight: 45.2,
-      x: game.cameras.main.scrollX + innerWidth / 3.6,
-      y: game.cameras.main.scrollY - innerHeight / 14,
+    Container(game, end, destroyMinigame);
+  }
+}
+
+const Container = (game, end, destroyMinigame) => {
+  var i = 0;
+  containerNumber = 0;
+  status.containers = true;
+  containers = game.add.group({ key: 'container', repeat: 25, setScale: { x: 0.09, y: 0.07 }, setDepth: {value: 5 } });
+  Phaser.Actions.GridAlign(containers.getChildren(), {
+    width: 5,
+    height: 5,
+    cellWidth: 47,
+    cellHeight: 45.2,
+    x: game.cameras.main.scrollX + innerWidth / 3.6,
+    y: game.cameras.main.scrollY - innerHeight / 14,
+  });
+  containers.getChildren()[0].setScale(0.1, 0.08).setDepth(6)
+  var tween = game.tweens.add({
+    targets: containers.getChildren()[containerNumber],
+    scaleX: 0.12,
+    scaleY: 0.1,
+    ease: 'Sine.easeInOut',
+    duration: 300,
+    delay: i * 50,
+    repeat: -1,
+    yoyo: true
     });
-    containers.getChildren()[0].setScale(0.1, 0.08).setDepth(6)
-    var tween = game.tweens.add({
+
+  i++;
+
+  if (i % 12 === 0) i = 0;
+  
+  const zoomMove = (cases) => {
+    tween.remove();
+    i = 0;
+    containers.getChildren()[containerNumber].setScale(0.09, 0.07).setDepth(5);
+    containerNumber += cases
+    if (containerNumber > 24 || containerNumber < 0) containerNumber -=5*cases
+    containers.getChildren()[containerNumber].setScale(0.1, 0.08).setDepth(6);
+    tween = game.tweens.add({
       targets: containers.getChildren()[containerNumber],
       scaleX: 0.12,
       scaleY: 0.1,
@@ -372,69 +417,46 @@ const minigameContainer = (game, end) => {
       delay: i * 50,
       repeat: -1,
       yoyo: true
-      });
+    })
 
     i++;
 
     if (i % 12 === 0) i = 0;
-    
-    const zoomMove = (cases) => {
-      tween.remove();
-      i = 0;
-      containers.getChildren()[containerNumber].setScale(0.09, 0.07).setDepth(5);
-      containerNumber += cases
-      if (containerNumber > 24 || containerNumber < 0) containerNumber -=5*cases
-      containers.getChildren()[containerNumber].setScale(0.1, 0.08).setDepth(6);
-      tween = game.tweens.add({
-        targets: containers.getChildren()[containerNumber],
-        scaleX: 0.12,
-        scaleY: 0.1,
-        ease: 'Sine.easeInOut',
-        duration: 300,
-        delay: i * 50,
-        repeat: -1,
-        yoyo: true
-      })
-
-      i++;
-
-      if (i % 12 === 0) i = 0;
-    };
-    game.input.keyboard.on('keydown-RIGHT', () => {zoomMove(1)})
-    game.input.keyboard.on('keydown-LEFT', () => {zoomMove(-1)})
-    game.input.keyboard.on('keydown-DOWN', () => {zoomMove(5)})
-    game.input.keyboard.on('keydown-UP', () => {zoomMove(-5)})
-    game.input.keyboard.on('keydown-ENTER', () => {
-      if (containerNumber == 13) {
-        if (status.inventory === "Fuel") {textbox(game, ["I already completed this heist!"], destroyMinigame)}
-        else {
-          textbox(game, ["Looks like fuel.", "Reminds me of the good old days..."], destroyMinigame)
-          if (status.inventory != "Fuel" && status.fuel === false ) {
-            fuel = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "fuel").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
-            status.fuel = true;
-          }
-          fuel.on('pointerdown', pointFuel)
+  };
+  game.input.keyboard.on('keydown-RIGHT', () => {zoomMove(1)})
+  game.input.keyboard.on('keydown-LEFT', () => {zoomMove(-1)})
+  game.input.keyboard.on('keydown-DOWN', () => {zoomMove(5)})
+  game.input.keyboard.on('keydown-UP', () => {zoomMove(-5)})
+  game.input.keyboard.on('keydown-ENTER', () => {
+    if (containerNumber == 13) {
+      if (status.inventory === "Fuel") {textbox(game, ["I already completed this heist!"], destroyMinigame)}
+      else {
+        textbox(game, ["Looks like fuel.", "Reminds me of the good old days..."], destroyMinigame)
+        if (status.inventory != "Fuel" && status.fuel === false ) {
+          fuel = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "fuel").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+          status.fuel = true;
         }
+        fuel.on('pointerdown', pointFuel)
       }
-      else if (containerNumber == 3) {
-        textbox(game, ["I wish my mother could see this.", "Those containers are so neatly stacked.", "Would have made up for all those times I did not clean my room."], destroyMinigame)
-      }
-      else if (containerNumber == 5) {
-        textbox(game, ["I wonder if any docker forgot their lunch here.", "I'm hungry."], destroyMinigame)
-      }
-      else if (containerNumber == 10) {
-        textbox(game, ["An hungry criminal is a dangerous criminal.", "Therefore, the state should collect criminal sustainment funds from the citizens.", "Safer streets, safer life.", "I would have made a great politician."], destroyMinigame)
-      }
-      else if (containerNumber == 17) {
-        textbox(game, ["OH MY GOD WHAT IS THIS?!", "...", "Sike."], destroyMinigame)
-      }
-      else if (containerNumber == 24) {
-        textbox(game, ["It's not empty.", "There's a note on the inside.", '"Your princess is in another castle."', "...", "Just kidding.", "It's empty."], destroyMinigame)
-      }
-      else textbox(game, ["It's empty."], destroyMinigame)
-    })
-    textbox(game, ["I wonder what's inside...?"], destroyMinigame);
-  }
+    }
+    else if (containerNumber == 3) {
+      textbox(game, ["I wish my mother could see this.", "Those containers are so neatly stacked.", "Would have made up for all those times I did not clean my room."], destroyMinigame)
+    }
+    else if (containerNumber == 5) {
+      textbox(game, ["I wonder if any docker forgot their lunch here.", "I'm hungry."], destroyMinigame)
+    }
+    else if (containerNumber == 10) {
+      textbox(game, ["An hungry criminal is a dangerous criminal.", "Therefore, the state should collect criminal sustainment funds from the citizens.", "Safer streets, safer life.", "I would have made a great politician."], destroyMinigame)
+    }
+    else if (containerNumber == 17) {
+      textbox(game, ["OH MY GOD WHAT IS THIS?!", "...", "Sike."], destroyMinigame)
+    }
+    else if (containerNumber == 24) {
+      textbox(game, ["It's not empty.", "There's a note on the inside.", '"Your princess is in another castle."', "...", "Just kidding.", "It's empty."], destroyMinigame)
+    }
+    else textbox(game, ["It's empty."], destroyMinigame)
+  })
+  textbox(game, ["I wonder what's inside...?"], destroyMinigame);
 }
 
 const minigameStreetLamp = (game, end) => {

@@ -30,9 +30,9 @@ const displayLoseScreen = (game, status, musique, endContent = false, videoLoseE
   // End Textbox
 
   if (status.end) {
-    let doorsound = game.sound.add('door');
-    doorsound.setVolume(0.5);
-    doorsound.play();
+    // let doorsound = game.sound.add('door');
+    // doorsound.setVolume(0.5);
+    // doorsound.play();
     start = game.time.now;
     status.start = true;
   }
@@ -64,7 +64,7 @@ const displayLoseScreen = (game, status, musique, endContent = false, videoLoseE
     video.setDisplaySize(innerWidth / 2, innerHeight / 2.5).setDepth(10);
     video.setScrollFactor(0);
     video.on('pointerdown', (pointer) => {
-      console.log(pointer.x, pointer.y);
+      // console.log(pointer.x, pointer.y);
       if (pointer.x > 830 && pointer.x < 1060 && pointer.y > 480 && pointer.y < 559 && videoLoseEvent === "loseEvent1") {
         game.scene.restart();
         game.begin();

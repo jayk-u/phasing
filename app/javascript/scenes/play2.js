@@ -162,6 +162,8 @@ class Play2 extends Phaser.Scene {
     this.load.audio('digitalunlock', gameAssets.digitalunlockMp3);
     this.load.audio('static', gameAssets.staticMp3);
     this.load.audio('buzz', gameAssets.buzzMp3);
+    this.load.audio("digitalLock", gameAssets.digitallockMp3);
+    this.load.audio("digitalUnlock", gameAssets.digitalunlockMp3);
     this.load.image("digicode", gameAssets.digicodeImg)
     this.load.video("loseEvent2", gameAssets.lossScreenLevel2Vid, 'loadeddata', false);
     this.load.video("wonEvent", gameAssets.wonEventVid, 'loadeddata', false);

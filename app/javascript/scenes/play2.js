@@ -221,7 +221,7 @@ class Play2 extends Phaser.Scene {
     this.load.audio("steps", gameAssets.waterstepsMp3);
 
     // Test
-    // this.load.on(Phaser.Loader.Events.FILE_COMPLETE, (key, type, data) => { console.log(`FILE_COMPLETE: key:`, key, `, type:`, type, `, ${this.load.totalComplete} COMPLETE / ${this.load.totalToLoad} TOTAL (${this.load.totalFailed} FAILED)`), console.log(`inflight:`, this.load.inflight) })
+    this.load.on(Phaser.Loader.Events.FILE_COMPLETE, (key, type, data) => { console.log(`FILE_COMPLETE: key:`, key, `, type:`, type, `, ${this.load.totalComplete} COMPLETE / ${this.load.totalToLoad} TOTAL (${this.load.totalFailed} FAILED)`), console.log(`inflight:`, this.load.inflight) })
 
 
   };

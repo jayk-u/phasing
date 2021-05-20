@@ -1,4 +1,4 @@
-const textbox = (game, string, destroy, depth = 2) => {
+const textbox = (game, string, destroy, depth = 3) => {
   // if (game.input.keyboard.listenerCount("keydown-SPACE", incrementCounter) > 1) { game.input.keyboard.removeAllListeners("keydown-SPACE", incrementCounter)};
   if (game.next) {
     game.next.destroy();

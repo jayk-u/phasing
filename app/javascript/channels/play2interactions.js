@@ -1,6 +1,7 @@
 import { status } from "../scenes/play2";
 import { textbox } from '../components/textBox';
 import { character, upBridge, downBridge } from "../scenes/play2";
+import { phaser } from "../channels/game"
 import { musique } from "../scenes/play1";
 
 var key;
@@ -20,8 +21,6 @@ var map;
 var fuel;
 var containers;
 var containerNumber;
-var buzz;
-var statics;
 var random = Math.round(Math.random() * 10000);
 
 const minigameMap = (game, end) => {
@@ -123,7 +122,8 @@ const minigameRoofLadder = (game, end) => {
   // 300x 615y
 
   const fade = () => {
-    game.sound.play("ladder", {duration: 0.9})
+
+    phaser.sound.sounds.find(sound => sound.key === 'ladder').play();
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
       if (character.x <= 285) {
@@ -232,7 +232,7 @@ const minigameBuildingDoor = (game, end) => {
 const minigameDocksLadder = (game, end) => {
   // 750x 975y
   const fade = () => {
-    game.sound.play("ladder", {duration: 0.9})
+    phaser.sound.sounds.find(sound => sound.key === 'ladder').play();
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
       character.y <= 940? (character.setPosition(755, 980), game.docksTop.setDepth(0), game.ladderTop.setDepth(0)) : (character.setPosition(755, 930), game.docksTop.setDepth(2), game.ladderTop.setDepth(2));
@@ -339,7 +339,8 @@ const minigameContainer = (game, end) => {
         if (rt) rt.destroy();
         status.scratchticket = false;
         status.rt = false;
-        game.sound.play("digitalUnlock")
+
+        phaser.sound.sounds.find(sound => sound.key === 'digitalUnlock').play();
         game.time.delayedCall(1000, () => {
           digicode.destroy();
           inputNumber.destroy();
@@ -350,7 +351,7 @@ const minigameContainer = (game, end) => {
       }
       else if (status.password === "0000") {
         status.password = "ERROR";
-        game.sound.play("digitalLock")
+        phaser.sound.sounds.find(sound => sound.key === 'digitalLock').play();
         inputNumber.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000)
         game.time.delayedCall(1000, () => {
           status.password = "";
@@ -359,7 +360,7 @@ const minigameContainer = (game, end) => {
       }
       else if (status.password.length > 3 && !status.unlockedContainer) {
         status.password = "ERROR";
-        game.sound.play("digitalLock")
+        phaser.sound.sounds.find(sound => sound.key === 'digitalLock').play();
         inputNumber.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000)
         game.time.delayedCall(1000, () => {
           status.password = "";
@@ -485,16 +486,15 @@ const minigameBoat = (game, end) => {
       fuel.ignoreDestroy = false;
       fuel.destroy();
       status.inventory = "";
-      var engine = game.sound.add("engine", {config: {loop: true}})
-      engine.play();
+      phaser.sound.sounds.find(sound => sound.key === 'engine').play();
       textbox(game, ["Yeeeeehaw!"], fadeOut)
       game.cameras.main.once("camerafadeoutcomplete", () => {
         game.redBoat.setVisible(false);
         var blackRect = game.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
         fadeIn();
         game.cameras.main.once("camerafadeincomplete", () => {
-          engine.stop();
-          game.sound.play("boatExplosion", {config: {volume: 10}});
+          phaser.sound.sounds.find(sound => sound.key === 'engine').stop();
+          phaser.sound.sounds.find(sound => sound.key === 'boatExplosion').play();
           textbox(game, ["BOOM!"], fadeOut, 5);
           game.cameras.main.once("camerafadeoutcomplete", () => {
             blackRect.destroy();
@@ -524,7 +524,7 @@ const minigameBoat = (game, end) => {
 const minigameManHole = (game, end) => {
   //120x 550y || 780x 890y
   const fade = () => {
-    game.sound.play("manhole");
+    phaser.sound.sounds.find(sound => sound.key === 'manhole').play();
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
       character.x <= 150 && character.x >= 100 ? (character.setPosition(780, 890), downBridge(game)) : (character.setPosition(120, 550), upBridge(game));
@@ -590,10 +590,10 @@ const minigameGenerator = (game, end) => {
   // 40x 430y
 
   if (status.electricity) {
-    buzz.play()
+    phaser.sound.sounds.find(sound => sound.key === 'buzz').play()
   } else {
-    if (!statics) statics = game.sound.add("static", {loop: true});
-    statics.play()
+    if (!phaser.sound.sounds.find(sound => sound.key === 'static')) 
+    phaser.sound.sounds.find(sound => sound.key === 'static').play();
   }
 
   const pathing = (direction) => {
@@ -610,9 +610,8 @@ const minigameGenerator = (game, end) => {
       electricity.setAlpha(alpha);
     }
     if (electricity.alpha === 0.99 && !status.electricity) {
-      statics.stop();
-      buzz = game.sound.add("buzz")
-      buzz.play();
+      phaser.sound.sounds.find(sound => sound.key === 'static').stop();
+      phaser.sound.sounds.find(sound => sound.key === 'buzz').play();
       textbox(game, ["That's it!", "Should I ever get bored of the criminal life...", "I'd always have work as an electrician, ah!"], destroyMinigame);
       status.electricity = true;
       game.warehouseOpened.setVisible(true);
@@ -624,8 +623,8 @@ const minigameGenerator = (game, end) => {
     if (!game.active) {
       generator.destroy();
       if (electricity) electricity.destroy();
-      if (buzz) buzz.stop();
-      if (statics) statics.stop();
+      if (phaser.sound.sounds.find(sound => sound.key === 'buzz')) phaser.sound.sounds.find(sound => sound.key === 'buzz').stop();
+      if (phaser.sound.sounds.find(sound => sound.key === 'static')) phaser.sound.sounds.find(sound => sound.key === 'static').stop();
       end();
     }
   };

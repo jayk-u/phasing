@@ -1,5 +1,6 @@
 import { status } from "../scenes/play1";
 import { textbox } from '../components/textBox';
+import { phaser } from "../channels/game";
 
 // var redBtn
 var ring;
@@ -22,12 +23,8 @@ const minigameDoor = (game, end) => {
   game.load.image("keylock", gameAssets.keylockImg);
 
   if (status.computerStatus == "Unlocked") {
-    game.load.audio("door", gameAssets.doorMp3);
-    var door = game.sound.add("door");
-    door.play();
-
+    phaser.sound.sounds.find(sound => sound.key === 'door').play();
     status.timer = "stop";
-
     textbox(game, ["It's open!", "Let's go!"]);
     game.cameras.main.fadeOut(4000, 255, 255, 255);
     game.cameras.main.once("camerafadeoutcomplete", () => {
@@ -331,7 +328,7 @@ const minigameBonsai = (game, end) => {
     // if (next.scene != game.scene.scene) {
       if (status.computerStatus != "On" && status.computerStatus != "Unlocked") {
         status.computerStatus = "On";
-        game.sound.play("click");
+        phaser.sound.sounds.find(sound => sound.key === 'click').play();
         textbox(
           game,
           ["I push on the red button.", "I can hear a small whir close to me.", "Let's hurry!"],
@@ -547,7 +544,7 @@ const minigameComputer = (game, end) => {
         if (event.key == "Backspace") {
           input = "Enter password: ";
         } else if (input.length > 23) {
-          game.sound.play("digitalLock")
+          phaser.sound.sounds.find(sound => sound.key === 'digitalLock').play();
           input = "Enter password: ERROR";
           inputText.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000);
           // game.input.keyboard.once("keydown-SPACE", () => {
@@ -558,7 +555,7 @@ const minigameComputer = (game, end) => {
         }
         inputText.setText(input);
         if (input == "Enter password: ASTERIX") {
-          game.sound.play("digitalUnlock")
+          phaser.sound.sounds.find(sound => sound.key === 'digitalLock').play();
           status.computerStatus = "Unlocked";
           inputText.setTint(0x88cc00, 0x00ff2a, 0x66ff19, 0x80ff66);
           textbox(

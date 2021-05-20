@@ -122,7 +122,7 @@ const minigameRoofLadder = (game, end) => {
 
   const fade = () => {
 
-    phaser.sound.sounds.find(sound => sound.key === 'ladder').play();
+    phaser.sound.sounds.find(sound => sound.key === 'ladderFull').play("ladder");
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
       if (character.x <= 285) {
@@ -231,7 +231,7 @@ const minigameBuildingDoor = (game, end) => {
 const minigameDocksLadder = (game, end) => {
   // 750x 975y
   const fade = () => {
-    phaser.sound.sounds.find(sound => sound.key === 'ladder').play();
+    phaser.sound.sounds.find(sound => sound.key === 'ladderFull').play("ladder");
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
       character.y <= 940? (character.setPosition(755, 980), game.docksTop.setDepth(0), game.ladderTop.setDepth(0)) : (character.setPosition(755, 930), game.docksTop.setDepth(2), game.ladderTop.setDepth(2));
@@ -591,7 +591,7 @@ const minigameGenerator = (game, end) => {
   if (status.electricity) {
     phaser.sound.sounds.find(sound => sound.key === 'buzz').play()
   } else {
-    if (!phaser.sound.sounds.find(sound => sound.key === 'static')) 
+    // if (!phaser.sound.sounds.find(sound => sound.key === 'static')) 
     phaser.sound.sounds.find(sound => sound.key === 'static').play();
   }
 
@@ -621,6 +621,7 @@ const minigameGenerator = (game, end) => {
   const destroyMinigame = () => {
     if (!game.active) {
       generator.destroy();
+      game.input.keyboard.off("keydown");
       if (electricity) electricity.destroy();
       if (phaser.sound.sounds.find(sound => sound.key === 'buzz')) phaser.sound.sounds.find(sound => sound.key === 'buzz').stop();
       if (phaser.sound.sounds.find(sound => sound.key === 'static')) phaser.sound.sounds.find(sound => sound.key === 'static').stop();
@@ -629,7 +630,7 @@ const minigameGenerator = (game, end) => {
   };
 
   if (status.electricity) {
-    textbox(game, ["That was... electrifying."], end)
+    textbox(game, ["That was... electrifying."], destroyMinigame)
   } else {
     textbox(game, ["Uh?", "Power is out...", "No wonder I couldn't charge my phone.", "If I remember correctly I just need to connect the green line..."], destroyMinigame)
 

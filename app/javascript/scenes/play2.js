@@ -155,7 +155,7 @@ class Play2 extends Phaser.Scene {
     this.load.audio('engine', gameAssets.engineMp3);
     this.load.audio('boatExplosion', gameAssets.boatexplosionMp3);
     this.load.audio('manhole', gameAssets.manholeMp3);
-    this.load.audio('ladder', gameAssets.ladderMp3);
+    this.load.audio('ladderFull', gameAssets.ladderMp3);
     this.load.audio('hey', gameAssets.heyMp3);
     this.load.audio('handcuffs', gameAssets.handcuffsMp3);
     this.load.audio('digitallock', gameAssets.digitallockMp3);
@@ -510,14 +510,15 @@ class Play2 extends Phaser.Scene {
     // this.decorationBuilding.forEachTile(tile => {
     //   if (tile.getCollisionGroup()) console.log(tile.pixelY)
     // })
-    var ladderSound = this.sound.add("ladder", {duration: 0.9});
+    var ladderSound = this.sound.add("ladderFull");
+    ladderSound.addMarker({name: "ladder", duration: 0.6})
     var manholeSound = this.sound.add("manhole");
     var digicodeUnlocked = this.sound.add("digitalUnlock");
     var digicodeLocked = this.sound.add("digitalLock");
-    var engine = this.sound.add("engine", {config: {loop: true}});
+    var engine = this.sound.add("engine", {loop: true});
     var boatExplosion = this.sound.add("boatExplosion", {config: {volume: 10}});
     var statics = this.sound.add("static", {loop: true});
-    var buzz = this.sound.add("buzz");
+    var buzz = this.sound.add("buzz", {loop: true});
     var hey = this.sound.add("hey");
     var handcuffs = this.sound.add("handcuffs");
   }

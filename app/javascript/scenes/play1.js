@@ -83,6 +83,7 @@ class Play1 extends Phaser.Scene {
     this.load.audio("digitalLock", gameAssets.digitallockMp3);
     this.load.audio("digitalUnlock", gameAssets.digitalunlockMp3);
     this.load.audio("click", gameAssets.clickMp3);
+    this.load.audio("door", gameAssets.doorMp3);
     //end minigames
 
     //Map
@@ -267,6 +268,9 @@ class Play1 extends Phaser.Scene {
     // debugInteraction(this, this.objectTop, character);
     // debugInteraction(this.objectBottom);
     // debugInteraction(this.secretDoor);
+    var door = this.sound.add("door");
+    var button = this.sound.add("click");
+    var digicodeLocked = this.sound.add("digitalLock");
   }
 
   update ()

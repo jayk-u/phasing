@@ -8,6 +8,7 @@ const box = (game, x, y, width, height) => {
   var i = 10
   var timedEvent
   var stopEvent = false;
+  var toneSound = game.sound.add("tone", {rate: 0.6});
 
   const onEvent = () => {
     toggle ? i++ : i--;
@@ -39,7 +40,7 @@ const box = (game, x, y, width, height) => {
   if (nameCounter == 0) {
     game.add.text(x + width/3, y + height + 10, `Tutorial`, {font: `${width/13}px`, color:"#FFFFFF", align: 'center', wordWrap: {width: width}})
     level.on("pointerdown", () => {
-      game.sound.play("tone", {rate: 0.6})
+      toneSound.play();
       game.scene.stop();
       game.scene.start("Tutorial");
     });
@@ -47,7 +48,7 @@ const box = (game, x, y, width, height) => {
     game.add.text(x + width/3, y + height + 10, `Level ${nameCounter}`, {font: `${width/12.2}px`, color:"#FFFFFF"}).setAlign('center')
     var sceneName = `Intro${nameCounter}`;
     level.on("pointerdown", () => {
-      game.sound.play("tone", {rate: 0.6})
+      toneSound.play();
       game.scene.stop();
       game.scene.start(sceneName);
     });

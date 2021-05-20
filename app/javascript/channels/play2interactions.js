@@ -1,6 +1,7 @@
 import { status } from "../scenes/play2";
 import { textbox } from '../components/textBox';
 import { character, upBridge, downBridge } from "../scenes/play2";
+import { phaser } from "../channels/game"
 
 var key;
 var next;
@@ -19,8 +20,6 @@ var map;
 var fuel;
 var containers;
 var containerNumber;
-var buzz;
-var statics;
 var random = Math.round(Math.random() * 10000);
 
 const minigameMap = (game, end) => {
@@ -122,7 +121,8 @@ const minigameRoofLadder = (game, end) => {
   // 300x 615y
 
   const fade = () => {
-    game.sound.play("ladder", {duration: 0.9})
+
+    phaser.sound.sounds.find(sound => sound.key === 'ladder').play();
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
       if (character.x <= 285) {
@@ -231,7 +231,7 @@ const minigameBuildingDoor = (game, end) => {
 const minigameDocksLadder = (game, end) => {
   // 750x 975y
   const fade = () => {
-    game.sound.play("ladder", {duration: 0.9})
+    phaser.sound.sounds.find(sound => sound.key === 'ladder').play();
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
       character.y <= 940? (character.setPosition(755, 980), game.docksTop.setDepth(0), game.ladderTop.setDepth(0)) : (character.setPosition(755, 930), game.docksTop.setDepth(2), game.ladderTop.setDepth(2));
@@ -425,18 +425,19 @@ const minigameContainer = (game, end) => {
         if (rt) rt.destroy();
         status.scratchticket = false;
         status.rt = false;
-        game.sound.play("digitalUnlock")
+
+        phaser.sound.sounds.find(sound => sound.key === 'digitalUnlock').play();
         game.time.delayedCall(1000, () => {
           digicode.destroy();
           inputNumber.destroy();
-          Container(game, end, destroyMinigame);
+          Container(game, end, destroyMinigame, pointFuel);
           status.minigame = "active";
           status.password = "";
         })
       }
       else if (status.password === "0000") {
         status.password = "ERROR";
-        game.sound.play("digitalLock")
+        phaser.sound.sounds.find(sound => sound.key === 'digitalLock').play();
         inputNumber.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000)
         game.time.delayedCall(1000, () => {
           status.password = "";
@@ -445,7 +446,7 @@ const minigameContainer = (game, end) => {
       }
       else if (status.password.length > 3 && !status.unlockedContainer) {
         status.password = "ERROR";
-        game.sound.play("digitalLock")
+        phaser.sound.sounds.find(sound => sound.key === 'digitalLock').play();
         inputNumber.setTint(0xff6666, 0xff4019, 0xb30000, 0xe60000)
         game.time.delayedCall(1000, () => {
           status.password = "";
@@ -455,10 +456,100 @@ const minigameContainer = (game, end) => {
 
     })
   } else {
-    Container(game, end, destroyMinigame);
+    Container(game, end, destroyMinigame, pointFuel);
   }
 }
 
+<<<<<<< HEAD
+=======
+const Container = (game, end, destroyMinigame, pointFuel) => {
+  var i = 0;
+  containerNumber = 0;
+  status.containers = true;
+  containers = game.add.group({ key: 'container', repeat: 25, setScale: { x: 0.09, y: 0.07 }, setDepth: {value: 5 } });
+  Phaser.Actions.GridAlign(containers.getChildren(), {
+    width: 5,
+    height: 5,
+    cellWidth: 47,
+    cellHeight: 45.2,
+    x: game.cameras.main.scrollX + innerWidth / 3.6,
+    y: game.cameras.main.scrollY - innerHeight / 14,
+  });
+  containers.getChildren()[0].setScale(0.1, 0.08).setDepth(6)
+  var tween = game.tweens.add({
+    targets: containers.getChildren()[containerNumber],
+    scaleX: 0.12,
+    scaleY: 0.1,
+    ease: 'Sine.easeInOut',
+    duration: 300,
+    delay: i * 50,
+    repeat: -1,
+    yoyo: true
+    });
+
+  i++;
+
+  if (i % 12 === 0) i = 0;
+  
+  const zoomMove = (cases) => {
+    tween.remove();
+    i = 0;
+    containers.getChildren()[containerNumber].setScale(0.09, 0.07).setDepth(5);
+    containerNumber += cases
+    if (containerNumber > 24 || containerNumber < 0) containerNumber -=5*cases
+    containers.getChildren()[containerNumber].setScale(0.1, 0.08).setDepth(6);
+    tween = game.tweens.add({
+      targets: containers.getChildren()[containerNumber],
+      scaleX: 0.12,
+      scaleY: 0.1,
+      ease: 'Sine.easeInOut',
+      duration: 300,
+      delay: i * 50,
+      repeat: -1,
+      yoyo: true
+    })
+
+    i++;
+
+    if (i % 12 === 0) i = 0;
+  };
+  game.input.keyboard.on('keydown-RIGHT', () => {zoomMove(1)})
+  game.input.keyboard.on('keydown-LEFT', () => {zoomMove(-1)})
+  game.input.keyboard.on('keydown-DOWN', () => {zoomMove(5)})
+  game.input.keyboard.on('keydown-UP', () => {zoomMove(-5)})
+  game.input.keyboard.on('keydown-ENTER', () => {
+    if (containerNumber == 13) {
+      if (status.inventory === "Fuel") {textbox(game, ["I already completed this heist!"], destroyMinigame)}
+      else {
+        textbox(game, ["Looks like fuel.", "Reminds me of the good old days..."], destroyMinigame)
+        if (status.inventory != "Fuel" && status.fuel === false ) {
+          fuel = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "fuel").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+          status.fuel = true;
+        }
+        fuel.on('pointerdown', pointFuel)
+      }
+    }
+    else if (containerNumber == 3) {
+      textbox(game, ["I wish my mother could see this.", "Those containers are so neatly stacked.", "Would have made up for all those times I did not clean my room."], destroyMinigame)
+    }
+    else if (containerNumber == 5) {
+      textbox(game, ["I wonder if any docker forgot their lunch here.", "I'm hungry."], destroyMinigame)
+    }
+    else if (containerNumber == 10) {
+      textbox(game, ["An hungry criminal is a dangerous criminal.", "Therefore, the state should collect criminal sustainment funds from the citizens.", "Safer streets, safer life.", "I would have made a great politician."], destroyMinigame)
+    }
+    else if (containerNumber == 17) {
+      textbox(game, ["OH MY GOD WHAT IS THIS?!", "...", "Sike."], destroyMinigame)
+    }
+    else if (containerNumber == 24) {
+      textbox(game, ["It's not empty.", "There's a note on the inside.", '"Your princess is in another castle."', "...", "Just kidding.", "It's empty."], destroyMinigame)
+    }
+    else textbox(game, ["It's empty."], destroyMinigame)
+  })
+  textbox(game, ["I wonder what's inside...?"], destroyMinigame);
+}
+
+>>>>>>> 0b9ed276a13580c5ecd9fd87ad8f160393fef7b2
 const minigameStreetLamp = (game, end) => {
   //45x 995y && 275x 995y && 560x 995y && 720x 995y
   textbox(game, ["It's bright.", "I should probably avoid those.", "I don't have time to blind agents with my mad skills."], end);
@@ -484,16 +575,15 @@ const minigameBoat = (game, end) => {
       fuel.ignoreDestroy = false;
       fuel.destroy();
       status.inventory = "";
-      var engine = game.sound.add("engine", {config: {loop: true}})
-      engine.play();
+      phaser.sound.sounds.find(sound => sound.key === 'engine').play();
       textbox(game, ["Yeeeeehaw!"], fadeOut)
       game.cameras.main.once("camerafadeoutcomplete", () => {
         game.redBoat.setVisible(false);
         var blackRect = game.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ff0000').setScrollFactor(0).setDepth(4);
         fadeIn();
         game.cameras.main.once("camerafadeincomplete", () => {
-          engine.stop();
-          game.sound.play("boatExplosion", {config: {volume: 10}});
+          phaser.sound.sounds.find(sound => sound.key === 'engine').stop();
+          phaser.sound.sounds.find(sound => sound.key === 'boatExplosion').play();
           textbox(game, ["BOOM!"], fadeOut, 5);
           game.cameras.main.once("camerafadeoutcomplete", () => {
             blackRect.destroy();
@@ -523,7 +613,7 @@ const minigameBoat = (game, end) => {
 const minigameManHole = (game, end) => {
   //120x 550y || 780x 890y
   const fade = () => {
-    game.sound.play("manhole");
+    phaser.sound.sounds.find(sound => sound.key === 'manhole').play();
     game.cameras.main.fadeOut(1000)
     game.cameras.main.once("camerafadeoutcomplete", () => {
       character.x <= 150 && character.x >= 100 ? (character.setPosition(780, 890), downBridge(game)) : (character.setPosition(120, 550), upBridge(game));
@@ -589,10 +679,10 @@ const minigameGenerator = (game, end) => {
   // 40x 430y
 
   if (status.electricity) {
-    buzz.play()
+    phaser.sound.sounds.find(sound => sound.key === 'buzz').play()
   } else {
-    if (!statics) statics = game.sound.add("static", {loop: true});
-    statics.play()
+    if (!phaser.sound.sounds.find(sound => sound.key === 'static')) 
+    phaser.sound.sounds.find(sound => sound.key === 'static').play();
   }
 
   const pathing = (direction) => {
@@ -609,9 +699,8 @@ const minigameGenerator = (game, end) => {
       electricity.setAlpha(alpha);
     }
     if (electricity.alpha === 0.99 && !status.electricity) {
-      statics.stop();
-      buzz = game.sound.add("buzz")
-      buzz.play();
+      phaser.sound.sounds.find(sound => sound.key === 'static').stop();
+      phaser.sound.sounds.find(sound => sound.key === 'buzz').play();
       textbox(game, ["That's it!", "Should I ever get bored of the criminal life...", "I'd always have work as an electrician, ah!"], destroyMinigame);
       status.electricity = true;
       game.warehouseOpened.setVisible(true);
@@ -623,8 +712,8 @@ const minigameGenerator = (game, end) => {
     if (!game.active) {
       generator.destroy();
       if (electricity) electricity.destroy();
-      if (buzz) buzz.stop();
-      if (statics) statics.stop();
+      if (phaser.sound.sounds.find(sound => sound.key === 'buzz')) phaser.sound.sounds.find(sound => sound.key === 'buzz').stop();
+      if (phaser.sound.sounds.find(sound => sound.key === 'static')) phaser.sound.sounds.find(sound => sound.key === 'static').stop();
       end();
     }
   };

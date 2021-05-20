@@ -510,6 +510,16 @@ class Play2 extends Phaser.Scene {
     // this.decorationBuilding.forEachTile(tile => {
     //   if (tile.getCollisionGroup()) console.log(tile.pixelY)
     // })
+    var ladderSound = this.sound.add("ladder", {duration: 0.9});
+    var manholeSound = this.sound.add("manhole");
+    var digicodeUnlocked = this.sound.add("digitalUnlock");
+    var digicodeLocked = this.sound.add("digitalLock");
+    var engine = this.sound.add("engine", {config: {loop: true}});
+    var boatExplosion = this.sound.add("boatExplosion", {config: {volume: 10}});
+    var statics = this.sound.add("static", {loop: true});
+    var buzz = this.sound.add("buzz");
+    var hey = this.sound.add("hey");
+    var handcuffs = this.sound.add("handcuffs");
   }
 
   update ()

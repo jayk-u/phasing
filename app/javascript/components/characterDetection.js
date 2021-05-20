@@ -1,13 +1,12 @@
 import { status, musique } from "../scenes/play2"
+import { phaser } from "../channels/game"
 
 const detectEvent = (game, npc, loseEvent, videoLoseEvent ,endContent) => {
-  var hey = game.sound.add("hey")
-  var handcuffs = game.sound.add("handcuffs")
-  handcuffs.addMarker({name: "arrest", start: 2.5, config: {volume: 2}})
-  hey.addMarker({name: "voice", duration:0.5, start: 0, config: {volume: 2}})
-  hey.play("voice");
-  hey.once("complete", () => {
-    handcuffs.play("arrest")
+  phaser.sound.sounds.find(sound => sound.key === 'handcuffs').addMarker({name: "arrest", start: 2.5, config: {volume: 2}})
+  phaser.sound.sounds.find(sound => sound.key === 'hey').addMarker({name: "voice", duration:0.5, start: 0, config: {volume: 2}})
+  phaser.sound.sounds.find(sound => sound.key === 'hey').play('voice');
+  phaser.sound.sounds.find(sound => sound.key === 'hey').once("complete", () => {
+    phaser.sound.sounds.find(sound => sound.key === 'handcuffs').play('arrest');
   })
   status.minigame = 'active'
   npc.setVelocityX(0);

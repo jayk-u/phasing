@@ -343,7 +343,7 @@ const minigameContainer = (game, end) => {
         game.time.delayedCall(1000, () => {
           digicode.destroy();
           inputNumber.destroy();
-          Container(game, end, destroyMinigame);
+          Container(game, end, destroyMinigame, pointFuel);
           status.minigame = "active";
           status.password = "";
         })
@@ -369,11 +369,11 @@ const minigameContainer = (game, end) => {
 
     })
   } else {
-    Container(game, end, destroyMinigame);
+    Container(game, end, destroyMinigame, pointFuel);
   }
 }
 
-const Container = (game, end, destroyMinigame) => {
+const Container = (game, end, destroyMinigame, pointFuel) => {
   var i = 0;
   containerNumber = 0;
   status.containers = true;

@@ -262,7 +262,7 @@ const minigameDocksLadder = (game, end) => {
 
 const minigameContainer = (game, end) => {
   // 655x 990y
-  // console.log(random.toString())
+  console.log(random.toString())
 
   const pointFuel = () => {
     fuel.x = innerWidth / 3.15;
@@ -383,8 +383,8 @@ const minigameContainer = (game, end) => {
     textbox(game, ["90% of dockmen passwords start and end with 00."], destroyMinigame)
     digicode = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "digicode").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
     inputNumber = game.add.text(
-      game.cameras.main.scrollX + innerWidth / 2.1 - 70,
-      game.cameras.main.scrollY + innerHeight / 2.3 - 70,
+      game.cameras.main.scrollX + innerWidth / 2.35,
+      game.cameras.main.scrollY + innerHeight / 2.95,
       "",
       {
         fontFamily: "Arial",
@@ -612,9 +612,9 @@ const minigameGenerator = (game, end) => {
   }
 
   const pathing = (direction) => {
-    if (electricity.alpha != 0.99) {
+    if (electricity.alpha <= 0.98) {
       if (direction === `Arrow${combination[combinationIndex]}`) {
-        alphaIncrement += 0.018
+        alphaIncrement += 0.022
         alpha += alphaIncrement;
         combinationIndex ++;
       } else {
@@ -623,11 +623,12 @@ const minigameGenerator = (game, end) => {
         combinationIndex = 0;
       }
       electricity.setAlpha(alpha);
+      console.log(electricity.alpha)
     }
-    if (electricity.alpha === 0.99 && !status.electricity) {
+    if (electricity.alpha >= 0.98 && !status.electricity) {
       phaser.sound.sounds.find(sound => sound.key === 'static').stop();
       phaser.sound.sounds.find(sound => sound.key === 'buzz').play();
-      textbox(game, ["That's it!", "Should I ever get bored of the criminal life...", "I'd always have work as an electrician, ah!"], destroyMinigame);
+      textbox(game, ["That's it!", "How impressive of me!", "Should I ever get bored of the criminal life...", "I'd always have work as an electrician, ah!"], destroyMinigame);
       status.electricity = true;
       game.warehouseOpened.setVisible(true);
       game.warehouseClosed.setVisible(false);
@@ -651,9 +652,9 @@ const minigameGenerator = (game, end) => {
     textbox(game, ["Uh?", "Power is out...", "No wonder I couldn't charge my phone.", "If I remember correctly I just need to connect the green line..."], destroyMinigame)
 
     generator = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "generator").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6);
-    electricity = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "electricity").setDisplaySize(innerWidth/6, innerHeight/6).setDepth(6).setAlpha(0);
+    electricity = game.add.image(game.cameras.main.scrollX + innerWidth / 2.0575, game.cameras.main.scrollY + innerHeight / 2.45, "electricity").setDisplaySize(innerWidth/8.8, innerHeight/8).setDepth(6).setAlpha(0);
     var alpha = 0;
-    var combination = ["Right", "Up", "Down", "Up", "Down", "Up", "Down", "Up", "Down", "Right"];
+    var combination = ["Up", "Down", "Up", "Down", "Up", "Down", "Up", "Down", "Right"];
     var combinationIndex = 0;
     var alphaIncrement = 0;
     game.input.keyboard.on("keydown", (event) => {

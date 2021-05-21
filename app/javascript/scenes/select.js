@@ -34,7 +34,7 @@ const box = (game, x, y, width, height) => {
 
 })
   level.on("pointerout", () => {
-    stopEvent = true
+    stopEvent = true;
     // activerect.destroy();
   })
   if (nameCounter == 0) {

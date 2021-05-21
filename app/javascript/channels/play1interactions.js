@@ -111,13 +111,13 @@ const minigameTV = (game, end) => {
   game.load.image("tv", gameAssets.tvImg);
   var tv = game.add
     .image(
-      game.cameras.main.scrollX + innerWidth / 2.1,
-      game.cameras.main.scrollY + innerHeight / 2.3,
+      game.cameras.main.scrollX + innerWidth / 2.09,
+      game.cameras.main.scrollY + innerHeight / 2.55,
       "tv"
     )
     .setDisplaySize(
       (innerWidth + innerHeight) / 8,
-      (innerWidth + innerHeight) / 12
+      (innerWidth + innerHeight) / 10
     );
 
   var graphics = game.make.graphics();
@@ -350,10 +350,11 @@ const minigameBonsai = (game, end) => {
           "redBtn"
         )
         .setDepth(4);
+      redBtn.setDisplaySize(180, 180);
       redBtnText = game.add
         .text(
-          game.cameras.main.scrollX + innerWidth / 2.22,
-          game.cameras.main.scrollY + innerHeight / 2.5,
+          game.cameras.main.scrollX + innerWidth / 2.17,
+          game.cameras.main.scrollY + innerHeight / 2.7,
           "hEy, No TimE to lose officeR",
           {
             color: "#000000",
@@ -585,7 +586,7 @@ const minigameComputer = (game, end) => {
   var computer = game.add
     .image(
       game.cameras.main.scrollX + innerWidth / 2.1,
-      game.cameras.main.scrollY + innerHeight / 2.3,
+      game.cameras.main.scrollY + innerHeight / 2.2,
       "computer"
     )
     .setDisplaySize(
@@ -609,12 +610,12 @@ const minigameComputer = (game, end) => {
     var input = "Enter password: ";
     var inputText = game.add
       .text(
-        game.cameras.main.scrollX + innerWidth / 2.22,
-        game.cameras.main.scrollY + innerHeight / 2.5,
+        game.cameras.main.scrollX + innerWidth / 2.18,
+        game.cameras.main.scrollY + innerHeight / 2.65,
         input,
         {
           color: "#FFFFFF",
-          font: "11.5px",
+          font: "13px",
           wordWrap: { width: innerWidth / 19, height: innerHeight / 5 },
         }
       )

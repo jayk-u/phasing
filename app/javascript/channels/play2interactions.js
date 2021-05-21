@@ -61,7 +61,7 @@ const minigameWareHouse = (game, end) => {
     if (!game.active) {
       warehouse.destroy();
       if (rt) rt.setVisible(false);
-      if (brush) { brush.destroy() };
+      // if (brush) { brush.destroy() };
       if (blanknote) blanknote.setVisible(false);
       if (noteText) noteText.setVisible(false);
       end();
@@ -75,10 +75,15 @@ const minigameWareHouse = (game, end) => {
       warehouse = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "warehouse").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
       warehouse.on('pointerdown', (pointer, x, y) => {
         if (x > 570 && x < 707 && y > 418 && y < 571) {
-          if (blanknote && noteText && status.scratchticket === true && rt) {
+          if (blanknote && noteText && status.scratchticket === true && rt && brush) {
             blanknote.setVisible(true);
             noteText.setVisible(true);
             rt.setVisible(true);
+            rt.on('pointermove', (pointer, x, y) => {
+              if (pointer.isDown) {
+                rt.erase(brush, x, y);
+              } 
+            });
           } else {
           status.scratchticket = true;
           blanknote = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "blanknote").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(7);
@@ -96,7 +101,7 @@ const minigameWareHouse = (game, end) => {
           .setOrigin(0)
           .setDepth(7);
           status.rt = true;
-          rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.43, game.cameras.main.scrollY + innerHeight / 3, innerWidth/7.7, innerHeight/5).setDepth(8).setInteractive();
+          rt = game.add.renderTexture(game.cameras.main.scrollX + innerWidth / 2.5, game.cameras.main.scrollY + innerHeight / 3.45, innerWidth/6, innerHeight/3.5).setDepth(8).setInteractive();
           for (var y = 0; y < 2; y++)
           {
             for (var x = 0; x < 2; x++)

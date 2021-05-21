@@ -359,7 +359,7 @@ const minigameContainer = (game, end) => {
         else {
           textbox(game, ["Looks like fuel.", "Reminds me of the good old days..."], destroyMinigame)
           if (status.inventory != "Fuel" && status.fuel === false ) {
-            fuel = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "fuel").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(6).setInteractive();
+            fuel = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "fuel").setDisplaySize(innerWidth/7.5, innerHeight/5).setDepth(6).setInteractive();
             status.fuel = true;
           }
           fuel.on('pointerdown', pointFuel)
@@ -577,7 +577,8 @@ const minigameBridgeEnd = (game, end) => {
   game.cameras.main.once("camerafadeoutcomplete", () => {
     alpha = 0;
     game.cameras.main.fadeIn(4000, 255, 255, 255);
-    var video = game.add.video(innerWidth / 2, innerHeight / 2, "wonEvent");
+    var whiteRect = game.add.rectangle(innerWidth/2, innerHeight/2, innerWidth/2, innerHeight/2, '#ffffff').setScrollFactor(0).setDepth(6);
+    var video = game.add.video(innerWidth / 2, innerHeight / 2, "wonEvent").setDepth(7);
     video.on('play', () => {
       video.setPaused(false)
       const onBegin = () => {

@@ -15,8 +15,8 @@ class Waiting extends Phaser.Scene {
   {
     const loginAssets = document.getElementById("login").dataset;
     this.load.image('logo', loginAssets.logoImg);
-    this.load.image('cursor', loginAssets.cursorImg);
-    this.input.setDefaultCursor(`url(${loginAssets.cursorImg}), pointer`);
+    // this.load.image('cursor', loginAssets.cursorImg);
+    // this.input.setDefaultCursor(`url(${loginAssets.cursorImg}), pointer`);
 
     this.load.image('spark', loginAssets.sparkParticle);
     this.load.video('logobo', loginAssets.logoBreakingOutVid, 'loadeddata', false);

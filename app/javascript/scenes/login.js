@@ -94,7 +94,7 @@ class Login extends Phaser.Scene {
         scaleX: object.scaleX*1.2,
         scaleY: object.scaleY*1.2,
         ease: 'Sine.easeInOut',
-        duration: 800,
+        duration: 300,
         delay: 0,
         repeat: -1,
         yoyo: true

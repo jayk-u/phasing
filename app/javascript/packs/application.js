@@ -4,11 +4,10 @@
 // that code so it'll be compiled.
 
 require("@rails/ujs").start()
-require("turbolinks").start()
 require("channels")
 
-import * as modals from '../channels/modals';
-import * as displayScreens from '../channels/gamescreens';
+// import * as modals from '../channels/modals';
+// import * as displayScreens from '../channels/gamescreens';
 import * as game from '../channels/game'
 
 // Uncomment to copy all static images under ../images to the output folder and reference
@@ -18,7 +17,7 @@ import * as game from '../channels/game'
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
-document.addEventListener('turbolinks:load', () => {
+document.addEventListener('load', () => {
   game;
 });
 

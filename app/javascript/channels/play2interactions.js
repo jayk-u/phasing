@@ -193,6 +193,22 @@ const minigameStreetPlants = (game, end) => {
     .setDepth(6);
     if (!status.read) {textbox(game, ["That's something else alright.", "Who...?", "Nevermind, I've got to get my game face on.", "It would hurt me to disappoint a fan."], destroyMinigame), status.read = true;}
     else textbox(game, ["What kind of code is this..."], destroyMinigame);
+  } else if (character.x <= 620 && character.y <= 590) {
+    var note = game.add.image(game.cameras.main.scrollX + innerWidth / 2.1, game.cameras.main.scrollY + innerHeight / 2.3, "note").setDisplaySize(innerWidth/6, innerHeight/3.5).setDepth(5);
+    var noteText = game.add.text(
+      game.cameras.main.scrollX + innerWidth / 2.3,
+      game.cameras.main.scrollY + innerHeight / 2.85,
+      "Hey. To make it spark, follow the flow. Combine directions to open the path. You'll know what I'm talking about in due time.",
+      {
+        fontFamily: "Arial",
+        color: "#000000",
+        font: "11px",
+        wordWrap: { width: 110 },
+      }
+    )
+    .setOrigin(0)
+    .setDepth(6);
+    textbox(game, ["Alright this guy is officially bonkers."], destroyMinigame);
   } else {
     textbox(game, ["This plant has known brighter nights."], end);
   }

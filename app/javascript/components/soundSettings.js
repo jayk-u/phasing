@@ -15,7 +15,7 @@ var musicText;
 
 
 const sound = (game, x, y, width, height, musique, play = true) => {
-  console.log(phaser.sound.sounds);
+  // console.log(phaser.sound.sounds);
   unmute = game.add.image(x, y, "volume").setInteractive().setDepth(2);
   if (play) {unmute.setScrollFactor(0);}
   unmute.setDisplaySize(width, height);

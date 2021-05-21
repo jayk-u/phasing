@@ -16,6 +16,7 @@ class Waiting extends Phaser.Scene {
     const loginAssets = document.getElementById("login").dataset;
     this.load.image('logo', loginAssets.logoImg);
     this.load.image('cursor', loginAssets.cursorImg);
+    this.input.setDefaultCursor(`url(${loginAssets.cursorImg}), pointer`);
 
     this.load.image('spark', loginAssets.sparkParticle);
     this.load.video('logobo', loginAssets.logoBreakingOutVid, 'loadeddata', false);
@@ -25,10 +26,7 @@ class Waiting extends Phaser.Scene {
 
   create ()
   {
-    const loginAssets = document.getElementById("login").dataset;
-
     skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to play...", {color: '#FFFFFF', font: "16px"}).setDepth(2)
-    this.input.setDefaultCursor(loginAssets.cursorImg);
     var video = this.add.video(innerWidth / 2, innerHeight / 2, 'logobo');
     video.play(false).setInteractive();   
     // video.addMarker('endLoop', 12, 19)

@@ -1,5 +1,20 @@
 var perso
 var characterCounter = 1
+// var toggle = true
+// var stopEvent = false
+// var i = 10
+// var timedEvent
+var tween
+
+// const onEvent = (object) => {
+//   toggle ? i++ : i--;
+//   if (i>=20 || stopEvent) {toggle = false}
+//   else if (i<=10) {toggle = true}
+//   object.setX(object.x - Math.max(i/2, 5))
+//   object.setY(object.y - Math.max(i/2, 5))
+//   object.setDisplaySize(object.width + Math.max(10, i), object.height + Math.max(10, i))
+//   if (stopEvent && i<=10) {timedEvent.destroy(), console.log("done")}
+// }
 
 var sprites = [
   { counter: 0, character: "perso" },
@@ -66,11 +81,31 @@ class Login extends Phaser.Scene {
     rightArrow.setSize((innerWidth + innerHeight)/14, (innerWidth + innerHeight)/14).setDisplaySize(rightArrow.width, rightArrow.height);
 
     this.input.on("gameobjectover", (p, object) => {
-      object.setDisplaySize(object.width*1.2, object.height*1.2)
+      // object.setDisplaySize(object.width*1.2, object.height*1.2)
+      // stopEvent = false
+      // timedEvent = this.time.addEvent({
+      //   delay: 30,
+      //   callback: onEvent(object), 
+      //   callbackScope: this, 
+      //   loop: true
+      // });
+      tween = this.tweens.add({
+        targets: object,
+        scaleX: object.scaleX*1.2,
+        scaleY: object.scaleY*1.2,
+        ease: 'Sine.easeInOut',
+        duration: 800,
+        delay: 0,
+        repeat: -1,
+        yoyo: true
+      })
     })
 
     this.input.on("gameobjectout", (p, object) => {
+      // object.setDisplaySize(object.width, object.height)
+      // stopEvent = true
       object.setDisplaySize(object.width, object.height)
+      tween.remove();
     })
 
     play = this.add

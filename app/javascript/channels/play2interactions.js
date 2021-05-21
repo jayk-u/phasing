@@ -262,7 +262,7 @@ const minigameDocksLadder = (game, end) => {
 
 const minigameContainer = (game, end) => {
   // 655x 990y
-  console.log(random.toString())
+  // console.log(random.toString())
 
   const pointFuel = () => {
     fuel.x = innerWidth / 3.15;
@@ -623,7 +623,7 @@ const minigameGenerator = (game, end) => {
         combinationIndex = 0;
       }
       electricity.setAlpha(alpha);
-      console.log(electricity.alpha)
+      // console.log(electricity.alpha)
     }
     if (electricity.alpha >= 0.98 && !status.electricity) {
       phaser.sound.sounds.find(sound => sound.key === 'static').stop();

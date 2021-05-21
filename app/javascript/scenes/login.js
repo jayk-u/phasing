@@ -89,7 +89,6 @@ class Login extends Phaser.Scene {
       //   callbackScope: this, 
       //   loop: true
       // });
-      console.log(object)
       tween = this.tweens.add({
         targets: object,
         scaleX: object.scaleX*1.2,

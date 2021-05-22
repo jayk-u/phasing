@@ -77,7 +77,6 @@ class Select extends Phaser.Scene {
       this.load.image("settings", loginAssets.settingsBtn);
       // this.load.video("overlay", loginAssets.overlayVid, false, true);
       this.load.video("background", loginAssets.backgroundVid, 'loadeddata', false, true);
-      this.load.image("containersett", loginAssets.containerImg);
       this.load.image("volumeSettings", loginAssets.volumesettingsImg);
       this.load.image("volume", loginAssets.volumeImg);
       this.load.image("lowVolume", loginAssets.lowvolumeImg);

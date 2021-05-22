@@ -20,7 +20,7 @@ var map;
 var fuel;
 var containers;
 var containerNumber;
-var random = Math.round(Math.random() * 10000);
+var random = 11111111;
 
 const minigameMap = (game, end) => {
   // 125x 850y
@@ -57,6 +57,9 @@ const minigameMap = (game, end) => {
 }
 
 const minigameWareHouse = (game, end) => {
+
+  if (!status.random) random = Math.round(Math.random() * 10000), status.random = true;
+
   const destroyMinigame = () => {
     if (!game.active) {
       warehouse.destroy();
@@ -559,7 +562,7 @@ const minigameManHole = (game, end) => {
       });
     });
   };
-  if (status.manhole === "used") {
+  if (status.manhole === "used" && status.roofTop === false) {
     textbox(game, ["This is getting pretty handy."], fade)
   } else if (status.roofTop === false){
     textbox(game, ["Hey, who would leave that open?", "Criminals nowadays don't even have to try.", "Let's try this out."], fade);

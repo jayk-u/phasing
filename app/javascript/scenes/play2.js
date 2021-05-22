@@ -92,6 +92,7 @@ class Play2 extends Phaser.Scene {
   }
 
   begin () {
+    status.random = false;
     status.won = false;
     status.scratchticket = false;
     status.rt = false;

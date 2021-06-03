@@ -14,12 +14,14 @@ class Waiting extends Phaser.Scene {
   preload ()
   {
     const loginAssets = document.getElementById("login").dataset;
+
+    this.load.setCORS('anonymous');
     this.load.image('logo', loginAssets.logoImg);
     this.load.image('cursor', loginAssets.cursorImg);
     this.input.setDefaultCursor(`url(${loginAssets.cursorImg}), pointer`);
 
     this.load.image('spark', loginAssets.sparkParticle);
-    this.load.video('logobo', loginAssets.logoBreakingOutVid, 'loadeddata', false);
+    this.load.video('logobo', 'https://breakingout.s3.eu-west-3.amazonaws.com/logo_video.mp4', 'loadeddata', false);
     this.load.audio('tone', loginAssets.toneMp3);
     // this.load.video('overlay', loginAssets.overlayVid, 'loadeddata', false, true);
   }

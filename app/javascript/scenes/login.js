@@ -40,7 +40,7 @@ class Login extends Phaser.Scene {
     this.load.image("play", loginAssets.playBtn);
     this.load.image("settings", loginAssets.settingsBtn);
     // this.load.video("overlay", loginAssets.overlayVid, 'loadeddata', false, true);
-    this.load.video("background", loginAssets.backgroundVid, 'loadeddata', false, true);
+    this.load.video("background", 'https://breakingout.s3.eu-west-3.amazonaws.com/background_video.mp4', 'loadeddata', false, true);
     this.load.image("volume", loginAssets.volumeImg);
     this.load.audio("music", loginAssets.musicMp3);
     this.load.image("controls", loginAssets.controlsImg);

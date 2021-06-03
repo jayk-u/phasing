@@ -57,7 +57,6 @@ const textbox = (game, string, destroy, depth = 3) => {
     }
     if (string.length > textBoxCounter) {
       text.setText(string[textBoxCounter]);
-      console.log(text)
     } else {
       graphics.destroy();
       border.destroy();

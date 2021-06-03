@@ -1,6 +1,7 @@
 import { game } from "../channels/game";
 
 var skip;
+var video;
 var particles;
 var alpha = 0;
 
@@ -21,16 +22,19 @@ class Waiting extends Phaser.Scene {
     this.input.setDefaultCursor(`url(${loginAssets.cursorImg}), pointer`);
 
     this.load.image('spark', loginAssets.sparkParticle);
-    this.load.video('logobo', 'https://breakingout.s3.eu-west-3.amazonaws.com/logo_video.mp4', 'loadeddata', false);
+    this.load.video('logobo', 'https://breakingout.s3.eu-west-3.amazonaws.com/logo_video.mp4', 'loadeddata', false, true);
     this.load.audio('tone', loginAssets.toneMp3);
     // this.load.video('overlay', loginAssets.overlayVid, 'loadeddata', false, true);
+    this.load.on('complete', () => {
+      video = this.add.video(innerWidth / 2, innerHeight / 2, 'logobo');
+      video.play(false).setInteractive();   
+    })
   }
 
   create ()
   {
     skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to play...", {color: '#FFFFFF', font: "16px"}).setDepth(2)
-    var video = this.add.video(innerWidth / 2, innerHeight / 2, 'logobo');
-    video.play(false).setInteractive();   
+
     // video.addMarker('endLoop', 12, 19)
     // video.playMarker('endLoop', true)
     // this.time.delayedCall(12000, () => {

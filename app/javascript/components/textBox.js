@@ -44,9 +44,9 @@ const textbox = (game, string, destroy, depth = 3) => {
       { color: "#FFFFFF", font: "6px" }
     );
   }
-  text.setDepth(depth)
   border.setDepth(depth)
   graphics.setDepth(depth)
+  text.setDepth(depth)
   if (game.next) game.next.setDepth(depth)
 
   const incrementCounter = () => {

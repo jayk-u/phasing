@@ -159,7 +159,7 @@ class Play2 extends Phaser.Scene {
     this.load.audio('manhole', gameAssets.manholeMp3);
     this.load.audio('ladderFull', gameAssets.ladderMp3);
     this.load.audio('hey', gameAssets.heyMp3);
-    this.load.audio('handcuffs', gameAssets.handcuffsMp3);
+    this.load.audio('handcuffs', [gameAssets.handcuffsOgg, gameAssets.handcuffsMp3]);
     this.load.audio('digitallock', gameAssets.digitallockMp3);
     this.load.audio('digitalunlock', gameAssets.digitalunlockMp3);
     this.load.audio('static', gameAssets.staticMp3);

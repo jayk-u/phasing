@@ -66,6 +66,7 @@ class Select extends Phaser.Scene {
   preload ()
   {
       const selectAssets = document.getElementById("selectScreen").dataset;
+      this.load.setCORS('anonymous');
       this.load.image('map0', selectAssets.map0Img);
       this.load.image('map1', selectAssets.map1Img);
       this.load.image('map2', selectAssets.map2Img);

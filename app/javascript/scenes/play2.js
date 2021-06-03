@@ -166,8 +166,8 @@ class Play2 extends Phaser.Scene {
     this.load.audio("digitalLock", gameAssets.digitallockMp3);
     this.load.audio("digitalUnlock", gameAssets.digitalunlockMp3);
     this.load.image("digicode", gameAssets.digicodeImg)
-    this.load.video("loseEvent2", gameAssets.lossScreenLevel2Vid, 'loadeddata', false);
-    this.load.video("wonEvent", gameAssets.wonEventVid, 'loadeddata', false);
+    this.load.video("loseEvent2", 'https://breakingout.s3.eu-west-3.amazonaws.com/loss2.mp4', 'loadeddata', false);
+    this.load.video("wonEvent", 'https://breakingout.s3.eu-west-3.amazonaws.com/youwon.mp4', 'loadeddata', false);
     //end minigames
 
     //Map

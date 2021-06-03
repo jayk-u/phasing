@@ -72,6 +72,7 @@ class Play1 extends Phaser.Scene {
     const gameAssets = document.getElementById("game-assets").dataset;
 
     // Minigames
+    this.load.setCORS('anonymous');
     this.load.image("tv", gameAssets.tvImg);
     this.load.image("redBtn", gameAssets.redbtnImg);
     this.load.image("computer", gameAssets.computerImg);

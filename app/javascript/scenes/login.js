@@ -30,6 +30,7 @@ class Login extends Phaser.Scene {
   preload() {
     const loginAssets = document.getElementById("login").dataset;
 
+    this.load.setCORS('anonymous');
     this.load.image("logoo", loginAssets.logoImg);
     this.load.image("perso1", loginAssets.perso1Img);
     this.load.image("perso2", loginAssets.perso2Img);

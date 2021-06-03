@@ -41,7 +41,6 @@ class Intro1 extends Phaser.Scene {
   {
     const loginAssets = document.getElementById("login").dataset;
     this.load.image("settings", loginAssets.settingsBtn);
-    this.load.image("containersett", loginAssets.containerImg);
     this.load.image("volume", loginAssets.volumeImg);
     this.load.audio("music", loginAssets.musicMp3);
 

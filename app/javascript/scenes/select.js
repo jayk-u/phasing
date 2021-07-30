@@ -1,3 +1,4 @@
+import { loadingScreen } from "../components/loadingscreen";
 var nameCounter;
 var level;
 
@@ -83,6 +84,8 @@ class Select extends Phaser.Scene {
       this.load.image("lowVolume", loginAssets.lowvolumeImg);
       this.load.audio("music", loginAssets.musicMp3);
       this.load.image("controls", loginAssets.controlsImg);
+
+      loadingScreen(this)
   }
 
   create ()

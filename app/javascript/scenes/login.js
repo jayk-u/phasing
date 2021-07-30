@@ -1,3 +1,4 @@
+import { loadingScreen } from "../components/loadingscreen";
 var perso
 var characterCounter = 1
 // var toggle = true
@@ -49,6 +50,7 @@ class Login extends Phaser.Scene {
     const introAssets = document.getElementById("intro").dataset;
     this.load.image("emptyBar", introAssets.emptybarImg);
 
+    loadingScreen(this)
 
   }
 

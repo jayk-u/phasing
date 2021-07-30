@@ -67,16 +67,16 @@ class Login extends Phaser.Scene {
     // video.setBlendMode(Phaser.BlendModes.SCREEN);
     video.play(true);
 
-    lg = this.add.image(innerWidth / 9, innerHeight / 8, "logoo");
+    lg = this.add.image(innerWidth / 9, innerHeight / 13, "logoo");
     lg.setDisplaySize(innerWidth / 5, innerHeight / 7.9);
 
-    controls = this.add.image(innerWidth - 200, 150, "controls");
+    controls = this.add.image(innerWidth / 1.2, innerHeight / 5.5, "controls");
     controls.setDisplaySize(innerWidth/7, innerHeight/3);
 
-    leftArrow = this.add.image(innerWidth / 2 - 150, innerHeight / 2, "arrowLeft")
+    leftArrow = this.add.image(innerWidth / 2.54, innerHeight / 2, "arrowLeft")
       .setInteractive();
     leftArrow.setSize((innerWidth + innerHeight)/14, (innerWidth + innerHeight)/14).setDisplaySize(leftArrow.width, leftArrow.height);
-    rightArrow = this.add.image(innerWidth / 2 + 150 , innerHeight / 2, "arrowRight")
+    rightArrow = this.add.image(innerWidth / 1.65, innerHeight / 2, "arrowRight")
       .setInteractive();
     rightArrow.setSize((innerWidth + innerHeight)/14, (innerWidth + innerHeight)/14).setDisplaySize(rightArrow.width, rightArrow.height);
 
@@ -109,7 +109,7 @@ class Login extends Phaser.Scene {
     })
 
     play = this.add
-      .image(innerWidth / 2, innerHeight / 3 + 400, "play")
+      .image(innerWidth / 2, innerHeight / 1.25, "play")
       .setInteractive();
     play.setSize(innerWidth/6.5, innerHeight/8.5).setDisplaySize(play.width, play.height);
 

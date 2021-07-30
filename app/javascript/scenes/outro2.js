@@ -1,5 +1,6 @@
 import { game } from "../channels/game"
 import { createCutscene, updateCutscene } from '../components/cutscenes'
+import { loadingScreen } from "../components/loadingscreen"
 
 var status
 var content = [ "Splash.",
@@ -61,6 +62,7 @@ class Outro2 extends Phaser.Scene {
 
     const gameAssets = document.getElementById("game-assets").dataset;
     this.load.image('exit', gameAssets.exitImg);
+    loadingScreen(this)
   };
 
   create ()

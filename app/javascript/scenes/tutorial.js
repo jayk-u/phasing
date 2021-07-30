@@ -13,6 +13,7 @@ import { camera } from "../components/cameraOpacity"
 import { characterCounter } from "../scenes/login"
 import { beginningInstructions, minigameShelves, minigameDoor, endingInstructions } from "../channels/tutorialInteractions";
 import { fadeToSelectScene } from "../components/displayLoseEvent"
+import { loadingScreen } from "../components/loadingscreen"
 
 var musique;
 var character;
@@ -120,6 +121,7 @@ class Tutorial extends Phaser.Scene {
     const introAssets = document.getElementById("intro").dataset;
 
     this.load.image("mute", introAssets.muteImg);
+    loadingScreen(this)
   };
 
   create()

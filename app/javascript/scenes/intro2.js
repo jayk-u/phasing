@@ -1,5 +1,6 @@
 import { game } from "../channels/game"
 import { createCutscene, updateCutscene } from '../components/cutscenes'
+import { loadingScreen } from "../components/loadingscreen"
 
 var status
 var content = [ "Kyoto - October 13th 1997",
@@ -61,6 +62,7 @@ class Intro2 extends Phaser.Scene {
 
     const gameAssets = document.getElementById("game-assets").dataset;
     this.load.image('exit', gameAssets.exitImg);
+    loadingScreen(this)
   };
 
   create ()

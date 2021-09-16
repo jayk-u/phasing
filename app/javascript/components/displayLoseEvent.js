@@ -64,11 +64,11 @@ const displayLoseScreen = (game, status, musique, endContent = false, videoLoseE
     video.setDisplaySize(innerWidth / 2, innerHeight / 2.5).setDepth(10);
     video.setScrollFactor(0);
     video.on('pointerdown', (pointer) => {
-      // console.log(pointer.x, pointer.y);
-      if (pointer.x > 830 && pointer.x < 1060 && pointer.y > 480 && pointer.y < 559 && videoLoseEvent === "loseEvent1") {
+      //console.log(videoLoseEvent, innerWidth/pointer.x, innerHeight/pointer.y)
+      if (pointer.x > (innerWidth/1.73) && pointer.x < (innerWidth/1.40) && pointer.y > (innerHeight/1.65) && pointer.y < (innerHeight/1.50) && videoLoseEvent === "loseEvent1") {
         game.scene.restart();
         game.begin();
-      } else if (pointer.x > 120 && pointer.x < 400 && pointer.y > 614 && pointer.y < 700 && videoLoseEvent === "loseEvent2") {
+      } else if (pointer.x > (innerWidth/6.55) && pointer.x < (innerWidth/3.92) && pointer.y > (innerHeight/1.35) && pointer.y < (innerHeight/1.05) && videoLoseEvent === "loseEvent2") {
         game.scene.restart();
         game.begin();
       }

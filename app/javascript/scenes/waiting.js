@@ -33,6 +33,7 @@ class Waiting extends Phaser.Scene {
 
   create ()
   {
+    // console.log(innerWidth, innerHeight);
     skip = this.add.text(innerWidth - 250, innerHeight - 50, "Press Enter to play...", {color: '#FFFFFF', font: "16px"}).setDepth(2)
 
     // video.addMarker('endLoop', 12, 19)

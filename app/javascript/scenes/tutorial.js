@@ -13,12 +13,14 @@ import { camera } from "../components/cameraOpacity"
 import { characterCounter } from "../scenes/login"
 import { beginningInstructions, minigameShelves, minigameDoor, endingInstructions } from "../channels/tutorialInteractions";
 import { fadeToSelectScene } from "../components/displayLoseEvent"
+import { objectDetection } from "../components/objectDetection"
 import { loadingScreen } from "../components/loadingscreen"
 
 var musique;
 var character;
 var cursors;
 var shapeGraphics;
+var items;
 var coordinates;
 var countDoor = 0;
 
@@ -176,7 +178,7 @@ class Tutorial extends Phaser.Scene {
     leaveGame(this, musique);
     //END SETTINGS
 
-    const items = [
+    items = [
       {x: 290, y: 210, name: 'bookshelf', minigame: minigameShelves},
       {x: 28, y: 40, name: 'door', minigame: minigameDoor},
       ];
@@ -203,6 +205,9 @@ class Tutorial extends Phaser.Scene {
       status.borderBox.visible = false;
       status.inventoryBox.visible = false;
     }
+
+    objectDetection(this, character, items, status);
+
     camera(this, this.walls, character);
     camera(this, this.objectBottom, character);
     camera(this, this.bottom_walls, character);

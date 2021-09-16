@@ -13,12 +13,14 @@ import { spriteFrame } from "../components/spriteFrame"
 import { camera } from "../components/cameraOpacity"
 import { characterCounter } from "../scenes/login"
 import { displayLoseScreen } from "../components/displayLoseEvent"
+import { objectDetection } from "../components/objectDetection"
 import { minigameSofa, minigameKitchenTree, minigameBathPlant, minigameWindbreak, minigameKey, minigameBathtub, minigameBathsink, minigameAltar, minigameBonsai, minigameCattree, minigameComputer, minigameSink, minigameRoomLibrary, minigameKettle, minigameFish, minigameHallway, minigameMicrowave, minigameLivingLibrary, minigameSaber, minigameDoor, minigameTV, minigameFreezer } from "../channels/play1interactions";
 import { loadingScreen } from "../components/loadingscreen"
 
 var musique;
 var character;
 var cursors;
+var items;
 var shapeGraphics;
 var coordinates;
 var countDoor = 0;
@@ -129,9 +131,9 @@ class Play1 extends Phaser.Scene {
     this.load.image('exit', gameAssets.exitImg);
 
     //Endscreen
-    this.load.image('playAgain', gameAssets.playagainPng);
-    this.load.image('winscreen', gameAssets.winscreenPng);
-    this.load.image('lossScreen', gameAssets.lossscreenPng);
+    // this.load.image('playAgain', gameAssets.playagainPng);
+    // this.load.image('winscreen', gameAssets.winscreenPng);
+    // this.load.image('lossScreen', gameAssets.lossscreenPng);
     this.load.audio('door', gameAssets.doorMp3);
     //End endscreen
 
@@ -140,7 +142,7 @@ class Play1 extends Phaser.Scene {
 
     this.load.image("settings", loginAssets.settingsBtn);
     // this.load.video("overlay", loginAssets.overlayVid, false, true);
-    this.load.image("containersett", loginAssets.containerImg);
+    // this.load.image("containersett", loginAssets.containerImg);
     this.load.image("volume", loginAssets.volumeImg);
     this.load.audio("music", loginAssets.musicMp3);
 
@@ -240,7 +242,7 @@ class Play1 extends Phaser.Scene {
     leaveGame(this, musique);
     //END SETTINGS
 
-    const items = [
+    items = [
       {x: 400, y: 188, name: 'kitchen-tree', minigame: minigameKitchenTree},
       {x: 400, y: 197, name: 'kitchen-tree', minigame: minigameKitchenTree},
       {x: 304, y: 101, name: 'stove', minigame: minigameSink},
@@ -299,6 +301,9 @@ class Play1 extends Phaser.Scene {
     }
 
     if (status.won === true) musique.stop();
+
+    objectDetection(this, character, items, status);
+
     camera(this, this.walls, character);
     camera(this, this.objectBottom, character);
     camera(this, this.objectTop, character);

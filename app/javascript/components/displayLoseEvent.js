@@ -64,7 +64,7 @@ const displayLoseScreen = (game, status, musique, endContent = false, videoLoseE
     video.setDisplaySize(innerWidth / 2, innerHeight / 2.5).setDepth(10);
     video.setScrollFactor(0);
     video.on('pointerdown', (pointer) => {
-      console.log(videoLoseEvent, innerWidth/pointer.x, innerHeight/pointer.y)
+      //console.log(videoLoseEvent, innerWidth/pointer.x, innerHeight/pointer.y)
       if (pointer.x > (innerWidth/1.73) && pointer.x < (innerWidth/1.40) && pointer.y > (innerHeight/1.65) && pointer.y < (innerHeight/1.50) && videoLoseEvent === "loseEvent1") {
         game.scene.restart();
         game.begin();

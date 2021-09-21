@@ -709,6 +709,32 @@
             }
         }, 
         {
+         "id":839,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "id":2,
+             "name":"",
+             "objects":[
+                    {
+                     "height":5.23125996810207,
+                     "id":1,
+                     "name":"",
+                     "rotation":0,
+                     "type":"",
+                     "visible":true,
+                     "width":31.7703349282297,
+                     "x":0.0637958532695375,
+                     "y":14.0988835725678
+                    }],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        }, 
+        {
          "id":880,
          "objectgroup":
             {

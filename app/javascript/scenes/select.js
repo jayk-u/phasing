@@ -71,6 +71,7 @@ class Select extends Phaser.Scene {
       this.load.image('map0', selectAssets.map0Img);
       this.load.image('map1', selectAssets.map1Img);
       this.load.image('map2', selectAssets.map2Img);
+      this.load.image('map3', selectAssets.map3Img);
       this.load.audio("selectLevel", selectAssets.selectlevelMp3);
 
       const loginAssets = document.getElementById("login").dataset;
@@ -94,6 +95,7 @@ class Select extends Phaser.Scene {
     box(this, innerWidth/8, innerHeight/3, innerWidth/5, innerHeight/5);
     box(this, innerWidth/2.5, innerHeight/3, innerWidth/5, innerHeight/5);
     box(this, innerWidth*2/3, innerHeight/3, innerWidth/5, innerHeight/5);
+    box(this, innerWidth/2.5, innerHeight/1.5, innerWidth/5, innerHeight/5);
 
 
     var video = this.add.video(0, 0, "background");

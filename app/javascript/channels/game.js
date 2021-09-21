@@ -9,7 +9,9 @@ import { Outro1 } from "../scenes/outro1"
 import { Intro2 } from "../scenes/intro2"
 import { Play2 } from "../scenes/play2"
 import { Outro2 } from "../scenes/outro2"
-
+import { Intro3 } from "../scenes/intro3"
+import { Play3 } from "../scenes/play3"
+import { Outro3 } from "../scenes/outro3"
 
 var config = {
   type: Phaser.AUTO,
@@ -30,7 +32,7 @@ var config = {
         gravity: { y: 0 },
       }
   },
-  scene: [Waiting, Login, Select, Tutorial, Intro1, Play1, Outro1, Intro2, Play2, Outro2]
+  scene: [Waiting, Login, Select, Tutorial, Intro1, Play1, Outro1, Intro2, Play2, Outro2, Intro3, Play3, Outro3 ]
 };
 
 const phaser = new Phaser.Game(config);

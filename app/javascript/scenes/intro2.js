@@ -67,12 +67,12 @@ class Intro2 extends Phaser.Scene {
 
   create ()
   {
-    this.begin()
-    createCutscene(this, status, 'Play2')
+    this.begin();
+    createCutscene(this, status, 'Play2');
   };
   update ()
   {
-    updateCutscene(this, content, status)
+    updateCutscene(this, content, status);
   }
 }
 

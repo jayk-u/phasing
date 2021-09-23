@@ -22,6 +22,10 @@ var status = {};
 
 var beginningMins;
 var beginningSecs;
+var shapeGraphics;
+var cursors;
+var character;
+var items;
 
 
 class Play3 extends Phaser.Scene {
@@ -51,7 +55,9 @@ class Play3 extends Phaser.Scene {
         const gameAssets = document.getElementById("game-assets").dataset;
         //Map
         this.load.tilemapTiledJSON('map3', gameAssets.map3Json);
-        this.load.image('dilapilatedcity', gameAssets.map3Png);
+        this.load.image('tiles3', gameAssets.map3Png);
+        this.load.image('tiles2', gameAssets.map2Png);
+        this.load.image('tiles1', gameAssets.map1Png);
         //End map
 
         // Sprite
@@ -91,7 +97,7 @@ class Play3 extends Phaser.Scene {
         this.cameras.main.fadeIn(1000)
         this.add.rectangle(0, 0, 10000, 10000, 0x000000, 0.2).setDepth(10);
         this.map = this.make.tilemap({ key: 'map3', tileWidth: 16, tileHeight: 16 });
-        this.tileset = this.map.addTilesetImage("city", 'tiles2');
+        this.tileset = this.map.addTilesetImage("dilapilatedcity", 'tiles3');
         this.bridge = this.map.createLayer('bridge', this.tileset, 0, 0).setDepth(0);
         this.water = this.map.createLayer('water', this.tileset, 0, 0).setDepth(0);
         this.gangplank = this.map.createLayer('gangplank', this.tileset, 0, 0).setDepth(1);
@@ -99,8 +105,8 @@ class Play3 extends Phaser.Scene {
         this.plant1 = this.map.createLayer('plant1', this.tileset, 0, 0).setDepth(3);
         this.plant2 = this.map.createLayer('plant2', this.tileset, 0, 0).setDepth(4);
         this.stairs = this.map.createLayer('stairs', this.tileset, 0, 0).setDepth(2);
-        this.railsup = this.map.createLayer('railsup', this.tileset, 0, 0).setDepth(1);
-        this.railsdown = this.map.createLayer('railsdown', this.tileset, 0, 0).setDepth(4);
+        this.railsup = this.map.createLayer('rails up', this.tileset, 0, 0).setDepth(1);
+        this.railsdown = this.map.createLayer('rails down', this.tileset, 0, 0).setDepth(4);
         this.railsup2 = this.map.createLayer('rails up bis', this.tileset, 0, 0).setDepth(2);
         this.groundobjects = this.map.createLayer('ground objects', this.tileset, 0, 0).setDepth(2);
         this.building = this.map.createLayer('building', this.tileset, 0, 0).setDepth(4);
@@ -109,6 +115,9 @@ class Play3 extends Phaser.Scene {
         this.roof = this.map.createLayer('roof', this.tileset, 0, 0).setDepth(6);
         this.decoration = this.map.createLayer('decoration', this.tileset, 0, 0).setDepth(7);
         this.decorationroof = this.map.createLayer('decoration roof', this.tileset, 0, 0).setDepth(8);
+
+        spriteFrame(this, characterCounter);
+        character = this.physics.add.sprite(430, 480, `character${characterCounter}`, 0).setSize(15, 2).setOffset(9, 43).setDepth(1);
 
         shapeGraphics = this.add.graphics();
 
@@ -132,10 +141,10 @@ class Play3 extends Phaser.Scene {
             musique.stop();
           }
       
-          objectDetection(this, character, items, status);
+          // objectDetection(this, character, items, status);
       
-          sortDepth(this.floorObjects, character);
-          sortDepth(this.decorationRooftop, character);
+          // sortDepth(this.floorObjects, character);
+          // sortDepth(this.decorationRooftop, character);
       
           camera(this, this.plant1, character);
           camera(this, this.bridge, character);

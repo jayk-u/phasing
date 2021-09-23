@@ -1,3 +1,13 @@
+(function(name,data){
+ if(typeof onTileMapLoaded === 'undefined') {
+  if(typeof TileMaps === 'undefined') TileMaps = {};
+  TileMaps[name] = data;
+ } else {
+  onTileMapLoaded(name,data);
+ }
+ if(typeof module === 'object' && module && module.exports) {
+  module.exports = data;
+ }})("level3",
 { "compressionlevel":-1,
  "height":50,
  "infinite":false,
@@ -1218,7 +1228,7 @@
         {
          "columns":28,
          "firstgid":2899,
-         "image":"dilapilatedcity.png",
+         "image":"..\/..\/..\/..\/..\/..\/Library\/Mobile Documents\/com~apple~CloudDocs\/BreakingOut\/Assets\/GuttyKreum_OvergrownBackstreets_v1\/Tilemap\/MainTileMap.png",
          "imageheight":1440,
          "imagewidth":896,
          "margin":0,
@@ -1232,4 +1242,4 @@
  "type":"map",
  "version":"1.6",
  "width":75
-}
+});
